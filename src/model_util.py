@@ -226,7 +226,7 @@ class Encoder(nn.Module):
 
 
     def forward(self, e_node, e_edge, e_log):
-        e_edge = torch.masked_select(e_edge, self.node_efea.byte()) \
+        e_edge = torch.masked_select(e_edge, self.node_efea.bool()) \
             .reshape(e_edge.shape[0], e_edge.shape[1], -1, e_edge.shape[-1])
 
         for i in range(self.L):
@@ -263,7 +263,7 @@ class Decoder(nn.Module):
         self.ffn = nn.ModuleList([FFN(node_embedding, edge_embedding, log_embedding, dropout) for _ in range(self.L)])
 
     def forward(self, d_node, d_edge, d_log, z_node, z_edge, z_log):
-        d_edge = torch.masked_select(d_edge, self.node_efea.byte()) \
+        d_edge = torch.masked_select(d_edge, self.node_efea.bool()) \
             .reshape(d_edge.shape[0], d_edge.shape[1], -1, d_edge.shape[-1])
         for i in range(self.L):
             d_node, d_edge, d_log = self.sa_add[i](d_node, d_edge, d_log, *self.spatial_attention[i](d_node, d_edge, d_log, self.node_adj, self.edge_adj, self.edge_efea))

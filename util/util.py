@@ -86,6 +86,8 @@ def seed_everything(seed=1234):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
 
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 def dump_pickle(obj, file_path):
     logging.info("Dumping to {}".format(file_path))

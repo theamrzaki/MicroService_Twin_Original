@@ -26,7 +26,9 @@ if __name__ == '__main__':
         util.json_pretty_dump(args, os.path.join(args['result_dir'], "params.json"))
         args['model_path'] = args['result_dir']
 
-    logging.info("---- Model: ----" + args['main_model'] +"-" + args['hash_id'] + "----" + f"train : {not args['evaluate']}"\
+    logging.info("---- Model: ----" + args['main_model'] +"-" + args['hash_id'] 
+        + "----" + f"Freq Domain : {args['FREQ_DOMAIN']}"\
+        + "----" + f"train : {not args['evaluate']}"\
         + "----" + f"evaluate : {args['evaluate']}")
 
     # dealing & loading data
@@ -41,6 +43,7 @@ if __name__ == '__main__':
     # declear model and train
     import src.model as model
     models = model.MyModel(processed.graph, **args)
+    logging.info(f"Trainable Parameters: {util.count_parameters(models)}")
     sys = train.MY(models, **args)  
 
     #Training

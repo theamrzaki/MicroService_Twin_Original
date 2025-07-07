@@ -1,0 +1,9 @@
+--> Original
+ MSTGAD-4422be38 --weight_decay:0.0005   --learning_change:100 
+loss   pr:0.9545  rc:0.9767  auc:0.9979 ap:0.9829 f1: 0.9655 pred_right: 16368 pred_wrong:132 actu_right: 16371 actu_wrong: 129
+f1   pr:0.9615  rc:0.9690  auc:0.9980 ap:0.9856 f1: 0.9653 pred_right: 16370 pred_wrong:130 actu_right: 16371 actu_wrong: 129
+
+--> Fits with FilterNet
+ MSTGAD-322c2695 --weight_decay:0.0005   --learning_change:100 
+loss   pr:0.9248  rc:0.9535  auc:0.9921 ap:0.9761 f1: 0.9389 pred_right: 16367 pred_wrong:133 actu_right: 16371 actu_wrong: 129
+f1   pr:0.9313  rc:0.9457  auc:0.9902 ap:0.9818 f1: 0.9385 pred_right: 16369 pred_wrong:131 actu_right: 16371 actu_wrong: 129
