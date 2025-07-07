@@ -86,8 +86,27 @@ def seed_everything(seed=1234):
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
 
-def count_parameters(model):
-    return sum(p.numel() for p in model.parameters() if p.requires_grad)
+def count_parameters(model, verbose=True):
+    total_params = 0
+    lines = []
+    
+    for name, param in model.named_parameters():
+        if param.requires_grad:
+            param_count = param.numel()
+            shape_str = str(tuple(param.shape))  # Convert shape tuple to string
+            total_params += param_count
+            if verbose:
+                lines.append(f"{name:40} | shape: {shape_str:25} | params: {param_count:,}")
+    
+    if verbose:
+        print("Trainable Parameters Breakdown:\n" + "-"*80)
+        for line in lines:
+            print(line)
+        print("-"*80)
+        print(f"Total Trainable Parameters: {total_params:,}\n")
+    
+    return total_params
+
 
 def dump_pickle(obj, file_path):
     logging.info("Dumping to {}".format(file_path))

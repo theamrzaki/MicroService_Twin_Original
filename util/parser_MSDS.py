@@ -30,6 +30,8 @@ parser.add_argument("--para_low", default=1e-2, type=float,
                     help='the min weight of rec loss')
 parser.add_argument("--FREQ_DOMAIN", default=True, 
                     help='whether to use frequency domain model')
+parser.add_argument("--MULTI_FITS", default=False, 
+                    help='fits model for each modality')
 # model setting
 parser.add_argument("--feature_node", default=4, type=int,
                     help='the pod kpi data number at one epoch')

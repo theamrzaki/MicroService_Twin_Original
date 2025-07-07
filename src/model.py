@@ -11,7 +11,7 @@ class MyModel(nn.Module):
 		self.name = 'my'
 		self.graph = torch.tensor(graph).cuda()
 		self.label_weight = args['label_weight']
-
+		self.multi_fits = args["MULTI_FITS"]
 		adj = dense_to_sparse(self.graph)[0]
 		trace2pod = torch.nn.functional.one_hot(adj[0], num_classes=graph.shape[0]) \
 			+ torch.nn.functional.one_hot(adj[1], num_classes=graph.shape[0])
@@ -43,14 +43,29 @@ class MyModel(nn.Module):
 			config.seq_len = config.win_size//config.DSR
 			config.pred_len = config.win_size-config.win_size//config.DSR
 			config.individual	= False  
-			config.enc_in = args['feature_node']
-			self.fits_node = FITSModel(config)  
+			if self.multi_fits:
+				config.enc_in = args['feature_node']
+				self.fits_node = FITSModel(config)  
 
-			config.enc_in = args['feature_log'] 
-			self.fits_log = FITSModel(config)  
+				config.enc_in = args['feature_log'] 
+				self.fits_log = FITSModel(config)  
 
-			config.enc_in = args['feature_edge'] 
-			self.fits_edge = FITSModel(config)  
+				config.enc_in = args['feature_edge'] 
+				self.fits_edge = FITSModel(config)  
+			else:
+				config.enc_in = 10
+				self.shared_fits = FITSModel(config)
+				self.modality_proj = nn.ModuleDict({
+					'node': nn.Linear(args['feature_node'], config.enc_in),
+					'log': nn.Linear(args['feature_log'], config.enc_in),
+					'edge': nn.Linear(args['feature_edge'], config.enc_in)
+				})
+				self.modality_proj_out = nn.ModuleDict({
+					'node': nn.Linear(config.enc_in,args['feature_node']),
+					'log': nn.Linear(config.enc_in,args['feature_log'] ),
+					'edge': nn.Linear(config.enc_in,args['feature_edge'])
+				})
+
 			self.node_adj, self.node_efea, self.edge_adj, self.edge_efea = adj2adj(self.graph, args['batch_size'], args['window'], args['feature_edge']) # <--- can by modified DynamicTopology (as a parameter instead of being in init)
 
 		self.node_emb = Embed(args['raw_node'], args['feature_node'], dim=4)
@@ -94,9 +109,19 @@ class MyModel(nn.Module):
 
 
 			# Pass through FITS
-			rec_node_metric_fits, _ = self.fits_node(x_node_metric_fits_input)  # [B*N, T', F]
-			rec_node_logs_fits, _   = self.fits_log(x_node_logs_fits_input)  # [B*N, T', F]
-			rec_edge_fits, _ = self.fits_edge(x_edge_fits_input)  # [B*N*N, T', E]
+			if not self.multi_fits:
+				x_node_proj = self.modality_proj['node'](x_node_metric_fits_input)
+				rec_node_metric_fits = self.modality_proj_out['node'](self.shared_fits(x_node_proj)[0])
+
+				x_log_proj = self.modality_proj['log'](x_node_logs_fits_input)
+				rec_node_logs_fits = self.modality_proj_out['log'](self.shared_fits(x_log_proj)[0])
+
+				x_edge_proj = self.modality_proj['edge'](x_edge_fits_input)
+				rec_edge_fits = self.modality_proj_out['edge'](self.shared_fits(x_edge_proj)[0])
+			else:
+				rec_node_metric_fits, _ = self.fits_node(x_node_metric_fits_input)  # [B*N, T', F]
+				rec_node_logs_fits, _   = self.fits_log(x_node_logs_fits_input)  # [B*N, T', F]
+				rec_edge_fits, _ = self.fits_edge(x_edge_fits_input)  # [B*N*N, T', E]
 
 			# Reshape back to original shape
 			pred_metric_node = rec_node_metric_fits.reshape(B, N, -1, F_METRIC).permute(0, 2, 1, 3)  # [B, T, N, F]

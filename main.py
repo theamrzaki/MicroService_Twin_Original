@@ -28,6 +28,7 @@ if __name__ == '__main__':
 
     logging.info("---- Model: ----" + args['main_model'] +"-" + args['hash_id'] 
         + "----" + f"Freq Domain : {args['FREQ_DOMAIN']}"\
+        + "----" + f"Multi Fits : {args['MULTI_FITS']}"\
         + "----" + f"train : {not args['evaluate']}"\
         + "----" + f"evaluate : {args['evaluate']}")
 
