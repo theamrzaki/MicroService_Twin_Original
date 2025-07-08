@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
-from src.TexFilter import TexFilter  # Assuming TexFilter is in the same directory
+from inner_models.TexFilter import TexFilter  # Assuming TexFilter is in the same directory
 class Model(nn.Module):
     # Hybrid FITS: RIN + Learnable Frequency Filtering (TexFilter) + Interpolation
     def __init__(self, configs):

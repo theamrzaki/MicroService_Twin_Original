@@ -2,7 +2,7 @@ import torch
 import torch.nn as nn
 from torch_geometric.utils import dense_to_sparse
 from src.model_util import *
-from src.FITS import Model as FITSModel 
+from inner_models.FITS import Model as FITSModel 
 import argparse
 
 class MyModel(nn.Module):
