@@ -13,6 +13,11 @@ f1   pr:0.9313  rc:0.9457  auc:0.9902 ap:0.9818 f1: 0.9385 pred_right: 16369 pre
 loss   pr:0.9130  rc:0.9767  auc:0.9899 ap:0.9576 f1: 0.9438 pred_right: 16362 pred_wrong:138 actu_right: 16371 actu_wrong: 129
 f1   pr:0.9328  rc:0.9690  auc:0.9940 ap:0.9679 f1: 0.9506 pred_right: 16366 pred_wrong:134 actu_right: 16371 actu_wrong: 129
 
+--> FourierGNN (SOTA was 0.977)
+ MSTGAD-6ca5a52d --weight_decay:0.0005   --learning_change:100 
+loss   pr:0.9621  rc:0.9845  auc:0.9941 ap:0.9837 f1: 0.9732 pred_right: 16368 pred_wrong:132 actu_right: 16371 actu_wrong: 129
+f1   pr:0.9552  rc:0.9922  auc:0.9999 ap:0.9915 f1: 0.9734 pred_right: 16366 pred_wrong:134 actu_right: 16371 actu_wrong: 129
+
 
 -----------------------> Look-Back 50 <-----------------------
 --> single Fits with FilterNet for all modalities
@@ -24,3 +29,5 @@ f1   pr:0.8786  rc:0.9535  auc:0.9920 ap:0.9560 f1: 0.9145 pred_right: 16360 pre
  MSTGAD-ea0bafa5 --weight_decay:0.0005   --learning_change:100 
 loss   pr:0.9318  rc:0.9535  auc:0.9819 ap:0.9686 f1: 0.9425 pred_right: 16368 pred_wrong:132 actu_right: 16371 actu_wrong: 129
 f1   pr:0.9394  rc:0.9612  auc:0.9940 ap:0.9782 f1: 0.9502 pred_right: 16368 pred_wrong:132 actu_right: 16371 actu_wrong: 129
+
+

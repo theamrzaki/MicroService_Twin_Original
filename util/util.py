@@ -99,11 +99,11 @@ def count_parameters(model, verbose=True):
                 lines.append(f"{name:40} | shape: {shape_str:25} | params: {param_count:,}")
     
     if verbose:
-        print("Trainable Parameters Breakdown:\n" + "-"*80)
+        logging.info("Trainable Parameters Breakdown:\n" + "-"*80)
         for line in lines:
-            print(line)
-        print("-"*80)
-        print(f"Total Trainable Parameters: {total_params:,}\n")
+            logging.info(line)
+        logging.info("-"*80)
+        logging.info(f"Total Trainable Parameters: {total_params:,}\n")
     
     return total_params
 

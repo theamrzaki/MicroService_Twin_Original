@@ -28,7 +28,7 @@ parser.add_argument("--rec_down", default=1, type=int,
                     help='the number that changes reconstruction loss weight')
 parser.add_argument("--para_low", default=1e-2, type=float,
                     help='the min weight of rec loss')
-parser.add_argument("--FREQ_DOMAIN", default=False, 
+parser.add_argument("--FREQ_DOMAIN", default="FourierGNN", 
                     help='whether to use frequency domain model')
 parser.add_argument("--MULTI_FITS", default=False, 
                     help='fits model for each modality')
@@ -63,7 +63,7 @@ parser.add_argument("--dropout", default=0.2, type=float)
 # dataset setting
 parser.add_argument("--batch_size", default=50, type=int,
                     help='the data number at one epoch')
-parser.add_argument("--window", default=50, type=int,
+parser.add_argument("--window", default=10, type=int,
                     help='size of sliding window')
 parser.add_argument("--step", default=1, type=int,
                     help='sliding window stride')
