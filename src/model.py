@@ -4,6 +4,7 @@ from torch_geometric.utils import dense_to_sparse
 from src.model_util import *
 from src.inner_models.FITS import Model as FITSModel 
 from src.inner_models.FourierGNN import FGN
+from src.inner_models.GPT4TS import Model as GPT2Model
 import argparse
 
 class MyModel(nn.Module):
@@ -91,6 +92,48 @@ class MyModel(nn.Module):
 					'edge': nn.Linear(config.enc_in,args['feature_edge'])
 				})
 			self.node_adj, self.node_efea, self.edge_adj, self.edge_efea = adj2adj(self.graph, args['batch_size'], args['window'], args['feature_edge']) # <--- can by modified DynamicTopology (as a parameter instead of being in init)
+		elif self.FREQ_DOMAIN == "GPT2":
+			parser = argparse.ArgumentParser()
+			config = parser.parse_args()
+
+			# Core parameters from LLM4MST paper
+			config.ln = True
+			config.task_name = "anomaly_detection"
+			config.pred_len = 10
+			config.seq_len = 10
+			config.patch_size = 1
+			config.stride = 1
+			config.d_ff = 768
+			config.use_gpu = True
+			config.mlp = 0
+			config.gpt_layers = 6
+
+			# Embedding parameters
+			config.enc_in = 10
+			config.d_model = 768
+			config.embed = "timeF"
+			config.freq = "h"
+			config.dropout = 0.1
+
+			# Task-specific
+			config.c_out = 1  # For forecasting/anomaly detection
+			config.num_class = 2  # For classification
+			# Hardware
+			config.use_gpu = True
+			if not self.multi_fits:
+				self.shared_GPT2 = GPT2Model(configs=config)
+				# as it would be padded by the model, we can use nn.Identity() to be the same as FITS and FGN
+				self.modality_proj = nn.ModuleDict({
+						'node': nn.Linear(args['feature_node'], config.enc_in),
+						'log': nn.Linear(args['feature_log'], config.enc_in),
+						'edge': nn.Linear(args['feature_edge'], config.enc_in)
+				})
+				self.modality_proj_out = nn.ModuleDict({
+					'node': nn.Linear(config.enc_in,args['feature_node']),
+					'log': nn.Linear(config.enc_in,args['feature_log'] ),
+					'edge': nn.Linear(config.enc_in,args['feature_edge'])
+				})
+			self.node_adj, self.node_efea, self.edge_adj, self.edge_efea = adj2adj(self.graph, args['batch_size'], args['window'], args['feature_edge']) # <--- can by modified DynamicTopology (as a parameter instead of being in init)
 
 		self.node_emb = Embed(args['raw_node'], args['feature_node'], dim=4)
 		self.log_emb = Embed(args['log_len'], args['feature_log'], dim=4)
@@ -109,63 +152,7 @@ class MyModel(nn.Module):
                             nn.Linear((args['raw_node'] + args['raw_edge'] + args['log_len']) // 2, 2))
 
 	def forward(self, x, evaluate=False):
-		if self.FREQ_DOMAIN == "FITS":
-			B, T, _,_ = x['data_node'].shape
-			# get edge mask
-			edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
-			edge_exists_mask_batch = edge_exists_mask.unsqueeze(0).unsqueeze(0).repeat(B, T, 1, 1)  # [B, T, N, N]
-
-			# Get embeddings
-			x_node_metric_fits, _ = self.node_emb(x['data_node'])  # Shape: [B, T, N, F]
-			x_node_logs_fits, _ = self.log_emb(x['data_log'])  # Shape: [B, T, L, F]
-			x_edge_fits, _ = self.egde_emb(x['data_edge'])  # Shape: [B, T, E, F]
-
-			# Permute to FITS input shape: [B*N, T, F]
-			_, _, N, F_METRIC = x_node_metric_fits.shape
-			x_node_metric_fits_input = x_node_metric_fits.permute(0, 2, 1, 3).reshape(B*N, T, F_METRIC) # [B*N, T, F]
-			_, _, N, F_LOG = x_node_logs_fits.shape
-			x_node_logs_fits_input = x_node_logs_fits.permute(0, 2, 1, 3).reshape(B*N, T, F_LOG) # [B*N, T, F]
-			_, _, _, _, E = x_edge_fits.shape
-			x_edge_flat = x_edge_fits.reshape(B, T, N*N, E)  # [B, T, N*N, E]
-			edge_mask_flat = edge_exists_mask.view(-1)  # [N*N]
-			x_edge_masked = x_edge_flat[:, :, edge_mask_flat, :]  # select only existing edges
-			x_edge_fits_input = x_edge_masked.permute(0, 2, 1, 3).reshape(B * edge_mask_flat.sum().item(), T, E)  # [B*num_edges, T, E]
-
-
-			# Pass through FITS
-			if not self.multi_fits:
-				x_node_proj = self.modality_proj['node'](x_node_metric_fits_input)
-				rec_node_metric_fits = self.modality_proj_out['node'](self.shared_fits(x_node_proj)[0])
-
-				x_log_proj = self.modality_proj['log'](x_node_logs_fits_input)
-				rec_node_logs_fits = self.modality_proj_out['log'](self.shared_fits(x_log_proj)[0])
-
-				x_edge_proj = self.modality_proj['edge'](x_edge_fits_input)
-				rec_edge_fits = self.modality_proj_out['edge'](self.shared_fits(x_edge_proj)[0])
-			else:
-				rec_node_metric_fits, _ = self.fits_node(x_node_metric_fits_input)  # [B*N, T', F]
-				rec_node_logs_fits, _   = self.fits_log(x_node_logs_fits_input)  # [B*N, T', F]
-				rec_edge_fits, _ = self.fits_edge(x_edge_fits_input)  # [B*N*N, T', E]
-
-			# Reshape back to original shape
-			pred_metric_node = rec_node_metric_fits.reshape(B, N, -1, F_METRIC).permute(0, 2, 1, 3)  # [B, T, N, F]
-			pred_log_node    = rec_node_logs_fits.reshape(B, N, -1, F_LOG).permute(0, 2, 1, 3)  # [B, T, N, F]
-			# Keep edge predictions in masked form: [B, T, num_edges, E]
-			pred_edge_masked = rec_edge_fits.reshape(B, edge_mask_flat.sum().item(), -1, E).permute(0, 2, 1, 3)  # [B, T, num_edges, E]
-
-			# Extract ground truth edges using mask: [B, T, num_edges, E]
-			l_edge = torch.masked_select(x['data_edge'], edge_exists_mask_batch.unsqueeze(-1)).reshape(B, T, edge_mask_flat.sum().item(), -1)
-
-			# Square Loss
-			rec_node_metric_fits = torch.square(self.dense_node(pred_metric_node) - x['data_node'])  # Calculate squared loss on nodes (full) [B, T, N, F]
-			rec_node_log_fits 	 = torch.square(self.dense_log(pred_log_node) - x['data_log'])  # Calculate squared loss on nodes (full) [B, T, N, F]
-			rec_edge1 = torch.square(self.dense_edge(pred_edge_masked) - l_edge)  #Calculate squared loss on edges (masked only) [B, T, num_edges, E]
-			rec_edge = torch.matmul(rec_edge1.permute(
-				0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
-			rec = torch.concat([rec_node_metric_fits,rec_node_log_fits, rec_edge], dim=-1)
-
-
-		elif self.FREQ_DOMAIN == "encoder_decoder":
+		if self.FREQ_DOMAIN == "encoder_decoder":
 			x_node, d_node = self.node_emb(x['data_node'])
 			x_edge, d_edge = self.egde_emb(x['data_edge'])
 			x_log, d_log = self.log_emb(x['data_log'])
@@ -183,7 +170,7 @@ class MyModel(nn.Module):
 			rec_edge = torch.matmul(rec_edge1.permute(
 				0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
 			rec = torch.concat([rec_node, rec_log, rec_edge], dim=-1)
-		elif self.FREQ_DOMAIN == "FourierGNN":
+		elif self.FREQ_DOMAIN in ["FITS", "FourierGNN","GPT2"]:
 			B, T, _,_ = x['data_node'].shape
 			# get edge mask
 			edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
@@ -205,17 +192,26 @@ class MyModel(nn.Module):
 			x_edge_masked = x_edge_flat[:, :, edge_mask_flat, :]  # select only existing edges
 			x_edge_fits_input = x_edge_masked.permute(0, 2, 1, 3).reshape(B * edge_mask_flat.sum().item(), T, E)  # [B*num_edges, T, E]
 
-
+			if self.FREQ_DOMAIN == "FourierGNN":
+				inner_model = self.shared_fgn
+			elif self.FREQ_DOMAIN == "FITS":
+				inner_model = self.shared_fits
+			elif self.FREQ_DOMAIN == "GPT2":
+				inner_model = self.shared_GPT2
+				
 			if not self.multi_fits:
 				x_node_proj = self.modality_proj['node'](x_node_metric_fits_input)
-				rec_node_metric_fits = self.modality_proj_out['node'](self.shared_fgn(x_node_proj))
+				rec_node_metric_fits = self.modality_proj_out['node'](inner_model(x_node_proj))
 
 				x_log_proj = self.modality_proj['log'](x_node_logs_fits_input)
-				rec_node_logs_fits = self.modality_proj_out['log'](self.shared_fgn(x_log_proj))
+				rec_node_logs_fits = self.modality_proj_out['log'](inner_model(x_log_proj))
 
 				x_edge_proj = self.modality_proj['edge'](x_edge_fits_input)
-				rec_edge_fits = self.modality_proj_out['edge'](self.shared_fgn(x_edge_proj))
-
+				rec_edge_fits = self.modality_proj_out['edge'](inner_model(x_edge_proj))
+			else:# only implemened for FITS
+				rec_node_metric_fits, _ = inner_model(x_node_metric_fits_input)  # [B*N, T', F]
+				rec_node_logs_fits, _   = inner_model(x_node_logs_fits_input)  # [B*N, T', F]
+				rec_edge_fits, _ = inner_model(x_edge_fits_input)  # [B*N*N, T', E]
 			# Reshape back to original shape
 			pred_metric_node = rec_node_metric_fits.reshape(B, N, -1, F_METRIC).permute(0, 2, 1, 3)  # [B, T, N, F]
 			pred_log_node    = rec_node_logs_fits.reshape(B, N, -1, F_LOG).permute(0, 2, 1, 3)  # [B, T, N, F]
