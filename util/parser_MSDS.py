@@ -28,7 +28,7 @@ parser.add_argument("--rec_down", default=1, type=int,
                     help='the number that changes reconstruction loss weight')
 parser.add_argument("--para_low", default=1e-2, type=float,
                     help='the min weight of rec loss')
-parser.add_argument("--FREQ_DOMAIN", default="GPT2", 
+parser.add_argument("--FREQ_DOMAIN", default="FourierGNN", 
                     help='whether to use frequency domain model')
 parser.add_argument("--MULTI_FITS", default=False, 
                     help='fits model for each modality')
