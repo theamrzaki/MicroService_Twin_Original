@@ -22,6 +22,10 @@ class MyModel(nn.Module):
 			trace2pod), torch.full_like(trace2pod, 0), trace2pod)
 		
 		self.FREQ_DOMAIN = args['FREQ_DOMAIN']
+		self.req_loss_approach = args['req_loss_approach']
+		self.rec_lambda = args['rec_lambda']
+		self.auxi_lambda = args['auxi_lambda']
+
 		if self.FREQ_DOMAIN == "encoder_decoder":
 			self.encoder = Encoder(graph=self.graph, node_embedding=args['feature_node'], edge_embedding=args['feature_edge'], log_embedding=args['feature_log'],
 							node_heads=args['num_heads_node'], log_heads=args['num_heads_log'], edge_heads=args['num_heads_edge'],
@@ -152,6 +156,13 @@ class MyModel(nn.Module):
                             nn.LeakyReLU(inplace=True),
                             nn.Linear((args['raw_node'] + args['raw_edge'] + args['log_len']) // 2, 2))
 
+	def upsample_time_dim(self, tensor_4d: torch.Tensor, target_time: int) -> torch.Tensor:
+		B, T_old, N, F_ = tensor_4d.shape
+		tensor_3d = tensor_4d.permute(0, 2, 3, 1).reshape(B, N * F_, T_old)  # [B, C, T_old]
+		tensor_upsampled = torch.nn.functional.interpolate(tensor_3d, size=target_time, mode='linear', align_corners=False)
+		tensor_upsampled = tensor_upsampled.reshape(B, N, F_, target_time).permute(0, 3, 1, 2)  # [B, T_new, N, F]
+		return tensor_upsampled
+
 	def forward(self, x, evaluate=False):
 		if self.FREQ_DOMAIN == "encoder_decoder":
 			x_node, d_node = self.node_emb(x['data_node'])
@@ -221,9 +232,36 @@ class MyModel(nn.Module):
 			l_edge = torch.masked_select(x['data_edge'], edge_exists_mask_batch.unsqueeze(-1)).reshape(B, T, edge_mask_flat.sum().item(), -1)
 
 			# Square Loss
-			rec_node_metric_fits = torch.square(self.dense_node(pred_metric_node) - x['data_node'])  # Calculate squared loss on nodes (full) [B, T, N, F]
-			rec_node_log_fits 	 = torch.square(self.dense_log(pred_log_node) - x['data_log'])  # Calculate squared loss on nodes (full) [B, T, N, F]
-			rec_edge1 = torch.square(self.dense_edge(pred_edge_masked) - l_edge)  #Calculate squared loss on edges (masked only) [B, T, num_edges, E]
+			if self.req_loss_approach == "Normal-Recreation":
+				rec_node_metric_fits = torch.square(self.dense_node(pred_metric_node) - x['data_node'])  # Calculate squared loss on nodes (full) [B, T, N, F]
+				rec_node_log_fits 	 = torch.square(self.dense_log(pred_log_node) - x['data_log'])  # Calculate squared loss on nodes (full) [B, T, N, F]
+				rec_edge1 = torch.square(self.dense_edge(pred_edge_masked) - l_edge)  #Calculate squared loss on edges (masked only) [B, T, num_edges, E]
+			elif self.req_loss_approach == "FreDF-style":
+				# Calculate differences (time domain residuals)
+				diff_node_metric = self.dense_node(pred_metric_node) - x['data_node']         # [B, T, N, F]
+				diff_node_log = self.dense_log(pred_log_node) - x['data_log']                 # [B, T, N, F]
+				diff_edge = self.dense_edge(pred_edge_masked) - l_edge                        # [B, T, E, F]
+
+				# Time domain losses (MSE)
+				loss_time_node_metric = torch.square(diff_node_metric)
+				loss_time_log = torch.square(diff_node_log)
+				loss_time_edge = torch.square(diff_edge)
+
+				# Frequency domain losses (magnitude of FFT residuals)
+				loss_freq_node_metric = torch.fft.rfft(diff_node_metric, dim=1).abs()  # [B, T', N, F]
+				loss_freq_log = torch.fft.rfft(diff_node_log, dim=1).abs()
+				loss_freq_edge = torch.fft.rfft(diff_edge, dim=1).abs()
+
+				# Upsample frequency losses to match time domain shape
+				loss_freq_node_metric = self.upsample_time_dim(loss_freq_node_metric, target_time=diff_node_metric.shape[1])
+				loss_freq_log = self.upsample_time_dim(loss_freq_log, target_time=diff_node_log.shape[1])
+				loss_freq_edge = self.upsample_time_dim(loss_freq_edge, target_time=diff_edge.shape[1])
+
+				# Weighted sum of time and frequency losses
+				rec_node_metric_fits = self.rec_lambda * loss_time_node_metric + self.auxi_lambda * loss_freq_node_metric
+				rec_node_log_fits = self.rec_lambda * loss_time_log + self.auxi_lambda * loss_freq_log
+				rec_edge1 = self.rec_lambda * loss_time_edge + self.auxi_lambda * loss_freq_edge
+
 			rec_edge = torch.matmul(rec_edge1.permute(
 				0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
 			rec = torch.concat([rec_node_metric_fits,rec_node_log_fits, rec_edge], dim=-1)

@@ -27,6 +27,9 @@ if __name__ == '__main__':
         args['model_path'] = args['result_dir']
 
     logging.info("---- Model: ----" + args['main_model'] +"-" + args['hash_id'] 
+        + "----" + f"req_loss_approach : {args['req_loss_approach']}"\
+        + "----" + f"rec_lambda : {args['rec_lambda']}"\
+        + "----" + f"auxi_lambda : {args['auxi_lambda']}"\
         + "----" + f"Freq Domain : {args['FREQ_DOMAIN']}"\
         + "----" + f"Multi Fits : {args['MULTI_FITS']}"\
         + "----" + f"train : {not args['evaluate']}"\

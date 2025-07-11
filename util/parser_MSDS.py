@@ -28,10 +28,19 @@ parser.add_argument("--rec_down", default=1, type=int,
                     help='the number that changes reconstruction loss weight')
 parser.add_argument("--para_low", default=1e-2, type=float,
                     help='the min weight of rec loss')
-parser.add_argument("--FREQ_DOMAIN", default="FourierGNN", 
+
+# Frequency Domain Settings
+parser.add_argument("--FREQ_DOMAIN", default="FITS", 
                     help='whether to use frequency domain model')
 parser.add_argument("--MULTI_FITS", default=False, 
                     help='fits model for each modality')
+parser.add_argument("--req_loss_approach", default="FreDF-style", 
+                    help='fits model for each modality')
+parser.add_argument("--rec_lambda", default=0.5, 
+                    help='time reconstruction loss weight')
+parser.add_argument("--auxi_lambda", default=1.0, 
+                    help='frequency reconstruction loss weight')
+
 # model setting
 parser.add_argument("--feature_node", default=4, type=int,
                     help='the pod kpi data number at one epoch')
