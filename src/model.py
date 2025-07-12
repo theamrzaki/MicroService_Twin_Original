@@ -201,6 +201,7 @@ class MyModel(nn.Module):
 			_, _, _, _, E = x_edge_fits.shape
 			x_edge_flat = x_edge_fits.reshape(B, T, N*N, E)  # [B, T, N*N, E]
 			edge_mask_flat = edge_exists_mask.view(-1)  # [N*N]
+			edge_mask_flat = edge_mask_flat.to(x_edge_flat.device)
 			x_edge_masked = x_edge_flat[:, :, edge_mask_flat, :]  # select only existing edges
 			x_edge_fits_input = x_edge_masked.permute(0, 2, 1, 3).reshape(B * edge_mask_flat.sum().item(), T, E)  # [B*num_edges, T, E]
 
@@ -229,7 +230,9 @@ class MyModel(nn.Module):
 			pred_edge_masked = rec_edge_fits.reshape(B, edge_mask_flat.sum().item(), -1, E).permute(0, 2, 1, 3)  # [B, T, num_edges, E]
 
 			# Extract ground truth edges using mask: [B, T, num_edges, E]
-			l_edge = torch.masked_select(x['data_edge'], edge_exists_mask_batch.unsqueeze(-1)).reshape(B, T, edge_mask_flat.sum().item(), -1)
+			mask = edge_exists_mask_batch.to(x['data_edge'].device).unsqueeze(-1)
+			l_edge = torch.masked_select(x['data_edge'], mask).reshape(B, T, edge_mask_flat.sum().item(), -1)
+			#l_edge = torch.masked_select(x['data_edge'], edge_exists_mask_batch.unsqueeze(-1)).reshape(B, T, edge_mask_flat.sum().item(), -1)
 
 			# Square Loss
 			if self.req_loss_approach == "Normal-Recreation":
@@ -263,7 +266,9 @@ class MyModel(nn.Module):
 				rec_edge1 = self.rec_lambda * loss_time_edge + self.auxi_lambda * loss_freq_edge
 
 			rec_edge = torch.matmul(rec_edge1.permute(
-				0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
+				0, 1, 3, 2), self.trace2pod.float().to(rec_edge1.device)).permute(0, 1, 3, 2)
+			#rec_edge = torch.matmul(rec_edge1.permute(
+			#	0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
 			rec = torch.concat([rec_node_metric_fits,rec_node_log_fits, rec_edge], dim=-1)
 		elif self.FREQ_DOMAIN in ["FourierGNN"]:
 			B, T, _,_ = x['data_node'].shape

@@ -6,6 +6,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from adabelief_pytorch import AdaBelief
+import psutil
 
 from tqdm import tqdm
 import util.util as util
@@ -107,6 +108,7 @@ class MY(Base):
         losser = nn.BCEWithLogitsLoss(reduce='mean', weight=label_weight)
         logging.info('optimizer : using AdaBelief')
 
+        training_epoch_time_list = []
         for epoch in range(0, self.epoches):
             lr = optimizer.param_groups[0]['lr']
             para = torch.tensor(1 / (epoch // self.rec_down + 1))
@@ -149,6 +151,7 @@ class MY(Base):
 
             # show the result about this epoch
             epoch_time_elapsed = time.time() - epoch_time_start
+            training_epoch_time_list.append(epoch_time_elapsed)
             epoch_loss = torch.mean(torch.tensor(epoch_loss)).item()
             epoch_cls_loss = torch.mean(torch.tensor(epoch_cls_loss)).item()
             epoch_rec_loss = torch.mean(torch.tensor(epoch_rec_loss)).item()
@@ -187,25 +190,80 @@ class MY(Base):
         logging.info('saving model...')
         self.save_model(best['loss'], self.model_save_dir, name='loss')
         self.save_model(best['f1'], self.model_save_dir, name='f1')
-
-    def evaluate(self, test_loader, isFinall=False):
-        self.model.eval()
-        with torch.no_grad():
+        avg_training_time_per_epoch = np.mean(training_epoch_time_list)
+        logging.info(f'Average training time per epoch: {avg_training_time_per_epoch:.2f} seconds')
+        return avg_training_time_per_epoch
+    def evaluate(self, test_loader, isFinall=False,final_evaluation=False):
+        def run_inference(use_gpu_flag):
+            self.model.eval()
             predict_list, label_list = [], []
-            for batch_input in tqdm(test_loader):
-                    batch_input = self.input2device(batch_input,self.use_gpu)
+
+            is_gpu = use_gpu_flag and torch.cuda.is_available()
+            device = torch.device("cuda" if is_gpu else "cpu")
+            self.model.to(device)  
+
+            if is_gpu:
+                start_event = torch.cuda.Event(enable_timing=True)
+                end_event = torch.cuda.Event(enable_timing=True)
+                torch.cuda.reset_peak_memory_stats()
+                start_event.record()
+            else:
+                start_time = time.time()
+                process = psutil.Process()
+
+            with torch.no_grad():
+                for batch_input in tqdm(test_loader, desc=f"Running on {'GPU' if is_gpu else 'CPU'}"):
+                    batch_input = self.input2device(batch_input, use_gpu_flag)
                     raw_result, _ = self.model(batch_input, evaluate=True)
 
                     predict_list.append(raw_result)
                     label_list.append(batch_input['groundtruth_real'])
 
-            predict_list = torch.concat(predict_list, dim=0).cpu()
-            label_list = torch.concat(label_list, dim=0).cpu()
-
-            info, result = util.calc_index(predict_list, label_list)
-
-            if isFinall:
-                return info
+            if is_gpu:
+                end_event.record()
+                torch.cuda.synchronize()
+                inference_time_ms = start_event.elapsed_time(end_event)
+                peak_memory_mb = torch.cuda.max_memory_allocated() / (1024 ** 2)
             else:
-                return result
+                inference_time_ms = (time.time() - start_time) * 1000
+                peak_memory_mb = process.memory_info().rss / (1024 ** 2)
+
+            predict_all = torch.concat(predict_list, dim=0).cpu()
+            label_all = torch.concat(label_list, dim=0).cpu()
+            info, result = util.calc_index(predict_all, label_all)
+
+            return {
+                "info": info,
+                "result": result,
+                "inference_time_total_ms": inference_time_ms,
+                "inference_time_per_sample_ms": inference_time_ms / len(test_loader.dataset),
+                "peak_memory_mb": peak_memory_mb,
+            }
+
+        # 1. Run on GPU
+        gpu_metrics = run_inference(use_gpu_flag=True)
+
+        if isFinall:
+            # 2. Run on CPU
+            cpu_metrics = run_inference(use_gpu_flag=False)
+
+            # Combine both
+            performance = {
+                "GPU": {
+                    "inference_time_per_sample_ms": gpu_metrics["inference_time_per_sample_ms"],
+                    "peak_memory_mb": gpu_metrics["peak_memory_mb"]
+                },
+                "CPU": {
+                    "inference_time_per_sample_ms": cpu_metrics["inference_time_per_sample_ms"],
+                    "peak_memory_mb": cpu_metrics["peak_memory_mb"]
+                }
+            }
+
+            logging.info(f"Performance Summary:\n{performance}")
+
+        # Return only GPU `info` as main output
+        if isFinall:
+            return gpu_metrics["info"], performance
+        else:
+            return gpu_metrics["result"]
 

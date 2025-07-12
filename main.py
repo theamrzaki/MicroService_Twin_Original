@@ -47,22 +47,28 @@ if __name__ == '__main__':
     # declear model and train
     import src.model as model
     models = model.MyModel(processed.graph, **args)
-    logging.info(f"Trainable Parameters: {util.count_parameters(models)}")
+    total_params = util.count_parameters(models)
+    print(total_params)
+    logging.info(f"Trainable Parameters: {total_params['total_params']}, reconstruction: {total_params['reconstruction_params']}, common: {total_params['common_params']}")
     sys = train.MY(models, **args)  
 
     #Training
+    avg_training_time_per_epoch = 0
     if not args['evaluate']:
-        sys.fit(train_loader=train_dl, test_loader=test_dl)
+        avg_training_time_per_epoch = sys.fit(train_loader=train_dl, test_loader=test_dl)
 
 
     # Evaluating
     logging.info('calculate scores...')
     with open('./result.log', 'a+') as file:
         file.writelines(f"\n {args['main_model']}-{args['hash_id']} --weight_decay:{args['weight_decay']}   --learning_change:{args['learning_change']} \n")
+        info_dict = {}
         for statue in ['loss', 'f1']:
             logging.info(f'calculate label with {statue}...')
             sys.load_model(args['model_path'], name=statue)
-            info = sys.evaluate(test_dl, isFinall=True)
+            info, performance = sys.evaluate(test_dl, isFinall=True)
+            info_dict[statue] = info
             file.writelines(statue + '   ' + info + '\n')
+    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'result.csv')
     logging.info("^^^^^^ Current Model: ----" + args['main_model'] + "-" * 4 + args['hash_id'] + " ^^^^^")
 

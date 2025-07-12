@@ -36,9 +36,9 @@ parser.add_argument("--MULTI_FITS", default=False,
                     help='fits model for each modality')
 parser.add_argument("--req_loss_approach", default="FreDF-style", 
                     help='fits model for each modality')
-parser.add_argument("--rec_lambda", default=0.5, 
+parser.add_argument("--rec_lambda", default=1.0, 
                     help='time reconstruction loss weight')
-parser.add_argument("--auxi_lambda", default=1.0, 
+parser.add_argument("--auxi_lambda", default=0.1, 
                     help='frequency reconstruction loss weight')
 
 # model setting
