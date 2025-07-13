@@ -2,7 +2,7 @@ import util.util as util
 import util.train as train
 import util.data_MSDS as data_loads
 from util.parser_MSDS import *
-
+import src.model as model
 from torch.utils.data import DataLoader
 import warnings
 import logging
@@ -43,9 +43,7 @@ if __name__ == '__main__':
     test_dl = DataLoader(processed.dataset[int(len(processed.dataset)*0.7):],
                         batch_size=args['batch_size'],
                         shuffle=False, pin_memory=False, drop_last=True)
-
     # declear model and train
-    import src.model as model
     models = model.MyModel(processed.graph, **args)
     total_params = util.count_parameters(models)
     print(total_params)

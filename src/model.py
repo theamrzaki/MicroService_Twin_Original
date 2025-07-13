@@ -36,8 +36,8 @@ class MyModel(nn.Module):
 							n2e_heads=args['num_heads_n2e'], e2n_heads=args['num_heads_e2n'],
 							dropout=args['dropout'], batch_size=args['batch_size'], window_size=args['window'], num_layer=args['num_layer'], trace2pod=trace2pod)
 		elif self.FREQ_DOMAIN == "FITS":
-			parser = argparse.ArgumentParser()
-			config = parser.parse_args()
+			class Config: pass
+			config = Config()
 
 			config.win_size = args['window']  # Window size
 			config.DSR = 1  # Downsampling rate
@@ -49,7 +49,7 @@ class MyModel(nn.Module):
 			config.seq_len = config.win_size//config.DSR
 			config.pred_len = config.win_size-config.win_size//config.DSR
 			config.individual	= False  
-			if self.multi_fits:
+			if self.multi_fits=='true':
 				config.enc_in = args['feature_node']
 				self.fits_node = FITSModel(config)  
 
@@ -75,8 +75,8 @@ class MyModel(nn.Module):
 			self.node_adj, self.node_efea, self.edge_adj, self.edge_efea = adj2adj(self.graph, args['batch_size'], args['window'], args['feature_edge']) # <--- can by modified DynamicTopology (as a parameter instead of being in init)
 		elif self.FREQ_DOMAIN == "FourierGNN":
 			self.adj_proj = nn.Linear(args['feature_edge'], 1)               # Edge → scalar weight
-			parser = argparse.ArgumentParser()
-			config = parser.parse_args()
+			class Config: pass
+			config = Config()
 			config.DSR = 1  # Downsampling rate
 			config.pre_length = args['window']  # Window size
 			config.embed_size = args['feature_node']
@@ -84,7 +84,7 @@ class MyModel(nn.Module):
 			config.seq_length = args['window'] // config.DSR
 			config.hidden_size = 10
 			config.enc_in = 10
-			if not self.multi_fits:
+			if self.multi_fits == 'false':
 				self.shared_fgn = FGN(pre_length=config.pre_length, embed_size=config.embed_size, feature_size=config.feature_size, seq_length=config.seq_length, hidden_size=config.hidden_size)
 				#self.modality_proj = nn.ModuleDict({
 				#		'node': nn.Linear(args['feature_node'], config.enc_in),
@@ -98,8 +98,8 @@ class MyModel(nn.Module):
 				})
 			self.node_adj, self.node_efea, self.edge_adj, self.edge_efea = adj2adj(self.graph, args['batch_size'], args['window'], args['feature_edge']) # <--- can by modified DynamicTopology (as a parameter instead of being in init)
 		elif self.FREQ_DOMAIN == "GPT2":
-			parser = argparse.ArgumentParser()
-			config = parser.parse_args()
+			class Config: pass
+			config = Config()
 
 			# Core parameters from LLM4MST paper
 			config.ln = True
@@ -114,7 +114,7 @@ class MyModel(nn.Module):
 			config.gpt_layers = 6
 
 			# Embedding parameters
-			config.enc_in = 10
+			config.enc_in = 768
 			config.d_model = 768
 			config.embed = "timeF"
 			config.freq = "h"
@@ -125,7 +125,7 @@ class MyModel(nn.Module):
 			config.num_class = 2  # For classification
 			# Hardware
 			config.use_gpu = True
-			if not self.multi_fits:
+			if self.multi_fits == 'false':
 				self.shared_GPT2 = GPT2Model(configs=config)
 				# as it would be padded by the model, we can use nn.Identity() to be the same as FITS and FGN
 				self.modality_proj = nn.ModuleDict({
@@ -172,13 +172,16 @@ class MyModel(nn.Module):
 			z_node, z_edge, z_log = self.encoder(x_node, x_edge, x_log)
 			node, edge, log = self.decoder(d_node, d_edge, d_log, z_node, z_edge, z_log)
 			
+			device = x['data_edge'].device
+			self.graph = self.graph.to(device)
 			l_edge = torch.masked_select(x['data_edge'], self.graph.unsqueeze(-1).repeat(1, 1, x['data_edge'].shape[-1]).bool()) \
 				.reshape(x['data_edge'].shape[0], x['data_edge'].shape[1], -1, x['data_edge'].shape[-1])
 
 			rec_node = torch.square(self.dense_node(node) - x['data_node'])
 			rec_edge1 = torch.square(self.dense_edge(edge) - l_edge)
 			rec_log = torch.square(self.dense_log(log) - x['data_log'])
-
+			rec_edge1 = rec_edge1.to(device)
+			self.trace2pod = self.trace2pod.to(device)
 			rec_edge = torch.matmul(rec_edge1.permute(
 				0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
 			rec = torch.concat([rec_node, rec_log, rec_edge], dim=-1)
@@ -205,12 +208,12 @@ class MyModel(nn.Module):
 			x_edge_masked = x_edge_flat[:, :, edge_mask_flat, :]  # select only existing edges
 			x_edge_fits_input = x_edge_masked.permute(0, 2, 1, 3).reshape(B * edge_mask_flat.sum().item(), T, E)  # [B*num_edges, T, E]
 
-			if self.FREQ_DOMAIN == "FITS":
-				inner_model = self.shared_fits
-			elif self.FREQ_DOMAIN == "GPT2":
-				inner_model = self.shared_GPT2
-				
-			if not self.multi_fits:
+
+			if self.multi_fits == 'false':
+				if self.FREQ_DOMAIN == "FITS":
+					inner_model = self.shared_fits
+				elif self.FREQ_DOMAIN == "GPT2":
+					inner_model = self.shared_GPT2
 				x_node_proj = self.modality_proj['node'](x_node_metric_fits_input)
 				rec_node_metric_fits = self.modality_proj_out['node'](inner_model(x_node_proj)[0])
 
@@ -219,10 +222,10 @@ class MyModel(nn.Module):
 
 				x_edge_proj = self.modality_proj['edge'](x_edge_fits_input)
 				rec_edge_fits = self.modality_proj_out['edge'](inner_model(x_edge_proj)[0])
-			else:# only implemened for FITS
-				rec_node_metric_fits, _ = inner_model(x_node_metric_fits_input)  # [B*N, T', F]
-				rec_node_logs_fits, _   = inner_model(x_node_logs_fits_input)  # [B*N, T', F]
-				rec_edge_fits, _ = inner_model(x_edge_fits_input)  # [B*N*N, T', E]
+			else:# only implemened for FITS 
+				rec_node_metric_fits, _ = self.fits_node(x_node_metric_fits_input)  # [B*N, T', F]
+				rec_node_logs_fits, _   = self.fits_log(x_node_logs_fits_input)  # [B*N, T', F]
+				rec_edge_fits, _ = self.fits_edge(x_edge_fits_input)  # [B*N*N, T', E]
 			# Reshape back to original shape
 			pred_metric_node = rec_node_metric_fits.reshape(B, N, -1, F_METRIC).permute(0, 2, 1, 3)  # [B, T, N, F]
 			pred_log_node    = rec_node_logs_fits.reshape(B, N, -1, F_LOG).permute(0, 2, 1, 3)  # [B, T, N, F]

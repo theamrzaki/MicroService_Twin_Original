@@ -203,7 +203,7 @@ class Model(nn.Module):
         # dec_out = dec_out + \
         #           (means[:, 0, :].unsqueeze(1).repeat(
         #               1, self.pred_len + self.seq_len, 1))
-        return dec_out
+        return dec_out, None
 
     def classification(self, x_enc, x_mark_enc):
         # print(x_enc.shape)

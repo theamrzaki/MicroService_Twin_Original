@@ -1,5 +1,13 @@
 import argparse
 
+def str2bool(v):
+    if v.lower() in ('true', '1', 'yes', 'y'):
+        return True
+    elif v.lower() in ('false', '0', 'no', 'n'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError('Boolean value expected.')
+    
 parser = argparse.ArgumentParser(description='MutliModel Time-Series Anomaly Detection')
 parser.add_argument("--random_seed", default=42,
                     type=int, help='the random seed')
@@ -30,15 +38,15 @@ parser.add_argument("--para_low", default=1e-2, type=float,
                     help='the min weight of rec loss')
 
 # Frequency Domain Settings
-parser.add_argument("--FREQ_DOMAIN", default="FITS", 
+parser.add_argument("--FREQ_DOMAIN", default="GPT2", 
                     help='whether to use frequency domain model')
-parser.add_argument("--MULTI_FITS", default=False, 
+parser.add_argument("--MULTI_FITS", default='false', 
                     help='fits model for each modality')
 parser.add_argument("--req_loss_approach", default="FreDF-style", 
                     help='fits model for each modality')
-parser.add_argument("--rec_lambda", default=1.0, 
+parser.add_argument("--rec_lambda", default=1.0, type=float, 
                     help='time reconstruction loss weight')
-parser.add_argument("--auxi_lambda", default=0.1, 
+parser.add_argument("--auxi_lambda", default=0.1, type=float, 
                     help='frequency reconstruction loss weight')
 
 # model setting

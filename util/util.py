@@ -152,7 +152,7 @@ def count_parameters(model, verbose=True):
     }
 
 def write_results(args, info_dict,total_params,avg_training_time_per_epoch,performance, file_name='result.csv'):
-    file_path = os.path.join(args['result_dir'], file_name)
+    file_path = file_name
     #infodict = {'pr':ps, 'rc':rs, 'auc':auc, 'ap':ap, 'f1':effection}
     """
             performance = {

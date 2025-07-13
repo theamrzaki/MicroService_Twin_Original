@@ -122,7 +122,9 @@ class Temporal_Attention(nn.Module):
         att_n = att_n.reshape(self.batch_size, -1, att_n.shape[-3], att_n.shape[-2], att_n.shape[-1])
         att_t = att_t.reshape(self.batch_size, -1, att_t.shape[-3], att_t.shape[-2], att_t.shape[-1])
         att_l = att_l.reshape(self.batch_size, -1, att_l.shape[-3], att_l.shape[-2], att_l.shape[-1])
-        
+        device = att_n.device  # or att_t.device / att_l.device — they should all be the same
+
+        self.trace2pod = self.trace2pod.to(device)
         att_nn = torch.matmul(att_n.permute(0, 2, 3, 4, 1), self.trace2pod.T.float()).permute(0, 4, 1, 2, 3)
         att_tn = torch.matmul(att_t.permute(0, 2, 3, 4, 1), self.trace2pod.float()).permute(0, 4, 1, 2, 3)
         att_ln = torch.matmul(att_l.permute(0, 2, 3, 4, 1), self.trace2pod.T.float()).permute(0, 4, 1, 2, 3)
@@ -226,10 +228,19 @@ class Encoder(nn.Module):
 
 
     def forward(self, e_node, e_edge, e_log):
-        e_edge = torch.masked_select(e_edge, self.node_efea.bool()) \
-            .reshape(e_edge.shape[0], e_edge.shape[1], -1, e_edge.shape[-1])
+        device = e_edge.device  # or self.node_efea.device, whichever is appropriate
+        e_edge = torch.masked_select(e_edge, self.node_efea.bool().to(device)).reshape(e_edge.shape[0], e_edge.shape[1], -1, e_edge.shape[-1])
+
+        #e_edge = torch.masked_select(e_edge, self.node_efea.bool()) \
+        #    .reshape(e_edge.shape[0], e_edge.shape[1], -1, e_edge.shape[-1])
 
         for i in range(self.L):
+            device = e_node.device  # ensure consistency across tensors
+
+            # Move static tensors to the same device before use
+            self.node_adj = self.node_adj.to(device)
+            self.edge_adj = self.edge_adj.to(device)
+            self.edge_efea = self.edge_efea.to(device)
             e_node, e_edge, e_log = self.sa_add[i](e_node, e_edge, e_log, *self.spatial_attention[i](e_node, e_edge, e_log, self.node_adj, self.edge_adj, self.edge_efea))
             e_node, e_edge, e_log = self.ta_add[i](e_node, e_edge, e_log, *self.temporal_attention[i](e_node, e_edge, e_log))
             e_node, e_edge, e_log = self.ffn[i](e_node, e_edge, e_log)
@@ -263,9 +274,15 @@ class Decoder(nn.Module):
         self.ffn = nn.ModuleList([FFN(node_embedding, edge_embedding, log_embedding, dropout) for _ in range(self.L)])
 
     def forward(self, d_node, d_edge, d_log, z_node, z_edge, z_log):
+        device = d_edge.device
+        self.node_efea = self.node_efea.to(device)
         d_edge = torch.masked_select(d_edge, self.node_efea.bool()) \
             .reshape(d_edge.shape[0], d_edge.shape[1], -1, d_edge.shape[-1])
+        self.node_adj = self.node_adj.to(device)
+        self.edge_adj = self.edge_adj.to(device)
+        self.edge_efea = self.edge_efea.to(device)
         for i in range(self.L):
+            
             d_node, d_edge, d_log = self.sa_add[i](d_node, d_edge, d_log, *self.spatial_attention[i](d_node, d_edge, d_log, self.node_adj, self.edge_adj, self.edge_efea))
             d_node, d_edge, d_log = self.ta_add[i](d_node, d_edge, d_log, *self.temporal_attention[i](d_node, d_edge, d_log, mask=True))
             d_node, d_edge, d_log = self.ca_add[i](d_node, d_edge, d_log, *self.cross_attention[i](d_node, d_edge, d_log, z_node, z_edge, z_log))
