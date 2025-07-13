@@ -12,5 +12,8 @@
 #python3 main.py --FREQ_DOMAIN='FITS' --MULTI_FITS='true' --req_loss_approach='FreDF-style' --rec_lambda=0.1 --auxi_lambda=1.0
 #python3 main.py --FREQ_DOMAIN='FITS' --MULTI_FITS='true' --req_loss_approach='FreDF-style' --rec_lambda=1.0 --auxi_lambda=0.5
 
-python3 main.py --FREQ_DOMAIN='FITS_LPF' --MULTI_FITS='true' --req_loss_approach='Normal-Recreation' --rec_lambda=1.0 --auxi_lambda=0.5
-python3 main.py --FREQ_DOMAIN='FITS_Pai' --MULTI_FITS='true' --req_loss_approach='Normal-Recreation' --rec_lambda=1.0 --auxi_lambda=0.5
+#python3 main.py --FREQ_DOMAIN='FITS_LPF' --MULTI_FITS='true' --req_loss_approach='Normal-Recreation' --rec_lambda=1.0 --auxi_lambda=0.5
+#python3 main.py --FREQ_DOMAIN='FITS_Pai' --MULTI_FITS='true' --req_loss_approach='Normal-Recreation' --rec_lambda=1.0 --auxi_lambda=0.5
+
+
+python3 main.py --FREQ_DOMAIN='iTransformer' --MULTI_FITS='true' --req_loss_approach='FreDF-style' --rec_lambda=1.0 --auxi_lambda=0.1
