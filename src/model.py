@@ -5,6 +5,7 @@ from src.model_util import *
 from src.inner_models.FITS import Model as FITSModel 
 from src.inner_models.FITS_LPF import Model as FITSModel_LPF 
 from src.inner_models.FITS_Pai import Model as FITSModel_Pai
+from src.inner_models.iTransformer import Model as iTransformerModel
 from src.inner_models.FourierGNN import FGN
 from src.inner_models.GPT4TS import Model as GPT2Model
 import argparse
@@ -37,7 +38,7 @@ class MyModel(nn.Module):
 							node_heads=args['num_heads_node'], log_heads=args['num_heads_log'], edge_heads=args['num_heads_edge'],
 							n2e_heads=args['num_heads_n2e'], e2n_heads=args['num_heads_e2n'],
 							dropout=args['dropout'], batch_size=args['batch_size'], window_size=args['window'], num_layer=args['num_layer'], trace2pod=trace2pod)
-		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS"]:
+		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","iTransformer"]:
 			class Config: pass
 			config = Config()
 
@@ -62,6 +63,8 @@ class MyModel(nn.Module):
 					self.fits_node = FITSModel_LPF(configs=config)
 				elif self.FREQ_DOMAIN == "FITS_Pai":
 					self.fits_node = FITSModel_Pai(configs=config)
+				elif self.FREQ_DOMAIN == "iTransformer":
+					self.fits_node = iTransformerModel(configs=config)
 
 				config.enc_in = args['feature_log'] 
 				if self.FREQ_DOMAIN == "FITS":
@@ -70,6 +73,8 @@ class MyModel(nn.Module):
 					self.fits_log = FITSModel_LPF(configs=config)
 				elif self.FREQ_DOMAIN == "FITS_Pai":
 					self.fits_log = FITSModel_Pai(configs=config)
+				elif self.FREQ_DOMAIN == "iTransformer":
+					self.fits_log = iTransformerModel(configs=config)
 
 				config.enc_in = args['feature_edge'] 
 				if self.FREQ_DOMAIN == "FITS":
@@ -78,7 +83,8 @@ class MyModel(nn.Module):
 					self.fits_edge = FITSModel_LPF(configs=config)
 				elif self.FREQ_DOMAIN == "FITS_Pai":
 					self.fits_edge = FITSModel_Pai(configs=config)
-
+				elif self.FREQ_DOMAIN == "iTransformer":
+					self.fits_edge = iTransformerModel(configs=config)
 			else:
 				config.enc_in = 10
 				if self.FREQ_DOMAIN == "FITS":
@@ -87,6 +93,8 @@ class MyModel(nn.Module):
 					self.shared_fits = FITSModel_LPF(configs=config)
 				elif self.FREQ_DOMAIN == "FITS_Pai":
 					self.shared_fits = FITSModel_Pai(configs=config)
+				elif self.FREQ_DOMAIN == "iTransformer":
+					self.shared_fits = iTransformerModel(configs=config)
 				self.modality_proj = nn.ModuleDict({
 					'node': nn.Linear(args['feature_node'], config.enc_in),
 					'log': nn.Linear(args['feature_log'], config.enc_in),
@@ -152,7 +160,7 @@ class MyModel(nn.Module):
 			# Hardware
 			config.use_gpu = True
 			if self.multi_fits == 'false':
-				self.shared_GPT2 = GPT2Model(configs=config)
+				self.shared_fits = GPT2Model(configs=config)
 				# as it would be padded by the model, we can use nn.Identity() to be the same as FITS and FGN
 				self.modality_proj = nn.ModuleDict({
 						'node': nn.Linear(args['feature_node'], config.enc_in),
@@ -211,7 +219,7 @@ class MyModel(nn.Module):
 			rec_edge = torch.matmul(rec_edge1.permute(
 				0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
 			rec = torch.concat([rec_node, rec_log, rec_edge], dim=-1)
-		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","GPT2"]:
+		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","GPT2","iTransformer"]:
 			B, T, _,_ = x['data_node'].shape
 			# get edge mask
 			edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
@@ -236,22 +244,14 @@ class MyModel(nn.Module):
 
 
 			if self.multi_fits == 'false':
-				if self.FREQ_DOMAIN == "FITS":
-					inner_model = self.shared_fits
-				elif self.FREQ_DOMAIN == "FITS_LPF":
-					inner_model = self.shared_fits
-				elif self.FREQ_DOMAIN == "FITS_Pai":
-					inner_model = self.shared_fits
-				elif self.FREQ_DOMAIN == "GPT2":
-					inner_model = self.shared_GPT2
 				x_node_proj = self.modality_proj['node'](x_node_metric_fits_input)
-				rec_node_metric_fits = self.modality_proj_out['node'](inner_model(x_node_proj)[0])
+				rec_node_metric_fits = self.modality_proj_out['node'](self.shared_fits(x_node_proj)[0])
 
 				x_log_proj = self.modality_proj['log'](x_node_logs_fits_input)
-				rec_node_logs_fits = self.modality_proj_out['log'](inner_model(x_log_proj)[0])
+				rec_node_logs_fits = self.modality_proj_out['log'](self.shared_fits(x_log_proj)[0])
 
 				x_edge_proj = self.modality_proj['edge'](x_edge_fits_input)
-				rec_edge_fits = self.modality_proj_out['edge'](inner_model(x_edge_proj)[0])
+				rec_edge_fits = self.modality_proj_out['edge'](self.shared_fits(x_edge_proj)[0])
 			else:# only implemened for FITS 
 				rec_node_metric_fits, _ = self.fits_node(x_node_metric_fits_input)  # [B*N, T', F]
 				rec_node_logs_fits, _   = self.fits_log(x_node_logs_fits_input)  # [B*N, T', F]
