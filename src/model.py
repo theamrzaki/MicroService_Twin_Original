@@ -6,6 +6,7 @@ from src.inner_models.FITS import Model as FITSModel
 from src.inner_models.FITS_LPF import Model as FITSModel_LPF 
 from src.inner_models.FITS_Pai import Model as FITSModel_Pai
 from src.inner_models.iTransformer import Model as iTransformerModel
+from src.inner_models.DLinear import Model as DLinearModel
 from src.inner_models.FourierGNN import FGN
 from src.inner_models.GPT4TS import Model as GPT2Model
 import argparse
@@ -24,6 +25,7 @@ class MyModel(nn.Module):
 		trace2pod = torch.where(torch.isnan(
 			trace2pod), torch.full_like(trace2pod, 0), trace2pod)
 		
+		self.num_classes = graph.shape[0]
 		self.FREQ_DOMAIN = args['FREQ_DOMAIN']
 		self.req_loss_approach = args['req_loss_approach']
 		self.rec_lambda = args['rec_lambda']
@@ -38,7 +40,7 @@ class MyModel(nn.Module):
 							node_heads=args['num_heads_node'], log_heads=args['num_heads_log'], edge_heads=args['num_heads_edge'],
 							n2e_heads=args['num_heads_n2e'], e2n_heads=args['num_heads_e2n'],
 							dropout=args['dropout'], batch_size=args['batch_size'], window_size=args['window'], num_layer=args['num_layer'], trace2pod=trace2pod)
-		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","iTransformer"]:
+		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","iTransformer","DLinear"]:
 			class Config: pass
 			config = Config()
 
@@ -52,7 +54,7 @@ class MyModel(nn.Module):
 			config.seq_len = config.win_size//config.DSR
 			config.pred_len = config.win_size-config.win_size//config.DSR
 			config.individual	= False  
-
+			config.num_class = self.num_classes
 			
 
 			if self.multi_fits=='true':
@@ -65,6 +67,8 @@ class MyModel(nn.Module):
 					self.fits_node = FITSModel_Pai(configs=config)
 				elif self.FREQ_DOMAIN == "iTransformer":
 					self.fits_node = iTransformerModel(configs=config)
+				elif self.FREQ_DOMAIN == "DLinear":
+					self.fits_node = DLinearModel(configs=config)
 
 				config.enc_in = args['feature_log'] 
 				if self.FREQ_DOMAIN == "FITS":
@@ -75,6 +79,8 @@ class MyModel(nn.Module):
 					self.fits_log = FITSModel_Pai(configs=config)
 				elif self.FREQ_DOMAIN == "iTransformer":
 					self.fits_log = iTransformerModel(configs=config)
+				elif self.FREQ_DOMAIN == "DLinear":	
+					self.fits_log = DLinearModel(configs=config)
 
 				config.enc_in = args['feature_edge'] 
 				if self.FREQ_DOMAIN == "FITS":
@@ -85,6 +91,8 @@ class MyModel(nn.Module):
 					self.fits_edge = FITSModel_Pai(configs=config)
 				elif self.FREQ_DOMAIN == "iTransformer":
 					self.fits_edge = iTransformerModel(configs=config)
+				elif self.FREQ_DOMAIN == "DLinear":
+					self.fits_edge = DLinearModel(configs=config)
 			else:
 				config.enc_in = 10
 				if self.FREQ_DOMAIN == "FITS":
@@ -95,6 +103,8 @@ class MyModel(nn.Module):
 					self.shared_fits = FITSModel_Pai(configs=config)
 				elif self.FREQ_DOMAIN == "iTransformer":
 					self.shared_fits = iTransformerModel(configs=config)
+				elif self.FREQ_DOMAIN == "DLinear":
+					self.shared_fits = DLinearModel(configs=config)
 				self.modality_proj = nn.ModuleDict({
 					'node': nn.Linear(args['feature_node'], config.enc_in),
 					'log': nn.Linear(args['feature_log'], config.enc_in),
@@ -219,7 +229,7 @@ class MyModel(nn.Module):
 			rec_edge = torch.matmul(rec_edge1.permute(
 				0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
 			rec = torch.concat([rec_node, rec_log, rec_edge], dim=-1)
-		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","GPT2","iTransformer"]:
+		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","GPT2","iTransformer","DLinear"]:
 			B, T, _,_ = x['data_node'].shape
 			# get edge mask
 			edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
