@@ -8,6 +8,7 @@ import warnings
 import logging
 import os
 import sys
+import torch 
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 sys.path.append('/code')
@@ -37,9 +38,24 @@ if __name__ == '__main__':
 
     # dealing & loading data
     processed = data_loads.Process(**args)
-    train_dl = DataLoader(processed.dataset[:int(len(processed.dataset)*0.7)],
-                          batch_size=args['batch_size'],
-                          shuffle=True, pin_memory=False, drop_last=True)
+    #train_dl = DataLoader(processed.dataset[:int(len(processed.dataset)*0.7)],
+    #                      batch_size=args['batch_size'],
+    #                      shuffle=True, pin_memory=False, drop_last=True)
+    # Calculate full train set
+    full_train_data = processed.dataset[:int(len(processed.dataset) * 0.7)]
+
+    # Few-shot percentage (default = 1.0 → use full data)
+    fewshot_ratio = args.get("fewshot_ratio", 1.0)  # e.g., 0.1 for 10%
+    logging.info(f"Fewshot: training with {fewshot_ratio} of the 70% of the data")
+    fewshot_size = int(len(full_train_data) * fewshot_ratio)
+
+    # Create few-shot subset
+    fewshot_indices = list(range(fewshot_size))  # or use random.sample(...) for random sampling
+    fewshot_dataset = torch.utils.data.Subset(full_train_data, fewshot_indices)
+
+    train_dl = DataLoader(fewshot_dataset,
+                        batch_size=args['batch_size'],
+                        shuffle=True, pin_memory=False, drop_last=True)
     test_dl = DataLoader(processed.dataset[int(len(processed.dataset)*0.7):],
                         batch_size=args['batch_size'],
                         shuffle=False, pin_memory=False, drop_last=True)

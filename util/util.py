@@ -185,7 +185,9 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         'inference_time_per_sample_ms (GPU)': performance['GPU']['inference_time_per_sample_ms'] if 'GPU' in performance else None,
         'peak_memory_mb (GPU)': performance['GPU']['peak_memory_mb'] if 'GPU' in performance else None,
         'inference_time_per_sample_ms (CPU)': performance['CPU']['inference_time_per_sample_ms'] if 'CPU' in performance else None,
-        'peak_memory_mb (CPU)': performance['CPU']['peak_memory_mb'] if 'CPU' in performance else None
+        'peak_memory_mb (CPU)': performance['CPU']['peak_memory_mb'] if 'CPU' in performance else None,
+
+        'fewshot_ratio': args['fewshot_ratio'],
     }
     
     if not os.path.exists(file_path):
