@@ -10,6 +10,7 @@ from src.inner_models.DLinear import Model as DLinearModel
 from src.inner_models.FourierGNN import FGN
 from src.inner_models.GPT4TS import Model as GPT2Model
 from src.inner_models.FreTS import Model as FreTSModel
+from src.inner_models.TimesNet import Model as TimesNetModel
 import argparse
 
 class MyModel(nn.Module):
@@ -41,7 +42,7 @@ class MyModel(nn.Module):
 							node_heads=args['num_heads_node'], log_heads=args['num_heads_log'], edge_heads=args['num_heads_edge'],
 							n2e_heads=args['num_heads_n2e'], e2n_heads=args['num_heads_e2n'],
 							dropout=args['dropout'], batch_size=args['batch_size'], window_size=args['window'], num_layer=args['num_layer'], trace2pod=trace2pod)
-		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","iTransformer","DLinear", "FreTS"]:
+		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","iTransformer","DLinear", "FreTS","TimesNet"]:
 			class Config: pass
 			config = Config()
 
@@ -72,6 +73,8 @@ class MyModel(nn.Module):
 					self.fits_node = DLinearModel(configs=config)
 				elif self.FREQ_DOMAIN == "FreTS":
 					self.fits_node = FreTSModel(configs=config)
+				elif self.FREQ_DOMAIN == "TimesNet":
+					self.fits_node = TimesNetModel(configs=config)
 
 				config.enc_in = args['feature_log'] 
 				if self.FREQ_DOMAIN == "FITS":
@@ -86,6 +89,8 @@ class MyModel(nn.Module):
 					self.fits_log = DLinearModel(configs=config)
 				elif self.FREQ_DOMAIN == "FreTS":
 					self.fits_log = FreTSModel(configs=config)
+				elif self.FREQ_DOMAIN == "TimesNet":
+					self.fits_log = TimesNetModel(configs=config)
 
 				config.enc_in = args['feature_edge'] 
 				if self.FREQ_DOMAIN == "FITS":
@@ -100,6 +105,8 @@ class MyModel(nn.Module):
 					self.fits_edge = DLinearModel(configs=config)
 				elif self.FREQ_DOMAIN == "FreTS":
 					self.fits_edge = FreTSModel(configs=config)
+				elif self.FREQ_DOMAIN == "TimesNet":
+					self.fits_edge = TimesNetModel(configs=config)
 			else:
 				config.enc_in = 10
 				if self.FREQ_DOMAIN == "FITS":
@@ -114,6 +121,8 @@ class MyModel(nn.Module):
 					self.shared_fits = DLinearModel(configs=config)
 				elif self.FREQ_DOMAIN == "FreTS":	
 					self.shared_fits = FreTSModel(configs=config)
+				elif self.FREQ_DOMAIN == "TimesNet":
+					self.shared_fits = TimesNetModel(configs=config)
 				self.modality_proj = nn.ModuleDict({
 					'node': nn.Linear(args['feature_node'], config.enc_in),
 					'log': nn.Linear(args['feature_log'], config.enc_in),
@@ -238,7 +247,7 @@ class MyModel(nn.Module):
 			rec_edge = torch.matmul(rec_edge1.permute(
 				0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
 			rec = torch.concat([rec_node, rec_log, rec_edge], dim=-1)
-		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","GPT2","iTransformer","DLinear","FreTS"]:
+		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","GPT2","iTransformer","DLinear","FreTS","TimesNet"]:
 			B, T, _,_ = x['data_node'].shape
 			# get edge mask
 			edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
