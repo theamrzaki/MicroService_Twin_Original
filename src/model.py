@@ -238,19 +238,19 @@ class MyModel(nn.Module):
 			# Get embeddings
 			x_node_metric_fits, _ = self.node_emb(x['data_node'])  # Shape: [B, T, N, F]
 			x_node_logs_fits, _ = self.log_emb(x['data_log'])  # Shape: [B, T, L, F]
-			x_edge_fits, _ = self.egde_emb(x['data_edge'])  # Shape: [B, T, E, F]
+			#x_edge_fits, _ = self.egde_emb(x['data_edge'])  # Shape: [B, T, E, F]
 
 			# Permute to FITS input shape: [B*N, T, F]
 			_, _, N, F_METRIC = x_node_metric_fits.shape
 			x_node_metric_fits_input = x_node_metric_fits.permute(0, 2, 1, 3).reshape(B*N, T, F_METRIC) # [B*N, T, F]
 			_, _, N, F_LOG = x_node_logs_fits.shape
 			x_node_logs_fits_input = x_node_logs_fits.permute(0, 2, 1, 3).reshape(B*N, T, F_LOG) # [B*N, T, F]
-			_, _, _, _, E = x_edge_fits.shape
-			x_edge_flat = x_edge_fits.reshape(B, T, N*N, E)  # [B, T, N*N, E]
-			edge_mask_flat = edge_exists_mask.view(-1)  # [N*N]
-			edge_mask_flat = edge_mask_flat.to(x_edge_flat.device)
-			x_edge_masked = x_edge_flat[:, :, edge_mask_flat, :]  # select only existing edges
-			x_edge_fits_input = x_edge_masked.permute(0, 2, 1, 3).reshape(B * edge_mask_flat.sum().item(), T, E)  # [B*num_edges, T, E]
+			#_, _, _, _, E = x_edge_fits.shape
+			#x_edge_flat = x_edge_fits.reshape(B, T, N*N, E)  # [B, T, N*N, E]
+			#edge_mask_flat = edge_exists_mask.view(-1)  # [N*N]
+			#edge_mask_flat = edge_mask_flat.to(x_edge_flat.device)
+			#x_edge_masked = x_edge_flat[:, :, edge_mask_flat, :]  # select only existing edges
+			#x_edge_fits_input = x_edge_masked.permute(0, 2, 1, 3).reshape(B * edge_mask_flat.sum().item(), T, E)  # [B*num_edges, T, E]
 
 
 			if self.multi_fits == 'false':
@@ -260,21 +260,21 @@ class MyModel(nn.Module):
 				x_log_proj = self.modality_proj['log'](x_node_logs_fits_input)
 				rec_node_logs_fits = self.modality_proj_out['log'](self.shared_fits(x_log_proj)[0])
 
-				x_edge_proj = self.modality_proj['edge'](x_edge_fits_input)
-				rec_edge_fits = self.modality_proj_out['edge'](self.shared_fits(x_edge_proj)[0])
+				#x_edge_proj = self.modality_proj['edge'](x_edge_fits_input)
+				#rec_edge_fits = self.modality_proj_out['edge'](self.shared_fits(x_edge_proj)[0])
 			else:# only implemened for FITS 
 				rec_node_metric_fits, _ = self.fits_node(x_node_metric_fits_input)  # [B*N, T', F]
 				rec_node_logs_fits, _   = self.fits_log(x_node_logs_fits_input)  # [B*N, T', F]
-				rec_edge_fits, _ = self.fits_edge(x_edge_fits_input)  # [B*N*N, T', E]
+				#rec_edge_fits, _ = self.fits_edge(x_edge_fits_input)  # [B*N*N, T', E]
 			# Reshape back to original shape
 			pred_metric_node = rec_node_metric_fits.reshape(B, N, -1, F_METRIC).permute(0, 2, 1, 3)  # [B, T, N, F]
 			pred_log_node    = rec_node_logs_fits.reshape(B, N, -1, F_LOG).permute(0, 2, 1, 3)  # [B, T, N, F]
 			# Keep edge predictions in masked form: [B, T, num_edges, E]
-			pred_edge_masked = rec_edge_fits.reshape(B, edge_mask_flat.sum().item(), -1, E).permute(0, 2, 1, 3)  # [B, T, num_edges, E]
+			#pred_edge_masked = rec_edge_fits.reshape(B, edge_mask_flat.sum().item(), -1, E).permute(0, 2, 1, 3)  # [B, T, num_edges, E]
 
 			# Extract ground truth edges using mask: [B, T, num_edges, E]
-			mask = edge_exists_mask_batch.to(x['data_edge'].device).unsqueeze(-1)
-			l_edge = torch.masked_select(x['data_edge'], mask).reshape(B, T, edge_mask_flat.sum().item(), -1)
+			#mask = edge_exists_mask_batch.to(x['data_edge'].device).unsqueeze(-1)
+			#l_edge = torch.masked_select(x['data_edge'], mask).reshape(B, T, edge_mask_flat.sum().item(), -1)
 			#l_edge = torch.masked_select(x['data_edge'], edge_exists_mask_batch.unsqueeze(-1)).reshape(B, T, edge_mask_flat.sum().item(), -1)
 
 			# Square Loss
@@ -308,11 +308,11 @@ class MyModel(nn.Module):
 				rec_node_log_fits = self.rec_lambda * loss_time_log + self.auxi_lambda * loss_freq_log
 				rec_edge1 = self.rec_lambda * loss_time_edge + self.auxi_lambda * loss_freq_edge
 
-			rec_edge = torch.matmul(rec_edge1.permute(
-				0, 1, 3, 2), self.trace2pod.float().to(rec_edge1.device)).permute(0, 1, 3, 2)
+			#rec_edge = torch.matmul(rec_edge1.permute(
+			#	0, 1, 3, 2), self.trace2pod.float().to(rec_edge1.device)).permute(0, 1, 3, 2)
 			#rec_edge = torch.matmul(rec_edge1.permute(
 			#	0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
-			rec = torch.concat([rec_node_metric_fits,rec_node_log_fits, rec_edge], dim=-1)
+			rec = torch.concat([rec_node_metric_fits,rec_node_log_fits], dim=-1)
 		elif self.FREQ_DOMAIN in ["FourierGNN"]:
 			B, T, _,_ = x['data_node'].shape
 			# get edge mask

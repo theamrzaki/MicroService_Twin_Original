@@ -121,12 +121,16 @@ class Process:
             return None, None
         
         dataset = os.listdir(self.dataset_path)
-        dataset.sort(key=lambda x: (int(re.split(r"[-_.]", x)[0])))
+        #dataset.sort(key=lambda x: (int(re.split(r"[-_.]", x)[0])))
         
-        for file in tqdm(dataset):
+        for file in tqdm(dataset[:100]):
             data = pickle.load(open(os.path.join(self.dataset_path, file), 'rb'))
+            data["data_node"] = data["kpis"]
+            data["data_log"] = data["log_features"]
+            del data["kpis"]
+            del data["log_features"]
+            data["groundtruth_real"] = data["label"]
             self.dataset.append(data)
-
     # saving data
     def save_data(self):
         logging.info("save Tranform data")

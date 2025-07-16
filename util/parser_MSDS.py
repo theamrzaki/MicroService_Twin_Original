@@ -38,7 +38,7 @@ parser.add_argument("--para_low", default=1e-2, type=float,
                     help='the min weight of rec loss')
 
 # Frequency Domain Settings
-parser.add_argument("--FREQ_DOMAIN", default="DLinear", type=str,
+parser.add_argument("--FREQ_DOMAIN", default="FITS", type=str,
                     help='whether to use frequency domain model')
 parser.add_argument("--MULTI_FITS", default='false', 
                     help='fits model for each modality')
@@ -56,11 +56,11 @@ parser.add_argument("--feature_edge", default=4, type=int,
                     help='the edge data number at one epoch')
 parser.add_argument("--feature_log", default=16, type=int,
                     help='the log data number at one epoch')
-parser.add_argument("--raw_node", default=3, type=int,
+parser.add_argument("--raw_node", default=11, type=int,
                     help='the raw pod kpi data number at one epoch')
 parser.add_argument("--raw_edge", default=7, type=int,
                     help='the raw edge kpi data number at one epoch')
-parser.add_argument("--log_len", default=256, type=int,
+parser.add_argument("--log_len", default=117, type=int,
                     help='the log template amount')
 parser.add_argument("--num_heads_edge", default=4, type=int,
                     help='the number of multiattention heads about trace')
@@ -86,13 +86,13 @@ parser.add_argument("--fewshot_ratio", default=0.5, type=float,
                     help='size of sliding window')
 parser.add_argument("--step", default=1, type=int,
                     help='sliding window stride')
-parser.add_argument("--num_nodes", default=5, type=int,
+parser.add_argument("--num_nodes", default=1, type=int,
                     help='the number of node in graph')
 
 # path setting
 parser.add_argument("--data_path", default='./data/MSDS-pre',
                     type=str, help='the path of raw data')
-parser.add_argument("--dataset_path", default="./data/MSDS-save",
+parser.add_argument("--dataset_path", default="C:\\PostDoc Research\\Projects\\UAC-AD\\result21\\train_loader\\train_loader",
                     type=str, help='the path of saving data')
 parser.add_argument("--result_dir", default="./result",
                     type=str, help='the path of result and log')

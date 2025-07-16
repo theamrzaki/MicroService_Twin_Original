@@ -64,7 +64,7 @@ def json_pretty_dump(obj, filename):
 
 def dump_params(args):
     hash_id = hashlib.md5(str(sorted([(k, v) for k, v in args.items()])).encode("utf-8")).hexdigest()[0:8]
-    save_path = os.path.join(args['result_dir'], args['main_model'] + '-' +args['dataset_path'].split('/')[-1] + '-' + hash_id + '-'+ str(int(time.time())))
+    save_path = os.path.join(args['result_dir'], args['main_model'] + '-HADES-' + hash_id + '-'+ str(int(time.time())))
     os.makedirs(save_path, exist_ok=True)
 
     log_file = os.path.join(save_path, "running.log")
