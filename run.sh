@@ -19,7 +19,9 @@
 #python3 main.py --FREQ_DOMAIN='iTransformer' --MULTI_FITS='false' --req_loss_approach='FreDF-style' --rec_lambda=1.0 --auxi_lambda=0.1
 #python3 main.py --FREQ_DOMAIN='DLinear' --MULTI_FITS='false' --req_loss_approach='FreDF-style' --rec_lambda=1.0 --auxi_lambda=0.1
 
-python3 main.py --FREQ_DOMAIN='FITS' --fewshot_ratio=0.3
-python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.3
-python3 main.py --FREQ_DOMAIN='FITS' --fewshot_ratio=0.1
-python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.1
+#python3 main.py --FREQ_DOMAIN='FITS' --fewshot_ratio=0.3
+#python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.3
+#python3 main.py --FREQ_DOMAIN='FITS' --fewshot_ratio=0.1
+#python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.1
+
+python3 main.py --FREQ_DOMAIN='FITS' --rec_lambda=1.0 --auxi_lambda=0.5

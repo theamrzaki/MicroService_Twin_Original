@@ -82,7 +82,7 @@ parser.add_argument("--batch_size", default=50, type=int,
                     help='the data number at one epoch')
 parser.add_argument("--window", default=10, type=int,
                     help='size of sliding window')
-parser.add_argument("--fewshot_ratio", default=0.5, type=float,
+parser.add_argument("--fewshot_ratio", default=1.0, type=float,
                     help='size of sliding window')
 parser.add_argument("--step", default=1, type=int,
                     help='sliding window stride')
