@@ -46,16 +46,16 @@ class Model(nn.Module):
         self.label_len = 48
         self.pred_len = configs.pred_len
 
-        configs.enc_in = 55                             # Number of input features
+        configs.enc_in = 10                             # Number of input features
         configs.dec_in = configs.enc_in                # Number of decoder input features
-        configs.c_out = 55                             # Number of output features
+        configs.c_out = 10                             # Number of output features
 
         configs.embed = 'timeF'                        # Embedding type: 'fixed', 'learned', 'timeF', etc.
         configs.freq = 'h'                             # Frequency encoding granularity: 'h' (hour), 'd' (day), etc.
         configs.dropout = 0.1                          # Dropout rate
 
-        configs.d_model = 128                          # Hidden dimension size
-        configs.d_ff = 128                             # Feed-forward dimension size
+        configs.d_model = 24                          # Hidden dimension size
+        configs.d_ff = 24                             # Feed-forward dimension size
         configs.n_heads = 8                            # Number of attention heads
 
         configs.moving_avg = 25                        # Moving average window size for time series decomposition
