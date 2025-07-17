@@ -38,7 +38,7 @@ parser.add_argument("--para_low", default=1e-2, type=float,
                     help='the min weight of rec loss')
 
 # Frequency Domain Settings
-parser.add_argument("--FREQ_DOMAIN", default="TimesNet", type=str,
+parser.add_argument("--FREQ_DOMAIN", default="FEDformerModel", type=str,
                     help='whether to use frequency domain model')
 parser.add_argument("--MULTI_FITS", default='false', 
                     help='fits model for each modality')
