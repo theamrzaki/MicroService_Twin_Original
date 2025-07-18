@@ -84,7 +84,7 @@ class Model(nn.Module):
                 for _ in range(self.channels)
             ])
         else:
-            self.freq_upsampler = nn.Linear((configs.enc_in), int((self.seq_len + self.pred_len) // 2 + 1))
+            self.freq_upsampler = nn.Linear((2), int((self.seq_len + self.pred_len) // 2 + 1))
 
         # NEW: Learnable frequency filter
         #self.texfilter = TexFilter(embed_size=self.channels,
