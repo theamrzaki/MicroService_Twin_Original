@@ -13,7 +13,13 @@ from src.inner_models.FreTS import Model as FreTSModel
 from src.inner_models.TimesNet import Model as TimesNetModel
 from src.inner_models.FEDformer import Model as FEDformerModel
 from src.inner_models.FITS_Legendre import Model as FITSModel_Legendre
+import src.inner_models.FITS_Legendre as FITS_Legendre_operations
 import argparse
+
+from numpy.polynomial import Legendre as L
+
+
+
 
 class MyModel(nn.Module):
 	def __init__(self, graph, **args):
@@ -344,6 +350,73 @@ class MyModel(nn.Module):
 				rec_node_metric_fits = self.rec_lambda * loss_time_node_metric + self.auxi_lambda * loss_freq_node_metric
 				rec_node_log_fits = self.rec_lambda * loss_time_log + self.auxi_lambda * loss_freq_log
 				rec_edge1 = self.rec_lambda * loss_time_edge + self.auxi_lambda * loss_freq_edge
+			elif self.req_loss_approach == "Legendre-style":
+				# Helper to merge node and feature dims for Legendre encoding
+				def merge_nf(x):
+					B, T, N, F = x.shape
+					return x.reshape(B, T, N * F)
+
+				# Helper to expand Legendre losses to match [B, T, N, F]
+				def expand_leg_loss(loss_leg, ref_tensor):
+					# loss_leg: [B, N] or [B, E] — dims after mean over degree
+					# ref_tensor: [B, T, N, F] or [B, T, E, F]
+					expanded = loss_leg.unsqueeze(1).expand(B, ref_tensor.shape[1], -1)  # [B, T, N or E]
+					expanded = expanded.unsqueeze(-1).expand(-1, -1, -1, ref_tensor.shape[-1])  # [B, T, N or E, F]
+					return expanded
+
+				# --- Time domain residuals ---
+				diff_node_metric = self.dense_node(pred_metric_node) - x['data_node']         # [B, T, N, F]
+				diff_node_log = self.dense_log(pred_log_node) - x['data_log']                 # [B, T, N, F]
+				diff_edge = self.dense_edge(pred_edge_masked) - l_edge                        # [B, T, E, F]
+
+				# --- Time domain losses (MSE) ---
+				loss_time_node_metric = torch.square(diff_node_metric)                        # [B, T, N, F]
+				loss_time_log = torch.square(diff_node_log)                                   # [B, T, N, F]
+				loss_time_edge = torch.square(diff_edge)                                      # [B, T, E, F]
+
+				# Merge node and feature dims for Legendre encoding: [B, T, N*F]
+				pred_metric_merged = merge_nf(self.dense_node(pred_metric_node))
+				true_metric_merged = merge_nf(x['data_node'])
+
+				pred_log_merged = merge_nf(self.dense_log(pred_log_node))
+				true_log_merged = merge_nf(x['data_log'])
+
+				pred_edge_merged = merge_nf(self.dense_edge(pred_edge_masked))
+				true_edge_merged = merge_nf(l_edge)
+
+				# Legendre encode: outputs [B, C, degree]
+				pred_metric_leg = FITS_Legendre_operations.legendre_encode(pred_metric_merged, degree=2)  # [B, N*F, D]
+				true_metric_leg = FITS_Legendre_operations.legendre_encode(true_metric_merged, degree=2)  # [B, N*F, D]
+
+				pred_log_leg = FITS_Legendre_operations.legendre_encode(pred_log_merged, degree=2)
+				true_log_leg = FITS_Legendre_operations.legendre_encode(true_log_merged, degree=2)
+
+				pred_edge_leg = FITS_Legendre_operations.legendre_encode(pred_edge_merged, degree=2)
+				true_edge_leg = FITS_Legendre_operations.legendre_encode(true_edge_merged, degree=2)
+
+				# Compute MSE in Legendre domain, mean over degree dim (last)
+				loss_leg_metric = torch.square(pred_metric_leg - true_metric_leg).mean(dim=-1)   # [B, N*F]
+				loss_leg_log = torch.square(pred_log_leg - true_log_leg).mean(dim=-1)            # [B, N*F]
+				loss_leg_edge = torch.square(pred_edge_leg - true_edge_leg).mean(dim=-1)         # [B, E*F]
+
+				# Reshape back to [B, N, F] or [B, E, F]
+				B, T, N, F = diff_node_metric.shape
+				B, T, N, FLOG = diff_node_log.shape
+				_, _, E, FEDGE = diff_edge.shape
+
+				loss_leg_metric = loss_leg_metric.reshape(B, N, F)  # [B, N, F]
+				loss_leg_log = loss_leg_log.reshape(B, N, FLOG)
+				loss_leg_edge = loss_leg_edge.reshape(B, E, FEDGE)
+
+				# Expand to match time dim [B, T, N, F] or [B, T, E, F]
+				loss_leg_metric = loss_leg_metric.unsqueeze(1).expand(B, T, N, F)
+				loss_leg_log = loss_leg_log.unsqueeze(1).expand(B, T, N, FLOG)
+				loss_leg_edge = loss_leg_edge.unsqueeze(1).expand(B, T, E, FEDGE)
+
+				# --- Final combined losses ---
+				rec_node_metric_fits = self.rec_lambda * loss_time_node_metric + self.auxi_lambda * loss_leg_metric
+				rec_node_log_fits = self.rec_lambda * loss_time_log + self.auxi_lambda * loss_leg_log
+				rec_edge1 = self.rec_lambda * loss_time_edge + self.auxi_lambda * loss_leg_edge
 
 			rec_edge = torch.matmul(rec_edge1.permute(
 				0, 1, 3, 2), self.trace2pod.float().to(rec_edge1.device)).permute(0, 1, 3, 2)
