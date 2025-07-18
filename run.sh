@@ -28,4 +28,5 @@
 #python3 main.py --FREQ_DOMAIN='TimesNet' --rec_lambda=1.0 --auxi_lambda=0.1
 #python3 main.py --FREQ_DOMAIN='FreTS' --rec_lambda=1.0 --auxi_lambda=0.1
 
-python3 main.py --FREQ_DOMAIN='FEDformerModel' --rec_lambda=1.0 --auxi_lambda=0.1
+#python3 main.py --FREQ_DOMAIN='FEDformerModel' --rec_lambda=1.0 --auxi_lambda=0.1
+python3 main.py --FREQ_DOMAIN='FITS' --rec_lambda=1.0 --auxi_lambda=0.1

@@ -22,12 +22,21 @@ class Model(nn.Module):
             self.freq_upsampler = nn.Linear((self.seq_len // 2 + 1), int((self.seq_len + self.pred_len) // 2 + 1)).to(torch.cfloat)
 
         # NEW: Learnable frequency filter
-        self.texfilter = TexFilter(embed_size=self.channels,
-                                    use_gelu=False,
-                                    use_skip=False,
-                                    use_layernorm=False,
-                                    hard_threshold=False,
-                                    use_window=False)
+        #self.texfilter = TexFilter(embed_size=self.channels,
+        #                            use_gelu=False,
+        #                            use_skip=False,
+        #                            use_layernorm=False,
+        #                            hard_threshold=False,
+        #                            use_window=False)
+        self.texfilter =    TexFilter(
+                        embed_size=self.channels,
+                        use_gelu=True,             # or use_swish=True for smoother nonlinearity
+                        use_skip=True,             # ✅ Preserve original signal paths
+                        use_layernorm=True,        # ✅ Stabilize across frequency bins
+                        hard_threshold=False,      # ❌ Avoid hard cutting off weak signals
+                        use_window=False,          # ❌ Avoid muting boundary info
+                        sparsity_threshold=0.0     # ✅ Retain all weak signal components
+                    )
         """
         🔝 Most Impactful Modifications (Ranked)
         Rank	Feature	                Expected Impact	    Notes
