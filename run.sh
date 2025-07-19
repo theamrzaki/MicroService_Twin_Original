@@ -31,5 +31,5 @@
 #python3 main.py --FREQ_DOMAIN='FEDformerModel' --rec_lambda=1.0 --auxi_lambda=0.1
 
 #python3 main.py --FREQ_DOMAIN='FITS_chebyshev' --req_loss_approach='chebyshev-style' --rec_lambda=1.0 --auxi_lambda=0.1
-python3 main.py --FREQ_DOMAIN='FITS_lag' --req_loss_approach='lag-style' --rec_lambda=1.0 --auxi_lambda=0.1
-
+#python3 main.py --FREQ_DOMAIN='FITS_lag' --req_loss_approach='lag-style' --rec_lambda=1.0 --auxi_lambda=0.1
+python3 main.py --FREQ_DOMAIN='FITS_hermite' --req_loss_approach='hermite-style' --rec_lambda=1.0 --auxi_lambda=0.1

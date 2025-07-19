@@ -15,9 +15,11 @@ from src.inner_models.FEDformer import Model as FEDformerModel
 from src.inner_models.FITS_Legendre import Model as FITSModel_Legendre
 from src.inner_models.FITS_chebyshev import Model as FITS_chebyshev
 from src.inner_models.FITS_lag import Model as FITS_lag
+from src.inner_models.FITS_hermite import Model as FITS_hermite
 import src.inner_models.FITS_Legendre as FITS_Legendre_operations
 import src.inner_models.FITS_chebyshev as FITS_chebyshev_operations
 import src.inner_models.FITS_lag as FITS_lag_operations
+import src.inner_models.FITS_hermite as FITS_hermite_operations
 import argparse
 
 from numpy.polynomial import Legendre as L
@@ -54,7 +56,7 @@ class MyModel(nn.Module):
 							node_heads=args['num_heads_node'], log_heads=args['num_heads_log'], edge_heads=args['num_heads_edge'],
 							n2e_heads=args['num_heads_n2e'], e2n_heads=args['num_heads_e2n'],
 							dropout=args['dropout'], batch_size=args['batch_size'], window_size=args['window'], num_layer=args['num_layer'], trace2pod=trace2pod)
-		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","iTransformer","DLinear", "FreTS","TimesNet", "FEDformerModel","FITS_Legendre","FITS_chebyshev","FITS_lag"]:
+		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","iTransformer","DLinear", "FreTS","TimesNet", "FEDformerModel","FITS_Legendre","FITS_chebyshev","FITS_lag","FITS_hermite"]:
 			class Config: pass
 			config = Config()
 
@@ -95,6 +97,8 @@ class MyModel(nn.Module):
 					self.fits_node = FITS_chebyshev(configs=config)
 				elif self.FREQ_DOMAIN == "FITS_lag":
 					self.fits_node = FITS_lag(configs=config)
+				elif self.FREQ_DOMAIN == "FITS_hermite":
+					self.fits_node = FITS_hermite(configs=config)
 
 				config.enc_in = args['feature_log'] 
 				if self.FREQ_DOMAIN == "FITS":
@@ -119,6 +123,8 @@ class MyModel(nn.Module):
 					self.fits_log = FITS_chebyshev(configs=config)
 				elif self.FREQ_DOMAIN == "FITS_lag":
 					self.fits_log = FITS_lag(configs=config)
+				elif self.FREQ_DOMAIN == "FITS_hermite":
+					self.fits_log = FITS_hermite(configs=config)
 
 				config.enc_in = args['feature_edge'] 
 				if self.FREQ_DOMAIN == "FITS":
@@ -143,6 +149,8 @@ class MyModel(nn.Module):
 					self.fits_edge = FITS_chebyshev(configs=config)
 				elif self.FREQ_DOMAIN == "FITS_lag":
 					self.fits_edge = FITS_lag(configs=config)
+				elif self.FREQ_DOMAIN == "FITS_hermite":
+					self.fits_edge = FITS_hermite(configs=config)
 			else:
 				config.enc_in = 10
 				if self.FREQ_DOMAIN == "FITS":
@@ -167,6 +175,8 @@ class MyModel(nn.Module):
 					self.shared_fits = FITS_chebyshev(configs=config)
 				elif self.FREQ_DOMAIN == "FITS_lag":
 					self.shared_fits = FITS_lag(configs=config)
+				elif self.FREQ_DOMAIN == "FITS_hermite":
+					self.shared_fits = FITS_hermite(configs=config)
 				self.modality_proj = nn.ModuleDict({
 					'node': nn.Linear(args['feature_node'], config.enc_in),
 					'log': nn.Linear(args['feature_log'], config.enc_in),
@@ -291,7 +301,7 @@ class MyModel(nn.Module):
 			rec_edge = torch.matmul(rec_edge1.permute(
 				0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
 			rec = torch.concat([rec_node, rec_log, rec_edge], dim=-1)
-		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","GPT2","iTransformer","DLinear","FreTS","TimesNet", "FEDformerModel","FITS_Legendre","FITS_chebyshev","FITS_lag"]:
+		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","GPT2","iTransformer","DLinear","FreTS","TimesNet", "FEDformerModel","FITS_Legendre","FITS_chebyshev","FITS_lag","FITS_hermite"]:
 			B, T, _,_ = x['data_node'].shape
 			# get edge mask
 			edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
@@ -369,7 +379,7 @@ class MyModel(nn.Module):
 				rec_node_metric_fits = self.rec_lambda * loss_time_node_metric + self.auxi_lambda * loss_freq_node_metric
 				rec_node_log_fits = self.rec_lambda * loss_time_log + self.auxi_lambda * loss_freq_log
 				rec_edge1 = self.rec_lambda * loss_time_edge + self.auxi_lambda * loss_freq_edge
-			elif self.req_loss_approach in ["Legendre-style","chebyshev-style","lag-style"]:
+			elif self.req_loss_approach in ["Legendre-style","chebyshev-style","lag-style","hermite-style"]:
 				# Helper to merge node and feature dims for Legendre encoding
 				def merge_nf(x):
 					B, T, N, F = x.shape
@@ -433,6 +443,16 @@ class MyModel(nn.Module):
 
 					pred_edge_leg = FITS_lag_operations.laguerre_encode(pred_edge_merged, degree=2)
 					true_edge_leg = FITS_lag_operations.laguerre_encode(true_edge_merged, degree=2)
+				elif self.req_loss_approach == "hermite-style":
+					# Lagurre encode: outputs [B, C, degree]
+					pred_metric_leg = FITS_hermite_operations.hermite_encode(pred_metric_merged, degree=2)  # [B, N*F, D]
+					true_metric_leg = FITS_hermite_operations.hermite_encode(true_metric_merged, degree=2)  # [B, N*F, D]
+
+					pred_log_leg = FITS_hermite_operations.hermite_encode(pred_log_merged, degree=2)
+					true_log_leg = FITS_hermite_operations.hermite_encode(true_log_merged, degree=2)
+
+					pred_edge_leg = FITS_hermite_operations.hermite_encode(pred_edge_merged, degree=2)
+					true_edge_leg = FITS_hermite_operations.hermite_encode(true_edge_merged, degree=2)
 
 				# Compute MSE in Legendre domain, mean over degree dim (last)
 				loss_leg_metric = torch.square(pred_metric_leg - true_metric_leg).mean(dim=-1)   # [B, N*F]
