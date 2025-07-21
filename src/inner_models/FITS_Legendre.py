@@ -84,8 +84,8 @@ class Model(nn.Module):
                 for _ in range(self.channels)
             ])
         else:
-            self.freq_upsampler = nn.Linear((2), int((self.seq_len + self.pred_len) // 2 + 1))
-
+            self.freq_upsample_len = int((self.seq_len + self.pred_len) // 2 + 1)
+            self.freq_upsampler_diag = nn.Parameter(torch.ones(self.freq_upsample_len))
         # NEW: Learnable frequency filter
         #self.texfilter = TexFilter(embed_size=self.channels,
         #                            use_gelu=False,
@@ -148,7 +148,27 @@ class Model(nn.Module):
                 # Upsample each channel independently
                 specxy_[:, :, i] = self.freq_upsampler[i](specx[:, :, i].permute(0, 1)).permute(0, 1)
         else:
-            specxy_ = self.freq_upsampler(specx.permute(0, 2, 1)).permute(0, 2, 1)
+            # specx: [B, degree, C] 
+            # permute to [B, C, degree] so channels first (needed for interpolation)
+            specx_permuted = specx.permute(0, 2, 1)  # [B, C, 2]
+
+            # Apply diagonal upsampling independently per channel
+            specxy_list = []
+            for i in range(specx_permuted.size(1)):  # loop over channels
+                x = specx_permuted[:, i, :]           # [B, 2]
+                # Interpolate + diagonal scale
+                x = x.unsqueeze(1)                    # [B, 1, 2]
+                x_upsampled = F.interpolate(x, size=self.freq_upsample_len, mode='linear', align_corners=True)  # [B, 1, N]
+                x_upsampled = x_upsampled.squeeze(1)  # [B, N]
+                # Multiply by learned diagonal weights
+                x_upsampled = x_upsampled * self.freq_upsampler_diag
+                specxy_list.append(x_upsampled.unsqueeze(1))  # [B, 1, N]
+
+            # Concatenate back over channels
+            specxy_ = torch.cat(specxy_list, dim=1)  # [B, C, N]
+
+            # Permute back to [B, N, C]
+            specxy_ = specxy_.permute(0, 2, 1)
 
         # ---------------------
         # 5. Pad if needed (likely still needed)
