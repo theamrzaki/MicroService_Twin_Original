@@ -28,6 +28,7 @@ if __name__ == '__main__':
         args['model_path'] = args['result_dir']
 
     logging.info("---- Model: ----" + args['main_model'] +"-" + args['hash_id'] 
+        + "----" + f"random_seed : {args['random_seed']}"\
         + "----" + f"req_loss_approach : {args['req_loss_approach']}"\
         + "----" + f"rec_lambda : {args['rec_lambda']}"\
         + "----" + f"auxi_lambda : {args['auxi_lambda']}"\

@@ -188,6 +188,7 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         'peak_memory_mb (CPU)': performance['CPU']['peak_memory_mb'] if 'CPU' in performance else None,
 
         'fewshot_ratio': args['fewshot_ratio'],
+        'random_seed': args['random_seed']
     }
     
     if not os.path.exists(file_path):
