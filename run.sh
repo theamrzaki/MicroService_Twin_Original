@@ -50,29 +50,49 @@
 #python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=0.7 --random_seed=45
 #python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=0.7 --random_seed=46
 
-python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=1.0 --random_seed=43
-python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=1.0 --random_seed=44
-python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=1.0 --random_seed=45
-python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=1.0 --random_seed=46
+#python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=1.0 --random_seed=43
+#python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=1.0 --random_seed=44
+#python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=1.0 --random_seed=45
+#python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=1.0 --random_seed=46
 
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.3 --random_seed=43
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.3 --random_seed=44
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.3 --random_seed=45
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.3 --random_seed=46
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.3 --random_seed=43
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.3 --random_seed=44
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.3 --random_seed=45
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.3 --random_seed=46
 
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.5 --random_seed=43
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.5 --random_seed=44
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.5 --random_seed=45
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.5 --random_seed=46
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.5 --random_seed=43
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.5 --random_seed=44
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.5 --random_seed=45
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.5 --random_seed=46
 
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.7 --random_seed=43
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.7 --random_seed=44
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.7 --random_seed=45
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.7 --random_seed=46
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.7 --random_seed=43
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.7 --random_seed=44
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.7 --random_seed=45
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=0.7 --random_seed=46
 
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=1.0 --random_seed=43
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=1.0 --random_seed=44
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=1.0 --random_seed=45
-python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=1.0 --random_seed=46
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=1.0 --random_seed=43
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=1.0 --random_seed=44
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=1.0 --random_seed=45
+#python3 main.py --FREQ_DOMAIN='FITS' --req_loss_approach='FreDF-style' --fewshot_ratio=1.0 --random_seed=46
 
 
+
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.3 --random_seed=43
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.3 --random_seed=44
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.3 --random_seed=45
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.3 --random_seed=46
+
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.5 --random_seed=43
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.5 --random_seed=44
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.5 --random_seed=45
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.5 --random_seed=46
+
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.7 --random_seed=43
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.7 --random_seed=44
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.7 --random_seed=45
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=0.7 --random_seed=46
+
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=1.0 --random_seed=43
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=1.0 --random_seed=44
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=1.0 --random_seed=45
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=1.0 --random_seed=46
