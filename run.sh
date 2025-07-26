@@ -34,6 +34,9 @@
 #python3 main.py --FREQ_DOMAIN='FITS_lag' --req_loss_approach='lag-style' --rec_lambda=1.0 --auxi_lambda=0.1
 #python3 main.py --FREQ_DOMAIN='FITS_hermite' --req_loss_approach='hermite-style' --rec_lambda=1.0 --auxi_lambda=0.1
 
+#-------------------------------------------------------
+# (RQ5) Few-Shots (learning on subsets of the data)
+#-------------------------------------------------------
 
 #python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=0.3 --random_seed=43
 #python3 main.py --FREQ_DOMAIN='FITS_Legendre' --req_loss_approach='Legendre-style' --fewshot_ratio=0.3 --random_seed=44
@@ -96,10 +99,32 @@
 #python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=1.0 --random_seed=44
 #python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=1.0 --random_seed=45
 #python3 main.py --FREQ_DOMAIN='encoder_decoder' --fewshot_ratio=1.0 --random_seed=46
-python3 main.py --FREQ_DOMAIN='encoder_decoder' 
-python3 main.py --FREQ_DOMAIN='iTransformer' 
-python3 main.py --FREQ_DOMAIN='DLinear' 
-python3 main.py --FREQ_DOMAIN='TimesNet' 
-python3 main.py --FREQ_DOMAIN='FreTS' 
-python3 main.py --FREQ_DOMAIN='FEDformerModel' 
-python3 main.py --FREQ_DOMAIN='GPT2' 
+
+
+#-------------------------------------------------------
+# (RQ4) OrEdge efficiency vs other reconstruction models
+#-------------------------------------------------------
+#python3 main.py --FREQ_DOMAIN='encoder_decoder' 
+#python3 main.py --FREQ_DOMAIN='iTransformer' 
+#python3 main.py --FREQ_DOMAIN='DLinear' 
+#python3 main.py --FREQ_DOMAIN='TimesNet' 
+#python3 main.py --FREQ_DOMAIN='FreTS' 
+#python3 main.py --FREQ_DOMAIN='FEDformerModel' 
+#python3 main.py --FREQ_DOMAIN='GPT2' 
+
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --random_seed=43
+python3 main.py --FREQ_DOMAIN='iTransformer' --random_seed=43
+python3 main.py --FREQ_DOMAIN='DLinear' --random_seed=43
+python3 main.py --FREQ_DOMAIN='TimesNet' --random_seed=43
+python3 main.py --FREQ_DOMAIN='FreTS' --random_seed=43
+python3 main.py --FREQ_DOMAIN='FEDformerModel' --random_seed=43
+python3 main.py --FREQ_DOMAIN='GPT2' --random_seed=43
+
+
+python3 main.py --FREQ_DOMAIN='encoder_decoder' --random_seed=44
+python3 main.py --FREQ_DOMAIN='iTransformer' --random_seed=44
+python3 main.py --FREQ_DOMAIN='DLinear' --random_seed=44
+python3 main.py --FREQ_DOMAIN='TimesNet' --random_seed=44
+python3 main.py --FREQ_DOMAIN='FreTS' --random_seed=44
+python3 main.py --FREQ_DOMAIN='FEDformerModel' --random_seed=44
+python3 main.py --FREQ_DOMAIN='GPT2' --random_seed=44
