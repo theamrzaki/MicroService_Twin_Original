@@ -112,19 +112,36 @@
 #python3 main.py --FREQ_DOMAIN='FEDformerModel' 
 #python3 main.py --FREQ_DOMAIN='GPT2' 
 
-python3 main.py --FREQ_DOMAIN='encoder_decoder' --random_seed=43
-python3 main.py --FREQ_DOMAIN='iTransformer' --random_seed=43
-python3 main.py --FREQ_DOMAIN='DLinear' --random_seed=43
-python3 main.py --FREQ_DOMAIN='TimesNet' --random_seed=43
-python3 main.py --FREQ_DOMAIN='FreTS' --random_seed=43
-python3 main.py --FREQ_DOMAIN='FEDformerModel' --random_seed=43
-python3 main.py --FREQ_DOMAIN='GPT2' --random_seed=43
+#python3 main.py --FREQ_DOMAIN='encoder_decoder' --random_seed=43
+#python3 main.py --FREQ_DOMAIN='iTransformer' --random_seed=43
+#python3 main.py --FREQ_DOMAIN='DLinear' --random_seed=43
+#python3 main.py --FREQ_DOMAIN='TimesNet' --random_seed=43
+#python3 main.py --FREQ_DOMAIN='FreTS' --random_seed=43
+#python3 main.py --FREQ_DOMAIN='FEDformerModel' --random_seed=43
+#python3 main.py --FREQ_DOMAIN='GPT2' --random_seed=43
+#
+#
+#python3 main.py --FREQ_DOMAIN='encoder_decoder' --random_seed=44
+#python3 main.py --FREQ_DOMAIN='iTransformer' --random_seed=44
+#python3 main.py --FREQ_DOMAIN='DLinear' --random_seed=44
+#python3 main.py --FREQ_DOMAIN='TimesNet' --random_seed=44
+#python3 main.py --FREQ_DOMAIN='FreTS' --random_seed=44
+#python3 main.py --FREQ_DOMAIN='FEDformerModel' --random_seed=44
+#python3 main.py --FREQ_DOMAIN='GPT2' --random_seed=44
+
+#python3 main.py --FREQ_DOMAIN='encoder_decoder' --random_seed=45
+python3 main.py --FREQ_DOMAIN='iTransformer' --random_seed=45
+python3 main.py --FREQ_DOMAIN='DLinear' --random_seed=45
+python3 main.py --FREQ_DOMAIN='TimesNet' --random_seed=45
+python3 main.py --FREQ_DOMAIN='FreTS' --random_seed=45
+python3 main.py --FREQ_DOMAIN='FEDformerModel' --random_seed=45
+python3 main.py --FREQ_DOMAIN='GPT2' --random_seed=45
 
 
-python3 main.py --FREQ_DOMAIN='encoder_decoder' --random_seed=44
-python3 main.py --FREQ_DOMAIN='iTransformer' --random_seed=44
-python3 main.py --FREQ_DOMAIN='DLinear' --random_seed=44
-python3 main.py --FREQ_DOMAIN='TimesNet' --random_seed=44
-python3 main.py --FREQ_DOMAIN='FreTS' --random_seed=44
-python3 main.py --FREQ_DOMAIN='FEDformerModel' --random_seed=44
-python3 main.py --FREQ_DOMAIN='GPT2' --random_seed=44
+#python3 main.py --FREQ_DOMAIN='encoder_decoder' --random_seed=46
+python3 main.py --FREQ_DOMAIN='iTransformer' --random_seed=46
+python3 main.py --FREQ_DOMAIN='DLinear' --random_seed=46
+python3 main.py --FREQ_DOMAIN='TimesNet' --random_seed=46
+python3 main.py --FREQ_DOMAIN='FreTS' --random_seed=46
+python3 main.py --FREQ_DOMAIN='FEDformerModel' --random_seed=46
+python3 main.py --FREQ_DOMAIN='GPT2' --random_seed=46
