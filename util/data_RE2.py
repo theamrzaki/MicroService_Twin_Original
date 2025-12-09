@@ -43,6 +43,13 @@ class Process:
     def _load_raw(self):
         raw = self.rawdata_path
 
+        #-- get number of pods ---
+        pod_file = raw + "/pod-node-1.csv"
+        pod_df = pd.read_csv(pod_file)
+        pod_list = pod_df['POD'].unique().tolist()
+        self.num_node = len(pod_list)
+        self.pod_list = pod_list
+
         # --- METRICS ---
         print("Loading metric data...")
         metric_file = raw + "/metrics.csv"
@@ -52,105 +59,60 @@ class Process:
         metric = metric.set_index('now').sort_index()
         metric = (metric - metric.min()) / (metric.max() - metric.min() + 1e-6)
         metric = metric.fillna(0)
-        self.set['metric'] = metric
         timestart, timeend = metric.index.min(), metric.index.max()
         self.time_list = [item for item in range(int(timestart), int(timeend)+1, 1)]
+        # remove columns with name starting with 'gke-gke-cluster'
+        metric = metric.loc[:, ~metric.columns.str.startswith('gke-gke-cluster')]
+        # choose the first 33 columns, as they cover all the 11 pods
+        metric = metric.iloc[:, :11*33].values.reshape(len(metric), 11, -1) # reshape to (N, pods, -1)
+        empty_pod_data = np.zeros((len(metric), 1, metric.shape[2]))  # shape (N, 1, features)
+        metric = np.concatenate((metric, empty_pod_data), axis=1)  # shape (N, 12, features)
+        self.set['metric'] = metric
+    
+        
 
         # --- LOGS ---
-
-
-        print("Loading log data...")
         log_file = raw + "/logs.csv"
+        log = pd.read_csv(log_file)
+        # rename columns
+        log = log.rename(columns={'container_name': 'Hostname', 'log_template': 'templateid', 'timestamp': '@timestamp'})
+        log = log.sort_values(by='@timestamp', ascending=True)
         log_record = {}
-
-        if os.path.isfile(log_file):
-
-            # ------------------------------
-            # 1. CHECK FILE SIZE BEFORE READ
-            # ------------------------------
-            file_size_gb = os.path.getsize(log_file) / (1024**3)
-            if file_size_gb > 1.5:  # set limit as needed
-                print(f"[SAFE EXIT] logs.csv is too large ({file_size_gb:.2f} GB).")
-                sys.exit(1)
-
-            # Check RAM before loading
-            if not self.safe_memory_available(1.0):
-                print("[SAFE EXIT] Not enough RAM to load CSV safely.")
-                sys.exit(1)
-
-            log = pd.read_csv(log_file)
-
-            # Free if CSV too large after load
-            if log.memory_usage().sum() > 1.0 * (1024**3):
-                print("[SAFE EXIT] Loaded DataFrame too large. Aborting.")
-                del log
-                sys.exit(1)
-
-            # convert nanosecond timestamps → seconds
-            log['timestamp_sec'] = (log['timestamp'] // 1_000_000_000).astype(int)
-            log = log.sort_values(by='timestamp_sec')
-
-            templates = log['log_template'].astype(str).unique().tolist()
-            template2idx = {tpl: idx for idx, tpl in enumerate(templates)}
-
-            max_record = np.zeros(self.log_len)
-            min_record = np.ones(self.log_len)
-
-            # ------------------------------
-            # 2. SAFE GROUPBY ITERATION
-            # ------------------------------
-            for t_sec, group in tqdm(log.groupby('timestamp_sec'), desc="Processing logs"):
-                
-                # Check available memory periodically
-                if not self.safe_memory_available(0.3):
-                    print("[SAFE EXIT] Memory too low during processing. Exiting safely.")
-                    del log, group
+        max_record = np.zeros(self.log_len)
+        min_record = np.ones(self.log_len)
+        i = 0
+        for timestamp, data in tqdm(log.groupby(['@timestamp'])):
+            i+=1
+            if i % 1000 ==0:
+                if not self.safe_memory_available(0.5):
+                    print("[SAFE EXIT] Not enough RAM during log processing.")
                     sys.exit(1)
+            
+            new = np.zeros((self.num_node, self.log_len))
+            for idx, item in data.groupby(['Hostname', 'templateid']):
+                if idx[0] not in pod_list:
+                    continue
+                new[pod_list.index(idx[0]), idx[1] - 1] = item.shape[0]
+            log_record[timestamp] = new
+            new = new.max(axis=0)
+            max_record = np.where(new > max_record, new, max_record)
+            min_record = np.where(new < min_record, new, min_record)
 
-                new = np.zeros((self.num_node, self.log_len))
+        if len(log_record) != (timeend - timestart + 1):
+            for item in self.time_list:
+                if item not in log_record:
+                    log_record[item] = np.zeros((self.num_node, self.log_len))
+            min_record = np.zeros(self.log_len)
+        
+        dis = max_record - min_record + 1e-6
+        for name, item in log_record.items():
+            log_record[name] = (item - min_record) / dis
 
-                for tpl, item in group.groupby("log_template"):
-                    idx = template2idx[tpl]
-                    if idx < self.log_len:
-                        new[0, idx] = len(item)
-
-                log_record[t_sec] = new
-                max_record = np.maximum(max_record, new.max(axis=0))
-                min_record = np.minimum(min_record, new.min(axis=0))
-
-            # ------------------------------
-            # 3. SAFE FILL MISSING TIMESTAMPS
-            # ------------------------------
-            t_min = min(log_record.keys())
-            t_max = max(log_record.keys())
-
-            for t in range(t_min, t_max + 1):
-
-                if not self.safe_memory_available(0.3):  # prevent freeze
-                    print("[SAFE EXIT] Memory low while filling timestamps.")
-                    sys.exit(1)
-
-                if t not in log_record:
-                    log_record[t] = np.zeros((self.num_node, self.log_len))
-
-            # ------------------------------
-            # 4. NORMALIZE SAFELY
-            # ------------------------------
-            dis = max_record - min_record + 1e-6
-            for t in log_record:
-
-                if not self.safe_memory_available(0.2):
-                    print("[SAFE EXIT] Memory low while normalizing.")
-                    sys.exit(1)
-
-                log_record[t] = (log_record[t] - min_record) / dis
-
-        self.set["log"] = log_record
-
+        self.set['log'] = log_record
         # --- TRACE ---
         print("Loading trace (pre-aggregated) data...")
         self.load_trace_full()
-    
+        aa=1
     def load_trace_full(self):
         trace_raw = pd.read_csv(os.path.join(self.rawdata_path, "traces.csv"))
 
@@ -170,7 +132,7 @@ class Process:
         trace_raw = trace_raw.sort_values(by='end_time', ascending=True)
 
         # --- MSDS_pod contains 1 element ---
-        MSDS_pod = list(set(trace_raw['cmbd_id'].dropna().unique().tolist()))[:1]
+        MSDS_pod = self.pod_list
 
         # --- Extend trace types ---
         self.trace_type.extend(trace_raw['stats'].fillna("unknown").unique().tolist())
@@ -179,8 +141,14 @@ class Process:
         trace_a = np.zeros((len(MSDS_pod), len(MSDS_pod), len(self.trace_type), len(self.time_list)))
 
         # --- Same groupby keys as original code ---
+        i=0
         for name, item in tqdm(trace_raw.groupby(['cmbd_id', 'fatherpod', 'stats', 'end_time'])):
             src, dst, stype, t = name
+            i+=1
+            if i % 1000 ==0:
+                if not self.safe_memory_available(0.5):
+                    print("[SAFE EXIT] Not enough RAM during trace processing.")
+                    sys.exit(1)
 
             if src not in MSDS_pod or dst not in MSDS_pod or t > self.time_list[-1]:
                 continue
@@ -201,7 +169,7 @@ class Process:
         inject_file = self.rawdata_path + "/inject_time.txt"
         inject_time = float(open(inject_file).read().strip()) if os.path.isfile(inject_file) else 0
 
-        times = self.set['metric'].index.to_numpy()
+        times = np.array(self.time_list) #self.set['metric'].index.to_numpy()
         N = len(times)
 
         # initialize integer labels first: 0 = normal, 1 = anomaly
