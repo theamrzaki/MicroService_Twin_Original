@@ -50,23 +50,23 @@ parser.add_argument("--auxi_lambda", default=0.1, type=float,
                     help='frequency reconstruction loss weight')
 
 # model setting
-parser.add_argument("--feature_node", default=64, type=int,
+parser.add_argument("--feature_node", default=4, type=int,
                     help='the pod kpi data number at one epoch')
-parser.add_argument("--feature_edge", default=64, type=int,
+parser.add_argument("--feature_edge", default=4, type=int,
                     help='the edge data number at one epoch')
-parser.add_argument("--feature_log", default=64, type=int,
+parser.add_argument("--feature_log", default=16, type=int,
                     help='the log data number at one epoch')
-parser.add_argument("--raw_node", default=7, type=int,
+parser.add_argument("--raw_node", default=3, type=int,
                     help='the raw pod kpi data number at one epoch')
-parser.add_argument("--raw_edge", default=2, type=int,
+parser.add_argument("--raw_edge", default=7, type=int,
                     help='the raw edge kpi data number at one epoch')
-parser.add_argument("--log_len", default=7, type=int,
+parser.add_argument("--log_len", default=256, type=int,
                     help='the log template amount')
 parser.add_argument("--num_heads_edge", default=4, type=int,
                     help='the number of multiattention heads about trace')
-parser.add_argument("--num_heads_node", default=1, type=int,
+parser.add_argument("--num_heads_node", default=4, type=int,
                     help='the number of multiattention heads about metric')
-parser.add_argument("--num_heads_log", default=1, type=int,
+parser.add_argument("--num_heads_log", default=4, type=int,
                     help='the number of multiattention heads about log')
 parser.add_argument("--num_heads_n2e", default=4, type=int,
                     help='the number of multiattention heads about node')

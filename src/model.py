@@ -281,9 +281,9 @@ class MyModel(nn.Module):
 
 	def forward(self, x, evaluate=False):
 		if self.FREQ_DOMAIN == "encoder_decoder":
-			x_node, d_node = self.node_emb(x['data_node'])
-			x_edge, d_edge = self.egde_emb(x['data_edge'])
-			x_log, d_log = self.log_emb(x['data_log'])
+			x_node, d_node = self.node_emb(x['data_node'])#torch.Size([50, 10, 5, 3])
+			x_edge, d_edge = self.egde_emb(x['data_edge'])#torch.Size([50, 10, 5, 5, 7])
+			x_log, d_log = self.log_emb(x['data_log'])#torch.Size([50, 10, 5, 256])
 
 			z_node, z_edge, z_log = self.encoder(x_node, x_edge, x_log)
 			node, edge, log = self.decoder(d_node, d_edge, d_log, z_node, z_edge, z_log)
@@ -563,7 +563,7 @@ class MyModel(nn.Module):
 		if evaluate:
 			rec = rec[:, -1].squeeze()
 			cls_result = torch.softmax(self.show(rec), dim=-1)
-			return cls_result, x['groundtruth_cls']
+			return cls_result, x['groundtruth_cls']#torch.Size([50, 5, 3])
 		else:
 			cls_label = x['groundtruth_cls']
 

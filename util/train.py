@@ -179,8 +179,12 @@ class MY(Base):
                 .format(epoch, self.epoches, epoch_loss, epoch_cls_loss, epoch_rec_loss, epoch_time_elapsed, best["loss"]['score'], worse_count))
             
             if epoch > self.rec_down:
-                result = self.evaluate(train_loader)
-                self.evaluate(test_loader)
+                try:
+                    result = self.evaluate(train_loader)
+                    self.evaluate(test_loader)
+                except:
+                    logging.info("Error in evaluation during training")
+                    continue
                 if float(result['f1']) >= best["f1"]["score"]:
                     best["f1"]["score"] = float(result['f1'])
                     best["f1"]["state"] = copy.deepcopy(self.model.state_dict())

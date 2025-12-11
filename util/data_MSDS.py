@@ -144,11 +144,11 @@ class Process:
         count1, count2, count3 = 0, 0, 0
         data_list = []
 
-        metirc = self.set['metric']
-        log = self.set['log']
-        trace = self.set['trace']
-        label = self.set['label']
-        label_mask = self.set['mask']
+        metirc = self.set['metric']#(N,26) --> (N,5,5)
+        log = self.set['log']#dict of size N, with keys timestamp, each of size (5,256)
+        trace = self.set['trace']# (N,5,5,7)
+        label = self.set['label']#(N,5,2)
+        label_mask = self.set['mask']#(N,5,3)
 
         starttime, endtime = metirc['now'].min(), metirc['now'].max()
 
@@ -165,7 +165,7 @@ class Process:
             select_metirc = select_metirc.values
             select_metirc = select_metirc.reshape(self.window, 5, -1)
             assert select_metirc.shape == (self.window, len(MSDS_pod), 5), f"Worng kpi"
-            record['data_node'] = select_metirc[:, :, :self.metric_len]
+            record['data_node'] = select_metirc[:, :, :self.metric_len]# (window, 5, 5)
 
             # log
             log_record = np.stack([log[time] for time in range(int(starttime), int(starttime + (self.window - 1) * self.step + 1), self.step)], axis=0)

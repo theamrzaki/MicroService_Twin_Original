@@ -6,6 +6,7 @@ import pandas as pd
 import psutil
 from tqdm import tqdm
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format="%(message)s")
@@ -29,10 +30,19 @@ class Process:
         self.trace_type = []
 
         # Load raw data and process
-        self._load_raw()
-        self._process_label_mask()
+        #self._load_raw()
+        #self._process_label_mask()
         self.dataset = self._transform()
-        self.save_data(self.dataset_path)
+        self.save_data()
+        self.graph = self.create_graph() 
+
+    def create_graph(self,num_pods=12):
+        # For RQ2_OB, we create a dummy graph since there's only one pod
+        graph = np.eye(num_pods)  # 12 nodes: 1 pod + 11 system nodes
+        graph[0, :] = 1  # Connect pod to all nodes
+        graph[:,0] = 1  # Connect all nodes to pod
+        return graph
+
 # time	adservice_container-cpu-system-seconds-total	cartservice_container-cpu-system-seconds-total	checkoutservice_container-cpu-system-seconds-total	currencyservice_container-cpu-system-seconds-total	emailservice_container-cpu-system-seconds-total	frontend_container-cpu-system-seconds-total	paymentservice_container-cpu-system-seconds-total	productcatalogservice_container-cpu-system-seconds-total	recommendationservice_container-cpu-system-seconds-total	redis_container-cpu-system-seconds-total	shippingservice_container-cpu-system-seconds-total	adservice_container-cpu-usage-seconds-total	cartservice_container-cpu-usage-seconds-total	checkoutservice_container-cpu-usage-seconds-total	currencyservice_container-cpu-usage-seconds-total	emailservice_container-cpu-usage-seconds-total	frontend_container-cpu-usage-seconds-total	paymentservice_container-cpu-usage-seconds-total	productcatalogservice_container-cpu-usage-seconds-total	recommendationservice_container-cpu-usage-seconds-total	redis_container-cpu-usage-seconds-total	shippingservice_container-cpu-usage-seconds-total	adservice_container-cpu-user-seconds-total	cartservice_container-cpu-user-seconds-total	checkoutservice_container-cpu-user-seconds-total	currencyservice_container-cpu-user-seconds-total	emailservice_container-cpu-user-seconds-total	frontend_container-cpu-user-seconds-total	paymentservice_container-cpu-user-seconds-total	productcatalogservice_container-cpu-user-seconds-total	recommendationservice_container-cpu-user-seconds-total	redis_container-cpu-user-seconds-total	shippingservice_container-cpu-user-seconds-total	adservice_container-spec-cpu-quota	cartservice_container-spec-cpu-quota	checkoutservice_container-spec-cpu-quota	currencyservice_container-spec-cpu-quota	emailservice_container-spec-cpu-quota	frontend_container-spec-cpu-quota	paymentservice_container-spec-cpu-quota	productcatalogservice_container-spec-cpu-quota	recommendationservice_container-spec-cpu-quota	redis_container-spec-cpu-quota	shippingservice_container-spec-cpu-quota	adservice_container-memory-cache	cartservice_container-memory-cache	checkoutservice_container-memory-cache	currencyservice_container-memory-cache	emailservice_container-memory-cache	frontend_container-memory-cache	paymentservice_container-memory-cache	productcatalogservice_container-memory-cache	recommendationservice_container-memory-cache	redis_container-memory-cache	shippingservice_container-memory-cache	adservice_container-memory-failures-total	cartservice_container-memory-failures-total	checkoutservice_container-memory-failures-total	currencyservice_container-memory-failures-total	emailservice_container-memory-failures-total	frontend_container-memory-failures-total	paymentservice_container-memory-failures-total	productcatalogservice_container-memory-failures-total	recommendationservice_container-memory-failures-total	redis_container-memory-failures-total	shippingservice_container-memory-failures-total	adservice_container-memory-mapped-file	cartservice_container-memory-mapped-file	checkoutservice_container-memory-mapped-file	currencyservice_container-memory-mapped-file	emailservice_container-memory-mapped-file	frontend_container-memory-mapped-file	paymentservice_container-memory-mapped-file	productcatalogservice_container-memory-mapped-file	recommendationservice_container-memory-mapped-file	redis_container-memory-mapped-file	shippingservice_container-memory-mapped-file	adservice_container-memory-max-usage-bytes	cartservice_container-memory-max-usage-bytes	checkoutservice_container-memory-max-usage-bytes	currencyservice_container-memory-max-usage-bytes	emailservice_container-memory-max-usage-bytes	frontend_container-memory-max-usage-bytes	paymentservice_container-memory-max-usage-bytes	productcatalogservice_container-memory-max-usage-bytes	recommendationservice_container-memory-max-usage-bytes	redis_container-memory-max-usage-bytes	shippingservice_container-memory-max-usage-bytes	adservice_container-memory-rss	cartservice_container-memory-rss	checkoutservice_container-memory-rss	currencyservice_container-memory-rss	emailservice_container-memory-rss	frontend_container-memory-rss	paymentservice_container-memory-rss	productcatalogservice_container-memory-rss	recommendationservice_container-memory-rss	redis_container-memory-rss	shippingservice_container-memory-rss	adservice_container-memory-swap	cartservice_container-memory-swap	checkoutservice_container-memory-swap	currencyservice_container-memory-swap	emailservice_container-memory-swap	frontend_container-memory-swap	paymentservice_container-memory-swap	productcatalogservice_container-memory-swap	recommendationservice_container-memory-swap	redis_container-memory-swap	shippingservice_container-memory-swap	adservice_container-memory-usage-bytes	cartservice_container-memory-usage-bytes	checkoutservice_container-memory-usage-bytes	currencyservice_container-memory-usage-bytes	emailservice_container-memory-usage-bytes	frontend_container-memory-usage-bytes	paymentservice_container-memory-usage-bytes	productcatalogservice_container-memory-usage-bytes	recommendationservice_container-memory-usage-bytes	redis_container-memory-usage-bytes	shippingservice_container-memory-usage-bytes	adservice_container-memory-working-set-bytes	cartservice_container-memory-working-set-bytes	checkoutservice_container-memory-working-set-bytes	currencyservice_container-memory-working-set-bytes	emailservice_container-memory-working-set-bytes	frontend_container-memory-working-set-bytes	paymentservice_container-memory-working-set-bytes	productcatalogservice_container-memory-working-set-bytes	recommendationservice_container-memory-working-set-bytes	redis_container-memory-working-set-bytes	shippingservice_container-memory-working-set-bytes	adservice_container-spec-memory-limit-bytes	cartservice_container-spec-memory-limit-bytes	checkoutservice_container-spec-memory-limit-bytes	currencyservice_container-spec-memory-limit-bytes	emailservice_container-spec-memory-limit-bytes	frontend_container-spec-memory-limit-bytes	paymentservice_container-spec-memory-limit-bytes	productcatalogservice_container-spec-memory-limit-bytes	recommendationservice_container-spec-memory-limit-bytes	redis_container-spec-memory-limit-bytes	shippingservice_container-spec-memory-limit-bytes	adservice_container-blkio-device-usage-total	emailservice_container-blkio-device-usage-total	recommendationservice_container-blkio-device-usage-total	redis_container-blkio-device-usage-total	adservice_container-fs-writes-total	emailservice_container-fs-writes-total	recommendationservice_container-fs-writes-total	redis_container-fs-writes-total	adservice_container-fs-writes-bytes-total	emailservice_container-fs-writes-bytes-total	recommendationservice_container-fs-writes-bytes-total	redis_container-fs-writes-bytes-total	adservice_container-fs-reads-total	emailservice_container-fs-reads-total	recommendationservice_container-fs-reads-total	redis_container-fs-reads-total	adservice_container-fs-reads-bytes-total	emailservice_container-fs-reads-bytes-total	recommendationservice_container-fs-reads-bytes-total	redis_container-fs-reads-bytes-total	adservice_container-sockets	cartservice_container-sockets	checkoutservice_container-sockets	currencyservice_container-sockets	emailservice_container-sockets	frontend_container-sockets	paymentservice_container-sockets	productcatalogservice_container-sockets	recommendationservice_container-sockets	redis_container-sockets	shippingservice_container-sockets	adservice_container-network-transmit-packets-total	cartservice_container-network-transmit-packets-total	checkoutservice_container-network-transmit-packets-total	currencyservice_container-network-transmit-packets-total	emailservice_container-network-transmit-packets-total	frontend_container-network-transmit-packets-total	loadgenerator_container-network-transmit-packets-total	paymentservice_container-network-transmit-packets-total	productcatalogservice_container-network-transmit-packets-total	recommendationservice_container-network-transmit-packets-total	redis_container-network-transmit-packets-total	shippingservice_container-network-transmit-packets-total	adservice_container-network-transmit-packets-dropped-total	cartservice_container-network-transmit-packets-dropped-total	checkoutservice_container-network-transmit-packets-dropped-total	currencyservice_container-network-transmit-packets-dropped-total	emailservice_container-network-transmit-packets-dropped-total	frontend_container-network-transmit-packets-dropped-total	loadgenerator_container-network-transmit-packets-dropped-total	paymentservice_container-network-transmit-packets-dropped-total	productcatalogservice_container-network-transmit-packets-dropped-total	recommendationservice_container-network-transmit-packets-dropped-total	redis_container-network-transmit-packets-dropped-total	shippingservice_container-network-transmit-packets-dropped-total	adservice_container-network-transmit-bytes-total	cartservice_container-network-transmit-bytes-total	checkoutservice_container-network-transmit-bytes-total	currencyservice_container-network-transmit-bytes-total	emailservice_container-network-transmit-bytes-total	frontend_container-network-transmit-bytes-total	loadgenerator_container-network-transmit-bytes-total	paymentservice_container-network-transmit-bytes-total	productcatalogservice_container-network-transmit-bytes-total	recommendationservice_container-network-transmit-bytes-total	redis_container-network-transmit-bytes-total	shippingservice_container-network-transmit-bytes-total	adservice_container-network-transmit-errors-total	cartservice_container-network-transmit-errors-total	checkoutservice_container-network-transmit-errors-total	currencyservice_container-network-transmit-errors-total	emailservice_container-network-transmit-errors-total	frontend_container-network-transmit-errors-total	loadgenerator_container-network-transmit-errors-total	paymentservice_container-network-transmit-errors-total	productcatalogservice_container-network-transmit-errors-total	recommendationservice_container-network-transmit-errors-total	redis_container-network-transmit-errors-total	shippingservice_container-network-transmit-errors-total	adservice_container-network-receive-packets-total	cartservice_container-network-receive-packets-total	checkoutservice_container-network-receive-packets-total	currencyservice_container-network-receive-packets-total	emailservice_container-network-receive-packets-total	frontend_container-network-receive-packets-total	loadgenerator_container-network-receive-packets-total	paymentservice_container-network-receive-packets-total	productcatalogservice_container-network-receive-packets-total	recommendationservice_container-network-receive-packets-total	redis_container-network-receive-packets-total	shippingservice_container-network-receive-packets-total	adservice_container-network-receive-packets-dropped-total	cartservice_container-network-receive-packets-dropped-total	checkoutservice_container-network-receive-packets-dropped-total	currencyservice_container-network-receive-packets-dropped-total	emailservice_container-network-receive-packets-dropped-total	frontend_container-network-receive-packets-dropped-total	loadgenerator_container-network-receive-packets-dropped-total	paymentservice_container-network-receive-packets-dropped-total	productcatalogservice_container-network-receive-packets-dropped-total	recommendationservice_container-network-receive-packets-dropped-total	redis_container-network-receive-packets-dropped-total	shippingservice_container-network-receive-packets-dropped-total	adservice_container-network-receive-bytes-total	cartservice_container-network-receive-bytes-total	checkoutservice_container-network-receive-bytes-total	currencyservice_container-network-receive-bytes-total	emailservice_container-network-receive-bytes-total	frontend_container-network-receive-bytes-total	loadgenerator_container-network-receive-bytes-total	paymentservice_container-network-receive-bytes-total	productcatalogservice_container-network-receive-bytes-total	recommendationservice_container-network-receive-bytes-total	redis_container-network-receive-bytes-total	shippingservice_container-network-receive-bytes-total	adservice_container-network-receive-errors-total	cartservice_container-network-receive-errors-total	checkoutservice_container-network-receive-errors-total	currencyservice_container-network-receive-errors-total	emailservice_container-network-receive-errors-total	frontend_container-network-receive-errors-total	loadgenerator_container-network-receive-errors-total	paymentservice_container-network-receive-errors-total	productcatalogservice_container-network-receive-errors-total	recommendationservice_container-network-receive-errors-total	redis_container-network-receive-errors-total	shippingservice_container-network-receive-errors-total	adservice_istio-request-total	cartservice_istio-request-total	checkoutservice_istio-request-total	currencyservice_istio-request-total	emailservice_istio-request-total	frontend_istio-request-total	frontend-external_istio-request-total	paymentservice_istio-request-total	productcatalogservice_istio-request-total	recommendationservice_istio-request-total	shippingservice_istio-request-total	currencyservice_istio-error-total	frontend_istio-error-total	frontend-external_istio-error-total	productcatalogservice_istio-error-total	adservice_istio-latency-50	cartservice_istio-latency-50	checkoutservice_istio-latency-50	currencyservice_istio-latency-50	emailservice_istio-latency-50	frontend_istio-latency-50	paymentservice_istio-latency-50	productcatalogservice_istio-latency-50	recommendationservice_istio-latency-50	shippingservice_istio-latency-50	adservice_istio-latency-90	cartservice_istio-latency-90	checkoutservice_istio-latency-90	currencyservice_istio-latency-90	emailservice_istio-latency-90	frontend_istio-latency-90	paymentservice_istio-latency-90	productcatalogservice_istio-latency-90	recommendationservice_istio-latency-90	shippingservice_istio-latency-90	adservice_istio-latency-95	cartservice_istio-latency-95	checkoutservice_istio-latency-95	currencyservice_istio-latency-95	emailservice_istio-latency-95	frontend_istio-latency-95	paymentservice_istio-latency-95	productcatalogservice_istio-latency-95	recommendationservice_istio-latency-95	shippingservice_istio-latency-95	adservice_istio-latency-99	cartservice_istio-latency-99	checkoutservice_istio-latency-99	currencyservice_istio-latency-99	emailservice_istio-latency-99	frontend_istio-latency-99	paymentservice_istio-latency-99	productcatalogservice_istio-latency-99	recommendationservice_istio-latency-99	shippingservice_istio-latency-99	adservice_istio-bytes-50	cartservice_istio-bytes-50	checkoutservice_istio-bytes-50	currencyservice_istio-bytes-50	emailservice_istio-bytes-50	frontend_istio-bytes-50	paymentservice_istio-bytes-50	productcatalogservice_istio-bytes-50	recommendationservice_istio-bytes-50	shippingservice_istio-bytes-50	adservice_istio-bytes-90	cartservice_istio-bytes-90	checkoutservice_istio-bytes-90	currencyservice_istio-bytes-90	emailservice_istio-bytes-90	frontend_istio-bytes-90	paymentservice_istio-bytes-90	productcatalogservice_istio-bytes-90	recommendationservice_istio-bytes-90	shippingservice_istio-bytes-90	adservice_istio-bytes-95	cartservice_istio-bytes-95	checkoutservice_istio-bytes-95	currencyservice_istio-bytes-95	emailservice_istio-bytes-95	frontend_istio-bytes-95	paymentservice_istio-bytes-95	productcatalogservice_istio-bytes-95	recommendationservice_istio-bytes-95	shippingservice_istio-bytes-95	adservice_istio-bytes-99	cartservice_istio-bytes-99	checkoutservice_istio-bytes-99	currencyservice_istio-bytes-99	emailservice_istio-bytes-99	frontend_istio-bytes-99	paymentservice_istio-bytes-99	productcatalogservice_istio-bytes-99	recommendationservice_istio-bytes-99	shippingservice_istio-bytes-99	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-cpu-seconds-total	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-cpu-seconds-total	gke-gke-cluster-default-pool-2e1807ce-w819_node-cpu-seconds-total	gke-gke-cluster-default-pool-2e1807ce-xte3_node-cpu-seconds-total	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-memory-active-bytes	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-memory-active-bytes	gke-gke-cluster-default-pool-2e1807ce-w819_node-memory-active-bytes	gke-gke-cluster-default-pool-2e1807ce-xte3_node-memory-active-bytes	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-memory-inactive-bytes	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-memory-inactive-bytes	gke-gke-cluster-default-pool-2e1807ce-w819_node-memory-inactive-bytes	gke-gke-cluster-default-pool-2e1807ce-xte3_node-memory-inactive-bytes	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-disk-reads-completed-total	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-disk-reads-completed-total	gke-gke-cluster-default-pool-2e1807ce-w819_node-disk-reads-completed-total	gke-gke-cluster-default-pool-2e1807ce-xte3_node-disk-reads-completed-total	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-disk-writes-completed-total	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-disk-writes-completed-total	gke-gke-cluster-default-pool-2e1807ce-w819_node-disk-writes-completed-total	gke-gke-cluster-default-pool-2e1807ce-xte3_node-disk-writes-completed-total	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-disk-read-bytes-total	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-disk-read-bytes-total	gke-gke-cluster-default-pool-2e1807ce-w819_node-disk-read-bytes-total	gke-gke-cluster-default-pool-2e1807ce-xte3_node-disk-read-bytes-total	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-disk-written-bytes-total	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-disk-written-bytes-total	gke-gke-cluster-default-pool-2e1807ce-w819_node-disk-written-bytes-total	gke-gke-cluster-default-pool-2e1807ce-xte3_node-disk-written-bytes-total	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-network-receive-packets-total	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-network-receive-packets-total	gke-gke-cluster-default-pool-2e1807ce-w819_node-network-receive-packets-total	gke-gke-cluster-default-pool-2e1807ce-xte3_node-network-receive-packets-total	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-network-transmit-packets-total	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-network-transmit-packets-total	gke-gke-cluster-default-pool-2e1807ce-w819_node-network-transmit-packets-total	gke-gke-cluster-default-pool-2e1807ce-xte3_node-network-transmit-packets-total	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-network-receive-errs-total	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-network-receive-errs-total	gke-gke-cluster-default-pool-2e1807ce-w819_node-network-receive-errs-total	gke-gke-cluster-default-pool-2e1807ce-xte3_node-network-receive-errs-total	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-network-transmit-errs-total	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-network-transmit-errs-total	gke-gke-cluster-default-pool-2e1807ce-w819_node-network-transmit-errs-total	gke-gke-cluster-default-pool-2e1807ce-xte3_node-network-transmit-errs-total	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-network-receive-drop-total	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-network-receive-drop-total	gke-gke-cluster-default-pool-2e1807ce-w819_node-network-receive-drop-total	gke-gke-cluster-default-pool-2e1807ce-xte3_node-network-receive-drop-total	gke-gke-cluster-default-pool-2e1807ce-0e4z_node-network-transmit-drop-total	gke-gke-cluster-default-pool-2e1807ce-cx8g_node-network-transmit-drop-total	gke-gke-cluster-default-pool-2e1807ce-w819_node-network-transmit-drop-total	gke-gke-cluster-default-pool-2e1807ce-xte3_node-network-transmit-drop-total
 
     def safe_memory_available(self, gb_required=1.0):
@@ -60,6 +70,8 @@ class Process:
         metric = (metric - metric.min()) / (metric.max() - metric.min() + 1e-6)
         metric = metric.fillna(0)
         timestart, timeend = metric.index.min(), metric.index.max()
+        self.timestart = timestart
+        self.timeend = timeend
         self.time_list = [item for item in range(int(timestart), int(timeend)+1, 1)]
         # remove columns with name starting with 'gke-gke-cluster'
         metric = metric.loc[:, ~metric.columns.str.startswith('gke-gke-cluster')]
@@ -76,6 +88,12 @@ class Process:
         log = pd.read_csv(log_file)
         # rename columns
         log = log.rename(columns={'container_name': 'Hostname', 'log_template': 'templateid', 'timestamp': '@timestamp'})
+        # 1. Convert the 'templateid' string column to a Categorical data type.
+        # 2. Access the underlying numerical codes (.cat.codes).
+        # 3. Add 1 to make it 1-indexed (since your original code uses 'idx[1] - 1' for 0-indexing).
+        #    If your original template IDs started at 1, you can skip adding 1.
+        #    Assuming the original template IDs are unique strings, we'll start codes from 1.
+        log['templateid'] = log['templateid'].astype('category').cat.codes + 1
         log = log.sort_values(by='@timestamp', ascending=True)
         log_record = {}
         max_record = np.zeros(self.log_len)
@@ -166,60 +184,120 @@ class Process:
         print("[OK] Trace tensor ready:", trace.shape)
 
     def _process_label_mask(self):
-        inject_file = self.rawdata_path + "/inject_time.txt"
-        inject_time = float(open(inject_file).read().strip()) if os.path.isfile(inject_file) else 0
+        inject_start_file = self.rawdata_path + "/inject_time.txt"
+        
+        # Define the fixed anomaly duration in *number of rows/steps*
+        ANOMALY_DURATION_ROWS = 100
+        
+        # Read start time
+        inject_start_time = float(open(inject_start_file).read().strip()) if os.path.isfile(inject_start_file) else 0
 
-        times = np.array(self.time_list) #self.set['metric'].index.to_numpy()
+        times = np.array(self.time_list)
         N = len(times)
 
-        # initialize integer labels first: 0 = normal, 1 = anomaly
+        # 1. Find the index where the anomaly *starts*
+        # np.argmax returns the index of the first True value
+        # This gives us the index of the first row >= inject_start_time
+        start_index = np.argmax(times >= inject_start_time)
+
+        # 2. Calculate the index where the anomaly *ends* (exclusive)
+        # We cap the end_index at N (the total number of rows) to prevent IndexError.
+        end_index = min(start_index + ANOMALY_DURATION_ROWS, N)
+
+        # initialize integer labels: 0 = normal, 1 = anomaly
         label_raw = np.zeros((N, self.num_node), dtype=int)
-        label_raw[times >= inject_time, :] = 1
+        
+        # 3. Apply the label (1) to the specific slice of rows
+        # The label is applied from start_index up to, but not including, end_index
+        if start_index < N and ANOMALY_DURATION_ROWS > 0:
+            label_raw[start_index:end_index, :] = 1
 
-        # convert to one-hot for 2 classes: shape (N, pods, 2)
-        label_onehot = np.eye(2)[label_raw]  # automatically expands dims
-
+        # The rest of the code remains the same (conversion to one-hot and mask)
+        # ... (unchanged code block below) ...
+        label_onehot = np.eye(2)[label_raw]
         self.set['label'] = label_onehot
-
         mask = np.zeros((len(times), self.num_node, 3))
         mask[label_raw == 0, 0] = 1
         mask[label_raw == 1, 2] = 1
         self.set['mask'] = mask
 
-    def save_data(self, dataset_path):
-        if not os.path.exists(dataset_path):
-            os.makedirs(dataset_path, exist_ok=True)
-        for record in tqdm(self.dataset, desc="Saving dataset"):
-            file_name = os.path.join(dataset_path, f"{record['name']}.pkl")
-            rec_copy = record.copy()
-            del rec_copy['name']
-            with open(file_name, 'wb') as f:
-                pickle.dump(rec_copy, f)
-        logger.info(f"Saved {len(self.dataset)} records to {dataset_path}")
+    def save_data(self):
+        logging.info("save Tranform data")
+        if not os.path.exists(self.dataset_path):
+            os.makedirs(self.dataset_path, exist_ok=True)
+        for _, item in tqdm(enumerate(self.dataset)):
+            with open(f'{self.dataset_path}/{item["name"]}.pkl', 'wb') as f:
+                del item['name']
+                pickle.dump(item, f)
 
-    def read_data(self, dataset_path):
-        if not os.path.exists(dataset_path):
-            logger.warning(f"No dataset found in {dataset_path}")
-            return
-        files = sorted([f for f in os.listdir(dataset_path) if f.endswith(".pkl")], key=lambda x: int(x.split(".")[0]))
-        self.dataset = []
-        for f in tqdm(files, desc="Loading dataset"):
-            with open(os.path.join(dataset_path, f), 'rb') as file:
-                record = pickle.load(file)
-                record['name'] = f.split(".")[0]
-                self.dataset.append(record)
-        logger.info(f"Loaded {len(self.dataset)} records from {dataset_path}")
+    def read_data(self):
+        logging.info("read Tranform data")
+        if not os.path.exists(self.dataset_path):
+            logging.info("read no data")
+            return None, None
+        
+        dataset = os.listdir(self.dataset_path)
+        dataset.sort(key=lambda x: (int(re.split(r"[-_.]", x)[0])))
+        
+        for file in tqdm(dataset):
+            data = pickle.load(open(os.path.join(self.dataset_path, file), 'rb'))
+            self.dataset.append(data)
 
     def _transform(self):
         data_list = []
-        metric = self.set['metric']# (N,417)
-        self.metric_len = self.set['metric'].shape[-1]
-        log = self.set['log']# dict of N-1, of time steps, each of size (1,256)
-        trace = self.set['trace']# (N,1,1,17)
+
+
+        # save all metric, log,... to pickle file to help with debugging
+        # if not found -> save 
+        if not os.path.exists("debug_metric.pkl"):
+            metric = self.set['metric']# (N,417)
+            self.metric_len = self.set['metric'].shape[-1]
+            log = self.set['log']# dict of N-1, of time steps, each of size (1,256)
+            trace = self.set['trace']# (N,1,1,17)
+            label = self.set['label']# (N,1,2)
+            mask = self.set['mask']# (N,1,3)
+            with open("debug_metric.pkl", "wb") as f:
+                pickle.dump(metric, f)
+            with open("debug_log.pkl", "wb") as f:
+                pickle.dump(log, f)
+            with open("debug_trace.pkl", "wb") as f:
+                pickle.dump(trace, f)
+            with open("debug_label.pkl", "wb") as f:
+                pickle.dump(label, f)   
+            with open("debug_mask.pkl", "wb") as f:
+                pickle.dump(mask, f)
+        else:
+            # load from pickle file
+            with open("debug_metric.pkl", "rb") as f:
+                metric = pickle.load(f)
+            with open("debug_log.pkl", "rb") as f:
+                log = pickle.load(f)
+            with open("debug_trace.pkl", "rb") as f:
+                trace = pickle.load(f)
+            with open("debug_label.pkl", "rb") as f:
+                label = pickle.load(f)   
+            with open("debug_mask.pkl", "rb") as f:
+                mask = pickle.load(f)
+            self.metric_len = metric.shape[-1]
+        
+
+        self.num_node =log[list(log.keys())[0]].shape[0]
+        metric_file = self.rawdata_path + "/metrics.csv"
+        metrica = pd.read_csv(metric_file)
+        if 'now' not in metrica.columns:
+            metrica = metrica.rename(columns={metrica.columns[0]: 'now'})
+        metrica = metrica.set_index('now').sort_index()
+        timestart, timeend = metrica.index.min(), metrica.index.max()
+
+        self.timestart = timestart
+        self.timeend = timeend
+        self.time_list = [item for item in range(int(timestart), int(timeend)+1, 1)]
+
+        self._process_label_mask()
         label = self.set['label']# (N,1,2)
         mask = self.set['mask']# (N,1,3)
 
-        starttime, endtime = metric.index.min(), metric.index.max()
+        starttime, endtime = self.timestart, self.timeend
         num = 0
         count1, count2, count3 = 0, 0, 0
         data_list = []
@@ -235,13 +313,14 @@ class Process:
                 logging.info(f"Processing window {num} starting at time {starttime}...")
             
             #metric
-            select_metric = metric[
-                (metric.index >= starttime) &
-                (metric.index <= starttime + (self.window - 1) * self.step)
-            ]
-            # do NOT copy unnecessarily
-            mvals = select_metric.values
-            record['data_node'] = mvals.reshape(self.window, self.num_node, self.metric_len)
+            start_idx = int(starttime - self.timestart)
+            end_idx = start_idx + self.window # This slice will be [start_idx, end_idx)
+
+            # 3. Slice the NumPy array directly
+            # The result will be a (window, 12, 33) array
+            select_metric = metric[start_idx:end_idx, :, :]
+            record['data_node'] = select_metric[:, :, :self.metric_len]
+            
 
             # log
             start = int(starttime)# 1. Define the timestamps needed

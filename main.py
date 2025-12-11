@@ -1,6 +1,8 @@
 import util.util as util
 import util.train as train
 import util.data_MSDS as data_loads
+import util.data_RE2 as data_loads_RE2
+import util.data_Eadro as data_Eadro
 from util.parser_MSDS import *
 import src.model as model
 from torch.utils.data import DataLoader
@@ -38,12 +40,20 @@ if __name__ == '__main__':
         + "----" + f"evaluate : {args['evaluate']}")
 
     # dealing & loading data
-    processed = data_loads.Process(**args)
+    if args["data_source"] == "MSDS":
+        processed = data_loads.Process(**args)
+    elif args["data_source"] == "RQ2_OB":
+        processed = data_loads_RE2.Process(**args)
+    elif args["data_source"] == "SE":
+        processed_train,  processed_test = data_Eadro.run()
     #train_dl = DataLoader(processed.dataset[:int(len(processed.dataset)*0.7)],
     #                      batch_size=args['batch_size'],
     #                      shuffle=True, pin_memory=False, drop_last=True)
     # Calculate full train set
-    full_train_data = processed.dataset[:int(len(processed.dataset) * 0.7)]
+    if args["data_source"] != "SE":
+        full_train_data = processed.dataset[:int(len(processed.dataset) * 0.7)]
+    else:
+        full_train_data = processed_train
 
     # Few-shot percentage (default = 1.0 → use full data)
     fewshot_ratio = args.get("fewshot_ratio", 1.0)  # e.g., 0.1 for 10%
@@ -57,11 +67,15 @@ if __name__ == '__main__':
     train_dl = DataLoader(fewshot_dataset,
                         batch_size=args['batch_size'],
                         shuffle=True, pin_memory=False, drop_last=True)
-    test_dl = DataLoader(processed.dataset[int(len(processed.dataset)*0.7):],
+    test_dl = DataLoader(processed.dataset[int(len(processed.dataset)*0.7):] if args["data_source"] != "SE" else processed_test,
                         batch_size=args['batch_size'],
                         shuffle=False, pin_memory=False, drop_last=True)
     # declear model and train
-    models = model.MyModel(processed.graph, **args)
+    if args["data_source"] != "SE":
+        graph = processed.graph
+    else:
+        graph = processed_train.first_graph
+    models = model.MyModel(graph, **args)
     total_params = util.count_parameters(models)
     print(total_params)
     logging.info(f"Trainable Parameters: {total_params['total_params']}, reconstruction: {total_params['reconstruction_params']}, common: {total_params['common_params']}")
@@ -84,6 +98,6 @@ if __name__ == '__main__':
             info, performance = sys.evaluate(test_dl, isFinall=True)
             info_dict[statue] = info
             file.writelines(statue + '   ' + info + '\n')
-    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'./result.csv')
+    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'./result_SN.csv')
     logging.info("^^^^^^ Current Model: ----" + args['main_model'] + "-" * 4 + args['hash_id'] + " ^^^^^")
 
