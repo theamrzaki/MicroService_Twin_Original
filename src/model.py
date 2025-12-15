@@ -268,9 +268,9 @@ class MyModel(nn.Module):
 		self.dense_log = nn.Linear(args['feature_log'], args['log_len'])
 		self.dense_edge = nn.Linear(args['feature_edge'], args['raw_edge'])
 
-		self.show = nn.Sequential(nn.Linear(args['raw_node'] + args['raw_edge'] + args['log_len'], (args['raw_node'] + args['raw_edge'] + args['log_len']) // 2),
+		self.show = nn.Sequential(nn.Linear(args['raw_node'] + args['raw_edge'] + args['log_len'], 128),
                             nn.LeakyReLU(inplace=True),
-                            nn.Linear((args['raw_node'] + args['raw_edge'] + args['log_len']) // 2, 2))
+                            nn.Linear(128, 2))
 
 	def upsample_time_dim(self, tensor_4d: torch.Tensor, target_time: int) -> torch.Tensor:
 		B, T_old, N, F_ = tensor_4d.shape
@@ -415,14 +415,14 @@ class MyModel(nn.Module):
 
 				if self.req_loss_approach == "Legendre-style":
 					# Legendre encode: outputs [B, C, degree]
-					pred_metric_leg = FITS_Legendre_operations.legendre_encode(pred_metric_merged, degree=2)  # [B, N*F, D]
-					true_metric_leg = FITS_Legendre_operations.legendre_encode(true_metric_merged, degree=2)  # [B, N*F, D]
+					pred_metric_leg = FITS_Legendre_operations.legendre_encode(pred_metric_merged, degree=10)  # [B, N*F, D]
+					true_metric_leg = FITS_Legendre_operations.legendre_encode(true_metric_merged, degree=10)  # [B, N*F, D]
 
-					pred_log_leg = FITS_Legendre_operations.legendre_encode(pred_log_merged, degree=2)
-					true_log_leg = FITS_Legendre_operations.legendre_encode(true_log_merged, degree=2)
-
-					pred_edge_leg = FITS_Legendre_operations.legendre_encode(pred_edge_merged, degree=2)
-					true_edge_leg = FITS_Legendre_operations.legendre_encode(true_edge_merged, degree=2)
+					pred_log_leg = FITS_Legendre_operations.legendre_encode(pred_log_merged, degree=10)
+					true_log_leg = FITS_Legendre_operations.legendre_encode(true_log_merged, degree=10)
+					
+					pred_edge_leg = FITS_Legendre_operations.legendre_encode(pred_edge_merged, degree=10)
+					true_edge_leg = FITS_Legendre_operations.legendre_encode(true_edge_merged, degree=10)
 				elif self.req_loss_approach == "chebyshev-style":
 					# Legendre encode: outputs [B, C, degree]
 					pred_metric_leg = FITS_chebyshev_operations.chebyshev_encode(pred_metric_merged, degree=2)  # [B, N*F, D]
@@ -581,11 +581,16 @@ class MyModel(nn.Module):
 			# rec_loss
 			label_pod = torch.argmax(x['groundtruth_cls'], dim=-1)  # B*N
 
-			node_rec = torch.sum(rec, dim=-1)
+			#node_rec = torch.sum(rec, dim=-1)
+			node_rec = torch.mean(rec, dim=-1)
 			node_right = torch.where(label_pod == 0, node_rec,
 			                         torch.zeros_like(node_rec).to(node_rec.device))
-			node_wrong = torch.where(label_pod == 1, torch.pow(node_rec, torch.tensor(
-				-1, device=node_rec.device)), torch.zeros_like(node_rec).to(node_rec.device))
+			m = 1.0
+			node_wrong = torch.where(
+				label_pod == 1,
+				torch.relu(node_rec - m),
+				torch.zeros_like(node_rec)
+			)
 			node_unkown = torch.where(label_pod == 2, self.label_weight *
 			                          node_rec, torch.zeros_like(node_rec).to(node_rec.device))
 			rec_loss = [node_right, node_wrong, node_unkown]

@@ -14,7 +14,7 @@ parser.add_argument("--random_seed", default=42,
 
 # training setting
 parser.add_argument("--gpu", default=True, type=lambda x: x.lower() == "true")
-parser.add_argument("--epochs", default=300, type=int,
+parser.add_argument("--epochs", default=50, type=int,
                     help='the number of training epochs')
 parser.add_argument("--patience", default=15, type=float,
                     help='the number of epoch that loss is uping')
@@ -50,17 +50,17 @@ parser.add_argument("--auxi_lambda", default=0.1, type=float,
                     help='frequency reconstruction loss weight')
 
 # model setting
-parser.add_argument("--feature_node", default=64, type=int,
+parser.add_argument("--feature_node", default=8, type=int,
                     help='the pod kpi data number at one epoch')
-parser.add_argument("--feature_edge", default=64, type=int,
+parser.add_argument("--feature_edge", default=8, type=int,
                     help='the edge data number at one epoch')
-parser.add_argument("--feature_log", default=64, type=int,
+parser.add_argument("--feature_log", default=32, type=int,
                     help='the log data number at one epoch')
 parser.add_argument("--raw_node", default=7, type=int,
                     help='the raw pod kpi data number at one epoch')
 parser.add_argument("--raw_edge", default=2, type=int,
                     help='the raw edge kpi data number at one epoch')
-parser.add_argument("--log_len", default=7, type=int,
+parser.add_argument("--log_len", default=60, type=int,
                     help='the log template amount')
 parser.add_argument("--num_heads_edge", default=4, type=int,
                     help='the number of multiattention heads about trace')
@@ -78,7 +78,7 @@ parser.add_argument("--dropout", default=0.2, type=float)
 
 
 # dataset setting
-parser.add_argument("--batch_size", default=50, type=int,
+parser.add_argument("--batch_size", default=100, type=int,#100
                     help='the data number at one epoch')
 parser.add_argument("--window", default=10, type=int,
                     help='size of sliding window')

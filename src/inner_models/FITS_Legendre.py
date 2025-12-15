@@ -84,7 +84,7 @@ class Model(nn.Module):
                 for _ in range(self.channels)
             ])
         else:
-            self.freq_upsampler = nn.Linear((2), int((self.seq_len + self.pred_len) // 2 + 1))
+            self.freq_upsampler = nn.Linear((10), int((self.seq_len + self.pred_len) // 2 + 1))
 
         # NEW: Learnable frequency filter
         #self.texfilter = TexFilter(embed_size=self.channels,
@@ -123,7 +123,7 @@ class Model(nn.Module):
         # 2. Legendre encode (real-valued projection)
         # Input x shape: [B, seq_len, C]
         # Output specx shape: [B, C, degree]
-        specx = legendre_encode(x, degree=2)  # tune degree if needed
+        specx = legendre_encode(x, degree=10)  # tune degree if needed
 
         # ---------------------
         # 3. Apply TexFilter (learnable attention on Legendre coeffs)

@@ -170,7 +170,7 @@ def assert_shapes(shapes, dataset):
     assert dataset.traces_array.shape == (batch, shapes["window_size"], shapes["node_num"], shapes["node_num"], shapes["trace_dim"]), f"Wrong traces shape"
     assert dataset.label_mask.shape == (batch, shapes["node_num"],3), f"Wrong losses shape"
 
-def run(data="SN"):
+def run(data="TT"):
     data_dir = os.path.join("/home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks", data)
 
     metadata = read_json(os.path.join(data_dir, "metadata.json"))
