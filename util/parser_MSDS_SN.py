@@ -50,11 +50,11 @@ parser.add_argument("--auxi_lambda", default=0.1, type=float,
                     help='frequency reconstruction loss weight')
 
 # model setting
-parser.add_argument("--feature_node", default=64, type=int,
+parser.add_argument("--feature_node", default=8, type=int,
                     help='the pod kpi data number at one epoch')
-parser.add_argument("--feature_edge", default=64, type=int,
+parser.add_argument("--feature_edge", default=8, type=int,
                     help='the edge data number at one epoch')
-parser.add_argument("--feature_log", default=64, type=int,
+parser.add_argument("--feature_log", default=32, type=int,
                     help='the log data number at one epoch')
 parser.add_argument("--raw_node", default=7, type=int,
                     help='the raw pod kpi data number at one epoch')
@@ -78,7 +78,7 @@ parser.add_argument("--dropout", default=0.2, type=float)
 
 
 # dataset setting
-parser.add_argument("--batch_size", default=50, type=int,
+parser.add_argument("--batch_size", default=100, type=int,
                     help='the data number at one epoch')
 parser.add_argument("--window", default=10, type=int,
                     help='size of sliding window')
