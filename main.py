@@ -98,6 +98,6 @@ if __name__ == '__main__':
             info, performance = sys.evaluate(test_dl, isFinall=True)
             info_dict[statue] = info
             file.writelines(statue + '   ' + info + '\n')
-    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'./result_SN.csv')
+    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'./result_TT.csv')
     logging.info("^^^^^^ Current Model: ----" + args['main_model'] + "-" * 4 + args['hash_id'] + " ^^^^^")
 

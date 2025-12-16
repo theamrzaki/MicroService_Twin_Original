@@ -10,7 +10,7 @@ FREQ_DOMAINS=(
   "FITS_Legendre"  
 )
 
-SEEDS=(1 2 3)
+SEEDS=(2 3)
 
 for SEED in "${SEEDS[@]}"; do
     for FREQ in "${FREQ_DOMAINS[@]}"; do
