@@ -24,9 +24,33 @@ import argparse
 
 from numpy.polynomial import Legendre as L
 
+def phi(x):
+    return torch.nn.functional.elu(x) + 1
 
+class LinearAttention(nn.Module):
+    def __init__(self, dim):
+        super().__init__()
+        self.Wq = nn.Linear(dim, dim, bias=False)
+        self.Wk = nn.Linear(dim, dim, bias=False)
+        self.Wv = nn.Linear(dim, dim, bias=False)
+        self.out = nn.Linear(dim, dim)
+        self.norm = nn.LayerNorm(dim)
 
+    def forward(self, Z):  
+        # Z: [B*N, M, D]   (M = number of modalities)
+        Q = phi(self.Wq(Z))          # [B*N, M, D]
+        K = phi(self.Wk(Z))          # [B*N, M, D]
+        V = self.Wv(Z)               # [B*N, M, D]
 
+        KV = torch.einsum("bmd,bme->bde", K, V)   # Σ φ(K_j)V_j^T
+        Ksum = K.sum(dim=1)                      # Σ φ(K_j)
+
+        out = torch.einsum("bmd,bde->bme", Q, KV)
+        denom = torch.einsum("bmd,bd->bm", Q, Ksum).unsqueeze(-1) + 1e-6
+        out = out / denom
+
+        return self.norm(self.out(out) + Z)
+	
 class MyModel(nn.Module):
 	def __init__(self, graph, **args):
 		super(MyModel, self).__init__()
@@ -152,6 +176,7 @@ class MyModel(nn.Module):
 				elif self.FREQ_DOMAIN == "FITS_hermite":
 					self.fits_edge = FITS_hermite(configs=config)
 			else:
+				self.linear_attn = LinearAttention(dim=10)
 				config.enc_in = 10
 				if self.FREQ_DOMAIN == "FITS":
 					self.shared_fits = FITSModel(configs=config)
@@ -326,14 +351,44 @@ class MyModel(nn.Module):
 
 
 			if self.multi_fits == 'false':
+				# ---- projections (unchanged) ----
 				x_node_proj = self.modality_proj['node'](x_node_metric_fits_input)
-				rec_node_metric_fits = self.modality_proj_out['node'](self.shared_fits(x_node_proj)[0])
+				x_log_proj  = self.modality_proj['log'](x_node_logs_fits_input)
 
-				x_log_proj = self.modality_proj['log'](x_node_logs_fits_input)
-				rec_node_logs_fits = self.modality_proj_out['log'](self.shared_fits(x_log_proj)[0])
+				# ---- shared temporal encoder ----
+				h_node = self.shared_fits(x_node_proj)[0]   # [B*N, T, D]
+				h_log  = self.shared_fits(x_log_proj)[0]    # [B*N, T, D]
 
+				# ============================================================
+				# Linear Attention fusion (node + log)
+				# ============================================================
+
+				# Collapse time for modality interaction
+				h_node_t = h_node.mean(dim=1)  # [B*N, D]
+				h_log_t  = h_log.mean(dim=1)   # [B*N, D]
+
+				# Stack modalities as tokens
+				H = torch.stack([h_node_t, h_log_t], dim=1)  # [B*N, 2, D]
+
+				# Linear Attention
+				H = self.linear_attn(H)  # [B*N, 2, D]
+
+				# Split back
+				h_node_fused = H[:, 0]   # [B*N, D]
+				h_log_fused  = H[:, 1]   # [B*N, D]
+
+				# Restore time dimension
+				h_node = h_node_fused.unsqueeze(1).expand(-1, h_node.shape[1], -1)
+				h_log  = h_log_fused.unsqueeze(1).expand(-1, h_log.shape[1], -1)
+
+				# ---- output projections (unchanged interfaces) ----
+				rec_node_metric_fits = self.modality_proj_out['node'](h_node)
+				rec_node_logs_fits   = self.modality_proj_out['log'](h_log)
+
+				# ---- edge stream untouched ----
 				x_edge_proj = self.modality_proj['edge'](x_edge_fits_input)
-				rec_edge_fits = self.modality_proj_out['edge'](self.shared_fits(x_edge_proj)[0])
+				h_edge = self.shared_fits(x_edge_proj)[0]
+				rec_edge_fits = self.modality_proj_out['edge'](h_edge)
 			else:# only implemened for FITS 
 				rec_node_metric_fits, _ = self.fits_node(x_node_metric_fits_input)  # [B*N, T', F]
 				rec_node_logs_fits, _   = self.fits_log(x_node_logs_fits_input)  # [B*N, T', F]
