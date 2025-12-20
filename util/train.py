@@ -1,7 +1,9 @@
+import json
 import logging
 import os
 import time
 import copy
+from typing import Optional
 import numpy as np
 import torch
 import torch.nn as nn
@@ -217,11 +219,15 @@ class MY(Base):
 
             with torch.no_grad():
                 for batch_input in tqdm(test_loader, desc=f"Running on {'GPU' if is_gpu else 'CPU'}"):
-                    batch_input = self.input2device(batch_input, use_gpu_flag)
-                    raw_result, _ = self.model(batch_input, evaluate=True)
+                    try:
+                        batch_input = self.input2device(batch_input, use_gpu_flag)
+                        raw_result, _ = self.model(batch_input, evaluate=True)
 
-                    predict_list.append(raw_result)
-                    label_list.append(batch_input['groundtruth_real'])
+                        predict_list.append(raw_result)
+                        label_list.append(batch_input['groundtruth_real'])
+                    except Exception as e:
+                        logging.error(f"Error during inference: {e}")
+                        continue
 
             if is_gpu:
                 end_event.record()
@@ -271,3 +277,108 @@ class MY(Base):
         else:
             return gpu_metrics["result"]
 
+    
+    def collect_case_study(
+        self,
+        test_loader,
+        use_gpu=True,
+        primary=False,
+        case_json: Optional[str] = None,
+        record_json: Optional[str] = None,
+        top_k: int = 10,
+        store_pred: bool = True
+    ):
+        """
+        primary=True  → define case difficulty and save case IDs
+        primary=False → load case IDs and save per-model records
+
+        case_json   : path to save/load case IDs
+        record_json : path to save per-model case records (for plotting)
+        """
+
+        self.model.eval()
+        device = torch.device("cuda" if use_gpu and torch.cuda.is_available() else "cpu")
+        self.model.to(device)
+
+        sample_records = []
+        global_idx = 0  # deterministic dataset index
+
+        # ------------------------------------------------------------
+        # Full deterministic pass over test set
+        # ------------------------------------------------------------
+        with torch.no_grad():
+            for batch_input in test_loader:
+                gt = batch_input["groundtruth_real"]
+                batch_size = gt.size(0)
+
+                batch_input = self.input2device(batch_input, use_gpu)
+                raw_result, _ = self.model(batch_input, evaluate=True)
+                gt = gt.to(raw_result.device)
+                error = torch.abs(raw_result - gt)
+
+                for i in range(batch_size):
+                    rec = {
+                        "id": global_idx + i,
+                        "gt": gt[i].cpu().tolist(),              # JSON-safe
+                        "error": error[i].mean().item()
+                    }
+
+                    if store_pred:
+                        rec["pred"] = raw_result[i].cpu().tolist()
+
+                    sample_records.append(rec)
+
+                global_idx += batch_size
+
+        # ------------------------------------------------------------
+        # Primary model: define and save case IDs
+        # ------------------------------------------------------------
+        if primary:
+            sorted_cases = sorted(sample_records, key=lambda x: x["error"])
+
+            cases = {
+                "easy":   [c["id"] for c in sorted_cases[:top_k]],
+                "hard":   [c["id"] for c in sorted_cases[-top_k:]],
+                "middle": [c["id"] for c in
+                        sorted_cases[len(sorted_cases)//2 - top_k//2 :
+                                        len(sorted_cases)//2 + top_k//2]]
+            }
+
+            if case_json is not None:
+                with open(case_json, "w") as f:
+                    json.dump(cases, f, indent=2)
+
+            # Optionally save full primary records
+            if record_json is not None:
+                with open(record_json, "w") as f:
+                    json.dump(sample_records, f, indent=2)
+
+            return {
+                "cases": cases,
+                "records": sample_records
+            }
+
+        # ------------------------------------------------------------
+        # Follower models: load fixed cases & save records
+        # ------------------------------------------------------------
+        else:
+            if case_json is None:
+                raise ValueError("case_json must be provided when primary=False")
+
+            with open(case_json) as f:
+                cases = json.load(f)
+
+            selected_ids = set(sum(cases.values(), []))
+
+            filtered_records = [
+                r for r in sample_records if r["id"] in selected_ids
+            ]
+
+            if record_json is not None:
+                with open(record_json, "w") as f:
+                    json.dump(filtered_records, f, indent=2)
+
+            return {
+                "cases": cases,
+                "records": filtered_records
+            }

@@ -3,7 +3,7 @@ import util.train as train
 import util.data_MSDS as data_loads
 import util.data_RE2 as data_loads_RE2
 import util.data_Eadro as data_Eadro
-from util.parser_MSDS import *
+
 import src.model as model
 from torch.utils.data import DataLoader
 import warnings
@@ -11,14 +11,30 @@ import logging
 import os
 import sys
 import torch 
+import argparse
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 sys.path.append('/code')
 warnings.filterwarnings("ignore")
 
-util.seed_everything(args['random_seed'])
+
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='MutliModel Time-Series Anomaly Detection')
+    parser.add_argument("--data_source", default="MSDS", type=str,
+                        help='the data source: MSDS or TT or SN')
+    
+    if parser.parse_known_args()[0].data_source == "MSDS":
+        print("Using MSDS parser")
+        from util.parser_MSDS_MSDS import *
+    elif parser.parse_known_args()[0].data_source == "SN":
+        print("Using SN parser")
+        from util.parser_SN import *
+    elif parser.parse_known_args()[0].data_source == "TT":
+        print("Using TT parser")
+        from util.parser_TT import *
+        
+    util.seed_everything(args['random_seed'])
     if args['evaluate']:
         dict_json = util.read_params(args)
         for key in dict_json.keys():
@@ -44,13 +60,13 @@ if __name__ == '__main__':
         processed = data_loads.Process(**args)
     elif args["data_source"] == "RQ2_OB":
         processed = data_loads_RE2.Process(**args)
-    elif args["data_source"] == "SE":
-        processed_train,  processed_test = data_Eadro.run()
+    elif args["data_source"] == "SN" or args["data_source"] == "TT":
+        processed_train,  processed_test = data_Eadro.run(args["data_source"])
     #train_dl = DataLoader(processed.dataset[:int(len(processed.dataset)*0.7)],
     #                      batch_size=args['batch_size'],
     #                      shuffle=True, pin_memory=False, drop_last=True)
     # Calculate full train set
-    if args["data_source"] != "SE":
+    if args["data_source"] not in ["SN", "TT"]:
         full_train_data = processed.dataset[:int(len(processed.dataset) * 0.7)]
     else:
         full_train_data = processed_train
@@ -67,11 +83,11 @@ if __name__ == '__main__':
     train_dl = DataLoader(fewshot_dataset,
                         batch_size=args['batch_size'],
                         shuffle=True, pin_memory=False, drop_last=True)
-    test_dl = DataLoader(processed.dataset[int(len(processed.dataset)*0.7):] if args["data_source"] != "SE" else processed_test,
+    test_dl = DataLoader(processed.dataset[int(len(processed.dataset)*0.7):] if args["data_source"] not in ["SN", "TT"] else processed_test,
                         batch_size=args['batch_size'],
                         shuffle=False, pin_memory=False, drop_last=True)
     # declear model and train
-    if args["data_source"] != "SE":
+    if args["data_source"] not in ["SN", "TT"]:
         graph = processed.graph
     else:
         graph = processed_train.first_graph
@@ -98,6 +114,39 @@ if __name__ == '__main__':
             info, performance = sys.evaluate(test_dl, isFinall=True)
             info_dict[statue] = info
             file.writelines(statue + '   ' + info + '\n')
-    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'./result_TT.csv')
-    logging.info("^^^^^^ Current Model: ----" + args['main_model'] + "-" * 4 + args['hash_id'] + " ^^^^^")
+    #if args.get("case_study", False):
+    results_path = './results.csv'#msds
+    if args["data_source"] == "TT":
+        results_path = './result_TT.csv'
+    elif args["data_source"] == "SN":
+        results_path = './result_SN.csv'
+    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,results_path)
+    #else:
+    #    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'./result_casestudy.csv')
+    #logging.info("^^^^^^ Current Model: ----" + args['main_model'] + "-" * 4 + args['hash_id'] + " ^^^^^")
 
+    # For case study
+    if False:#args.get("case_study", False):
+        logging.info("Collecting case-study samples...")
+        case_path = os.path.join( "case_ids.json")
+        case_output = os.path.join(f"case_output_{args['main_model']}.json")
+
+        #if model = encoder-decoder type, primary = True
+        if args['FREQ_DOMAIN'] in ['encoder-decoder']:
+            primary = True
+            print("####---> Primary case study collection for encoder-decoder model.")
+            case_data = sys.collect_case_study(
+                test_dl,
+                primary=primary,
+                case_json=case_path,
+                top_k=10
+            )
+        else:
+            primary = False
+            print("@@@@---> Secondary case study collection for other model types.")
+            case_data = sys.collect_case_study(
+                test_dl,
+                primary=True,
+                case_json=case_path
+            )
+        util.json_pretty_dump(case_data, case_output)

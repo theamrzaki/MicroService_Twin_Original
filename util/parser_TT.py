@@ -11,7 +11,8 @@ def str2bool(v):
 parser = argparse.ArgumentParser(description='MutliModel Time-Series Anomaly Detection')
 parser.add_argument("--random_seed", default=42,
                     type=int, help='the random seed')
-
+parser.add_argument("--case_study", default=False,
+                    type=lambda x: x.lower() == "true", help='Whether to run case study')
 # training setting
 parser.add_argument("--gpu", default=True, type=lambda x: x.lower() == "true")
 parser.add_argument("--epochs", default=50, type=int,

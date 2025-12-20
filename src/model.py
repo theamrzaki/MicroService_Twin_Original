@@ -20,6 +20,7 @@ import src.inner_models.FITS_Legendre as FITS_Legendre_operations
 import src.inner_models.FITS_chebyshev as FITS_chebyshev_operations
 import src.inner_models.FITS_lag as FITS_lag_operations
 import src.inner_models.FITS_hermite as FITS_hermite_operations
+from src.inner_models.Eadro import MainModel 	
 import argparse
 
 from numpy.polynomial import Legendre as L
@@ -281,6 +282,12 @@ class MyModel(nn.Module):
 				})
 			self.node_adj, self.node_efea, self.edge_adj, self.edge_efea = adj2adj(self.graph, args['batch_size'], args['window'], args['feature_edge']) # <--- can by modified DynamicTopology (as a parameter instead of being in init)
 
+		elif self.FREQ_DOMAIN == "Eadro":
+			event_num = args['log_len']
+			metric_num = args['raw_node']
+			node_num = args['raw_edge']
+			self.Eadro_Model = MainModel(event_num, metric_num, node_num)
+		
 		self.node_emb = Embed(args['raw_node'], args['feature_node'], dim=4)
 		self.log_emb = Embed(args['log_len'], args['feature_log'], dim=4)
 		self.egde_emb = Embed(args['raw_edge'], args['feature_edge'], dim=5)
@@ -613,17 +620,23 @@ class MyModel(nn.Module):
 			rec_edge = torch.matmul(rec_edge1.permute(
 				0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
 			rec = torch.concat([rec_node_metric_fits,rec_node_log_fits, rec_edge], dim=-1)
-
+		elif self.FREQ_DOMAIN in ["Eadro"]:
+			device = x['data_edge'].device
+			self.graph = self.graph.to(device)
+			rec = self.Eadro_Model(self.graph,x['data_node'], x['data_log'], x['data_edge'])
 
 		if evaluate:
-			rec = rec[:, -1].squeeze()
+			if rec.dim() == 4:	 
+				rec = rec[:, -1].squeeze()
 			cls_result = torch.softmax(self.show(rec), dim=-1)
 			return cls_result, x['groundtruth_cls']#torch.Size([50, 5, 3])
 		else:
 			cls_label = x['groundtruth_cls']
 
 			#cls_label
-			rec = rec[:, -1].squeeze()
+			# if 4d
+			if rec.dim() == 4:	 
+				rec = rec[:, -1].squeeze()
 			cls_result = self.show(rec)
 			cls_result = cls_result.reshape(-1, cls_result.shape[-1])
 			cls_label = cls_label.reshape(-1, cls_label.shape[-1])
