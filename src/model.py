@@ -296,7 +296,7 @@ class MyModel(nn.Module):
 				window_size=args['window'],
 				metric_dim=args['raw_node'],
 				log_dim=args['log_len'],
-				#trace_dim=args['raw_edge'],
+				trace_dim=args['raw_edge'],
 				out_dim=args['raw_node'] + args['raw_edge'] + args['log_len']
 			)
 			

@@ -24,7 +24,7 @@ class GAT_GRU(nn.Module):
         self.gru = nn.GRU(input_size=self.in_dim, hidden_size=self.out_dim, num_layers=1, batch_first=True, bidirectional=False)
         self.BN = torch.nn.BatchNorm1d(self.num_f)
         self.linear = nn.Linear(20, self.out_dim)
-        self.gat_layer = GATNet(in_c=20, hid_c=self.out_dim, out_c=20, n_heads=6)
+        self.gat_layer = GATNet(in_c=30, hid_c=self.out_dim, out_c=20, n_heads=6)
         self.weight = nn.Parameter(torch.Tensor(1, 1))
         self.soft = nn.Parameter(torch.Tensor(self.num_channels))
         self.reset_parameters()

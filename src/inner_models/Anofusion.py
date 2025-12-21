@@ -13,14 +13,14 @@ class permute(nn.Module):
 
 class AnoFusionWrapper(nn.Module):
     def __init__(self, num_services, window_size,
-                 metric_dim, log_dim, out_dim):
+                 metric_dim, log_dim,trace_dim, out_dim):
         super().__init__()
 
-        self.metric_proj = nn.Linear(metric_dim, 1)
-        self.log_proj    = nn.Linear(log_dim, 1)
-        self.trace_proj  = nn.Linear(1, 1)
+        self.metric_proj = nn.Linear(metric_dim, 10)
+        self.log_proj    = nn.Linear(log_dim, 10)
+        self.trace_proj  = nn.Linear(trace_dim, 10)
 
-        self.linear_x = nn.Linear(3, 20)
+        #self.linear_x = nn.Linear(30, 20)
 
         self.anofusion = Net(
             node_num=num_services,
@@ -38,17 +38,17 @@ class AnoFusionWrapper(nn.Module):
 
         dn = self.metric_proj(data_node)
         dl = self.log_proj(data_log)
-        tr = self.trace_proj(data_edge.mean(dim=3).mean(dim=-1, keepdim=True))
+        tr = self.trace_proj(data_edge.mean(dim=3))
 
         X = torch.cat([dn, dl, tr], dim=-1)  # [B,T,N,3]
-        X = self.linear_x(X)                 # [B,T,N,20]
+        #X = self.linear_x(X)                 # [B,T,N,20]
 
         θ = min(self.anofusion.window_samples_num, T)
         Xw = X[:, -θ:]                       # [B,θ,N,20]
 
         A = graph.unsqueeze(0).unsqueeze(0).repeat(B, θ, 1, 1, 1)
 
-        Xw = Xw.view(B*θ, N, 20)
+        Xw = Xw.view(B*θ, N, 30)
         A  = A.view(B*θ, N, N, 1)
 
         X_pred = self.anofusion(Xw, A)       # [Bθ,N,F]
