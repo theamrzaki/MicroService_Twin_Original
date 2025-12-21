@@ -21,6 +21,7 @@ import src.inner_models.FITS_chebyshev as FITS_chebyshev_operations
 import src.inner_models.FITS_lag as FITS_lag_operations
 import src.inner_models.FITS_hermite as FITS_hermite_operations
 from src.inner_models.Eadro import MainModel 	
+from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
 import argparse
 
 from numpy.polynomial import Legendre as L
@@ -288,6 +289,17 @@ class MyModel(nn.Module):
 			node_num = args['raw_edge']
 			self.Eadro_Model = MainModel(event_num, metric_num, node_num)
 		
+		elif self.FREQ_DOMAIN == "AnoFusion":
+			self.AnoFusion = AnoFusion(
+				num_services=self.num_classes,
+				edge_types=self.graph.shape[0],
+				window_size=args['window'],
+				metric_dim=args['raw_node'],
+				log_dim=args['log_len'],
+				trace_dim=args['raw_edge'],
+				out_dim=args['raw_node']
+			)
+			
 		self.node_emb = Embed(args['raw_node'], args['feature_node'], dim=4)
 		self.log_emb = Embed(args['log_len'], args['feature_log'], dim=4)
 		self.egde_emb = Embed(args['raw_edge'], args['feature_edge'], dim=5)
@@ -300,9 +312,14 @@ class MyModel(nn.Module):
 		self.dense_log = nn.Linear(args['feature_log'], args['log_len'])
 		self.dense_edge = nn.Linear(args['feature_edge'], args['raw_edge'])
 
-		self.show = nn.Sequential(nn.Linear(args['raw_node'] + args['raw_edge'] + args['log_len'], 128),
-                            nn.LeakyReLU(inplace=True),
-                            nn.Linear(128, 2))
+		if self.FREQ_DOMAIN != "AnoFusion":
+			self.show = nn.Sequential(nn.Linear(args['raw_node'] + args['raw_edge'] + args['log_len'], 128),
+								nn.LeakyReLU(inplace=True),
+								nn.Linear(128, 2))
+		else:
+			self.show = nn.Sequential(nn.Linear(1, 128),
+								nn.LeakyReLU(inplace=True),
+								nn.Linear(128, 2))
 
 	def upsample_time_dim(self, tensor_4d: torch.Tensor, target_time: int) -> torch.Tensor:
 		B, T_old, N, F_ = tensor_4d.shape
@@ -624,6 +641,21 @@ class MyModel(nn.Module):
 			device = x['data_edge'].device
 			self.graph = self.graph.to(device)
 			rec = self.Eadro_Model(self.graph,x['data_node'], x['data_log'], x['data_edge'])
+		
+		elif self.FREQ_DOMAIN in ["AnoFusion"]:
+			device = x['data_edge'].device
+			self.graph = self.graph.to(device)
+			
+			#datanode (metric) -> torch.Size([batch, time, num_services, dim])
+			#datalog -> torch.Size([batch, time, num_services, dim])
+			#dataedge -> torch.Size([batch, time, num_services, num_services, dim])
+			rec = self.AnoFusion(self.graph,x['data_node'], x['data_log'], x['data_edge'])
+			#output ===< prob is that i have one dim while i need ot to be 2 
+			#rec -> torch.Size([batch, time, num_services, dim])
+			# change it to [batch, num_services, dim] to make it 3d, to work with testing without the 4d branch
+			rec = rec.permute(0,2,1,3) 
+			# then we can do mean over time dimension
+			rec = torch.mean(rec, dim=2) 
 
 		if evaluate:
 			if rec.dim() == 4:	 
@@ -637,6 +669,7 @@ class MyModel(nn.Module):
 			# if 4d
 			if rec.dim() == 4:	 
 				rec = rec[:, -1].squeeze()
+			# B, N, F
 			cls_result = self.show(rec)
 			cls_result = cls_result.reshape(-1, cls_result.shape[-1])
 			cls_label = cls_label.reshape(-1, cls_label.shape[-1])
