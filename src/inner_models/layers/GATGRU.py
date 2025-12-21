@@ -23,7 +23,7 @@ class GAT_GRU(nn.Module):
         self.per1 = permute()
         self.gru = nn.GRU(input_size=self.in_dim, hidden_size=self.out_dim, num_layers=1, batch_first=True, bidirectional=False)
         self.BN = torch.nn.BatchNorm1d(self.num_f)
-        self.linear = nn.Linear(self.out_dim, self.out_dim)
+        self.linear = nn.Linear(20, self.out_dim)
         self.gat_layer = GATNet(in_c=20, hid_c=self.out_dim, out_c=20, n_heads=6)
         self.weight = nn.Parameter(torch.Tensor(1, 1))
         self.soft = nn.Parameter(torch.Tensor(self.num_channels))
@@ -64,15 +64,10 @@ class GAT_GRU(nn.Module):
         for i in range(self.num_channels):
             data = {"flow_x": X, "graph": self.norm(A[:, i, :, :])}
             if i == 0:
-                X_ = self.gat_layer(data)
-                X_ = X_ * self.soft[i]
+                X_ = self.gat_layer(data) * self.soft[i]
             else:
-                X_tmp = self.gat_layer(data)
-                X_tmp = X_tmp * self.soft[i]
-                X_ = X_ + X_tmp
+                X_ = X_ + self.gat_layer(data) * self.soft[i]
 
-        X_ = self.per1(X_)
-        X_, hn = self.gru(X_)
-        hn = torch.squeeze(hn, 0)
-        res =  self.linear(hn)
-        return res
+        # preserve node dimension
+        X_ = self.linear(X_)     # [Bθ, N, F]
+        return X_

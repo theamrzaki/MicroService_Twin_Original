@@ -12,75 +12,50 @@ class permute(nn.Module):
         return x.permute(0, 2, 1)
 
 class AnoFusionWrapper(nn.Module):
-    def __init__(self,
-                 num_services,
-                 edge_types,
-                 window_size,
-                 metric_dim,
-                 log_dim,
-                 trace_dim,
-                 out_dim):
+    def __init__(self, num_services, window_size,
+                 metric_dim, log_dim, out_dim):
         super().__init__()
 
-        self.num_services = num_services
-        self.out_dim = out_dim
-
-        # ---- Serialization (paper §4.2) ----
         self.metric_proj = nn.Linear(metric_dim, 1)
         self.log_proj    = nn.Linear(log_dim, 1)
         self.trace_proj  = nn.Linear(1, 1)
 
-        # ---- Core AnoFusion ----
+        self.linear_x = nn.Linear(3, 20)
+
         self.anofusion = Net(
-            node_num=num_services,  # 12
+            node_num=num_services,
             edge_types=2,
             window_samples_num=window_size,
             dropout=0.2
         )
 
-        # ---- Decode  ----
-        self.linear_x = nn.Linear(3, 20)
+        # FIX: explicit output projection
+        self.out_dim = out_dim
+        self.post_proj = nn.Linear(num_services, out_dim)  # adjust if GAT_GRU outputs != 20
 
     def forward(self, graph, data_node, data_log, data_edge):
         B, T, N, _ = data_node.shape
-        device = data_node.device
 
-        # ---- 1. Project each modality to scalar ----
-        data_node_proj = self.metric_proj(data_node)  # [B, T, N, 1]
-        data_log_proj  = self.log_proj(data_log)      # [B, T, N, 1]
-        trace_proj     = self.trace_proj(data_edge.mean(dim=3).mean(dim=-1, keepdim=True))  # [B, T, N, 1]
+        dn = self.metric_proj(data_node)
+        dl = self.log_proj(data_log)
+        tr = self.trace_proj(data_edge.mean(dim=3).mean(dim=-1, keepdim=True))
 
-        # ---- 2. Concatenate channels as features ----
-        X = torch.cat([data_node_proj, data_log_proj, trace_proj], dim=-1)  # [B, T, N, 3]
-        # linear layer to 20
-        X = self.linear_x(X)  # [B, T, N, 20]
+        X = torch.cat([dn, dl, tr], dim=-1)  # [B,T,N,3]
+        X = self.linear_x(X)                 # [B,T,N,20]
+
         θ = min(self.anofusion.window_samples_num, T)
+        Xw = X[:, -θ:]                       # [B,θ,N,20]
 
-        # ---- 3. Windowing ----
-        Xw = X[:, -θ:, :, :]  # [B, θ, N, 3]
+        A = graph.unsqueeze(0).unsqueeze(0).repeat(B, θ, 1, 1, 1)
 
-        # ---- 4. Prepare adjacency ----
-        A = graph.unsqueeze(0).unsqueeze(0).repeat(B, θ, 1, 1, 1)  # [B, θ, N, N, K]
+        Xw = Xw.view(B*θ, N, 20)
+        A  = A.view(B*θ, N, N, 1)
 
-        # ---- 5. Merge batch & window ----
-        Bθ = B * θ
-        Xw = Xw.view(Bθ, N, 20)       # [B*θ, N, 3]
-        A = A.view(Bθ, N, N, -1)     # [B*θ, N, N, K]
+        X_pred = self.anofusion(Xw, A)       # [Bθ,N,F]
+        X_pred = self.post_proj(X_pred)      # [Bθ,N,out_dim]
+        X_pred = torch.relu(X_pred)        # <<< REQUIRED
 
-        # ---- 6. Net forward ----
-        X_pred = self.anofusion(Xw, A)  # [B*θ, N, 3]
-
-        # ---- 8. Restore batch & window ----
-        rec_window = X_pred.view(B, θ, N, -1)  # [B, θ, N, out_dim]
-
-        # ---- 9. Pad to full sequence if needed ----
-        if θ < T:
-            pad = torch.zeros(B, T-θ, N, self.out_dim, device=device)
-            rec = torch.cat([pad, rec_window], dim=1)
-        else:
-            rec = rec_window
-
-        return rec
+        return X_pred.view(B, θ, N, self.out_dim)
 
 class Net(nn.Module):
     def __init__(self, node_num, edge_types, window_samples_num, dropout):
