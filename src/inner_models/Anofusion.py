@@ -31,9 +31,9 @@ class AnoFusionWrapper(nn.Module):
 
         # FIX: explicit output projection
         self.out_dim = out_dim
-        self.post_proj = nn.Linear(num_services, out_dim)  # adjust if GAT_GRU outputs != 20
+        self.post_proj = nn.Linear(20, out_dim)  # adjust if GAT_GRU outputs != 20
 
-    def forward(self, graph, data_node, data_log, data_edge):
+    def forward(self, graph, data_node, data_log, data_edge,device):
         B, T, N, _ = data_node.shape
 
         dn = self.metric_proj(data_node)
@@ -51,7 +51,7 @@ class AnoFusionWrapper(nn.Module):
         Xw = Xw.view(B*θ, N, 30)
         A  = A.view(B*θ, N, N, 1)
 
-        X_pred = self.anofusion(Xw, A)       # [Bθ,N,F]
+        X_pred = self.anofusion(Xw, A, device)       # [Bθ,N,F]
         X_pred = self.post_proj(X_pred)      # [Bθ,N,out_dim]
         X_pred = torch.relu(X_pred)        # <<< REQUIRED
 
@@ -78,13 +78,13 @@ class Net(nn.Module):
         self._final_softmax = nn.Softmax(dim=1)
       
         
-    def forward(self, X, A):
+    def forward(self, X, A, device):
         X = self.Dropout(X)
         A = A.view((-1, self.node_num, self.node_num, self.edge_types))
         X = X.view((-1, self.node_num, X.shape[-1]))
         # GTN
-        device = X.device
-        A = self.GTN(A)
+        #device = X.device
+        A = self.GTN(A, device)
         # GAT and GRU
-        out_T = self.GAT_GRU(X, A)
+        out_T = self.GAT_GRU(X, A, device)
         return out_T

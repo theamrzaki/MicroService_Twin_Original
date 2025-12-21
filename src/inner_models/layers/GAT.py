@@ -42,11 +42,11 @@ class GATNet(nn.Module):
         super(GATNet, self).__init__()
         self.subnet = GATSubNet(in_c, hid_c, out_c, n_heads)
 
-    def forward(self, data):
-        if torch.cuda.is_available() and torch.cuda.device_count() > 0:
-            device = torch.device(f'cuda:{torch.cuda.current_device()}')
-        else:
-            device = torch.device('cpu')
+    def forward(self, data,device):
+        #if torch.cuda.is_available() and torch.cuda.device_count() > 0:
+        #    device = torch.device(f'cuda:{torch.cuda.current_device()}')
+        #else:
+        #    device = torch.device('cpu')
         graph = data["graph"][0].to(device)
         flow = data["flow_x"]
         flow = flow.to(device)

@@ -29,6 +29,7 @@ class Base(nn.Module):
         self.learning_gamma = args['learning_gamma']
         self.rec_down = args['rec_down']
         self.para_low = args['para_low']
+        self.FREQ_DOMAIN = args['FREQ_DOMAIN']
         self.True_list = {'normal': 1, 'abnormal': args['abnormal_weight']}
 
         if args['evaluate']:
@@ -134,8 +135,13 @@ class MY(Base):
                     else:
                         cls_loss = losser(cls_result, cls_label)
 
-                    loss = (1 - para) * cls_loss + para * rec_loss
-
+                    if self.FREQ_DOMAIN == "AnoFusion":
+                        # as AnoFusion only focuses on Anomaly energy, which is classification loss
+                        loss = cls_loss 
+                    else:
+                        loss = (1 - para) * cls_loss + para * rec_loss
+                    
+                    
                     if torch.isnan(loss):
                         isWrong = True
                         logging.info(f"loss is nan")

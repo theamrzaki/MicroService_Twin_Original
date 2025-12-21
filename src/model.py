@@ -644,7 +644,7 @@ class MyModel(nn.Module):
 			#datanode (metric) -> torch.Size([batch, time, num_services, dim])
 			#datalog -> torch.Size([batch, time, num_services, dim])
 			#dataedge -> torch.Size([batch, time, num_services, num_services, dim])
-			rec = self.AnoFusion(self.graph,x['data_node'], x['data_log'], x['data_edge'])
+			rec = self.AnoFusion(self.graph,x['data_node'], x['data_log'], x['data_edge'],device)
 			a=1
 		if evaluate:
 			if rec.dim() == 4:	 

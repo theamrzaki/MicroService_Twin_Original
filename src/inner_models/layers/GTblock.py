@@ -34,26 +34,26 @@ class GTN(nn.Module):
         self.weight = nn.Parameter(torch.Tensor(1, 1))
         self.loss = nn.CrossEntropyLoss()
 
-    def normalization(self, H):
+    def normalization(self, H,device):
         for i in range(self.num_channels):
             if i == 0:
-                H_ = self.norm(H[:, i, :, :]).unsqueeze(1)
+                H_ = self.norm(H[:, i, :, :], device).unsqueeze(1)
             else:
-                H_ = torch.cat((H_, self.norm(H[:, i, :, :]).unsqueeze(1)), dim=1)
+                H_ = torch.cat((H_, self.norm(H[:, i, :, :], device).unsqueeze(1)), dim=1)
         return H_
 
 
-    def norm(self, H, add=True):
+    def norm(self, H, device, add=True):
         if add == False:
             H = H * ((torch.eye(H.shape[1]) == 0).type(torch.FloatTensor)).unsqueeze(0)
         else:
             #H = H * ((torch.eye(H.shape[1]) == 0).type(torch.FloatTensor)).unsqueeze(0).to(device) + torch.eye(
             #    H.shape[1]).type(
             #    torch.FloatTensor).unsqueeze(0).to(device)
-            if torch.cuda.is_available() and torch.cuda.device_count() > 0:
-                device = torch.device(f'cuda:{torch.cuda.current_device()}')
-            else:
-                device = torch.device('cpu')
+            #if torch.cuda.is_available() and torch.cuda.device_count() > 0:
+            #    device = torch.device(f'cuda:{torch.cuda.current_device()}')
+            #else:
+            #    device = torch.device('cpu')
 
             H = H.to(device)
             eye = torch.eye(H.shape[1], device=H.device)  # safest
@@ -71,7 +71,7 @@ class GTN(nn.Module):
         return H
 
 
-    def forward(self, A):
+    def forward(self, A,device):
         # A shape (B,N,N,C)
         A = A.unsqueeze(1).permute(0, 1, 4, 2, 3)
         Ws = []
@@ -79,7 +79,7 @@ class GTN(nn.Module):
             if i == 0:
                 H, W = self.layers[i](A)
             else:
-                H = self.normalization(H)
+                H = self.normalization(H,device)
                 H, W = self.layers[i](A, H)
             Ws.append(W)
         return H
