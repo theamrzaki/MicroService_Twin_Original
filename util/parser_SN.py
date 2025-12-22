@@ -50,11 +50,11 @@ parser.add_argument("--auxi_lambda", default=0.1, type=float,
                     help='frequency reconstruction loss weight')
 
 # model setting
-parser.add_argument("--feature_node", default=8, type=int,
+parser.add_argument("--feature_node", default=8, type=int,#64
                     help='the pod kpi data number at one epoch')
-parser.add_argument("--feature_edge", default=8, type=int,
+parser.add_argument("--feature_edge", default=8, type=int,#64
                     help='the edge data number at one epoch')
-parser.add_argument("--feature_log", default=32, type=int,
+parser.add_argument("--feature_log", default=32, type=int,#64
                     help='the log data number at one epoch')
 parser.add_argument("--raw_node", default=7, type=int,
                     help='the raw pod kpi data number at one epoch')

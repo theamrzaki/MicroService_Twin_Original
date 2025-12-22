@@ -16,6 +16,7 @@ class AnoFusionWrapper(nn.Module):
                  metric_dim, log_dim,trace_dim, out_dim):
         super().__init__()
 
+        #TODO: they need to be the required features, not all 10
         self.metric_proj = nn.Linear(metric_dim, 10)
         self.log_proj    = nn.Linear(log_dim, 10)
         self.trace_proj  = nn.Linear(trace_dim, 10)

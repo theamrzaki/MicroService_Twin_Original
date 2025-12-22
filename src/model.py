@@ -22,6 +22,7 @@ import src.inner_models.FITS_lag as FITS_lag_operations
 import src.inner_models.FITS_hermite as FITS_hermite_operations
 from src.inner_models.Eadro import MainModel 	
 from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
+from src.inner_models.Art import ARTWrapper as Art_Model
 import argparse
 
 from numpy.polynomial import Legendre as L
@@ -300,6 +301,16 @@ class MyModel(nn.Module):
 				out_dim=args['raw_node'] + args['raw_edge'] + args['log_len']
 			)
 			
+		elif self.FREQ_DOMAIN == "Art":
+			self.Art_Model = Art_Model(
+				adj=self.graph,
+				raw_metric=args['raw_node'],
+				raw_logs=args['log_len'],
+				raw_traces=args['raw_edge'],
+				feature_metric=args['feature_node'],
+				feature_logs=args['feature_log'],
+				feature_traces=args['feature_edge']
+			)
 		self.node_emb = Embed(args['raw_node'], args['feature_node'], dim=4)
 		self.log_emb = Embed(args['log_len'], args['feature_log'], dim=4)
 		self.egde_emb = Embed(args['raw_edge'], args['feature_edge'], dim=5)
@@ -646,6 +657,12 @@ class MyModel(nn.Module):
 			#dataedge -> torch.Size([batch, time, num_services, num_services, dim])
 			rec = self.AnoFusion(self.graph,x['data_node'], x['data_log'], x['data_edge'],device)
 			a=1
+		elif self.FREQ_DOMAIN in ["Art"]:
+			device = x['data_edge'].device
+			self.graph = self.graph.to(device)
+			rec = self.Art_Model(x['data_node'], x['data_log'], x['data_edge'])
+
+
 		if evaluate:
 			if rec.dim() == 4:	 
 				rec = rec[:, -1].squeeze()
