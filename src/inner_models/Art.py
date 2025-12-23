@@ -16,7 +16,7 @@ class ARTWrapper(nn.Module):
         self.trace_proj = nn.Linear(raw_traces, feature_traces)
 
         tf_in_dim = adj.size(0) # num_services
-        num_heads = 2
+        num_heads = 1#2( head 1 for TT)
         gnn_in_dim = feature_metric + feature_logs + feature_traces
         gnn_hidden_dim = 64
         gnn_out_dim = 32
