@@ -62,6 +62,7 @@ class OptimizedArtDataProcess:
 
             day_path = os.path.join(self.rawdata_path, date_dir)
             
+            #---------------- Metrics ----------------#
             # 1. Load Metrics
             df_metric = self._load_csv_dir(os.path.join(day_path, 'metric/container'))
             if service_hash is None:
@@ -69,8 +70,10 @@ class OptimizedArtDataProcess:
             if df_metric.empty: continue
             df_metric = self.process_metric(df_metric, service_hash)
 
+
+            #---------------- Logs ----------------#
             # 2. Load Logs
-            #df_log = self._load_csv_dir(os.path.join(day_path, 'log'))
+            df_log = self._load_csv_dir(os.path.join(day_path, 'log'))
             sparse_envoy, miner = self.process_logs_with_drain(
                 os.path.join(day_path, 'log/all/log_filebeat-testbed-log-envoy.csv'), 
                 service_hash, 
@@ -82,19 +85,27 @@ class OptimizedArtDataProcess:
                 df_metric['time_map'],
                 existing_miner=miner # Update your method to accept an existing miner
             )
-
+#
             # 3. Densify both
             # You can adjust max_templates (e.g., 30 for envoy, 30 for service)
             num_services = len(service_hash)
             tensor_envoy = self.densify_log_features(sparse_envoy, df_metric["data"].shape[0], num_services, max_templates=50)
             tensor_service = self.densify_log_features(sparse_service, df_metric["data"].shape[0], num_services, max_templates=50)
-
+#
             # 4. Concatenate into a single Log Feature Block
             # Result shape: [Time, 46, 60] (if max_templates was 30 each)
             df_log = np.concatenate([tensor_envoy, tensor_service], axis=-1)
 
+            #---------------- Traces ----------------#
             # 3. Load Traces
-            df_trace = self._load_csv_dir(os.path.join(day_path, 'trace'))
+            df_trace = self.process_traces_to_adj(
+                os.path.join(day_path, 'trace/all/trace_jaeger-span.csv'), 
+                service_hash, 
+                df_metric['time_map']
+            )
+            df_trace = self.densify_trace_tensor(df_trace, df_metric["data"].shape[0], num_nodes=len(service_hash))
+
+
 
             # 4. Transform and save immediately
             logging.info(f"Transforming windows for {date_dir}...")
@@ -118,6 +129,7 @@ class OptimizedArtDataProcess:
         print(f"Total unique services found in metrics: {self.num_services}")
         return service_to_idx
 
+    #region ########################### Metric Processing ###########################
     def process_metric(self, df_metric, service_map):
         # 1. Map names to indices and get unique KPIs/Timestamps
         df_metric['cmdb_id'] = df_metric['cmdb_id'].apply(lambda x: x.split('.')[-1])
@@ -156,8 +168,10 @@ class OptimizedArtDataProcess:
 
         return {"data": data_tensor, "time_map": time_map, "kpi_map": kpi_map}
 
+    #endregion
 
 
+    #region ########################### Log Processing ###########################
     def process_logs_with_drain(self, file_path, service_map, time_map, existing_miner=None):
         # 1. Initialize Miner
         # Use existing miner if provided, otherwise create new
@@ -217,7 +231,68 @@ class OptimizedArtDataProcess:
                 log_tensor[t, s, template_map[tid]] = count
                 
         return log_tensor
+    #endregion  
+
+
+    #region ########################### Trace Processing ###########################
+    def process_traces_to_adj(self, file_path, service_map, time_map):
+        # F=3: [Call_Count, Sum_Duration, Error_Count]
+        sparse_adj = {} 
+
+        for chunk in pd.read_csv(file_path, chunksize=500000):
+            # 1. Standardize names and map indices
+            chunk['cmdb_id'] = chunk['cmdb_id'].apply(lambda x: str(x).split('.')[-1])
+            chunk['timestamp'] = chunk['timestamp'] // 1000
+            chunk['t_idx'] = chunk['timestamp'].map(time_map)
+            chunk['child_idx'] = chunk['cmdb_id'].map(service_map)
+            
+            # 2. Create a lookup for this chunk: span_id -> service_index
+            span_to_node = dict(zip(chunk['span_id'], chunk['child_idx']))
+            
+            # 3. Find the parent service index
+            chunk['parent_idx'] = chunk['parent_span'].map(span_to_node)
+            
+            # Filter: We only care about rows where we know the Time, the Child, AND the Parent
+            valid_edges = chunk.dropna(subset=['t_idx', 'child_idx', 'parent_idx']).copy()
+            
+            if valid_edges.empty: continue
+
+            # 4. Aggregate into the sparse dictionary
+            # We group by (Time, Parent, Child) to get counts and latency sums
+            stats = valid_edges.groupby(['t_idx', 'parent_idx', 'child_idx']).agg({
+                'duration': ['count', 'sum'],
+                'status_code': lambda x: (x != 0).sum() # Count non-zero status codes as errors
+            })
+
+            for (t, u, v), row in stats.iterrows():
+                key = (int(t), int(u), int(v))
+                count = row[('duration', 'count')]
+                d_sum = row[('duration', 'sum')]
+                errs  = row[('status_code', '<lambda>')]
+                
+                if key not in sparse_adj:
+                    sparse_adj[key] = [0, 0.0, 0]
+                
+                sparse_adj[key][0] += count
+                sparse_adj[key][1] += d_sum
+                sparse_adj[key][2] += errs
+            break#TODO for testing
+        return sparse_adj
     
+    def densify_trace_tensor(self, sparse_adj, num_times, num_nodes=46):
+        # Final Shape: [Time, 46, 46, 3]
+        # Features: [Call_Count, Avg_Latency, Error_Rate]
+        adj_tensor = np.zeros((num_times, num_nodes, num_nodes, 3), dtype=np.float32)
+        
+        for (t, u, v), values in sparse_adj.items():
+            count, d_sum, errs = values
+            adj_tensor[t, u, v, 0] = count
+            adj_tensor[t, u, v, 1] = d_sum / count if count > 0 else 0
+            adj_tensor[t, u, v, 2] = errs / count if count > 0 else 0
+                
+        return adj_tensor
+    #endregion
+
     def _transform_and_stream(self, df_metric, df_log, df_trace, df_gt, date_label):
         """
         Processes the dataframes into sliding windows and saves 
