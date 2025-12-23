@@ -25,6 +25,7 @@ class OptimizedArtDataProcess:
         self.step = step
         self.percent = 0.5 # Percentage of labeled data to use, like MSDS
         self.num_node = 0  # Number of services/nodes
+        self.global_window = -1  # Global window counter across all days
         if not os.path.exists(self.dataset_path):
             os.makedirs(self.dataset_path)
 
@@ -102,7 +103,7 @@ class OptimizedArtDataProcess:
 
             # 4. Transform and save immediately
             logging.info(f"Transforming windows for {date_dir}...")
-            self._transform_and_stream(df_metric, df_log, df_trace)
+            self._transform_and_stream(df_metric, df_log, df_trace,label)
             
             # 5. Manual Cleanup
             del df_metric, df_log, df_trace
@@ -363,8 +364,50 @@ class OptimizedArtDataProcess:
 
     #endregion
     
+
+    def save_window(self, combined_sample, window_idx):
+        # We save all files in one flat directory or subfolders by date
+        # To match MSDS exactly, we usually use a flat structure or 
+        # filenames like '2022-05-01_win_0.pkl'
+        filename = f"{window_idx}.pkl"
+        file_path = os.path.join(self.dataset_path, filename)
+        
+        with open(file_path, 'wb') as f:
+            # protocol 4+ is required for large objects (Trace tensors)
+            pickle.dump(combined_sample, f, protocol=pickle.HIGHEST_PROTOCOL)
     
-    def _transform_and_stream(self, metric_obj, log_tensor, trace_tensor):
+
+    def _transform_and_stream(self, metric_obj, log_tensor, trace_tensor, label_tuple):
+        label_raw, label_mask = label_tuple
+        T = metric_obj["data"].shape[0]
+        window = self.window_size
+        stride = self.step
+                
+        logging.info(f"Slicing {T} timestamps.")
+        
+        for start in range(0, T - window, stride):
+            end = start + window
+            
+            # 1. Prepare Window Slices
+            # x: Node features (Window, Nodes, Feats)
+            # edge_index: Adjacency/Trace features (Window, Nodes, Nodes, Feats)
+            # y: Label for the window (typically the label of the LAST timestamp)
+            
+            combined_sample = {
+                "data_node": metric_obj["data"][start:end].astype(np.float32), # No expand_dims
+                "data_log": log_tensor[start:end].astype(np.float32),          # No expand_dims
+                "data_edge": trace_tensor[start:end].astype(np.float32),       # No expand_dims
+                "groundtruth_real": label_raw[end-1].astype(np.int64),
+                "groundtruth_cls": label_mask[end-1].astype(np.int64),
+                "name": f"{self.global_window}" # MSDS uses a name key for saving
+            }
+            
+            # 2. Stream to disk
+            self.global_window += 1
+            self.save_window(combined_sample, self.global_window)
+
+
+    def _transform_and_stream_old(self, metric_obj, log_tensor, trace_tensor):
         # metric_obj["tensor"] -> (T, 46, F_m)
         # log_tensor          -> (T, 46, F_l)
         # trace_tensor        -> (T, 46, 46, F_t)
@@ -398,7 +441,7 @@ class OptimizedArtDataProcess:
             }
             
             # Save to disk or yield to generator
-            self.save_window(combined_sample, date_dir, start)
+            self.save_window(combined_sample, start)
 
 if __name__ == "__main__":
     processor = OptimizedArtDataProcess(
