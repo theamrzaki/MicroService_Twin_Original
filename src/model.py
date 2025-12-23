@@ -23,6 +23,8 @@ import src.inner_models.FITS_hermite as FITS_hermite_operations
 from src.inner_models.Eadro import MainModel 	
 from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
 from src.inner_models.Art import ARTWrapper as Art_Model
+from src.inner_models.Hades import HadesWrapper as Hades_Model
+
 import argparse
 
 from numpy.polynomial import Legendre as L
@@ -311,6 +313,19 @@ class MyModel(nn.Module):
 				feature_logs=args['feature_log'],
 				feature_traces=args['feature_edge']
 			)
+		
+		elif self.FREQ_DOMAIN == "Hades":
+			event_num = args['log_len']
+			metric_num = args['raw_node']
+			self.Hades_model = Hades_Model(
+				raw_metric=args['raw_node'],
+				raw_logs=args['log_len'],
+				feature_metric=args['feature_node'],
+				feature_logs=args['feature_log'],
+				device = 'cuda',
+				#TODO to be in the forward only
+			)
+			
 		self.node_emb = Embed(args['raw_node'], args['feature_node'], dim=4)
 		self.log_emb = Embed(args['log_len'], args['feature_log'], dim=4)
 		self.egde_emb = Embed(args['raw_edge'], args['feature_edge'], dim=5)
