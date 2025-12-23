@@ -17,12 +17,14 @@ class OptimizedArtDataProcess:
         - feature names are the files themselves 
             - organized through 3 different folders (container, node, jvm)
     """
-    def __init__(self, rawdata_path, dataset_path, window_size=10, step=1):
+    def __init__(self, rawdata_path, groundtruth_path, dataset_path, window_size=10, step=1):
         self.rawdata_path = rawdata_path
+        self.groundtruth_path = groundtruth_path
         self.dataset_path = dataset_path
         self.window_size = window_size
         self.step = step
-        
+        self.percent = 0.5 # Percentage of labeled data to use, like MSDS
+        self.num_node = 0  # Number of services/nodes
         if not os.path.exists(self.dataset_path):
             os.makedirs(self.dataset_path)
 
@@ -39,24 +41,12 @@ class OptimizedArtDataProcess:
         # Generator expression inside concat saves memory
         return pd.concat((pd.read_csv(f) for f in files), ignore_index=True)
 
-    def run(self, debug_mode=False):
+    def run(self):
         """Main loop that processes data day-by-day."""
         logging.info("Starting sequential memory-optimized loading...")
         
-        # Load labels once
-        gt_path = os.path.join(os.path.dirname(self.rawdata_path), 'groundtruth', 'groundtruth-all.csv')
-        try:
-            df_gt = pd.read_csv(gt_path)
-        except FileNotFoundError:
-            logging.error(f"Ground truth not found at {gt_path}")
-            return
-
         dates = sorted([d for d in os.listdir(self.rawdata_path) if os.path.isdir(os.path.join(self.rawdata_path, d))])
         
-        if debug_mode:
-            dates = dates[:1] # Process only the first day for testing
-            logging.info("--- DEBUG MODE ACTIVE: Processing 1 day only ---")
-
         service_hash = None
         for i, date_dir in tqdm(enumerate(dates), desc="Processing days"):
 
@@ -69,7 +59,7 @@ class OptimizedArtDataProcess:
                 service_hash = self.build_custom_service_hash(df_metric)
             if df_metric.empty: continue
             df_metric = self.process_metric(df_metric, service_hash)
-
+            self.num_node = len(service_hash)
 
             #---------------- Logs ----------------#
             # 2. Load Logs
@@ -105,6 +95,9 @@ class OptimizedArtDataProcess:
             )
             df_trace = self.densify_trace_tensor(df_trace, df_metric["data"].shape[0], num_nodes=len(service_hash))
 
+            #---------------- Label ----------------#
+            df_gt = pd.read_csv(os.path.join(self.groundtruth_path, 'groundtruth-' + date_dir + '.csv'))
+            label = self.process_label(df_gt, service_hash, df_metric['time_map'])
 
 
             # 4. Transform and save immediately
@@ -293,6 +286,84 @@ class OptimizedArtDataProcess:
         return adj_tensor
     #endregion
 
+
+    #region ########################### Label ###########################
+    def process_label(self, df_gt, service_map, time_map):
+        num_times = len(time_map)
+        num_services = len(service_map)
+        label_raw = np.zeros((num_times, num_services), dtype=np.float32)
+        
+        # 1. Get the sorted master timestamps from your metrics
+        master_timestamps = np.array(sorted(time_map.keys()))
+        
+        for _, row in df_gt.iterrows():
+            # Ensure GT timestamp is an integer
+            gt_time = int(float(row['timestamp']))
+            
+            # 2. Find the index of the closest master timestamp
+            # This handles the case where metrics are at :00 and logs are at :01
+            diffs = np.abs(master_timestamps - gt_time)
+            closest_idx = np.argmin(diffs)
+            
+            # Only map if the closest metric is within 60 seconds
+            if diffs[closest_idx] <= 60:
+                t_idx = time_map[master_timestamps[closest_idx]]
+                
+                # 3. Clean and match service name
+                target_name = str(row['cmdb_id']).split('.')[-1]
+                matched_indices = [idx for name, idx in service_map.items() 
+                                if name.startswith(target_name)]
+                
+                for s_idx in matched_indices:
+                    # Mark failure for 10 minutes (D1 failures are persistent)
+                    for offset in range(10):
+                        if t_idx + offset < num_times:
+                            label_raw[t_idx + offset, s_idx] = 1.0
+
+        # 2. Masking Logic
+        label_mask = label_raw.copy()
+        # times stores [count_normal, count_anomaly] per service
+        times = np.zeros((num_services, 2))  
+        
+        # One-hot representation for the logic: (T, 46, 2)
+        label_onehot_2class = np.eye(2)[label_raw.astype(int)] 
+
+        for idx in range(num_times):
+            # Update the global counter for how many times each node has failed
+            times += label_onehot_2class[idx]
+            
+            if idx < self.window_size:
+                continue
+                
+            # Find services failing at THIS specific time step
+            failing_service_indices = np.where(label_raw[idx] == 1)[0]
+            
+            if len(failing_service_indices) > 0:
+                # Get the failure counts only for the nodes that are currently failing
+                # times[failing_service_indices, 1] gives the 'total anomalies so far' for those nodes
+                # We apply .flatten() to ensure it's a 1D array for the loop
+                current_fail_counts = times[failing_service_indices, 1].flatten()
+                mask = current_fail_counts % 10 >= (10 * self.percent)
+                
+                for i, s_idx in enumerate(failing_service_indices):
+                    # mask[i] is now a single boolean value, safe for 'if'
+                    if mask[i]:
+                        label_mask[idx, s_idx] = 2
+
+        # 3. Final One-Hot (T, 46, 3)
+        label_mask_final = np.eye(3)[label_mask.astype(int)]
+
+
+        #sanity check to check if all elements are the same 
+        assert np.all(label_mask_final.sum(axis=-1) == 1), "One-hot encoding error: not all elements sum to 1"
+        #print("Class counts in label_mask_final:")
+        #print(label_mask_final.sum(axis=(0, 1)))
+
+        return label_raw, label_mask_final
+
+    #endregion
+    
+    
     def _transform_and_stream(self, metric_obj, log_tensor, trace_tensor):
         # metric_obj["tensor"] -> (T, 46, F_m)
         # log_tensor          -> (T, 46, F_l)
@@ -332,12 +403,12 @@ class OptimizedArtDataProcess:
 if __name__ == "__main__":
     processor = OptimizedArtDataProcess(
         rawdata_path='./data/ArtData/aiops-dataset/Aiops-Dataset/data',
+        groundtruth_path='./data/ArtData/aiops-dataset/Aiops-Dataset/groundtruth',
         dataset_path='./data/ArtData-processed',
         window_size=10,
         step=1
     )
-    # Run with debug_mode=True first to verify it works on 1 day
-    processor.run(debug_mode=True)
+    processor.run()
 
 
 
