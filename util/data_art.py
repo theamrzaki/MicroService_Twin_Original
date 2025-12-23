@@ -5,7 +5,8 @@ import pandas as pd
 import numpy as np
 import pickle
 from tqdm import tqdm
-
+from drain3 import TemplateMiner
+from drain3.template_miner_config import TemplateMinerConfig
 # Configure logging to see output in console
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
@@ -69,7 +70,28 @@ class OptimizedArtDataProcess:
             df_metric = self.process_metric(df_metric, service_hash)
 
             # 2. Load Logs
-            df_log = self._load_csv_dir(os.path.join(day_path, 'log'))
+            #df_log = self._load_csv_dir(os.path.join(day_path, 'log'))
+            sparse_envoy, miner = self.process_logs_with_drain(
+                os.path.join(day_path, 'log/all/log_filebeat-testbed-log-envoy.csv'), 
+                service_hash, 
+                df_metric['time_map']
+            )
+            sparse_service, miner = self.process_logs_with_drain(
+                os.path.join(day_path, 'log/all/log_filebeat-testbed-log-service.csv'), 
+                service_hash, 
+                df_metric['time_map'],
+                existing_miner=miner # Update your method to accept an existing miner
+            )
+
+            # 3. Densify both
+            # You can adjust max_templates (e.g., 30 for envoy, 30 for service)
+            num_services = len(service_hash)
+            tensor_envoy = self.densify_log_features(sparse_envoy, df_metric["data"].shape[0], num_services, max_templates=50)
+            tensor_service = self.densify_log_features(sparse_service, df_metric["data"].shape[0], num_services, max_templates=50)
+
+            # 4. Concatenate into a single Log Feature Block
+            # Result shape: [Time, 46, 60] (if max_templates was 30 each)
+            df_log = np.concatenate([tensor_envoy, tensor_service], axis=-1)
 
             # 3. Load Traces
             df_trace = self._load_csv_dir(os.path.join(day_path, 'trace'))
@@ -132,8 +154,70 @@ class OptimizedArtDataProcess:
         # This is lightning fast and doesn't create extra copies of data
         data_tensor[time_coords, service_coords, kpi_coords] = values
 
-        return data_tensor
+        return {"data": data_tensor, "time_map": time_map, "kpi_map": kpi_map}
 
+
+
+    def process_logs_with_drain(self, file_path, service_map, time_map, existing_miner=None):
+        # 1. Initialize Miner
+        # Use existing miner if provided, otherwise create new
+        if existing_miner is not None:
+            template_miner = existing_miner
+        else:
+            config = TemplateMinerConfig()
+            # Ensure your config uses the correct set method for your version
+            template_miner = TemplateMiner(config=config)
+        
+        # We'll start by tracking the most frequent N templates as features
+        # Or simply track the 'Event ID' count
+        # Let's use a dictionary to store counts: {(time, service, template_id): count}
+        # This avoids pre-allocating a massive [T, S, K] tensor before we know K (num of templates)
+        sparse_log_counts = {}
+
+        for chunk in pd.read_csv(file_path, chunksize=500000):
+            # Cleaning names and mapping indices
+            chunk['cmdb_id'] = chunk['cmdb_id'].apply(lambda x: x.split('.')[-1])
+            chunk['t_idx'] = chunk['timestamp'].map(time_map)
+            chunk['s_idx'] = chunk['cmdb_id'].map(service_map)
+            
+            # Filter valid rows
+            valid_chunk = chunk.dropna(subset=['t_idx', 's_idx'])
+            
+            for _, row in valid_chunk.iterrows():
+                t = int(row['t_idx'])
+                s = int(row['s_idx'])
+                
+                # 2. Use Drain to get the Template
+                # We parse the 'value' column
+                result = template_miner.add_log_message(str(row['value']))
+                template_id = result["cluster_id"]
+                
+                # 3. Increment Sparse Matrix
+                key = (t, s, template_id)
+                sparse_log_counts[key] = sparse_log_counts.get(key, 0) + 1
+            break#TODO for testing
+        return sparse_log_counts, template_miner
+
+
+    def densify_log_features(self, sparse_counts, num_times, num_services, max_templates=50):
+        # Find the most frequent template IDs to keep the feature dimension manageable
+        # (Optional: You can just keep all, but 50-100 is usually enough for AIOps)
+        
+        unique_templates = sorted(list(set([k[2] for k in sparse_counts.keys()])))
+        num_templates = min(len(unique_templates), max_templates)
+        
+        # Pre-allocate final tensor
+        log_tensor = np.zeros((num_times, num_services, num_templates), dtype=np.float32)
+        
+        # Map template_id to 0...N
+        template_map = {tid: i for i, tid in enumerate(unique_templates[:num_templates])}
+        
+        for (t, s, tid), count in sparse_counts.items():
+            if tid in template_map:
+                log_tensor[t, s, template_map[tid]] = count
+                
+        return log_tensor
+    
     def _transform_and_stream(self, df_metric, df_log, df_trace, df_gt, date_label):
         """
         Processes the dataframes into sliding windows and saves 
