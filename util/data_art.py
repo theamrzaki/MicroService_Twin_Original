@@ -109,7 +109,7 @@ class OptimizedArtDataProcess:
 
             # 4. Transform and save immediately
             logging.info(f"Transforming windows for {date_dir}...")
-            self._transform_and_stream(df_metric, df_log, df_trace, df_gt, date_dir)
+            self._transform_and_stream(df_metric, df_log, df_trace)
             
             # 5. Manual Cleanup
             del df_metric, df_log, df_trace
@@ -293,23 +293,41 @@ class OptimizedArtDataProcess:
         return adj_tensor
     #endregion
 
-    def _transform_and_stream(self, df_metric, df_log, df_trace, df_gt, date_label):
-        """
-        Processes the dataframes into sliding windows and saves 
-        each window as a separate pickle file.
-        """
-        # --- Logic Check ---
-        # ArtData column names often differ from MSDS. 
-        # MSDS uses 'now', ArtData might use 'timestamp'. 
-        # Standardize here if necessary:
-        # df_metric.rename(columns={'timestamp': 'now'}, inplace=True)
+    def _transform_and_stream(self, metric_obj, log_tensor, trace_tensor):
+        # metric_obj["tensor"] -> (T, 46, F_m)
+        # log_tensor          -> (T, 46, F_l)
+        # trace_tensor        -> (T, 46, 46, F_t)
         
-        # Example of saving (to be filled with your specific windowing logic):
-        # for i, window_data in enumerate(windows):
-        #    save_path = os.path.join(self.dataset_path, f"{date_label}_win_{i}.pkl")
-        #    with open(save_path, 'wb') as f:
-        #        pickle.dump(window_data, f)
-        pass
+        T = metric_obj["data"].shape[0]
+        window = self.window_size # e.g., 60
+        stride = self.step        # e.g., 1
+            
+        for start in range(0, T - window, stride):
+            end = start + window
+            
+            # Slice Node Features: (Window, 46, F_node)
+            metric = metric_obj["data"][start:end]
+            
+            log = log_tensor[start:end]
+
+            # Slice Edge Features: (Window, 46, 46, F_edge)
+            edge_win = trace_tensor[start:end]
+            
+            # Get Ground Truth for this window
+            # (Assuming you have logic to map timestamps to labels)
+            #label = self.get_label_for_window(metric_obj["timestamps"][start:end], df_gt)
+            
+            # Prepare the 5D Batch entry
+            # Adding the "Batch" dimension (B=1) via expand_dims or simple list storage
+            combined_sample = {
+                "metric": np.expand_dims(metric, axis=0), # (1, T, N, F)
+                "log": np.expand_dims(log, axis=0),       # (1, T, N, F)
+                "edge_data": np.expand_dims(edge_win, axis=0), # (1, T, N, N, F)
+                "label": "  N/A" # Placeholder, implement your own logic
+            }
+            
+            # Save to disk or yield to generator
+            self.save_window(combined_sample, date_dir, start)
 
 if __name__ == "__main__":
     processor = OptimizedArtDataProcess(
