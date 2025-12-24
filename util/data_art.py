@@ -1,5 +1,6 @@
 import gc
 import os
+import re
 import logging
 import pandas as pd
 import numpy as np
@@ -10,24 +11,37 @@ from drain3.template_miner_config import TemplateMinerConfig
 # Configure logging to see output in console
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-class OptimizedArtDataProcess:
+class Process:
     """
     Metrics 
         - service names are the cmdb_id in csvs (46 services)
         - feature names are the files themselves 
             - organized through 3 different folders (container, node, jvm)
     """
-    def __init__(self, rawdata_path, groundtruth_path, dataset_path, window_size=10, step=1):
-        self.rawdata_path = rawdata_path
-        self.groundtruth_path = groundtruth_path
-        self.dataset_path = dataset_path
-        self.window_size = window_size
-        self.step = step
+    def __init__(self, **kwargs):
+        self.window_size = kwargs['window']
+        self.step = kwargs['step']
+        self.dataset_path = kwargs['dataset_path'] 
+        self.rawdata_path = kwargs["data_path"]+ "/data"
+        self.groundtruth_path = kwargs['dataset_path'] + "/groundtruth"
+
+        self.percent = kwargs['label_percent']
         self.percent = 0.5 # Percentage of labeled data to use, like MSDS
-        self.num_node = 0  # Number of services/nodes
         self.global_window = -1  # Global window counter across all days
-        if not os.path.exists(self.dataset_path):
-            os.makedirs(self.dataset_path)
+        self.num_node = 0  # Number of services/nodes
+        self.dataset = []  # Final list of processed windows    
+
+        # MSDS Logic: If directory exists and has files, just read them
+        if os.path.exists(self.dataset_path) and len(os.listdir(self.dataset_path)) > 0:
+            self.read_data()
+            self.graph = self.build_art_graph()
+        else:
+            if not os.path.exists(self.dataset_path):
+                os.makedirs(self.dataset_path)
+            # Otherwise, run the full processing (load_raw equivalent)
+            self.load_raw()
+            self.graph = self.build_art_graph()
+        print("data Art processing finished.")
 
     def _load_csv_dir(self, path):
         """Helper to load and merge CSVs in a folder efficiently."""
@@ -42,7 +56,7 @@ class OptimizedArtDataProcess:
         # Generator expression inside concat saves memory
         return pd.concat((pd.read_csv(f) for f in files), ignore_index=True)
 
-    def run(self):
+    def load_raw(self):
         """Main loop that processes data day-by-day."""
         logging.info("Starting sequential memory-optimized loading...")
         
@@ -109,7 +123,42 @@ class OptimizedArtDataProcess:
             del df_metric, df_log, df_trace
             gc.collect() 
 
+    def read_data(self):
+        """Identical to MSDS: Reads processed .pkl windows from disk."""
+        logging.info("Reading transformed window data from disk...")
+        
+        files = sorted(
+            [f for f in os.listdir(self.dataset_path) if f.endswith('.pkl')],
+            key=lambda x: int(re.findall(r'\d+', x)[0]) # Sort by window index
+        )
+        
+        for file in tqdm(files, desc="Loading Pickles"):
+            with open(os.path.join(self.dataset_path, file), 'rb') as f:
+                data = pickle.load(f)
+                self.dataset.append(data)
+        
+        self.num_node = self.dataset[0]['data_node'].shape[1] if self.dataset else 0
+        logging.info(f"Loaded {len(self.dataset)} windows.")
 
+    def build_art_graph(self):
+        """
+        Mimics the MSDS 5x5 topology for 42 nodes.
+        Node 0 (Gateway) connects to all, and all have self-loops.
+        """
+        num_nodes = self.num_node
+        adj_matrix = np.zeros((num_nodes, num_nodes), dtype=np.float32)
+        
+        # 1. Self-loops (diagonal = 1)
+        np.fill_diagonal(adj_matrix, 1.0)
+        
+        # 2. Gateway (Node 0) connects to all services
+        adj_matrix[0, :] = 1.0 
+        
+        # 3. All services can reply to Gateway
+        adj_matrix[:, 0] = 1.0
+        
+        return adj_matrix
+    
     def build_custom_service_hash(self, df_metric):
         # Strip the "node-X." prefix from all cmdb_ids in the metric dataframe
         # node-6.emailservice-0 -> emailservice-0
@@ -407,51 +456,19 @@ class OptimizedArtDataProcess:
             self.save_window(combined_sample, self.global_window)
 
 
-    def _transform_and_stream_old(self, metric_obj, log_tensor, trace_tensor):
-        # metric_obj["tensor"] -> (T, 46, F_m)
-        # log_tensor          -> (T, 46, F_l)
-        # trace_tensor        -> (T, 46, 46, F_t)
-        
-        T = metric_obj["data"].shape[0]
-        window = self.window_size # e.g., 60
-        stride = self.step        # e.g., 1
-            
-        for start in range(0, T - window, stride):
-            end = start + window
-            
-            # Slice Node Features: (Window, 46, F_node)
-            metric = metric_obj["data"][start:end]
-            
-            log = log_tensor[start:end]
-
-            # Slice Edge Features: (Window, 46, 46, F_edge)
-            edge_win = trace_tensor[start:end]
-            
-            # Get Ground Truth for this window
-            # (Assuming you have logic to map timestamps to labels)
-            #label = self.get_label_for_window(metric_obj["timestamps"][start:end], df_gt)
-            
-            # Prepare the 5D Batch entry
-            # Adding the "Batch" dimension (B=1) via expand_dims or simple list storage
-            combined_sample = {
-                "metric": np.expand_dims(metric, axis=0), # (1, T, N, F)
-                "log": np.expand_dims(log, axis=0),       # (1, T, N, F)
-                "edge_data": np.expand_dims(edge_win, axis=0), # (1, T, N, N, F)
-                "label": "  N/A" # Placeholder, implement your own logic
-            }
-            
-            # Save to disk or yield to generator
-            self.save_window(combined_sample, start)
 
 if __name__ == "__main__":
-    processor = OptimizedArtDataProcess(
-        rawdata_path='./data/ArtData/aiops-dataset/Aiops-Dataset/data',
-        groundtruth_path='./data/ArtData/aiops-dataset/Aiops-Dataset/groundtruth',
-        dataset_path='./data/ArtData-processed',
-        window_size=10,
-        step=1
+    kwargs = {
+        'window': 10,
+        'step': 1,
+        'dataset_path': './data/ArtData-processed',
+        'data_path': './data/ArtData/aiops-dataset/Aiops-Dataset',
+        'label_percent': 0.5
+    }
+    processor = Process(
+        **kwargs
     )
-    processor.run()
+    print(processor.graph)
 
 
 
