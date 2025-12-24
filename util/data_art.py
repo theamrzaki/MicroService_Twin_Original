@@ -117,6 +117,11 @@ class Process:
 
             # 4. Transform and save immediately
             logging.info(f"Transforming windows for {date_dir}...")
+
+            df_metric["data"], df_log, df_trace = self.normalize_msds_style(
+                df_metric["data"], df_log, df_trace
+            )
+            
             self._transform_and_stream(df_metric, df_log, df_trace,label)
             
             # 5. Manual Cleanup
@@ -397,7 +402,7 @@ class Process:
 
         # 3. Final One-Hot (T, 46, 3)
         label_mask_final = np.eye(3)[label_mask.astype(int)]
-
+        label_raw = np.eye(2)[label_raw.astype(int)] #Final Conversions to One-Hot
 
         #sanity check to check if all elements are the same 
         assert np.all(label_mask_final.sum(axis=-1) == 1), "One-hot encoding error: not all elements sum to 1"
@@ -420,6 +425,29 @@ class Process:
             # protocol 4+ is required for large objects (Trace tensors)
             pickle.dump(combined_sample, f, protocol=pickle.HIGHEST_PROTOCOL)
     
+    def normalize_msds_style(self, metric_data, log_tensor, trace_tensor):
+        """
+        Applies the normalization logic found in data_MSDS.py
+        """
+        # 1. Normalize Logs (Global Min-Max)
+        # log_tensor shape: (Time, Nodes, Features)
+        l_max = log_tensor.max(axis=(0, 1))
+        l_min = log_tensor.min(axis=(0, 1))
+        log_tensor = (log_tensor - l_min) / (l_max - l_min + 1e-6)
+
+        # 2. Normalize Traces (Mean-based)
+        # trace_tensor shape: (Time, Nodes, Nodes, Features)
+        # Note: MSDS calculates mean across the time dimension
+        t_mean = trace_tensor.mean(axis=0) 
+        trace_tensor = trace_tensor / (t_mean * 10 + 1e-6)
+
+        # 3. Normalize Metrics (Standardization)
+        # High metric values (like bytes) cause the 10^17 loss; log-scaling or Z-score is required
+        m_mean = metric_data.mean(axis=0)
+        m_std = metric_data.std(axis=0) + 1e-6
+        metric_data = (metric_data - m_mean) / m_std
+
+        return metric_data, log_tensor, trace_tensor
 
     def _transform_and_stream(self, metric_obj, log_tensor, trace_tensor, label_tuple):
         label_raw, label_mask = label_tuple

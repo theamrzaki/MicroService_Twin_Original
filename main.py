@@ -121,11 +121,13 @@ if __name__ == '__main__':
             info_dict[statue] = info
             file.writelines(statue + '   ' + info + '\n')
     #if args.get("case_study", False):
-    results_path = './results.csv'#msds
+    results_path = './result.csv'#msds
     if args["data_source"] == "TT":
         results_path = './result_TT.csv'
     elif args["data_source"] == "SN":
         results_path = './result_SN.csv'
+    elif args["data_source"] == "ART":
+        results_path = './result_ART.csv'
     util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,results_path)
     #else:
     #    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'./result_casestudy.csv')

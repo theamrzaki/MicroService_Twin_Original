@@ -15,7 +15,7 @@ parser.add_argument("--case_study", default=False,
                     type=lambda x: x.lower() == "true", help='Whether to run case study')
 # training setting
 parser.add_argument("--gpu", default=True, type=lambda x: x.lower() == "true")
-parser.add_argument("--epochs", default=50, type=int,
+parser.add_argument("--epochs", default=300, type=int,
                     help='the number of training epochs')
 parser.add_argument("--patience", default=15, type=float,
                     help='the number of epoch that loss is uping')
