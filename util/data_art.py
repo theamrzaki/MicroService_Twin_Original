@@ -118,7 +118,30 @@ class Process:
             # 4. Transform and save immediately
             logging.info(f"Transforming windows for {date_dir}...")
 
-            df_metric["data"], df_log, df_trace = self.normalize_msds_style(
+            ## --- DEBUGGING SECTION START ---
+            ## 1. Check time resolution
+            #time_list = sorted(df_metric['time_map'].keys())
+            #label_raw = label[0]
+            #time_diffs = np.diff(time_list)
+            #avg_diff = np.mean(time_diffs)
+            #logging.info(f"DEBUG: Average time between samples: {avg_diff} seconds")
+
+            ## 2. Check total time coverage
+            #total_duration_minutes = (time_list[-1] - time_list[0]) / 60
+            #logging.info(f"DEBUG: Total dataset duration: {total_duration_minutes:.2f} minutes")
+
+            ## 3. Check failure duration in indices
+            ## Find indices where label == 1
+            #anomaly_indices = np.where(label_raw == 1)[0]
+            #if len(anomaly_indices) > 1:
+            #    # Find the duration of the first continuous failure block
+            #    gap_indices = np.where(np.diff(anomaly_indices) > 1)[0]
+            #    if len(gap_indices) > 0:
+            #        first_failure_len = anomaly_indices[gap_indices[0]] - anomaly_indices[0]
+            #        logging.info(f"DEBUG: Typical failure duration in indices: {first_failure_len}")
+            ## --- DEBUGGING SECTION END ---
+
+            df_metric["data"], df_log, df_trace = self.normalize_art_style(
                 df_metric["data"], df_log, df_trace
             )
             
@@ -220,46 +243,72 @@ class Process:
 
 
     #region ########################### Log Processing ###########################
+    def normalize_log(self, msg: str) -> str:
+        """
+        Aggressive normalization to prevent Drain over-splitting.
+        Tune patterns if needed, but keep this step.
+        """
+        msg = msg.lower()
+
+        msg = re.sub(r'\b\d+\b', '<NUM>', msg)                       # integers
+        msg = re.sub(r'\b\d+\.\d+\b', '<NUM>', msg)                 # floats
+        msg = re.sub(r'\b\d+\.\d+\.\d+\.\d+\b', '<IP>', msg)        # IPv4
+        msg = re.sub(r'0x[0-9a-f]+', '<HEX>', msg)                  # hex
+        msg = re.sub(r'\b[a-f0-9]{8,}\b', '<ID>', msg)              # hashes / UUID-like
+        msg = re.sub(r'\b\d{2}:\d{2}:\d{2}\b', '<TIME>', msg)       # timestamps
+
+        return msg
+    
     def process_logs_with_drain(self, file_path, service_map, time_map, existing_miner=None):
-        # 1. Initialize Miner
-        # Use existing miner if provided, otherwise create new
+
+        # ------------------------------------------------------------------
+        # 1. Initialize Drain with LESS specificity
+        # ------------------------------------------------------------------
         if existing_miner is not None:
             template_miner = existing_miner
         else:
             config = TemplateMinerConfig()
-            # Ensure your config uses the correct set method for your version
+
+            # Core fixes
+            config.drain_st = 0.2            # ↓ similarity threshold (merge more)
+            config.drain_depth = 3           # ↓ tree depth
+            config.extract_parameters = False
+            config.max_clusters = 100        # safety cap
+
             template_miner = TemplateMiner(config=config)
-        
-        # We'll start by tracking the most frequent N templates as features
-        # Or simply track the 'Event ID' count
-        # Let's use a dictionary to store counts: {(time, service, template_id): count}
-        # This avoids pre-allocating a massive [T, S, K] tensor before we know K (num of templates)
+
+        # ------------------------------------------------------------------
+        # 2. Sparse counts (unchanged)
+        # ------------------------------------------------------------------
         sparse_log_counts = {}
 
-        for chunk in tqdm(pd.read_csv(file_path, chunksize=500000), desc="Processing logs CSV"):
+        for chunk in tqdm(pd.read_csv(file_path, chunksize=500000),
+                        desc="Processing logs CSV"):
+
             # Cleaning names and mapping indices
             chunk['cmdb_id'] = chunk['cmdb_id'].apply(lambda x: x.split('.')[-1])
             chunk['t_idx'] = chunk['timestamp'].map(time_map)
             chunk['s_idx'] = chunk['cmdb_id'].map(service_map)
-            
-            # Filter valid rows
+
             valid_chunk = chunk.dropna(subset=['t_idx', 's_idx'])
-            
+
             for _, row in valid_chunk.iterrows():
                 t = int(row['t_idx'])
                 s = int(row['s_idx'])
-                
-                # 2. Use Drain to get the Template
-                # We parse the 'value' column
-                result = template_miner.add_log_message(str(row['value']))
+
+                # ------------------------------------------------------------------
+                # 3. NORMALIZED parsing (critical)
+                # ------------------------------------------------------------------
+                log_msg = self.normalize_log(str(row['value']))
+                result = template_miner.add_log_message(log_msg)
                 template_id = result["cluster_id"]
-                
-                # 3. Increment Sparse Matrix
+
                 key = (t, s, template_id)
                 sparse_log_counts[key] = sparse_log_counts.get(key, 0) + 1
-            ###break#TODO for testing
-        return sparse_log_counts, template_miner
 
+            #break  # TODO: remove after testing
+
+        return sparse_log_counts, template_miner
 
     def densify_log_features(self, sparse_counts, num_times, num_services, max_templates=50):
         # Pre-allocate with the FIXED MAX size immediately
@@ -278,48 +327,58 @@ class Process:
 
 
     #region ########################### Trace Processing ###########################
-    def process_traces_to_adj(self, file_path, service_map, time_map):
-        # F=3: [Call_Count, Sum_Duration, Error_Count]
-        sparse_adj = {} 
+    def build_span_service_map(self,file_path, service_map):
+        span_map = {}
 
-        for chunk in tqdm(pd.read_csv(file_path, chunksize=500000), desc="Processing traces CSV"):
-            # 1. Standardize names and map indices
+        for chunk in pd.read_csv(file_path, chunksize=500000):
             chunk['cmdb_id'] = chunk['cmdb_id'].apply(lambda x: str(x).split('.')[-1])
-            chunk['timestamp'] = chunk['timestamp'] // 1000
+            chunk['child_idx'] = chunk['cmdb_id'].map(service_map)
+
+            for sid, sidx in zip(chunk['span_id'], chunk['child_idx']):
+                if pd.notna(sidx):
+                    span_map[sid] = int(sidx)
+
+        return span_map
+
+    def process_traces_to_adj(self, file_path, service_map, time_map):
+        sparse_adj = {}
+
+        # Build global parent resolution
+        span_to_node = self.build_span_service_map(file_path, service_map)
+
+        for chunk in tqdm(pd.read_csv(file_path, chunksize=500000),
+                        desc="Processing traces CSV"):
+
+            chunk['cmdb_id'] = chunk['cmdb_id'].apply(lambda x: str(x).split('.')[-1])
+            chunk['timestamp'] = (chunk['timestamp'] // 1000)
             chunk['t_idx'] = chunk['timestamp'].map(time_map)
             chunk['child_idx'] = chunk['cmdb_id'].map(service_map)
-            
-            # 2. Create a lookup for this chunk: span_id -> service_index
-            span_to_node = dict(zip(chunk['span_id'], chunk['child_idx']))
-            
-            # 3. Find the parent service index
             chunk['parent_idx'] = chunk['parent_span'].map(span_to_node)
-            
-            # Filter: We only care about rows where we know the Time, the Child, AND the Parent
-            valid_edges = chunk.dropna(subset=['t_idx', 'child_idx', 'parent_idx']).copy()
-            
-            if valid_edges.empty: continue
 
-            # 4. Aggregate into the sparse dictionary
-            # We group by (Time, Parent, Child) to get counts and latency sums
-            stats = valid_edges.groupby(['t_idx', 'parent_idx', 'child_idx']).agg({
-                'duration': ['count', 'sum'],
-                'status_code': lambda x: (x != 0).sum() # Count non-zero status codes as errors
-            })
+            valid_edges = chunk.dropna(subset=['t_idx', 'child_idx', 'parent_idx'])
+            if valid_edges.empty:
+                continue
+
+            stats = valid_edges.groupby(
+                ['t_idx', 'parent_idx', 'child_idx']
+            ).agg(
+                call_count=('duration', 'count'),
+                duration_sum=('duration', 'sum'),
+                error_count=('status_code', lambda x: (x != 0).sum())
+            )
 
             for (t, u, v), row in stats.iterrows():
                 key = (int(t), int(u), int(v))
-                count = row[('duration', 'count')]
-                d_sum = row[('duration', 'sum')]
-                errs  = row[('status_code', '<lambda>')]
-                
+
                 if key not in sparse_adj:
                     sparse_adj[key] = [0, 0.0, 0]
-                
-                sparse_adj[key][0] += count
-                sparse_adj[key][1] += d_sum
-                sparse_adj[key][2] += errs
-            ###break#TODO for testing
+
+                sparse_adj[key][0] += row.call_count
+                sparse_adj[key][1] += row.duration_sum
+                sparse_adj[key][2] += row.error_count
+
+            #break  # TODO remove after testing
+
         return sparse_adj
     
     def densify_trace_tensor(self, sparse_adj, num_times, num_nodes=46):
@@ -425,29 +484,59 @@ class Process:
             # protocol 4+ is required for large objects (Trace tensors)
             pickle.dump(combined_sample, f, protocol=pickle.HIGHEST_PROTOCOL)
     
-    def normalize_msds_style(self, metric_data, log_tensor, trace_tensor):
+    def normalize_art_style(self, metric, log, trace, window_size=20):
         """
-        Applies the normalization logic found in data_MSDS.py
+        Implementation of ART Author Preprocessing:
+        - Sliding window size: 20
+        - Z-score normalization within each window
+        - Optimized to handle Modal-specific shapes
         """
-        # 1. Normalize Logs (Global Min-Max)
-        # log_tensor shape: (Time, Nodes, Features)
-        l_max = log_tensor.max(axis=(0, 1))
-        l_min = log_tensor.min(axis=(0, 1))
-        log_tensor = (log_tensor - l_min) / (l_max - l_min + 1e-6)
+        T, N, F_m = metric.shape
+        F_l = log.shape[-1]
+        F_t = trace.shape[-1]
 
-        # 2. Normalize Traces (Mean-based)
-        # trace_tensor shape: (Time, Nodes, Nodes, Features)
-        # Note: MSDS calculates mean across the time dimension
-        t_mean = trace_tensor.mean(axis=0) 
-        trace_tensor = trace_tensor / (t_mean * 10 + 1e-6)
+        # 1. Pre-allocate output buffers
+        norm_metric = np.zeros((T, N, F_m), dtype=np.float32)
+        norm_log = np.zeros((T, N, F_l), dtype=np.float32)
+        norm_trace = np.zeros((T, N, N, F_t), dtype=np.float32)
 
-        # 3. Normalize Metrics (Standardization)
-        # High metric values (like bytes) cause the 10^17 loss; log-scaling or Z-score is required
-        m_mean = metric_data.mean(axis=0)
-        m_std = metric_data.std(axis=0) + 1e-6
-        metric_data = (metric_data - m_mean) / m_std
+        # Pre-flatten trace to (T, N, N*F_t) to simplify calculations
+        trace_flat = trace.reshape(T, N, -1)
 
-        return metric_data, log_tensor, trace_tensor
+        for t in range(T):
+            # Author Step: Sliding window relative to current time 't'
+            # Window looks at the 20 minutes leading up to 't'
+            start = max(0, t - window_size + 1)
+            
+            # 2. Extract the local window chunk
+            m_chunk = metric[start:t+1]
+            l_chunk = log[start:t+1]
+            t_chunk = trace_flat[start:t+1]
+            
+            # 3. Local Fusion (W, N, total_features)
+            f_chunk = np.concatenate([m_chunk, l_chunk, t_chunk], axis=-1)
+            
+            # 4. Local Z-Score Stats
+            # The authors typically normalize across the window dimension (axis 0)
+            # We calculate mean/std for each feature on each pod based on the last 20 mins
+            mean = f_chunk.mean(axis=0) 
+            std = f_chunk.std(axis=0) + 1e-6
+            
+            # 5. Normalize ONLY the current point 't' using its specific window stats
+            current_fused = np.concatenate([
+                metric[t], 
+                log[t], 
+                trace_flat[t]
+            ], axis=-1)
+            
+            res = (current_fused - mean) / std
+            
+            # 6. Unpack back to pre-allocated buffers
+            norm_metric[t] = res[:, :F_m]
+            norm_log[t] = res[:, F_m : F_m + F_l]
+            norm_trace[t] = res[:, F_m + F_l:].reshape(N, N, F_t)
+
+        return norm_metric, norm_log, norm_trace
 
     def _transform_and_stream(self, metric_obj, log_tensor, trace_tensor, label_tuple):
         label_raw, label_mask = label_tuple
@@ -482,7 +571,7 @@ class Process:
 if __name__ == "__main__":
     kwargs = {
         'window': 10,
-        'step': 1,
+        'step': 2,
         'dataset_path': './data/ArtData-processed',
         'data_path': './data/ArtData/aiops-dataset/Aiops-Dataset',
         'label_percent': 0.5
