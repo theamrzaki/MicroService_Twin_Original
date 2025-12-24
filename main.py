@@ -3,6 +3,7 @@ import util.train as train
 import util.data_MSDS as data_loads
 import util.data_RE2 as data_loads_RE2
 import util.data_Eadro as data_Eadro
+import util.data_art as data_ART
 
 import src.model as model
 from torch.utils.data import DataLoader
@@ -33,6 +34,9 @@ if __name__ == '__main__':
     elif parser.parse_known_args()[0].data_source == "TT":
         print("Using TT parser")
         from util.parser_TT import *
+    elif parser.parse_known_args()[0].data_source == "ART":
+        print("Using ART parser")
+        from util.parser_ART import *
         
     util.seed_everything(args['random_seed'])
     if args['evaluate']:
@@ -62,6 +66,8 @@ if __name__ == '__main__':
         processed = data_loads_RE2.Process(**args)
     elif args["data_source"] == "SN" or args["data_source"] == "TT":
         processed_train,  processed_test = data_Eadro.run(args["data_source"])
+    elif args["data_source"] == "ART":
+        processed = data_ART.Process(**args)
     #train_dl = DataLoader(processed.dataset[:int(len(processed.dataset)*0.7)],
     #                      batch_size=args['batch_size'],
     #                      shuffle=True, pin_memory=False, drop_last=True)

@@ -23,7 +23,7 @@ class Process:
         self.step = kwargs['step']
         self.dataset_path = kwargs['dataset_path'] 
         self.rawdata_path = kwargs["data_path"]+ "/data"
-        self.groundtruth_path = kwargs['dataset_path'] + "/groundtruth"
+        self.groundtruth_path = kwargs['data_path'] + "/groundtruth"
 
         self.percent = kwargs['label_percent']
         self.percent = 0.5 # Percentage of labeled data to use, like MSDS
@@ -94,8 +94,8 @@ class Process:
             # 3. Densify both
             # You can adjust max_templates (e.g., 30 for envoy, 30 for service)
             num_services = len(service_hash)
-            tensor_envoy = self.densify_log_features(sparse_envoy, df_metric["data"].shape[0], num_services, max_templates=50)
-            tensor_service = self.densify_log_features(sparse_service, df_metric["data"].shape[0], num_services, max_templates=50)
+            tensor_envoy = self.densify_log_features(sparse_envoy, df_metric["data"].shape[0], num_services, max_templates=20)
+            tensor_service = self.densify_log_features(sparse_service, df_metric["data"].shape[0], num_services, max_templates=20)
 #
             # 4. Concatenate into a single Log Feature Block
             # Result shape: [Time, 46, 60] (if max_templates was 30 each)
@@ -257,22 +257,17 @@ class Process:
 
 
     def densify_log_features(self, sparse_counts, num_times, num_services, max_templates=50):
-        # Find the most frequent template IDs to keep the feature dimension manageable
-        # (Optional: You can just keep all, but 50-100 is usually enough for AIOps)
-        
-        unique_templates = sorted(list(set([k[2] for k in sparse_counts.keys()])))
-        num_templates = min(len(unique_templates), max_templates)
-        
-        # Pre-allocate final tensor
-        log_tensor = np.zeros((num_times, num_services, num_templates), dtype=np.float32)
-        
-        # Map template_id to 0...N
-        template_map = {tid: i for i, tid in enumerate(unique_templates[:num_templates])}
+        # Pre-allocate with the FIXED MAX size immediately
+        # This ensures every .pkl file has the same feature dimension (e.g., 50)
+        log_tensor = np.zeros((num_times, num_services, max_templates), dtype=np.float32)
         
         for (t, s, tid), count in sparse_counts.items():
-            if tid in template_map:
-                log_tensor[t, s, template_map[tid]] = count
-                
+            # Use the template ID directly as the index.
+            # IDs from Drain start at 1, so we do tid-1 to fit 0-indexed array.
+            idx = tid - 1 
+            if idx < max_templates:
+                log_tensor[t, s, idx] = count
+                    
         return log_tensor
     #endregion  
 
@@ -448,7 +443,6 @@ class Process:
                 "data_edge": trace_tensor[start:end].astype(np.float32),       # No expand_dims
                 "groundtruth_real": label_raw[end-1].astype(np.int64),
                 "groundtruth_cls": label_mask[end-1].astype(np.int64),
-                "name": f"{self.global_window}" # MSDS uses a name key for saving
             }
             
             # 2. Stream to disk
