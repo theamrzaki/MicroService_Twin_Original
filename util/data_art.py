@@ -236,7 +236,7 @@ class Process:
         # This avoids pre-allocating a massive [T, S, K] tensor before we know K (num of templates)
         sparse_log_counts = {}
 
-        for chunk in pd.read_csv(file_path, chunksize=500000):
+        for chunk in tqdm(pd.read_csv(file_path, chunksize=500000), desc="Processing logs CSV"):
             # Cleaning names and mapping indices
             chunk['cmdb_id'] = chunk['cmdb_id'].apply(lambda x: x.split('.')[-1])
             chunk['t_idx'] = chunk['timestamp'].map(time_map)
@@ -257,7 +257,7 @@ class Process:
                 # 3. Increment Sparse Matrix
                 key = (t, s, template_id)
                 sparse_log_counts[key] = sparse_log_counts.get(key, 0) + 1
-            break#TODO for testing
+            ###break#TODO for testing
         return sparse_log_counts, template_miner
 
 
@@ -282,7 +282,7 @@ class Process:
         # F=3: [Call_Count, Sum_Duration, Error_Count]
         sparse_adj = {} 
 
-        for chunk in pd.read_csv(file_path, chunksize=500000):
+        for chunk in tqdm(pd.read_csv(file_path, chunksize=500000), desc="Processing traces CSV"):
             # 1. Standardize names and map indices
             chunk['cmdb_id'] = chunk['cmdb_id'].apply(lambda x: str(x).split('.')[-1])
             chunk['timestamp'] = chunk['timestamp'] // 1000
@@ -319,7 +319,7 @@ class Process:
                 sparse_adj[key][0] += count
                 sparse_adj[key][1] += d_sum
                 sparse_adj[key][2] += errs
-            break#TODO for testing
+            ###break#TODO for testing
         return sparse_adj
     
     def densify_trace_tensor(self, sparse_adj, num_times, num_nodes=46):
