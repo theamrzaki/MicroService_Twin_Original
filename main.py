@@ -121,7 +121,7 @@ if __name__ == '__main__':
             info_dict[statue] = info
             file.writelines(statue + '   ' + info + '\n')
     #if args.get("case_study", False):
-    results_path = './result.csv'#msds
+    results_path = './result_msds.csv'#msds
     if args["data_source"] == "TT":
         results_path = './result_TT.csv'
     elif args["data_source"] == "SN":
