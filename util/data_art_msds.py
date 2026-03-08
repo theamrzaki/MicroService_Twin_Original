@@ -5,7 +5,6 @@ import logging
 import pandas as pd
 import numpy as np
 import pickle
-import json
 from tqdm import tqdm
 from drain3 import TemplateMiner
 from drain3.template_miner_config import TemplateMinerConfig
@@ -153,116 +152,71 @@ class Process:
         print(f"Auto-selected {self.kpi_num} KPIs covering {threshold*100}% of anomaly variance.")
         print(f"New KPI list: {self.kpi_list}")
 
-    def build_gt_driven_grid(self, gt_json, resolution_secs=60):
-        """
-        Constructs a master time grid anchored by Ground Truth timestamps from JSON.
-        
-        Args:
-            gt_json: Dict containing {"timestamp": [1651338400, ...]}
-            resolution_secs: Step size (default 60s/1m)
-        """
-        # Parameters based on the 10-min interference rule
-        lead_up_secs = 1800      # 30 mins before
-        failure_window = 600     # 10 mins duration (anomaly label = 1)
-        recovery_secs = 300      # 5 mins after
-        
-        grid_data = []
-        timestamps = gt_json.get("timestamp", [])
-        service_names = gt_json.get("cmdb_id", [])
-        for gt_time in timestamps:
-            gt_time = int(gt_time)
-            
-            # Define the total range to sample for this specific event
-            start_sampling = gt_time - lead_up_secs
-            end_sampling = gt_time + failure_window + recovery_secs
-            
-            # Generate the grid steps
-            for t in range(start_sampling, end_sampling, resolution_secs):
-                # Label as 1 if it falls within the 10-minute failure window
-                is_anomaly = 1 if (gt_time <= t < gt_time + failure_window) else 0
-                
-                grid_data.append({
-                    "master_timestamp": t,
-                    "label": is_anomaly,
-                    "event_anchor": gt_time 
-                })
-                
-        # Create DataFrame and handle overlaps
-        # If two windows overlap, we keep the record with label 1 (Anomaly priority)
-        grid_df = pd.DataFrame(grid_data)
-        grid_df = grid_df.sort_values(['master_timestamp', 'label'], ascending=[True, False])
-        grid_df = grid_df.drop_duplicates('master_timestamp')
-        
-        return grid_df.reset_index(drop=True), service_names
-
 
     def load_raw(self):
         """Main loop that processes data day-by-day."""
         logging.info("Starting sequential memory-optimized loading...")
         
         dates = sorted([d for d in os.listdir(self.rawdata_path) if os.path.isdir(os.path.join(self.rawdata_path, d))])
-            
-        service_hash_metrics = None
+        
+        service_hash = None
         for i, date_dir in tqdm(enumerate(dates), desc="Processing days"):
 
             day_path = os.path.join(self.rawdata_path, date_dir)
-            df_gt = pd.read_csv(os.path.join(self.groundtruth_path, f'groundtruth-{date_dir}.csv'))
-            # remove  rows with cmbd_id starting with node-
-            df_gt = df_gt[~df_gt['cmdb_id'].str.startswith('node-')]
-            grid_df, service_hash = self.build_gt_driven_grid(df_gt)
-            num_time_steps = len(grid_df)
-
+            
             #---------------- Metrics ----------------#
-            df_metric = self._load_csv_dir(os.path.join(day_path, 'metric/container'))
+            # 1. Load Metricsself._load_csv_dir(os.path.join(day_path, 'metric'))
+            df_metric = pd.read_csv("/home/db2003/Desktop/Amr/MicroService_Twin_Original/data/MSDS-pre/metric.csv")
+            #df_metric = self._load_csv_dir_metric(os.path.join(day_path, 'metric'))
+            #df_gt = pd.read_csv(os.path.join(self.groundtruth_path, 'groundtruth-' + date_dir + '.csv'))
+
+            #if i==0:
+            #   self.__select_top_kpis__(df_metric, df_gt)
+            #df_metric = df_metric[df_metric['kpi_name'].isin(self.kpi_list)]
             print(f"After KPI filtering, metric shape: {df_metric.shape}")
-            if service_hash_metrics is None:
-                service_hash_metrics = self.build_custom_service_hash(df_metric)
-            # remove rows of cmdb_id_clean not in service_names_gt
-            df_metric = df_metric[df_metric['cmdb_id_clean'].isin(service_hash)]
-            
-            all_services = sorted(service_hash.unique().tolist())
-            service_hash = {name: i for i, name in enumerate(all_services)}
-            
+            if service_hash is None:
+                service_hash = self.build_custom_service_hash(df_metric)
             if df_metric.empty: continue
-            df_metric = self.process_metric(df_metric, service_hash,grid_df)
+            df_metric = self.process_metric(df_metric, service_hash)
             self.num_node = len(service_hash)
 
             #---------------- Logs ----------------#
             # 2. Load Logs
             df_log = self._load_csv_dir(os.path.join(day_path, 'log'))
             sparse_envoy, miner = self.process_logs_with_drain(
-                os.path.join(day_path, 'log/all/log_filebeat-testbed-log-envoy.csv'), 
+                "/home/db2003/Desktop/Amr/MicroService_Twin_Original/data/MSDS-pre/log.csv", 
                 service_hash, 
-                grid_df
+                df_metric['time_map']
             )
             #sparse_service, miner = self.process_logs_with_drain(
             #    os.path.join(day_path, 'log/all/log_filebeat-testbed-log-service.csv'), 
             #    service_hash, 
-            #    grid_df,
+            #    df_metric['time_map'],
             #    existing_miner=miner # Update your method to accept an existing miner
             #)
 #
             # 3. Densify both
             # You can adjust max_templates (e.g., 30 for envoy, 30 for service)
             num_services = len(service_hash)
-            tensor_envoy = self.densify_log_features(sparse_envoy, num_time_steps, num_services, max_templates=100)
-            #tensor_service = self.densify_log_features(sparse_service, num_time_steps, num_services, max_templates=100)
+            tensor_envoy = self.densify_log_features(sparse_envoy, df_metric["data"].shape[0], num_services, max_templates=20)
+            #tensor_service = self.densify_log_features(sparse_service, df_metric["data"].shape[0], num_services, max_templates=20)
+#
+            # 4. Concatenate into a single Log Feature Block
+            # Result shape: [Time, 46, 60] (if max_templates was 30 each)
+            df_log = tensor_envoy
 
-            # 5. Concatenate
-            df_log =tensor_envoy# np.concatenate([tensor_envoy, tensor_service], axis=-1)
-            
             #---------------- Traces ----------------#
             # 3. Load Traces
             df_trace = self.process_traces_to_adj(
-                os.path.join(day_path, 'trace/all/trace_jaeger-span.csv'), 
+                "/home/db2003/Desktop/Amr/MicroService_Twin_Original/data/MSDS-pre/trace_jaeger-span.csv", 
                 service_hash, 
-                grid_df
+                df_metric['time_map']
             )
             df_trace = self.densify_trace_tensor(df_trace, df_metric["data"].shape[0], num_nodes=len(service_hash))
 
             #---------------- Label ----------------#
             
-            label = self.process_label(df_gt, service_hash, grid_df)
+            label = self.process_label(df_gt, service_hash, df_metric['time_map'])
 
 
             # 4. Transform and save immediately
@@ -300,7 +254,7 @@ class Process:
             # 5. Manual Cleanup
             del df_metric, df_log, df_trace
             gc.collect() 
-            break #TODO Only first day for now
+
     def read_data(self):
         """Identical to MSDS: Reads processed .pkl windows from disk."""
         logging.info("Reading transformed window data from disk...")
@@ -340,10 +294,9 @@ class Process:
     def build_custom_service_hash(self, df_metric):
         # Strip the "node-X." prefix from all cmdb_ids in the metric dataframe
         # node-6.emailservice-0 -> emailservice-0
-        df_metric['cmdb_id_clean'] = df_metric['cmdb_id'].apply(lambda x: x.split('.')[-1])
-        cleaned_names = df_metric["cmdb_id_clean"] #df_metric['cmdb_id'].apply(lambda x: x.split('.')[-1]).unique()
+        cleaned_names = set([c.split(".")[0].split("_")[0] for c in df_metric.columns if "." in c])#df_metric['cmdb_id'].apply(lambda x: x.split('.')[-1]).unique()
         
-        all_services = sorted(cleaned_names.tolist())
+        all_services = sorted(list(cleaned_names))
         service_to_idx = {name: i for i, name in enumerate(all_services)}
         
         # IMPORTANT: Force num_services to match your mapping
@@ -352,58 +305,41 @@ class Process:
         return service_to_idx
 
     #region ########################### Metric Processing ###########################
-    def process_metric(self, df_metric, service_map, grid_df):
-        # 1. Basic Cleaning & Mapping
+    def process_metric(self, df_metric, service_map):
+        # 1. Map names to indices and get unique KPIs/Timestamps
         df_metric['cmdb_id'] = df_metric['cmdb_id'].apply(lambda x: x.split('.')[-1])
         df_metric['node_idx'] = df_metric['cmdb_id'].map(service_map)
+        # Drop data for services we don't care about to save space
         df_metric = df_metric.dropna(subset=['node_idx'])
 
-        # 2. THE ALIGNMENT STEP: Snap raw metrics to our GT-Grid
-        # We use merge_asof to find the closest master_timestamp for every metric row
-        df_metric = df_metric.sort_values('timestamp')
-        grid_df = grid_df.sort_values('master_timestamp')
-
-        aligned_df = pd.merge_asof(
-            df_metric, 
-            grid_df[['master_timestamp']], 
-            left_on='timestamp', 
-            right_on='master_timestamp', 
-            direction='nearest',
-            tolerance=30  # Snap metrics within 30s of a grid point
-        )
-
-        # Drop metrics that didn't find a home in our sampled GT windows
-        aligned_df = aligned_df.dropna(subset=['master_timestamp'])
-
-        # 3. Create Coordinate Maps
-        # Time indices now come strictly from the Grid
-        unique_master_times = grid_df['master_timestamp'].values
-        time_map = {t: i for i, t in enumerate(unique_master_times)}
         
-        unique_kpis = np.sort(aligned_df['kpi_name'].unique())
+        unique_timestamps = np.sort(df_metric['timestamp'].unique())
+        unique_kpis = np.sort(df_metric['kpi_name'].unique())
+        
+        # Create helper maps for coordinates
+        time_map = {t: i for i, t in enumerate(unique_timestamps)}
         kpi_map = {k: i for i, k in enumerate(unique_kpis)}
         
-        num_times = len(unique_master_times)
-        num_services = len(service_map)
+        num_times = len(unique_timestamps)
+        num_services = len(service_map)  # Fixed based on D1
         num_features = len(unique_kpis)
 
-        logging.info(f"Allocating GT-Aligned tensor: ({num_times}, {num_services}, {num_features})")
+        logging.info(f"Allocating tensor of shape: ({num_times}, {num_services}, {num_features})")
         
-        # 4. Pre-allocate and Fill
+        # 2. Pre-allocate NumPy array with float32 (uses half the RAM of default float64)
+        # This acts as your "ensured" container where missing services are automatically 0
         data_tensor = np.zeros((num_times, num_services, num_features), dtype=np.float32)
 
-        # Map coordinates to the Grid indices
-        time_coords = aligned_df['master_timestamp'].map(time_map).values
-        service_coords = aligned_df['node_idx'].astype(int).values
-        kpi_coords = aligned_df['kpi_name'].map(kpi_map).values
-        values = aligned_df['value'].astype(np.float32).values
+        # 3. Get the integer coordinates for every row in df_metric
+        # We do this vectorized for speed
+        time_coords = df_metric['timestamp'].map(time_map).values
+        service_coords = df_metric['node_idx'].astype(int).values
+        kpi_coords = df_metric['kpi_name'].map(kpi_map).values
+        values = df_metric['value'].astype(np.float32).values
 
-        # Batch assignment
+        # 4. The "Magic" Step: Direct assignment into the tensor
+        # This is lightning fast and doesn't create extra copies of data
         data_tensor[time_coords, service_coords, kpi_coords] = values
-
-        # 5. Handle missing values (Optional)
-        # If a grid point has no metric, you might want to forward-fill 
-        # but for now, np.zeros acts as a safe default.
 
         return {"data": data_tensor, "time_map": time_map, "kpi_map": kpi_map}
 
@@ -427,45 +363,46 @@ class Process:
 
         return msg
     
-    def process_logs_with_drain(self, file_path, service_map, grid_df, existing_miner=None):
-        # 1. Initialize or reuse Drain miner
+    def process_logs_with_drain(self, file_path, service_map, time_map, existing_miner=None):
+
+        # ------------------------------------------------------------------
+        # 1. Initialize Drain with LESS specificity
+        # ------------------------------------------------------------------
         if existing_miner is not None:
             template_miner = existing_miner
         else:
             config = TemplateMinerConfig()
-            #config.drain_st = 0.5
-            #config.drain_depth = 3
-            #config.extract_parameters = False
-            #config.max_clusters = 100
+
+            # Core fixes
+            config.drain_st = 0.2            # ↓ similarity threshold (merge more)
+            config.drain_depth = 3           # ↓ tree depth
+            config.extract_parameters = False
+            config.max_clusters = 100        # safety cap
+
             template_miner = TemplateMiner(config=config)
 
+        # ------------------------------------------------------------------
+        # 2. Sparse counts (unchanged)
+        # ------------------------------------------------------------------
         sparse_log_counts = {}
-        
-        # 2. Extract the master time grid
-        master_ts = grid_df['master_timestamp'].values
-        # Create a mapping for quick lookup: timestamp -> index
-        time_map = {t: i for i, t in enumerate(master_ts)}
 
-        for chunk in tqdm(pd.read_csv(file_path, chunksize=500000), desc="Processing logs"):
-            # Clean service names
+        for chunk in tqdm(pd.read_csv(file_path, chunksize=500000),
+                        desc="Processing logs CSV"):
+
+            # Cleaning names and mapping indices
             chunk['cmdb_id'] = chunk['cmdb_id'].apply(lambda x: x.split('.')[-1])
+            chunk['t_idx'] = chunk['timestamp'].map(time_map)
             chunk['s_idx'] = chunk['cmdb_id'].map(service_map)
 
-            # 3. ALIGNMENT: Use the fuzzy matcher to snap to the GT-Grid
-            # We use a smaller tolerance (e.g., 60s) because logs should fall into a specific bucket
-            matched_times = self.fuzzy_map_timestamps(chunk['timestamp'].values, master_ts, tolerance=60)
-            
-            chunk['master_ts'] = matched_times
-            chunk['t_idx'] = chunk['master_ts'].map(time_map)
-
-            # 4. FILTERING: Drop logs that are not within our GT windows
             valid_chunk = chunk.dropna(subset=['t_idx', 's_idx'])
 
-            # 5. Template Mining
             for _, row in valid_chunk.iterrows():
                 t = int(row['t_idx'])
                 s = int(row['s_idx'])
-                
+
+                # ------------------------------------------------------------------
+                # 3. NORMALIZED parsing (critical)
+                # ------------------------------------------------------------------
                 log_msg = self.normalize_log(str(row['value']))
                 result = template_miner.add_log_message(log_msg)
                 template_id = result["cluster_id"]
@@ -473,17 +410,10 @@ class Process:
                 key = (t, s, template_id)
                 sparse_log_counts[key] = sparse_log_counts.get(key, 0) + 1
 
-            #break #TODO
+            #break  # TODO: remove after testing
+
         return sparse_log_counts, template_miner
 
-    def fuzzy_map_timestamps(self, chunk_ts, master_ts, tolerance=60):
-        """Helper to snap timestamps to the grid"""
-        indices = np.searchsorted(master_ts, chunk_ts)
-        indices = np.clip(indices, 0, len(master_ts) - 1)
-        diffs = np.abs(master_ts[indices] - chunk_ts)
-        valid_mask = diffs <= tolerance
-        return np.where(valid_mask, master_ts[indices], np.nan)
-    
     def densify_log_features(self, sparse_counts, num_times, num_services, max_templates=50):
         # Pre-allocate with the FIXED MAX size immediately
         # This ensures every .pkl file has the same feature dimension (e.g., 50)
@@ -513,65 +443,48 @@ class Process:
                     span_map[sid] = int(sidx)
 
         return span_map
-    
 
-    def process_traces_to_adj(self, file_path, service_map, grid_df):
-        """
-        Aligns Jaeger spans to the GT-Driven Grid.
-        """
+    def process_traces_to_adj(self, file_path, service_map, time_map):
         sparse_adj = {}
-        
-        # 1. Prepare the Grid Skeleton
-        master_ts = grid_df['master_timestamp'].values
-        time_map = {t: i for i, t in enumerate(master_ts)}
 
-        # 2. Build global parent resolution 
-        # (Optimization: You might want to filter this map to the grid range as well)
+        # Build global parent resolution
         span_to_node = self.build_span_service_map(file_path, service_map)
 
         for chunk in tqdm(pd.read_csv(file_path, chunksize=500000),
                         desc="Processing traces CSV"):
 
-            # Basic Cleaning
             chunk['cmdb_id'] = chunk['cmdb_id'].apply(lambda x: str(x).split('.')[-1])
-            chunk['timestamp'] = (chunk['timestamp'] // 1000) # Convert ms to s
-            
-            # 3. ALIGNMENT: Fuzzy match to the GT-Grid
-            # Tolerance 60s is standard for trace-to-grid alignment
-            matched_times = self.fuzzy_map_timestamps(chunk['timestamp'].values, master_ts, tolerance=60)
-            chunk['t_idx'] = pd.Series(matched_times).map(time_map)
-            
-            # Mapping service indices
+            chunk['timestamp'] = (chunk['timestamp'] // 1000)
+            chunk['t_idx'] = chunk['timestamp'].map(time_map)
             chunk['child_idx'] = chunk['cmdb_id'].map(service_map)
             chunk['parent_idx'] = chunk['parent_span'].map(span_to_node)
 
-            # 4. FILTERING: Keep only data that fell on our Grid
             valid_edges = chunk.dropna(subset=['t_idx', 'child_idx', 'parent_idx'])
             if valid_edges.empty:
                 continue
 
-            # 5. AGGREGATION
             stats = valid_edges.groupby(
                 ['t_idx', 'parent_idx', 'child_idx']
             ).agg(
                 call_count=('duration', 'count'),
                 duration_sum=('duration', 'sum'),
-                error_count=('status_code', lambda x: (x != '0').sum())
+                error_count=('status_code', lambda x: (x != 0).sum())
             )
 
-            # Update the sparse dictionary
             for (t, u, v), row in stats.iterrows():
                 key = (int(t), int(u), int(v))
 
                 if key not in sparse_adj:
-                    sparse_adj[key] = [0, 0.0, 0] # [Count, Total Duration, Errors]
+                    sparse_adj[key] = [0, 0.0, 0]
 
                 sparse_adj[key][0] += row.call_count
                 sparse_adj[key][1] += row.duration_sum
                 sparse_adj[key][2] += row.error_count
 
+            #break  # TODO remove after testing
+
         return sparse_adj
-        
+    
     def densify_trace_tensor(self, sparse_adj, num_times, num_nodes=46):
         # Final Shape: [Time, 46, 46, 3]
         # Features: [Call_Count, Avg_Latency, Error_Rate]
@@ -588,65 +501,78 @@ class Process:
 
 
     #region ########################### Label ###########################
-    def process_label(self, df_gt, service_map, grid_df):
-        """
-        Generates binary and masked labels aligned to the GT-Grid.
-        
-        Args:
-            df_gt: The Ground Truth DataFrame
-            service_map: Dict mapping service names to indices
-            grid_df: The master grid created by build_gt_driven_grid
-        """
-        num_times = len(grid_df)
+    def process_label(self, df_gt, service_map, time_map):
+        num_times = len(time_map)
         num_services = len(service_map)
-        master_ts = grid_df['master_timestamp'].values
-        time_to_idx = {t: i for i, t in enumerate(master_ts)}
-
-        # 1. Initialize binary labels (T, 46)
         label_raw = np.zeros((num_times, num_services), dtype=np.float32)
-
+        
+        # 1. Get the sorted master timestamps from your metrics
+        master_timestamps = np.array(sorted(time_map.keys()))
+        
         for _, row in df_gt.iterrows():
+            # Ensure GT timestamp is an integer
             gt_time = int(float(row['timestamp']))
-            target_name = str(row['cmdb_id']).split('.')[-1]
             
-            # Find which service index matches the GT cmdb_id
-            matched_indices = [idx for name, idx in service_map.items() 
-                             if name.startswith(target_name)]
+            # 2. Find the index of the closest master timestamp
+            # This handles the case where metrics are at :00 and logs are at :01
+            diffs = np.abs(master_timestamps - gt_time)
+            closest_idx = np.argmin(diffs)
             
-            # Mark the failure window (e.g., 10 steps / 10 minutes)
-            # Since the grid is built at 60s intervals starting at GT-time,
-            # we just map the next 10 grid indices.
-            if gt_time in time_to_idx:
-                start_idx = time_to_idx[gt_time]
+            # Only map if the closest metric is within 60 seconds
+            if diffs[closest_idx] <= 60:
+                t_idx = time_map[master_timestamps[closest_idx]]
+                
+                # 3. Clean and match service name
+                target_name = str(row['cmdb_id']).split('.')[-1]
+                matched_indices = [idx for name, idx in service_map.items() 
+                                if name.startswith(target_name)]
+                
                 for s_idx in matched_indices:
-                    # Mark as anomaly for the 10-minute failure duration
-                    for offset in range(10): 
-                        if start_idx + offset < num_times:
-                            label_raw[start_idx + offset, s_idx] = 1.0
+                    # Mark failure for 15 minutes (D1 failures are persistent)
+                    for offset in range(15):
+                        if t_idx + offset < num_times:
+                            label_raw[t_idx + offset, s_idx] = 1.0
 
-        # 2. MSDS Masking Logic (Semi-supervised learning)
-        # Class 0: Normal, Class 1: Anomaly (unlabeled), Class 2: Anomaly (labeled)
+        # 2. Masking Logic
         label_mask = label_raw.copy()
-        cumulative_anomaly_counts = np.zeros(num_services)
+        # times stores [count_normal, count_anomaly] per service
+        times = np.zeros((num_services, 2))  
+        
+        # One-hot representation for the logic: (T, 46, 2)
+        label_onehot_2class = np.eye(2)[label_raw.astype(int)] 
 
-        for t_idx in range(num_times):
-            # Update cumulative counts for nodes that are failing at this step
-            cumulative_anomaly_counts += label_raw[t_idx]
+        for idx in range(num_times):
+            # Update the global counter for how many times each node has failed
+            times += label_onehot_2class[idx]
             
-            failing_now = np.where(label_raw[t_idx] == 1.0)[0]
-            for s_idx in failing_now:
-                # Use your logic: if count matches percent threshold, mark as Class 2
-                if (cumulative_anomaly_counts[s_idx] % 10) >= (10 * self.percent):
-                    label_mask[t_idx, s_idx] = 2
+            if idx < self.window_size:
+                continue
+                
+            # Find services failing at THIS specific time step
+            failing_service_indices = np.where(label_raw[idx] == 1)[0]
+            
+            if len(failing_service_indices) > 0:
+                # Get the failure counts only for the nodes that are currently failing
+                # times[failing_service_indices, 1] gives the 'total anomalies so far' for those nodes
+                # We apply .flatten() to ensure it's a 1D array for the loop
+                current_fail_counts = times[failing_service_indices, 1].flatten()
+                mask = current_fail_counts % 10 >= (10 * self.percent)
+                
+                for i, s_idx in enumerate(failing_service_indices):
+                    # mask[i] is now a single boolean value, safe for 'if'
+                    if mask[i]:
+                        label_mask[idx, s_idx] = 2
 
-        # 3. Final Conversions to One-Hot
-        # label_raw_onehot: (T, 46, 2) -> [Normal, Anomaly]
-        # label_mask_onehot: (T, 46, 3) -> [Normal, Unlabeled, Labeled]
-        label_raw_onehot = np.eye(2)[label_raw.astype(int)]
-        label_mask_onehot = np.eye(3)[label_mask.astype(int)]
+        # 3. Final One-Hot (T, 46, 3)
+        label_mask_final = np.eye(3)[label_mask.astype(int)]
+        label_raw = np.eye(2)[label_raw.astype(int)] #Final Conversions to One-Hot
 
-        logging.info(f"Labels generated. Shape: {label_mask_onehot.shape}")
-        return label_raw_onehot, label_mask_onehot
+        #sanity check to check if all elements are the same 
+        assert np.all(label_mask_final.sum(axis=-1) == 1), "One-hot encoding error: not all elements sum to 1"
+        #print("Class counts in label_mask_final:")
+        #print(label_mask_final.sum(axis=(0, 1)))
+
+        return label_raw, label_mask_final
 
     #endregion
     
@@ -716,35 +642,6 @@ class Process:
 
         return norm_metric, norm_log, norm_trace
 
-
-    def check_amount_of_zeros(self, array_slice):
-        # Count the number of elements in the slice that are not zero
-        nonzero_count = np.count_nonzero(array_slice)
-
-        # Calculate the total number of elements in the slice
-        total_elements = array_slice.size 
-
-        # Calculate the number of zeros
-        zero_count = total_elements - nonzero_count
-
-        print(f"The number of zeros in the array slice is: {zero_count/total_elements}")
-
-    def check_class_distribution(self, array_slice, name="Array"):
-        # Flatten to 1D to count all occurrences across time and nodes
-        flat_array = array_slice.flatten()
-        
-        # Get unique classes and their respective counts
-        unique_classes, counts = np.unique(flat_array, return_counts=True)
-        total_elements = flat_array.size
-        
-        print(f"--- Class Distribution for {name} ---")
-        print(f"Total Elements: {total_elements}")
-        
-        for cls, count in zip(unique_classes, counts):
-            percentage = (count / total_elements) * 100
-            print(f"Class [{cls}]: {count:>8} occurrences ({percentage:.4f}%)")
-        print("-" * 35)
-
     def _transform_and_stream(self, metric_obj, log_tensor, trace_tensor, label_tuple):
         label_raw, label_mask = label_tuple
         T = metric_obj["data"].shape[0]
@@ -765,21 +662,11 @@ class Process:
                 "data_node": metric_obj["data"][start:end].astype(np.float32), # No expand_dims
                 "data_log": log_tensor[start:end].astype(np.float32),          # No expand_dims
                 "data_edge": trace_tensor[start:end].astype(np.float32),       # No expand_dims
-                "groundtruth_real": label_raw[end-1].astype(np.int64),
-                "groundtruth_cls": label_mask[end-1].astype(np.int64),
+                # FIX: Use np.max across the time dimension (axis 0) for the window [start:end]
+                "groundtruth_real": np.max(label_raw[start:end], axis=0).astype(np.int64),
+                "groundtruth_cls": np.max(label_mask[start:end], axis=0).astype(np.int64),
             }
             
-            self.check_amount_of_zeros(metric_obj["data"][start:end].astype(np.float32))
-            self.check_amount_of_zeros(trace_tensor[start:end].astype(np.float32))
-            self.check_amount_of_zeros(log_tensor[start:end].astype(np.float32))
-            self.check_class_distribution(label_raw, name="Raw Labels")
-            self.check_class_distribution(label_mask, name="Label Mask")
-
-
-            #82 (container)
-            #95 (istio)
-            #54 (jvm) data limited to 2k
-            #43 (node)
             # 2. Stream to disk
             self.global_window += 1
             self.save_window(combined_sample, self.global_window)
@@ -790,8 +677,8 @@ if __name__ == "__main__":
     kwargs = {
         'window': 10,
         'step': 2,
-        'dataset_path': '/home/db2003/Desktop/Amr/MicroService_Twin_Original/data/ArtData-processed',
-        'data_path': '/home/db2003/Desktop/Amr/MicroService_Twin_Original/data/ArtData/aiops-dataset/Aiops-Dataset',
+        'dataset_path': './data/ArtData-processed',
+        'data_path': './data/ArtData/aiops-dataset/Aiops-Dataset',
         'label_percent': 0.5
     }
     processor = Process(

@@ -102,12 +102,12 @@ class SelfAttention(nn.Module):
             tensor.data.uniform_(-stdv, stdv)
 
 class TraceModel(nn.Module):
-    def __init__(self, trace_hiddens=[20, 50], trace_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
+    def __init__(self, node_num, trace_hiddens=[20, 50], trace_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
         super(TraceModel, self).__init__()
 
         self.out_dim = trace_hiddens[-1]
         assert len(trace_hiddens) == len(trace_kernel_sizes)
-        self.net = ConvNet(2, num_channels=trace_hiddens, kernel_sizes=trace_kernel_sizes, **kwargs)
+        self.net = ConvNet(node_num, num_channels=trace_hiddens, kernel_sizes=trace_kernel_sizes, **kwargs)
 
         self.self_attn = self_attn
         if self_attn:
@@ -160,7 +160,7 @@ class MultiSourceEncoder(nn.Module):
         self.node_num = node_num
         self.alpha = alpha
 
-        self.trace_model = TraceModel(**kwargs)
+        self.trace_model = TraceModel(node_num,**kwargs)
         trace_dim = self.trace_model.out_dim
         self.log_model = LogModel(event_num, log_dim) 
         self.metric_model = MetricModel(metric_num, **kwargs)
@@ -188,16 +188,16 @@ class MultiSourceEncoder(nn.Module):
             data_edge = data_edge.permute(0, 2, 1, 3)   # [B, N, T, D]
             data_edge = data_edge.reshape(B * N, T, D) # [B*N, T, D]
             trace_embedding = self.trace_model(data_edge) #[bz*node_num, T, trace_dim]
-        except:
-            print("Trace Model Error")
+        except Exception as e:
+            print("Trace Model Error:", e)
         
         try:
             #torch.Size([100, 10, 12, 7])
             data_log = data_log.mean(dim=1)   # [B, N, D]
             data_log = data_log.reshape(B * N, -1)
             log_embedding = self.log_model(data_log) #[bz*node_num, log_dim]
-        except:
-            print("Log Model Error")
+        except Exception as e:
+            print("Log Model Error:", e)
 
         try:
             #torch.Size([100, 10, 12, 7])
@@ -209,8 +209,8 @@ class MultiSourceEncoder(nn.Module):
             data_node = data_node.reshape(B * N, T, D)
 
             metric_embedding = self.metric_model(data_node) #[bz*node_num, metric_dim]
-        except:
-            print("Metric Model Error")
+        except Exception as e:
+            print("Metric Model Error:", e)
         
 
         # [bz*node_num, fuse_in] --> [bz, fuse_out], fuse_in: sum of dims from multi sources

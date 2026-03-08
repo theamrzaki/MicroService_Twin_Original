@@ -51,17 +51,17 @@ parser.add_argument("--auxi_lambda", default=0.1, type=float,
                     help='frequency reconstruction loss weight')
 
 # model setting
-parser.add_argument("--feature_node", default=8, type=int,
+parser.add_argument("--feature_node", default=64, type=int,
                     help='the pod kpi data number at one epoch')
 parser.add_argument("--feature_edge", default=8, type=int,
                     help='the edge data number at one epoch')
-parser.add_argument("--feature_log", default=32, type=int,
+parser.add_argument("--feature_log", default=64, type=int,
                     help='the log data number at one epoch')
 parser.add_argument("--raw_node", default=64, type=int,
                     help='the raw pod kpi data number at one epoch')
 parser.add_argument("--raw_edge", default=3, type=int,
                     help='the raw edge kpi data number at one epoch')
-parser.add_argument("--log_len", default=40, type=int,
+parser.add_argument("--log_len", default=100, type=int,
                     help='the log template amount')
 parser.add_argument("--num_heads_edge", default=4, type=int,
                     help='the number of multiattention heads about trace')
@@ -79,13 +79,13 @@ parser.add_argument("--dropout", default=0.2, type=float)
 
 
 # dataset setting
-parser.add_argument("--batch_size", default=100, type=int,#100
+parser.add_argument("--batch_size", default=50, type=int,#100
                     help='the data number at one epoch')
 parser.add_argument("--window", default=10, type=int,
                     help='size of sliding window')
 parser.add_argument("--fewshot_ratio", default=1.0, type=float,
                     help='size of sliding window')
-parser.add_argument("--step", default=1, type=int,
+parser.add_argument("--step", default=5, type=int,
                     help='sliding window stride')
 parser.add_argument("--num_nodes", default=5, type=int,
                     help='the number of node in graph')

@@ -40,7 +40,7 @@ parser.add_argument("--para_low", default=1e-2, type=float,
 # Frequency Domain Settings
 parser.add_argument("--FREQ_DOMAIN", default="FITS_Legendre", type=str,
                     help='whether to use frequency domain model')
-parser.add_argument("--MULTI_FITS", default='false', 
+parser.add_argument("--MULTI_FITS", default='true', 
                     help='fits model for each modality')
 parser.add_argument("--req_loss_approach", default="Legendre-style", 
                     help='fits model for each modality')
