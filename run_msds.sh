@@ -3,16 +3,16 @@
 FREQ_DOMAINS=(
    "Eadro"  
  "AnoFusion"
+ "encoder_decoder"
  "Art"
-"encoder_decoder"
 
 "FITS_Legendre" #OrEdge
 
 "iTransformer"
+ "TimesNet"
+  "FEDformerModel"
  "FreTS"
  "DLinear"
- "TimesNet"
- "FEDformerModel"
 
 
 )
