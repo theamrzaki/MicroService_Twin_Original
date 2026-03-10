@@ -2,7 +2,7 @@
 
 FREQ_DOMAINS=(
   "FITS_Legendre"  
-  #"encoder_decoder"
+  #"Eadro"
 )
 
 SEEDS=(1)
@@ -16,15 +16,15 @@ for SEED in "${SEEDS[@]}"; do
         --req_loss_approach='Legendre-style' \
         --random_seed="$SEED" \
         --case_study=True \
-        --epochs=1 \
-        --data_source=SE
+        --epochs=300 \
+        --data_source=MSDS
     else
       /bin/python3 main.py \
         --FREQ_DOMAIN="$FREQ" \
         --random_seed="$SEED" \
         --case_study=True \
-        --epochs=1 \
-        --data_source=SE
+        --epochs=300 \
+        --data_source=MSDS
     fi
 
   done

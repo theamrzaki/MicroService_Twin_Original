@@ -36,7 +36,8 @@ parser.add_argument("--rec_down", default=1, type=int,
                     help='the number that changes reconstruction loss weight')
 parser.add_argument("--para_low", default=1e-2, type=float,
                     help='the min weight of rec loss')
-
+parser.add_argument("--case_study", default=False, type=lambda x: x.lower() == "true",
+                    help='whether to collect case-study samples')
 # Frequency Domain Settings
 parser.add_argument("--FREQ_DOMAIN", default="FITS_Legendre", type=str,
                     help='whether to use frequency domain model')

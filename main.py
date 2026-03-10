@@ -121,26 +121,27 @@ if __name__ == '__main__':
             info_dict[statue] = info
             file.writelines(statue + '   ' + info + '\n')
     #if args.get("case_study", False):
-    results_path = './result_msds.csv'#msds
+    
+    results_path = './output/result_msds.csv'#msds
     if args["data_source"] == "TT":
-        results_path = './result_TT.csv'
+        results_path = './output/result_TT.csv'
     elif args["data_source"] == "SN":
-        results_path = './result_SN.csv'
+        results_path = './output/result_SN.csv'
     elif args["data_source"] == "ART":
-        results_path = './result_ART.csv'
+        results_path = './output/result_ART.csv'
     util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,results_path)
     #else:
     #    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'./result_casestudy.csv')
     #logging.info("^^^^^^ Current Model: ----" + args['main_model'] + "-" * 4 + args['hash_id'] + " ^^^^^")
 
     # For case study
-    if False:#args.get("case_study", False):
+    if args.get("case_study", False):
         logging.info("Collecting case-study samples...")
         case_path = os.path.join( "case_ids.json")
-        case_output = os.path.join(f"case_output_{args['main_model']}.json")
+        case_output = os.path.join(f"case_output_{args['FREQ_DOMAIN']}.json")
 
         #if model = encoder-decoder type, primary = True
-        if args['FREQ_DOMAIN'] in ['encoder-decoder']:
+        if args['FREQ_DOMAIN'] in ['encoder-decoder','Eadro']:
             primary = True
             print("####---> Primary case study collection for encoder-decoder model.")
             case_data = sys.collect_case_study(
@@ -154,7 +155,7 @@ if __name__ == '__main__':
             print("@@@@---> Secondary case study collection for other model types.")
             case_data = sys.collect_case_study(
                 test_dl,
-                primary=True,
+                primary=False,
                 case_json=case_path
             )
         util.json_pretty_dump(case_data, case_output)

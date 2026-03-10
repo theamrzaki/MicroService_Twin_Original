@@ -1,16 +1,20 @@
 #!/bin/bash
 
 FREQ_DOMAINS=(
- #"iTransformer"
- # "FreTS"
- # "DLinear"
- # "encoder_decoder"
- # "TimesNet"
- # "FEDformerModel"
-#"FITS_Legendre" #OrEdge
- # "Eadro"  
- #"AnoFusion"
+   "Eadro"  
+ "AnoFusion"
+ "encoder_decoder"
  "Art"
+
+"FITS_Legendre" #OrEdge
+
+"iTransformer"
+ "TimesNet"
+  "FEDformerModel"
+ "FreTS"
+ "DLinear"
+
+
 )
 
 SEEDS=(1 2 3)
