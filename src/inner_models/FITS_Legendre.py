@@ -5,7 +5,7 @@ import numpy as np
 from src.inner_models.TexFilter_Real import TexFilter  # Assuming TexFilter is in the same directory
 
 from numpy.polynomial import Legendre as L
-
+from scipy.special import legendre # Add this import at the top
 
 def leg_torch(data, degree, rtn_data=False, device='cpu'):
     degree += 1
@@ -68,6 +68,7 @@ def legendre_decode(coeffs, seq_len):
 
 
 
+
 class Model(nn.Module):
     # Hybrid FITS: RIN + Learnable Frequency Filtering (TexFilter) + Interpolation
     def __init__(self, configs):
@@ -75,7 +76,10 @@ class Model(nn.Module):
         self.seq_len = configs.seq_len
         self.pred_len = configs.pred_len
         self.individual = configs.individual
+        self.degree = 10
         self.channels = configs.enc_in
+        self.optimize_precompute_legendre = getattr(configs, 'optimize_precompute_legendre', True)
+
         self.length_ratio = (self.seq_len + self.pred_len) / self.seq_len
 
         if self.individual:
@@ -84,7 +88,13 @@ class Model(nn.Module):
                 for _ in range(self.channels)
             ])
         else:
-            self.freq_upsampler = nn.Linear((10), int((self.seq_len + self.pred_len) // 2 + 1))
+            #self.freq_upsampler = nn.Linear((10), int((self.seq_len + self.pred_len) // 2 + 1))
+            self.freq_upsampler = nn.Linear(self.degree, self.degree)
+
+        if self.optimize_precompute_legendre:
+            t = np.linspace(-1, 1, self.seq_len)
+            basis = np.array([legendre(i)(t) for i in range(self.degree)])
+            self.register_buffer('leg_basis', torch.tensor(basis, dtype=torch.float32))
 
         # NEW: Learnable frequency filter
         #self.texfilter = TexFilter(embed_size=self.channels,
@@ -123,7 +133,12 @@ class Model(nn.Module):
         # 2. Legendre encode (real-valued projection)
         # Input x shape: [B, seq_len, C]
         # Output specx shape: [B, C, degree]
-        specx = legendre_encode(x, degree=10)  # tune degree if needed
+        if self.optimize_precompute_legendre:
+            # FAST: Batch Matrix Multiply [B, C, seq_len] @ [seq_len, degree]
+            # This is significantly faster than standard 'legendre_encode' functions
+            specx = torch.matmul(x.transpose(1, 2), self.leg_basis.t())
+        else:
+            specx = legendre_encode(x, degree=self.degree)
 
         # ---------------------
         # 3. Apply TexFilter (learnable attention on Legendre coeffs)
@@ -148,20 +163,31 @@ class Model(nn.Module):
                 # Upsample each channel independently
                 specxy_[:, :, i] = self.freq_upsampler[i](specx[:, :, i].permute(0, 1)).permute(0, 1)
         else:
-            specxy_ = self.freq_upsampler(specx.permute(0, 2, 1)).permute(0, 2, 1)
-
+            #specxy_ = self.freq_upsampler(specx.permute(0, 2, 1)).permute(0, 2, 1)
+            specxy_ = self.freq_upsampler(specx.transpose(1, 2)).transpose(1, 2)
         # ---------------------
         # 5. Pad if needed (likely still needed)
-        full_spec = torch.zeros(
-            [specxy_.size(0), int((self.seq_len + self.pred_len) // 2 + 1), specxy_.size(2)],
-            dtype=specxy_.dtype,
-            device=specxy_.device
-        )
-        full_spec[:, :specxy_.size(1), :] = specxy_
+        #full_spec = torch.zeros(
+        #    [specxy_.size(0), int((self.seq_len + self.pred_len) // 2 + 1), specxy_.size(2)],
+        #    dtype=specxy_.dtype,
+        #    device=specxy_.device
+        #)
+        #full_spec[:, :specxy_.size(1), :] = specxy_
 
         # ---------------------
         # 6. Legendre decode (reconstruct real-valued time domain signal)
-        low_xy = legendre_decode(full_spec.permute(0, 2, 1), seq_len=self.seq_len )
+        if self.optimize_precompute_legendre:
+            # specxy_ is now [B, 10, 10] (Batch, Degrees=10, Channels=10)
+            # 1. Move Channels to middle: [B, 10, 10] (B, C, D)
+            specxy_temp = specxy_.transpose(1, 2)
+            
+            # 2. Multiply: [B, 10, 10] @ [10, 10] -> [B, 10, 10] (B, C, T)
+            low_xy = torch.matmul(specxy_temp, self.leg_basis)
+            
+            # 3. Final Format: [B, 10, 10] (B, T, C)
+            low_xy = low_xy.transpose(1, 2)
+        else:
+            low_xy = legendre_decode(specxy_.transpose(1, 2), seq_len=self.seq_len)
         # legendre_decode expects [B, degree, C] input, permuted from [B, F, C]
         # Output shape: [B, out_len, C]
 
@@ -169,6 +195,7 @@ class Model(nn.Module):
 
         # ---------------------
         # 7. Reverse RevIN normalization
-        xy = (low_xy * torch.sqrt(x_var)) + x_mean
+        xy_with_sqrt = low_xy * torch.sqrt(x_var)  # Scale back to original variance
+        xy = xy_with_sqrt + x_mean
 
-        return xy, low_xy * torch.sqrt(x_var)
+        return xy, xy_with_sqrt
