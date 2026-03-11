@@ -177,15 +177,23 @@ class Model(nn.Module):
         # ---------------------
         # 6. Legendre decode (reconstruct real-valued time domain signal)
         if self.optimize_precompute_legendre:
-            # specxy_ is now [B, 10, 10] (Batch, Degrees=10, Channels=10)
-            # 1. Move Channels to middle: [B, 10, 10] (B, C, D)
-            specxy_temp = specxy_.transpose(1, 2)
+            """
+            In your forward method, you are using transpose and permute frequently. On a CPU, this often forces data movement.
+
+T           he Change: Keep the Legendre basis precomputed, but consolidate the permute and matmul operations to ensure the CPU can use its cache effectively.
+            """
+            # Use .contiguous() before reshape/permute to help the CPU
+            x_trans = x.transpose(1, 2).contiguous() 
+            specx = torch.matmul(x_trans, self.leg_basis.t())
             
-            # 2. Multiply: [B, 10, 10] @ [10, 10] -> [B, 10, 10] (B, C, T)
-            low_xy = torch.matmul(specxy_temp, self.leg_basis)
-            
-            # 3. Final Format: [B, 10, 10] (B, T, C)
-            low_xy = low_xy.transpose(1, 2)
+            # TexFilter expects [B, degree, C]
+            # Instead of permute(0, 2, 1), use transpose for better stride preservation
+            specx = specx.transpose(1, 2) 
+            specx = specx * self.texfilter(specx)
+
+            # Upsampling & Decoding
+            specxy_temp = self.freq_upsampler(specx.transpose(1, 2)) # [B, C, degree]
+            low_xy = torch.matmul(specxy_temp, self.leg_basis).transpose(1, 2)
         else:
             low_xy = legendre_decode(specxy_.transpose(1, 2), seq_len=self.seq_len)
         # legendre_decode expects [B, degree, C] input, permuted from [B, F, C]
