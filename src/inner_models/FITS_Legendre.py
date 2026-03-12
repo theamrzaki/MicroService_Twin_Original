@@ -69,7 +69,7 @@ def legendre_decode(coeffs, seq_len):
 
 
 
-class Model(nn.Module):
+class Model_old(nn.Module):
     # Hybrid FITS: RIN + Learnable Frequency Filtering (TexFilter) + Interpolation
     def __init__(self, configs):
         super(Model, self).__init__()
@@ -204,6 +204,164 @@ T           he Change: Keep the Legendre basis precomputed, but consolidate the 
         # ---------------------
         # 7. Reverse RevIN normalization
         xy_with_sqrt = low_xy * torch.sqrt(x_var)  # Scale back to original variance
+        xy = xy_with_sqrt + x_mean
+
+        return xy, xy_with_sqrt
+
+
+
+
+class Model(nn.Module):
+
+    def __init__(self, configs):
+        super(Model, self).__init__()
+
+        self.seq_len = configs.seq_len
+        self.pred_len = configs.pred_len
+        self.channels = configs.enc_in
+        self.individual = configs.individual
+        self.degree = getattr(configs, "degree", 10)
+
+        self.optimize_precompute_legendre = getattr(
+            configs, "optimize_precompute_legendre", True
+        )
+
+        self.length_ratio = (self.seq_len + self.pred_len) / self.seq_len
+
+        # -------------------------------------------------
+        # Frequency Upsampler
+        # -------------------------------------------------
+
+        if self.individual:
+            self.freq_upsampler = nn.ModuleList([
+                nn.Linear(self.degree, self.degree)
+                for _ in range(self.channels)
+            ])
+        else:
+            self.freq_upsampler = nn.Linear(self.degree, self.degree)
+
+        # -------------------------------------------------
+        # Precompute Legendre Basis
+        # -------------------------------------------------
+
+        if self.optimize_precompute_legendre:
+
+            t = np.linspace(-1, 1, self.seq_len)
+
+            basis = np.array([
+                legendre(i)(t) for i in range(self.degree)
+            ])
+
+            self.register_buffer(
+                "leg_basis",
+                torch.tensor(basis, dtype=torch.float32)
+            )
+
+        # -------------------------------------------------
+        # Learnable Frequency Filter
+        # -------------------------------------------------
+
+        self.texfilter = TexFilter(
+            embed_size=self.channels,
+            use_gelu=True,
+            use_skip=True,
+            use_layernorm=True,
+            hard_threshold=False,
+            use_window=False,
+            sparsity_threshold=0.0
+        )
+
+    # =====================================================
+    # Forward
+    # =====================================================
+
+    def forward(self, x):
+
+        # -------------------------------------------------
+        # 1. RevIN
+        # -------------------------------------------------
+
+        x_mean = x.mean(dim=1, keepdim=True)
+        x_std = x.std(dim=1, keepdim=True) + 1e-5
+
+        x = (x - x_mean) / x_std
+
+        # -------------------------------------------------
+        # 2. Legendre Encode
+        # -------------------------------------------------
+
+        if self.optimize_precompute_legendre:
+
+            # [B,seq,C] -> [B,C,seq]
+            x_t = x.transpose(1, 2).contiguous()
+
+            # [B,C,seq] @ [seq,degree]
+            spec = torch.matmul(x_t, self.leg_basis.t())
+
+        else:
+
+            spec = legendre_encode(x, degree=self.degree)
+            spec = spec.transpose(1, 2)
+
+        # spec shape
+        # [B,C,degree]
+
+        # -------------------------------------------------
+        # 3. TexFilter
+        # -------------------------------------------------
+
+        # TexFilter expects [B,F,C]
+        spec_f = spec.transpose(1, 2)
+
+        spec_f = spec_f * self.texfilter(spec_f)
+
+        spec = spec_f.transpose(1, 2)
+
+        # -------------------------------------------------
+        # 4. Frequency Interpolation
+        # -------------------------------------------------
+
+        if self.individual:
+
+            B = spec.size(0)
+
+            spec_up = torch.empty_like(spec)
+
+            for i in range(self.channels):
+
+                spec_up[:, i, :] = self.freq_upsampler[i](spec[:, i, :])
+
+        else:
+
+            spec_up = self.freq_upsampler(spec)
+
+        # -------------------------------------------------
+        # 5. Legendre Decode
+        # -------------------------------------------------
+
+        if self.optimize_precompute_legendre:
+
+            # [B,C,degree] @ [degree,seq]
+            low_xy = torch.matmul(spec_up, self.leg_basis)
+
+        else:
+
+            low_xy = legendre_decode(
+                spec_up.transpose(1, 2),
+                seq_len=self.seq_len
+            ).transpose(1, 2)
+
+        # [B,C,seq] -> [B,seq,C]
+        low_xy = low_xy.transpose(1, 2)
+
+        low_xy = low_xy * self.length_ratio
+
+        # -------------------------------------------------
+        # 6. Reverse RevIN
+        # -------------------------------------------------
+
+        xy_with_sqrt = low_xy * x_std
+
         xy = xy_with_sqrt + x_mean
 
         return xy, xy_with_sqrt
