@@ -75,6 +75,7 @@ class MyModel(nn.Module):
 		self.req_loss_approach = args['req_loss_approach']
 		self.rec_lambda = args['rec_lambda']
 		self.auxi_lambda = args['auxi_lambda']
+		self.modules_attn = args['modules_attn']
 
 		if self.FREQ_DOMAIN == "encoder_decoder":
 			self.encoder = Encoder(graph=self.graph, node_embedding=args['feature_node'], edge_embedding=args['feature_edge'], log_embedding=args['feature_log'],
@@ -100,7 +101,7 @@ class MyModel(nn.Module):
 			config.pred_len = config.win_size-config.win_size//config.DSR
 			config.individual	= False  
 			config.num_class = self.num_classes
-			
+			config.filter_used = args['filter_used']
 
 			if self.multi_fits=='true':
 				config.enc_in = args['feature_node']
@@ -404,27 +405,28 @@ class MyModel(nn.Module):
 				h_node = self.shared_fits(x_node_proj)[0]   # [B*N, T, D]
 				h_log  = self.shared_fits(x_log_proj)[0]    # [B*N, T, D]
 
-				# ============================================================
-				# Linear Attention fusion (node + log)
-				# ============================================================
+				if self.modules_attn == 'linear_attn':
+					# ============================================================
+					# Linear Attention fusion (node + log)
+					# ============================================================
 
-				# Collapse time for modality interaction
-				h_node_t = h_node.mean(dim=1)  # [B*N, D]
-				h_log_t  = h_log.mean(dim=1)   # [B*N, D]
+					# Collapse time for modality interaction
+					h_node_t = h_node.mean(dim=1)  # [B*N, D]
+					h_log_t  = h_log.mean(dim=1)   # [B*N, D]
 
-				# Stack modalities as tokens
-				H = torch.stack([h_node_t, h_log_t], dim=1)  # [B*N, 2, D]
+					# Stack modalities as tokens
+					H = torch.stack([h_node_t, h_log_t], dim=1)  # [B*N, 2, D]
 
-				# Linear Attention
-				H = self.linear_attn(H)  # [B*N, 2, D]
+					# Linear Attention
+					H = self.linear_attn(H)  # [B*N, 2, D]
 
-				# Split back
-				h_node_fused = H[:, 0]   # [B*N, D]
-				h_log_fused  = H[:, 1]   # [B*N, D]
+					# Split back
+					h_node_fused = H[:, 0]   # [B*N, D]
+					h_log_fused  = H[:, 1]   # [B*N, D]
 
-				# Restore time dimension
-				h_node = h_node_fused.unsqueeze(1).expand(-1, h_node.shape[1], -1)
-				h_log  = h_log_fused.unsqueeze(1).expand(-1, h_log.shape[1], -1)
+					# Restore time dimension
+					h_node = h_node_fused.unsqueeze(1).expand(-1, h_node.shape[1], -1)
+					h_log  = h_log_fused.unsqueeze(1).expand(-1, h_log.shape[1], -1)
 
 				# ---- output projections (unchanged interfaces) ----
 				rec_node_metric_fits = self.modality_proj_out['node'](h_node)

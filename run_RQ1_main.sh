@@ -20,7 +20,7 @@ FREQ_DOMAINS=(
 
 
 
-SEEDS=(1 2 3)
+SEEDS=(1)
 
 for SEED in "${SEEDS[@]}"; do
     for FREQ in "${FREQ_DOMAINS[@]}"; do
@@ -42,7 +42,7 @@ for SEED in "${SEEDS[@]}"; do
 done
 
 
-SEEDS=(1 2 3)
+SEEDS=(1)
 
 for SEED in "${SEEDS[@]}"; do
     for FREQ in "${FREQ_DOMAINS[@]}"; do
@@ -58,6 +58,30 @@ for SEED in "${SEEDS[@]}"; do
         --FREQ_DOMAIN="$FREQ" \
         --random_seed="$SEED" \
         --data_source=SN
+    fi
+
+  done
+done
+
+
+
+
+SEEDS=(1)
+
+for SEED in "${SEEDS[@]}"; do
+    for FREQ in "${FREQ_DOMAINS[@]}"; do
+  
+    if [ "$FREQ" = "FITS_Legendre" ]; then
+      /bin/python3 main.py \
+        --FREQ_DOMAIN="$FREQ" \
+        --req_loss_approach='Legendre-style' \
+        --random_seed="$SEED" \
+        --data_source=MSDS
+    else
+      /bin/python3 main.py \
+        --FREQ_DOMAIN="$FREQ" \
+        --random_seed="$SEED" \
+        --data_source=MSDS
     fi
 
   done

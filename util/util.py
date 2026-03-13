@@ -167,6 +167,7 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         }
     """
     row = {
+        
         'model': args['main_model'],
         'hash_id': args['hash_id'],
         'FREQ_DOMAIN': args['FREQ_DOMAIN'],
@@ -174,6 +175,8 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         'req_loss_approach': args['req_loss_approach'],
         'rec_lambda': args['rec_lambda'],
         'auxi_lambda': args['auxi_lambda'],
+        'filter_used': args['filter_used'],
+        'modules_attn':  args['modules_attn'],
 
         'info_dict': info_dict['f1'],
 
@@ -188,6 +191,7 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         'peak_memory_mb (CPU)': performance['CPU']['peak_memory_mb'] if 'CPU' in performance else None,
 
         'fewshot_ratio': args['fewshot_ratio'],
+        'experiment_name': args['experiment_name'],
         'random_seed': args['random_seed']
     }
     

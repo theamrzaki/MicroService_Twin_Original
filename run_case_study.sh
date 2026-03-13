@@ -30,4 +30,4 @@ for SEED in "${SEEDS[@]}"; do
   done
 done
 
-#chmod +x run_case_study.sh
+#chmod +x run_RQ2_ablations.sh

@@ -136,7 +136,8 @@ class Model_old(nn.Module):
         if self.optimize_precompute_legendre:
             # FAST: Batch Matrix Multiply [B, C, seq_len] @ [seq_len, degree]
             # This is significantly faster than standard 'legendre_encode' functions
-            specx = torch.matmul(x.transpose(1, 2), self.leg_basis.t())
+            #specx = torch.matmul(x.transpose(1, 2), self.leg_basis.t())
+            specx = torch.einsum("bct,kt->bck", x.transpose(1, 2), self.leg_basis)
         else:
             specx = legendre_encode(x, degree=self.degree)
 
@@ -147,7 +148,8 @@ class Model_old(nn.Module):
         specx = specx.permute(0, 2, 1)  # now [B, degree, C]
 
         # Apply filter
-        specx = specx * self.texfilter(specx)  # elementwise real multiply
+        #specx = specx * self.texfilter(specx)  # elementwise real multiply
+        specx.mul_(self.texfilter(specx))
 
         # ---------------------
         # 4. Frequency interpolation (upsample along degree dimension)
@@ -193,7 +195,8 @@ T           he Change: Keep the Legendre basis precomputed, but consolidate the 
 
             # Upsampling & Decoding
             specxy_temp = self.freq_upsampler(specx.transpose(1, 2)) # [B, C, degree]
-            low_xy = torch.matmul(specxy_temp, self.leg_basis).transpose(1, 2)
+            #low_xy = torch.matmul(specxy_temp, self.leg_basis).transpose(1, 2)
+            low_xy = torch.einsum("bck,kt->bct", specxy_temp, self.leg_basis)
         else:
             low_xy = legendre_decode(specxy_.transpose(1, 2), seq_len=self.seq_len)
         # legendre_decode expects [B, degree, C] input, permuted from [B, F, C]
@@ -225,9 +228,9 @@ class Model(nn.Module):
         self.optimize_precompute_legendre = getattr(
             configs, "optimize_precompute_legendre", True
         )
-
+        self.filter_used = getattr(configs, "filter_used", "TexFilter")
         self.length_ratio = (self.seq_len + self.pred_len) / self.seq_len
-
+        
         # -------------------------------------------------
         # Frequency Upsampler
         # -------------------------------------------------
@@ -238,8 +241,12 @@ class Model(nn.Module):
                 for _ in range(self.channels)
             ])
         else:
-            self.freq_upsampler = nn.Linear(self.degree, self.degree)
-
+            #self.freq_upsampler = nn.Linear(self.degree, self.degree)
+            self.freq_upsampler = nn.Conv1d(
+                in_channels=self.channels,
+                out_channels=self.channels,
+                kernel_size=1
+            )
         # -------------------------------------------------
         # Precompute Legendre Basis
         # -------------------------------------------------
@@ -252,24 +259,31 @@ class Model(nn.Module):
                 legendre(i)(t) for i in range(self.degree)
             ])
 
-            self.register_buffer(
-                "leg_basis",
-                torch.tensor(basis, dtype=torch.float32)
-            )
+            #self.register_buffer(
+            #    "leg_basis",
+            #    torch.tensor(basis, dtype=torch.float32)
+            #)
+            basis = torch.tensor(basis, dtype=torch.float32)
+
+            self.register_buffer("leg_basis", basis)
+            self.register_buffer("leg_basis_T", basis.t().contiguous())
 
         # -------------------------------------------------
         # Learnable Frequency Filter
         # -------------------------------------------------
+        if self.filter_used == "TexFilter":
+            self.texfilter = TexFilter(
+                embed_size=self.channels,
+                use_gelu=True,
+                use_skip=True,
+                use_layernorm=True,
+                hard_threshold=False,
+                use_window=False,
+                sparsity_threshold=0.0
+            )
+        elif self.filter_used == "LPF":
+            self.texfilter = nn.Identity()
 
-        self.texfilter = TexFilter(
-            embed_size=self.channels,
-            use_gelu=True,
-            use_skip=True,
-            use_layernorm=True,
-            hard_threshold=False,
-            use_window=False,
-            sparsity_threshold=0.0
-        )
 
     # =====================================================
     # Forward
@@ -296,8 +310,8 @@ class Model(nn.Module):
             x_t = x.transpose(1, 2).contiguous()
 
             # [B,C,seq] @ [seq,degree]
-            spec = torch.matmul(x_t, self.leg_basis.t())
-
+            #spec = torch.matmul(x_t, self.leg_basis.t())
+            spec = torch.matmul(x_t, self.leg_basis_T)
         else:
 
             spec = legendre_encode(x, degree=self.degree)
@@ -311,10 +325,15 @@ class Model(nn.Module):
         # -------------------------------------------------
 
         # TexFilter expects [B,F,C]
-        spec_f = spec.transpose(1, 2)
-
-        spec_f = spec_f * self.texfilter(spec_f)
-
+        #spec_f = spec.transpose(1, 2)
+        spec_f = spec.permute(0,2,1).contiguous()
+        if self.filter_used == "TexFilter":
+            spec_f = spec_f * self.texfilter(spec_f)
+            #spec_f.mul_(self.texfilter(spec_f))
+        elif self.filter_used == "LPF":
+            # Zero out high-frequency components (simple low-pass filter)
+            cutoff = self.degree // 2  # Keep only the lower half of the frequencies
+            spec_f[:, cutoff:, :] = 0
         spec = spec_f.transpose(1, 2)
 
         # -------------------------------------------------
