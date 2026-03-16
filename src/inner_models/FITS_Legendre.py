@@ -241,12 +241,12 @@ class Model(nn.Module):
                 for _ in range(self.channels)
             ])
         else:
-            #self.freq_upsampler = nn.Linear(self.degree, self.degree)
-            self.freq_upsampler = nn.Conv1d(
-                in_channels=self.channels,
-                out_channels=self.channels,
-                kernel_size=1
-            )
+            self.freq_upsampler = nn.Linear(self.degree, self.degree)
+            #self.freq_upsampler = nn.Conv1d(
+            #    in_channels=self.channels,
+            #    out_channels=self.channels,
+            #    kernel_size=1
+            #)
         # -------------------------------------------------
         # Precompute Legendre Basis
         # -------------------------------------------------

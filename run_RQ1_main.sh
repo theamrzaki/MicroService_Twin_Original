@@ -1,18 +1,18 @@
 #!/bin/bash
 
 FREQ_DOMAINS=(
-  "Eadro"  
-"AnoFusion"
-"encoder_decoder"
-"Art"
+#  "Eadro"  
+#"AnoFusion"
+#"encoder_decoder"
+#"Art"
 
 "FITS_Legendre" #OrEdge
 
-"iTransformer"
- "TimesNet"
-  "FEDformerModel"
- "FreTS"
- "DLinear"
+#"iTransformer"
+# "TimesNet"
+#  "FEDformerModel"
+# "FreTS"
+# "DLinear"
 
 
 )
