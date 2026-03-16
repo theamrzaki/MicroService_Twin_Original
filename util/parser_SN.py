@@ -17,6 +17,11 @@ parser.add_argument("--experiment_name", default=None, type=str,
                     help='the name of the experiment, used for logging and saving results')
 parser.add_argument("--filter_used", default="TexFilter", type=str,
                     help='the filter used in frequency domain, options: TexFilter, LPF')
+parser.add_argument("--modules_attn", default="linear_attn", type=str,
+                    help='the attention type used in model, options: linear_attn, full_attn, cos_attn')
+parser.add_argument("--basis_type", default="legendre", type=str,
+                    help='the basis function type used in frequency domain, options: Legendre, Fourier')
+
 # training setting
 parser.add_argument("--gpu", default=True, type=lambda x: x.lower() == "true")
 parser.add_argument("--epochs", default=300, type=int,

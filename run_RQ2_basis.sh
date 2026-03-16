@@ -3,7 +3,7 @@
 FREQ_DOMAIN="FITS_Legendre" 
 req_loss_approach="Legendre-style"
 
-basis_type=("legendre" "chebyshev"   "hermite" "laguerre")
+basis_type=("chebyshev" "fourier" "hermite" "laguerre" "legendre" )
 SEEDS=(1 2 3)
 #"fourier"
 # Run OrAnomaly with different basis types (both in the projection and FreDF loss)
@@ -18,7 +18,9 @@ for SEED in "${SEEDS[@]}"; do
           --random_seed="$SEED" \
           --data_source=TT \
           --basis_type="$basis" \
-          --experiment_name="RQ2_basis_comparison" 
+          --experiment_name="RQ2_basis_comparison"  \
+          --filter_used="LPF" \
+
       done
 done
 #use chmod +x run_RQ2_basis.sh to make it executable

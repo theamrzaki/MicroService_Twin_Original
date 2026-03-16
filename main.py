@@ -122,7 +122,9 @@ if __name__ == '__main__':
             file.writelines(statue + '   ' + info + '\n')
     #if args.get("case_study", False):
     exp_name = ""
-    if args["experiment_name"]=="RQ2_ablations_components":
+    if args["experiment_name"]=="RQ1_main":
+        exp_name = "RQ1_main"
+    elif args["experiment_name"]=="RQ2_ablations_components":
         exp_name = "RQ2_ablations"
     elif args["experiment_name"]=="RQ2_basis_comparison":
         exp_name = "RQ2_basis"
