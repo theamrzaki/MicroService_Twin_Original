@@ -5,7 +5,6 @@ import numpy as np
 from src.inner_models.TexFilter_Real import TexFilter  # Assuming TexFilter is in the same directory
 
 from numpy.polynomial import Legendre as L
-from scipy.special import legendre # Add this import at the top
 
 def leg_torch(data, degree, rtn_data=False, device='cpu'):
     degree += 1
@@ -136,8 +135,8 @@ class Model_old(nn.Module):
         if self.optimize_precompute_legendre:
             # FAST: Batch Matrix Multiply [B, C, seq_len] @ [seq_len, degree]
             # This is significantly faster than standard 'legendre_encode' functions
-            #specx = torch.matmul(x.transpose(1, 2), self.leg_basis.t())
-            specx = torch.einsum("bct,kt->bck", x.transpose(1, 2), self.leg_basis)
+            #specx = torch.matmul(x.transpose(1, 2), self.basis.t())
+            specx = torch.einsum("bct,kt->bck", x.transpose(1, 2), self.basis)
         else:
             specx = legendre_encode(x, degree=self.degree)
 
@@ -186,7 +185,7 @@ T           he Change: Keep the Legendre basis precomputed, but consolidate the 
             """
             # Use .contiguous() before reshape/permute to help the CPU
             x_trans = x.transpose(1, 2).contiguous() 
-            specx = torch.matmul(x_trans, self.leg_basis.t())
+            specx = torch.matmul(x_trans, self.basis.t())
             
             # TexFilter expects [B, degree, C]
             # Instead of permute(0, 2, 1), use transpose for better stride preservation
@@ -195,8 +194,8 @@ T           he Change: Keep the Legendre basis precomputed, but consolidate the 
 
             # Upsampling & Decoding
             specxy_temp = self.freq_upsampler(specx.transpose(1, 2)) # [B, C, degree]
-            #low_xy = torch.matmul(specxy_temp, self.leg_basis).transpose(1, 2)
-            low_xy = torch.einsum("bck,kt->bct", specxy_temp, self.leg_basis)
+            #low_xy = torch.matmul(specxy_temp, self.basis).transpose(1, 2)
+            low_xy = torch.einsum("bck,kt->bct", specxy_temp, self.basis)
         else:
             low_xy = legendre_decode(specxy_.transpose(1, 2), seq_len=self.seq_len)
         # legendre_decode expects [B, degree, C] input, permuted from [B, F, C]
@@ -229,6 +228,7 @@ class Model(nn.Module):
             configs, "optimize_precompute_legendre", True
         )
         self.filter_used = getattr(configs, "filter_used", "TexFilter")
+        self.basis_type = getattr(configs, "basis_type", "legendre")
         self.length_ratio = (self.seq_len + self.pred_len) / self.seq_len
         
         # -------------------------------------------------
@@ -252,21 +252,33 @@ class Model(nn.Module):
         # -------------------------------------------------
 
         if self.optimize_precompute_legendre:
-
             t = np.linspace(-1, 1, self.seq_len)
 
-            basis = np.array([
-                legendre(i)(t) for i in range(self.degree)
-            ])
+            if self.basis_type == "legendre":
+                from scipy.special import legendre 
+                basis = np.array([legendre(i)(t) for i in range(self.degree)])
 
-            #self.register_buffer(
-            #    "leg_basis",
-            #    torch.tensor(basis, dtype=torch.float32)
-            #)
+            elif self.basis_type == "chebyshev":
+                from numpy.polynomial.chebyshev import chebvander
+                basis = chebvander(t, self.degree - 1).T
+
+            elif self.basis_type == "fourier":
+                t = np.linspace(0, 1, self.seq_len)
+                basis = self._build_fourier_basis(t)
+                assert self.degree % 2 == 0, "Fourier basis requires even degree."
+
+            elif self.basis_type == "hermite":
+                from numpy.polynomial.hermite import hermvander
+                basis = hermvander(t, self.degree - 1).T
+
+            elif self.basis_type == "laguerre":
+                from numpy.polynomial.laguerre import lagvander
+                basis = lagvander(t, self.degree - 1).T
+
             basis = torch.tensor(basis, dtype=torch.float32)
 
-            self.register_buffer("leg_basis", basis)
-            self.register_buffer("leg_basis_T", basis.t().contiguous())
+            self.register_buffer("basis", basis)
+            self.register_buffer("basis_T", basis.t().contiguous())
 
         # -------------------------------------------------
         # Learnable Frequency Filter
@@ -283,7 +295,21 @@ class Model(nn.Module):
             )
         elif self.filter_used == "LPF":
             self.texfilter = nn.Identity()
+        elif self.filter_used == "nofilter":
+            self.texfilter = nn.Identity()
 
+    # =====================================================
+    # Basis Construction (Fourier), using real sines and cosines
+    # =====================================================
+    def _build_fourier_basis(self, t):
+        basis = []
+        basis.append(np.ones_like(t))
+        for k in range(1, self.degree // 2):
+
+            basis.append(np.sin(2 * np.pi * k * t))
+            basis.append(np.cos(2 * np.pi * k * t))
+
+        return np.array(basis)
 
     # =====================================================
     # Forward
@@ -310,8 +336,8 @@ class Model(nn.Module):
             x_t = x.transpose(1, 2).contiguous()
 
             # [B,C,seq] @ [seq,degree]
-            #spec = torch.matmul(x_t, self.leg_basis.t())
-            spec = torch.matmul(x_t, self.leg_basis_T)
+            #spec = torch.matmul(x_t, self.basis.t())
+            spec = torch.matmul(x_t, self.basis_T)
         else:
 
             spec = legendre_encode(x, degree=self.degree)
@@ -334,6 +360,8 @@ class Model(nn.Module):
             # Zero out high-frequency components (simple low-pass filter)
             cutoff = self.degree // 2  # Keep only the lower half of the frequencies
             spec_f[:, cutoff:, :] = 0
+        elif self.filter_used == "nofilter":
+            pass  # No filtering applied
         spec = spec_f.transpose(1, 2)
 
         # -------------------------------------------------
@@ -361,7 +389,7 @@ class Model(nn.Module):
         if self.optimize_precompute_legendre:
 
             # [B,C,degree] @ [degree,seq]
-            low_xy = torch.matmul(spec_up, self.leg_basis)
+            low_xy = torch.matmul(spec_up, self.basis)
 
         else:
 

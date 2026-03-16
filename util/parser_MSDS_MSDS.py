@@ -17,10 +17,14 @@ parser.add_argument("--experiment_name", default=None, type=str,
                     help='the name of the experiment, used for logging and saving results')
 parser.add_argument("--filter_used", default="TexFilter", type=str,
                     help='the filter used in frequency domain, options: TexFilter, LPF')
+parser.add_argument("--modules_attn", default="linear_attn", type=str,
+                    help='the attention type used in model, options: linear_attn, full_attn, cos_attn')
+parser.add_argument("--basis_type", default="legendre", type=str,
+                    help='the basis function type used in frequency domain, options: Legendre, Fourier')
 
 # training setting
 parser.add_argument("--gpu", default=True, type=lambda x: x.lower() == "true")
-parser.add_argument("--epochs", default=300, type=int,
+parser.add_argument("--epochs", default=50, type=int,
                     help='the number of training epochs')
 parser.add_argument("--patience", default=15, type=float,
                     help='the number of epoch that loss is uping')
@@ -42,8 +46,7 @@ parser.add_argument("--rec_down", default=1, type=int,
                     help='the number that changes reconstruction loss weight')
 parser.add_argument("--para_low", default=1e-2, type=float,
                     help='the min weight of rec loss')
-parser.add_argument("--case_study", default=False, type=lambda x: x.lower() == "true",
-                    help='whether to collect case-study samples')
+
 # Frequency Domain Settings
 parser.add_argument("--FREQ_DOMAIN", default="FITS_Legendre", type=str,
                     help='whether to use frequency domain model')

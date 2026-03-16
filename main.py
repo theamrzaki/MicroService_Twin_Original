@@ -123,14 +123,17 @@ if __name__ == '__main__':
     #if args.get("case_study", False):
     exp_name = ""
     if args["experiment_name"]=="RQ2_ablations_components":
-        exp_name = "RQ2"
-    results_path = f'./output/result_msds_{exp_name}.csv'#msds
-    if args["data_source"] == "TT":
-        results_path = f'./output/result_TT_{exp_name}.csv'
-    elif args["data_source"] == "SN":
-        results_path = f'./output/result_SN_{exp_name}.csv'
-    elif args["data_source"] == "ART":
-        results_path = f'./output/result_ART_{exp_name}.csv'
+        exp_name = "RQ2_ablations"
+    elif args["experiment_name"]=="RQ2_basis_comparison":
+        exp_name = "RQ2_basis"
+    #results_path = f'./output/result_msds_{exp_name}.csv'#msds
+    #if args["data_source"] == "TT":
+    #    results_path = f'./output/result_TT_{exp_name}.csv'
+    #elif args["data_source"] == "SN":
+    #    results_path = f'./output/result_SN_{exp_name}.csv'
+    #elif args["data_source"] == "ART":
+    #    results_path = f'./output/result_ART_{exp_name}.csv'
+    results_path = f'./output/result_{exp_name}.csv'
     util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,results_path)
     #else:
     #    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'./result_casestudy.csv')

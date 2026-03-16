@@ -35,7 +35,7 @@ for SEED in "${SEEDS[@]}"; do
       /bin/python3 main.py \
         --FREQ_DOMAIN="$FREQ" \
         --random_seed="$SEED" \
-        --data_source=TT
+        --data_source=TT<-----it uses the legendre-style loss (this needs to be fixed in the future)
     fi
 
   done

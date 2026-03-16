@@ -13,6 +13,16 @@ import psutil
 from tqdm import tqdm
 import util.util as util
 
+# GPU energy
+import pynvml
+
+# Optional CPU energy (Linux)
+try:
+    import pyRAPL
+    pyRAPL.setup()
+    CPU_ENERGY_AVAILABLE = True
+except:
+    CPU_ENERGY_AVAILABLE = False
 class Base(nn.Module):
     def __init__(self, model, **args):
         super(Base, self).__init__()
@@ -212,17 +222,36 @@ class MY(Base):
 
             is_gpu = use_gpu_flag and torch.cuda.is_available()
             device = torch.device("cuda" if is_gpu else "cpu")
-            self.model.to(device)  
+            self.model.to(device)
 
+            # -----------------------------
+            # Start timing + energy
+            # -----------------------------
             if is_gpu:
+
+                pynvml.nvmlInit()
+                handle = pynvml.nvmlDeviceGetHandleByIndex(0)
+
                 start_event = torch.cuda.Event(enable_timing=True)
                 end_event = torch.cuda.Event(enable_timing=True)
                 torch.cuda.reset_peak_memory_stats()
+
+                start_power = pynvml.nvmlDeviceGetPowerUsage(handle) / 1000.0  # Watts
+
                 start_event.record()
+
             else:
+
                 start_time = time.time()
                 process = psutil.Process()
 
+                if CPU_ENERGY_AVAILABLE:
+                    meter = pyRAPL.Measurement('inference')
+                    meter.begin()
+
+            # -----------------------------
+            # Inference
+            # -----------------------------
             with torch.no_grad():
                 for batch_input in tqdm(test_loader, desc=f"Running on {'GPU' if is_gpu else 'CPU'}"):
                     try:
@@ -235,43 +264,75 @@ class MY(Base):
                         logging.error(f"Error during inference: {e}")
                         continue
 
+            # -----------------------------
+            # Stop timing + compute energy
+            # -----------------------------
             if is_gpu:
                 end_event.record()
                 torch.cuda.synchronize()
                 inference_time_ms = start_event.elapsed_time(end_event)
                 peak_memory_mb = torch.cuda.max_memory_allocated() / (1024 ** 2)
+
+                end_power = pynvml.nvmlDeviceGetPowerUsage(handle) / 1000.0
+
+                avg_power = (start_power + end_power) / 2
+
+                energy_joules = avg_power * (inference_time_ms / 1000)
+
             else:
                 inference_time_ms = (time.time() - start_time) * 1000
                 peak_memory_mb = process.memory_info().rss / (1024 ** 2)
 
+                if CPU_ENERGY_AVAILABLE:
+                    meter.end()
+                    energy_joules = meter.result.pkg[0] / 1e6
+                else:
+                    # fallback estimate (typical CPU TDP)
+                    cpu_power_estimate = 65
+                    energy_joules = cpu_power_estimate * (inference_time_ms / 1000)
+
+            # -----------------------------
+            # Aggregate predictions
+            # -----------------------------
             predict_all = torch.concat(predict_list, dim=0).cpu()
             label_all = torch.concat(label_list, dim=0).cpu()
             info, result = util.calc_index(predict_all, label_all)
+            dataset_size = len(test_loader.dataset)
 
             return {
                 "info": info,
                 "result": result,
                 "inference_time_total_ms": inference_time_ms,
-                "inference_time_per_sample_ms": inference_time_ms / len(test_loader.dataset),
+                "inference_time_per_sample_ms": inference_time_ms / dataset_size,
+                "throughput_samples_per_sec": dataset_size / (inference_time_ms / 1000),
                 "peak_memory_mb": peak_memory_mb,
+                "energy_total_joules": energy_joules,
+                "energy_per_sample_joules": energy_joules / dataset_size
             }
 
-        # 1. Run on GPU
+        # -----------------------------
+        # Run GPU
+        # -----------------------------
         gpu_metrics = run_inference(use_gpu_flag=True)
 
         if isFinall:
-            # 2. Run on CPU
+            # -----------------------------
+            # Run CPU
+            # -----------------------------
             cpu_metrics = run_inference(use_gpu_flag=False)
 
-            # Combine both
             performance = {
                 "GPU": {
                     "inference_time_per_sample_ms": gpu_metrics["inference_time_per_sample_ms"],
-                    "peak_memory_mb": gpu_metrics["peak_memory_mb"]
+                    "throughput_samples_per_sec": gpu_metrics["throughput_samples_per_sec"],
+                    "peak_memory_mb": gpu_metrics["peak_memory_mb"],
+                    "energy_per_sample_joules": gpu_metrics["energy_per_sample_joules"]
                 },
                 "CPU": {
                     "inference_time_per_sample_ms": cpu_metrics["inference_time_per_sample_ms"],
-                    "peak_memory_mb": cpu_metrics["peak_memory_mb"]
+                    "throughput_samples_per_sec": cpu_metrics["throughput_samples_per_sec"],
+                    "peak_memory_mb": cpu_metrics["peak_memory_mb"],
+                    "energy_per_sample_joules": cpu_metrics["energy_per_sample_joules"]
                 }
             }
 
@@ -282,7 +343,6 @@ class MY(Base):
             return gpu_metrics["info"], performance
         else:
             return gpu_metrics["result"]
-
     
     def collect_case_study(
         self,

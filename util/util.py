@@ -157,12 +157,16 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
     """
             performance = {
             "GPU": {
-                "inference_time_per_sample_ms": gpu_metrics["inference_time_per_sample_ms"],
-                "peak_memory_mb": gpu_metrics["peak_memory_mb"]
+                    "inference_time_per_sample_ms": gpu_metrics["inference_time_per_sample_ms"],
+                    "throughput_samples_per_sec": gpu_metrics["throughput_samples_per_sec"],
+                    "peak_memory_mb": gpu_metrics["peak_memory_mb"],
+                    "energy_per_sample_joules": gpu_metrics["energy_per_sample_joules"]
             },
             "CPU": {
-                "inference_time_per_sample_ms": cpu_metrics["inference_time_per_sample_ms"],
-                "peak_memory_mb": cpu_metrics["peak_memory_mb"]
+                    "inference_time_per_sample_ms": cpu_metrics["inference_time_per_sample_ms"],
+                    "throughput_samples_per_sec": cpu_metrics["throughput_samples_per_sec"],
+                    "peak_memory_mb": cpu_metrics["peak_memory_mb"],
+                    "energy_per_sample_joules": cpu_metrics["energy_per_sample_joules"]
             }
         }
     """
@@ -170,7 +174,10 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         
         'model': args['main_model'],
         'hash_id': args['hash_id'],
+        'datasource': args['data_source'],
+
         'FREQ_DOMAIN': args['FREQ_DOMAIN'],
+        'basis_type': args['basis_type'],
         'MULTI_FITS': args['MULTI_FITS'],
         'req_loss_approach': args['req_loss_approach'],
         'rec_lambda': args['rec_lambda'],
@@ -189,6 +196,11 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         'peak_memory_mb (GPU)': performance['GPU']['peak_memory_mb'] if 'GPU' in performance else None,
         'inference_time_per_sample_ms (CPU)': performance['CPU']['inference_time_per_sample_ms'] if 'CPU' in performance else None,
         'peak_memory_mb (CPU)': performance['CPU']['peak_memory_mb'] if 'CPU' in performance else None,
+        'throughput_samples_per_sec (GPU)': performance['GPU']['throughput_samples_per_sec'] if 'GPU' in performance else None,
+        'throughput_samples_per_sec (CPU)': performance['CPU']['throughput_samples_per_sec'] if 'CPU' in performance else None,
+        'energy_per_sample_joules (GPU)': performance['GPU']['energy_per_sample_joules'] if 'GPU' in performance else None,
+        'energy_per_sample_joules (CPU)': performance['CPU']['energy_per_sample_joules'] if 'CPU' in performance else None,
+
 
         'fewshot_ratio': args['fewshot_ratio'],
         'experiment_name': args['experiment_name'],

@@ -19,9 +19,11 @@ parser.add_argument("--filter_used", default="TexFilter", type=str,
                     help='the filter used in frequency domain, options: TexFilter, LPF')
 parser.add_argument("--modules_attn", default="linear_attn", type=str,
                     help='the attention type used in model, options: linear_attn, full_attn, cos_attn')
+parser.add_argument("--basis_type", default="legendre", type=str,
+                    help='the basis function type used in frequency domain, options: Legendre, Fourier')
 # training setting
 parser.add_argument("--gpu", default=True, type=lambda x: x.lower() == "true")
-parser.add_argument("--epochs", default=5, type=int,
+parser.add_argument("--epochs", default=50, type=int,
                     help='the number of training epochs')
 parser.add_argument("--patience", default=15, type=float,
                     help='the number of epoch that loss is uping')
