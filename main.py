@@ -13,7 +13,7 @@ import os
 import sys
 import torch 
 import argparse
-
+from util.train import collect_case_study
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 sys.path.append('/code')
 warnings.filterwarnings("ignore")
@@ -91,7 +91,10 @@ if __name__ == '__main__':
                         shuffle=True, pin_memory=False, drop_last=True)
     test_dl = DataLoader(processed.dataset[int(len(processed.dataset)*0.7):] if args["data_source"] not in ["SN", "TT"] else processed_test,
                         batch_size=args['batch_size'],
-                        shuffle=False, pin_memory=False, drop_last=True)
+                        num_workers=0,  # as to avoid async randomness
+                        shuffle=False, pin_memory=False, drop_last=False if args["case_study"] else True)
+    
+    
     # declear model and train
     if args["data_source"] not in ["SN", "TT"]:
         graph = processed.graph
@@ -128,6 +131,8 @@ if __name__ == '__main__':
         exp_name = "RQ2_ablations"
     elif args["experiment_name"]=="RQ2_basis_comparison":
         exp_name = "RQ2_basis"
+    elif args["experiment_name"]=="RQ3_case_study":
+        exp_name = "RQ3_case_study"
     #results_path = f'./output/result_msds_{exp_name}.csv'#msds
     #if args["data_source"] == "TT":
     #    results_path = f'./output/result_TT_{exp_name}.csv'
@@ -148,10 +153,10 @@ if __name__ == '__main__':
         case_output = os.path.join(f"case_output_{args['FREQ_DOMAIN']}.json")
 
         #if model = encoder-decoder type, primary = True
-        if args['FREQ_DOMAIN'] in ['encoder-decoder','Eadro']:
+        if args['FREQ_DOMAIN'] in ['encoder-decoder','Eadro','Art']:
             primary = True
             print("####---> Primary case study collection for encoder-decoder model.")
-            case_data = sys.collect_case_study(
+            case_data = collect_case_study(
                 test_dl,
                 primary=primary,
                 case_json=case_path,
@@ -160,7 +165,7 @@ if __name__ == '__main__':
         else:
             primary = False
             print("@@@@---> Secondary case study collection for other model types.")
-            case_data = sys.collect_case_study(
+            case_data = collect_case_study(
                 test_dl,
                 primary=False,
                 case_json=case_path

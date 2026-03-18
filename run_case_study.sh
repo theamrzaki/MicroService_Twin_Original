@@ -1,8 +1,8 @@
 #!/bin/bash
 
 FREQ_DOMAINS=(
+  "Art"
   "FITS_Legendre"  
-  #"Eadro"
 )
 
 SEEDS=(1)
@@ -14,16 +14,20 @@ for SEED in "${SEEDS[@]}"; do
       /bin/python3 main.py \
         --FREQ_DOMAIN="$FREQ" \
         --req_loss_approach='Legendre-style' \
+        --filter_used="LPF" \
         --random_seed="$SEED" \
         --case_study=True \
-        --epochs=300 \
+        --epochs=5 \
+        --experiment_name="RQ3_case_study" \
         --data_source=MSDS
     else
       /bin/python3 main.py \
         --FREQ_DOMAIN="$FREQ" \
         --random_seed="$SEED" \
+        --req_loss_approach='Normal-Recreation' \
         --case_study=True \
-        --epochs=300 \
+        --epochs=5 \
+        --experiment_name="RQ3_case_study" \
         --data_source=MSDS
     fi
 

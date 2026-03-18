@@ -222,7 +222,7 @@ class Model(nn.Module):
         self.pred_len = configs.pred_len
         self.channels = configs.enc_in
         self.individual = configs.individual
-        self.degree = getattr(configs, "degree", 10)
+        self.degree = getattr(configs, "degree", 5)
 
         self.optimize_precompute_legendre = getattr(
             configs, "optimize_precompute_legendre", True

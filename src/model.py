@@ -104,7 +104,7 @@ class MyModel(nn.Module):
 			config.filter_used = args['filter_used']
 			config.basis_type = args['basis_type']
 			self.basis_type = args['basis_type']
-			config.degree = 10
+			config.degree = 5
 
 			t = np.linspace(-1, 1, config.seq_len)
 			if config.basis_type == "legendre":
@@ -560,50 +560,50 @@ class MyModel(nn.Module):
 
 				if self.basis_type == "legendre":
 					# Legendre encode: outputs [B, C, degree]
-					pred_metric_leg = FITS_Legendre_operations.legendre_encode(pred_metric_merged, degree=10)  # [B, N*F, D]
-					true_metric_leg = FITS_Legendre_operations.legendre_encode(true_metric_merged, degree=10)  # [B, N*F, D]
+					pred_metric_leg = FITS_Legendre_operations.legendre_encode(pred_metric_merged, degree=5)  # [B, N*F, D]
+					true_metric_leg = FITS_Legendre_operations.legendre_encode(true_metric_merged, degree=5)  # [B, N*F, D]
 
-					pred_log_leg = FITS_Legendre_operations.legendre_encode(pred_log_merged, degree=10)
-					true_log_leg = FITS_Legendre_operations.legendre_encode(true_log_merged, degree=10)
+					pred_log_leg = FITS_Legendre_operations.legendre_encode(pred_log_merged, degree=5)
+					true_log_leg = FITS_Legendre_operations.legendre_encode(true_log_merged, degree=5)
 					
-					pred_edge_leg = FITS_Legendre_operations.legendre_encode(pred_edge_merged, degree=10)
-					true_edge_leg = FITS_Legendre_operations.legendre_encode(true_edge_merged, degree=10)
+					pred_edge_leg = FITS_Legendre_operations.legendre_encode(pred_edge_merged, degree=5)
+					true_edge_leg = FITS_Legendre_operations.legendre_encode(true_edge_merged, degree=5)
 				elif self.basis_type == "chebyshev":
 					# Legendre encode: outputs [B, C, degree]
-					pred_metric_leg = FITS_chebyshev_operations.chebyshev_encode(pred_metric_merged, degree=10)  # [B, N*F, D]
-					true_metric_leg = FITS_chebyshev_operations.chebyshev_encode(true_metric_merged, degree=10)  # [B, N*F, D]
+					pred_metric_leg = FITS_chebyshev_operations.chebyshev_encode(pred_metric_merged, degree=5)  # [B, N*F, D]
+					true_metric_leg = FITS_chebyshev_operations.chebyshev_encode(true_metric_merged, degree=5)  # [B, N*F, D]
 
-					pred_log_leg = FITS_chebyshev_operations.chebyshev_encode(pred_log_merged, degree=10)
-					true_log_leg = FITS_chebyshev_operations.chebyshev_encode(true_log_merged, degree=10)
-					pred_edge_leg = FITS_chebyshev_operations.chebyshev_encode(pred_edge_merged, degree=10)
-					true_edge_leg = FITS_chebyshev_operations.chebyshev_encode(true_edge_merged, degree=10)
+					pred_log_leg = FITS_chebyshev_operations.chebyshev_encode(pred_log_merged, degree=5)
+					true_log_leg = FITS_chebyshev_operations.chebyshev_encode(true_log_merged, degree=5)
+					pred_edge_leg = FITS_chebyshev_operations.chebyshev_encode(pred_edge_merged, degree=5)
+					true_edge_leg = FITS_chebyshev_operations.chebyshev_encode(true_edge_merged, degree=5)
 				elif self.basis_type == "laguerre":
 					# Lagurre encode: outputs [B, C, degree]
-					pred_metric_leg = FITS_lag_operations.laguerre_encode(pred_metric_merged, degree=10)  # [B, N*F, D]
-					true_metric_leg = FITS_lag_operations.laguerre_encode(true_metric_merged, degree=10)  # [B, N*F, D]
+					pred_metric_leg = FITS_lag_operations.laguerre_encode(pred_metric_merged, degree=5)  # [B, N*F, D]
+					true_metric_leg = FITS_lag_operations.laguerre_encode(true_metric_merged, degree=5)  # [B, N*F, D]
 
-					pred_log_leg = FITS_lag_operations.laguerre_encode(pred_log_merged, degree=10)
-					true_log_leg = FITS_lag_operations.laguerre_encode(true_log_merged, degree=10)
-					pred_edge_leg = FITS_lag_operations.laguerre_encode(pred_edge_merged, degree=10)
-					true_edge_leg = FITS_lag_operations.laguerre_encode(true_edge_merged, degree=10)
+					pred_log_leg = FITS_lag_operations.laguerre_encode(pred_log_merged, degree=5)
+					true_log_leg = FITS_lag_operations.laguerre_encode(true_log_merged, degree=5)
+					pred_edge_leg = FITS_lag_operations.laguerre_encode(pred_edge_merged, degree=5)
+					true_edge_leg = FITS_lag_operations.laguerre_encode(true_edge_merged, degree=5)
 				elif self.basis_type == "hermite":
 					# Lagurre encode: outputs [B, C, degree]
-					pred_metric_leg = FITS_hermite_operations.hermite_encode(pred_metric_merged, degree=10)  # [B, N*F, D]
-					true_metric_leg = FITS_hermite_operations.hermite_encode(true_metric_merged, degree=10)  # [B, N*F, D]
+					pred_metric_leg = FITS_hermite_operations.hermite_encode(pred_metric_merged, degree=5)  # [B, N*F, D]
+					true_metric_leg = FITS_hermite_operations.hermite_encode(true_metric_merged, degree=5)  # [B, N*F, D]
 
-					pred_log_leg = FITS_hermite_operations.hermite_encode(pred_log_merged, degree=10)
-					true_log_leg = FITS_hermite_operations.hermite_encode(true_log_merged, degree=10)
-					pred_edge_leg = FITS_hermite_operations.hermite_encode(pred_edge_merged, degree=10)
-					true_edge_leg = FITS_hermite_operations.hermite_encode(true_edge_merged, degree=10)
+					pred_log_leg = FITS_hermite_operations.hermite_encode(pred_log_merged, degree=5)
+					true_log_leg = FITS_hermite_operations.hermite_encode(true_log_merged, degree=5)
+					pred_edge_leg = FITS_hermite_operations.hermite_encode(pred_edge_merged, degree=5)
+					true_edge_leg = FITS_hermite_operations.hermite_encode(true_edge_merged, degree=5)
 				elif self.basis_type == "fourier":
 					# Fourier encode: outputs [B, C, degree]
-					pred_metric_leg = self._build_fourier_basis(pred_metric_merged, degree=10)  # [B, N*F, D]
-					true_metric_leg = self._build_fourier_basis(true_metric_merged, degree=10)  # [B, N*F, D]
+					pred_metric_leg = self._build_fourier_basis(pred_metric_merged, degree=5)  # [B, N*F, D]
+					true_metric_leg = self._build_fourier_basis(true_metric_merged, degree=5)  # [B, N*F, D]
 
-					pred_log_leg = self._build_fourier_basis(pred_log_merged, degree=10)
-					true_log_leg = self._build_fourier_basis(true_log_merged, degree=10)
-					pred_edge_leg = self._build_fourier_basis(pred_edge_merged, degree=10)
-					true_edge_leg = self._build_fourier_basis(true_edge_merged, degree=10)
+					pred_log_leg = self._build_fourier_basis(pred_log_merged, degree=5)
+					true_log_leg = self._build_fourier_basis(true_log_merged, degree=5)
+					pred_edge_leg = self._build_fourier_basis(pred_edge_merged, degree=5)
+					true_edge_leg = self._build_fourier_basis(true_edge_merged, degree=5)
 
 				#				# ground truth projection
 				#def project_to_basis(x):
