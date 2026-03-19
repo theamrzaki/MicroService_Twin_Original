@@ -213,7 +213,7 @@ T           he Change: Keep the Legendre basis precomputed, but consolidate the 
 
 
 
-class Model(nn.Module):
+class Model_old(nn.Module):
 
     def __init__(self, configs):
         super(Model, self).__init__()
@@ -409,6 +409,160 @@ class Model(nn.Module):
 
         xy_with_sqrt = low_xy * x_std
 
+        xy = xy_with_sqrt + x_mean
+
+        return xy, xy_with_sqrt
+    
+
+class Model(nn.Module):
+
+    def __init__(self, configs):
+        super(Model, self).__init__()
+
+        self.seq_len = configs.seq_len
+        self.pred_len = configs.pred_len
+        self.channels = configs.enc_in
+        self.individual = configs.individual
+        self.degree = getattr(configs, "degree", 5)
+
+        self.optimize_precompute_legendre = getattr(
+            configs, "optimize_precompute_legendre", True
+        )
+        self.filter_used = getattr(configs, "filter_used", "LPF")
+        self.basis_type = getattr(configs, "basis_type", "legendre")
+        self.length_ratio = (self.seq_len + self.pred_len) / self.seq_len
+
+        # -----------------------------
+        # NormLin (minimal params)
+        # -----------------------------
+        self.use_normlin = getattr(configs, "use_normlin", True)
+
+        if self.use_normlin:
+            self.normlin_W = nn.Parameter(torch.randn(self.degree, self.degree))
+            nn.init.xavier_uniform_(self.normlin_W)
+
+        # -----------------------------
+        # Frequency Upsampler
+        # -----------------------------
+        if self.individual:
+            self.freq_upsampler = nn.ModuleList([
+                nn.Linear(self.degree, self.degree)
+                for _ in range(self.channels)
+            ])
+        else:
+            self.freq_upsampler = nn.Linear(self.degree, self.degree)
+
+        # -----------------------------
+        # Precompute Basis
+        # -----------------------------
+        if self.optimize_precompute_legendre:
+
+            t = np.linspace(-1, 1, self.seq_len)
+
+            if self.basis_type == "legendre":
+                from scipy.special import legendre
+                basis = np.array([legendre(i)(t) for i in range(self.degree)])
+
+            elif self.basis_type == "chebyshev":
+                from numpy.polynomial.chebyshev import chebvander
+                basis = chebvander(t, self.degree - 1).T
+
+            elif self.basis_type == "fourier":
+                t = np.linspace(0, 1, self.seq_len)
+                basis = self._build_fourier_basis(t)
+                assert self.degree % 2 == 0
+
+            elif self.basis_type == "hermite":
+                from numpy.polynomial.hermite import hermvander
+                basis = hermvander(t, self.degree - 1).T
+
+            elif self.basis_type == "laguerre":
+                from numpy.polynomial.laguerre import lagvander
+                basis = lagvander(t, self.degree - 1).T
+
+            basis = torch.tensor(basis, dtype=torch.float32)
+
+            self.register_buffer("basis", basis)
+            self.register_buffer("basis_T", basis.t().contiguous())
+
+    # -----------------------------
+    # Fourier basis (if used)
+    # -----------------------------
+    def _build_fourier_basis(self, t):
+        basis = []
+        basis.append(np.ones_like(t))
+        for k in range(1, self.degree // 2):
+            basis.append(np.sin(2 * np.pi * k * t))
+            basis.append(np.cos(2 * np.pi * k * t))
+        return np.array(basis)
+
+    # -----------------------------
+    # Forward
+    # -----------------------------
+    def forward(self, x):
+
+        # -------------------------------------------------
+        # 1. RevIN
+        # -------------------------------------------------
+        x_mean = x.mean(dim=1, keepdim=True)
+        x_std = x.std(dim=1, keepdim=True) + 1e-5
+        x = (x - x_mean) / x_std
+
+        # -------------------------------------------------
+        # 2. Encode (Legendre / other basis)
+        # -------------------------------------------------
+        if self.optimize_precompute_legendre:
+            x_t = x.transpose(1, 2).contiguous()
+            spec = torch.matmul(x_t, self.basis_T)
+        else:
+            spec = legendre_encode(x, degree=self.degree)
+            spec = spec.transpose(1, 2)
+
+        # spec: [B, C, degree]
+
+        # -------------------------------------------------
+        # 2.5 NormLin (frequency mixing)
+        # -------------------------------------------------
+        if self.use_normlin:
+            W_pos = F.softplus(self.normlin_W)
+            W_norm = W_pos / (W_pos.sum(dim=1, keepdim=True) + 1e-8)
+            spec = torch.matmul(spec, W_norm.T)
+
+        # -------------------------------------------------
+        # 3. LPF (optional hard constraint)
+        # -------------------------------------------------
+        if self.filter_used == "LPF":
+            cutoff = self.degree // 2
+            spec[:, :, cutoff:] = 0
+
+        # -------------------------------------------------
+        # 4. Frequency Interpolation
+        # -------------------------------------------------
+        if self.individual:
+            spec_up = torch.empty_like(spec)
+            for i in range(self.channels):
+                spec_up[:, i, :] = self.freq_upsampler[i](spec[:, i, :])
+        else:
+            spec_up = self.freq_upsampler(spec)
+
+        # -------------------------------------------------
+        # 5. Decode
+        # -------------------------------------------------
+        if self.optimize_precompute_legendre:
+            low_xy = torch.matmul(spec_up, self.basis)
+        else:
+            low_xy = legendre_decode(
+                spec_up.transpose(1, 2),
+                seq_len=self.seq_len
+            ).transpose(1, 2)
+
+        low_xy = low_xy.transpose(1, 2)
+        low_xy = low_xy * self.length_ratio
+
+        # -------------------------------------------------
+        # 6. Reverse RevIN
+        # -------------------------------------------------
+        xy_with_sqrt = low_xy * x_std
         xy = xy_with_sqrt + x_mean
 
         return xy, xy_with_sqrt
