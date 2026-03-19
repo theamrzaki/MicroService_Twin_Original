@@ -215,7 +215,13 @@ class MY(Base):
         avg_training_time_per_epoch = np.mean(training_epoch_time_list)
         logging.info(f'Average training time per epoch: {avg_training_time_per_epoch:.2f} seconds')
         return avg_training_time_per_epoch
-    def evaluate(self, test_loader, isFinall=False,final_evaluation=False):
+    
+    def evaluate(self, test_loader, isFinall=False, final_evaluation=False):
+
+        import threading
+        import time
+        import psutil
+
         def run_inference(use_gpu_flag):
             self.model.eval()
             predict_list, label_list = [], []
@@ -224,26 +230,42 @@ class MY(Base):
             device = torch.device("cuda" if is_gpu else "cpu")
             self.model.to(device)
 
+            process = psutil.Process()
+
+            # -----------------------------
+            # CPU Peak Memory Tracker
+            # -----------------------------
+            peak_memory_bytes = {"value": 0}
+            stop_event = threading.Event()
+
+            def monitor_memory():
+                while not stop_event.is_set():
+                    mem = process.memory_info().rss
+                    if mem > peak_memory_bytes["value"]:
+                        peak_memory_bytes["value"] = mem
+                    time.sleep(0.01)  # 10ms resolution
+
             # -----------------------------
             # Start timing + energy
             # -----------------------------
             if is_gpu:
-
                 pynvml.nvmlInit()
                 handle = pynvml.nvmlDeviceGetHandleByIndex(0)
 
                 start_event = torch.cuda.Event(enable_timing=True)
                 end_event = torch.cuda.Event(enable_timing=True)
+
                 torch.cuda.reset_peak_memory_stats()
 
                 start_power = pynvml.nvmlDeviceGetPowerUsage(handle) / 1000.0  # Watts
-
                 start_event.record()
 
             else:
-
                 start_time = time.time()
-                process = psutil.Process()
+
+                # Start CPU memory monitor
+                monitor_thread = threading.Thread(target=monitor_memory)
+                monitor_thread.start()
 
                 if CPU_ENERGY_AVAILABLE:
                     meter = pyRAPL.Measurement('inference')
@@ -265,30 +287,34 @@ class MY(Base):
                         continue
 
             # -----------------------------
-            # Stop timing + compute energy
+            # Stop timing + energy
             # -----------------------------
             if is_gpu:
                 end_event.record()
                 torch.cuda.synchronize()
+
                 inference_time_ms = start_event.elapsed_time(end_event)
                 peak_memory_mb = torch.cuda.max_memory_allocated() / (1024 ** 2)
 
                 end_power = pynvml.nvmlDeviceGetPowerUsage(handle) / 1000.0
-
                 avg_power = (start_power + end_power) / 2
-
                 energy_joules = avg_power * (inference_time_ms / 1000)
 
             else:
                 inference_time_ms = (time.time() - start_time) * 1000
-                peak_memory_mb = process.memory_info().rss / (1024 ** 2)
+
+                # Stop memory monitor
+                stop_event.set()
+                monitor_thread.join()
+
+                peak_memory_mb = peak_memory_bytes["value"] / (1024 ** 2)
 
                 if CPU_ENERGY_AVAILABLE:
                     meter.end()
                     energy_joules = meter.result.pkg[0] / 1e6
                 else:
                     # fallback estimate (typical CPU TDP)
-                    cpu_power_estimate = 65
+                    cpu_power_estimate = 65  # fallback TDP estimate
                     energy_joules = cpu_power_estimate * (inference_time_ms / 1000)
 
             # -----------------------------
@@ -296,6 +322,7 @@ class MY(Base):
             # -----------------------------
             predict_all = torch.concat(predict_list, dim=0).cpu()
             label_all = torch.concat(label_list, dim=0).cpu()
+
             info, result = util.calc_index(predict_all, label_all)
             dataset_size = len(test_loader.dataset)
 
@@ -337,195 +364,196 @@ class MY(Base):
             }
 
             logging.info(f"Performance Summary:\n{performance}")
-
-        # Return only GPU `info` as main output
-        if isFinall:
             return gpu_metrics["info"], performance
-        else:
-            return gpu_metrics["result"]
-    
-def collect_case_study(
-    self,
-    test_loader,
-    use_gpu=True,
-    primary=False,
-    case_json: Optional[str] = None,
-    record_json: Optional[str] = None,
-    top_k: int = 5,
-    store_pred: bool = True
-):
-    """
-    Case study collection for anomaly detection.
 
-    Key design:
-    - Primary model:
-        * Computes global threshold
-        * Selects TP / FP / FN cases
-        * Saves threshold + selected IDs
-    - Follower models:
-        * Load threshold + IDs
-        * Evaluate ONLY those samples
+        return gpu_metrics["result"]
 
-    Assumptions:
-    - DataLoader must be deterministic (shuffle=False)
-    - Prefer dataset to provide 'sample_id'
-    """
+    def collect_case_study(
+        self,
+        test_loader,
+        use_gpu=True,
+        primary=False,
+        case_json: Optional[str] = None,
+        record_json: Optional[str] = None,
+        top_k: int = 5,
+        store_pred: bool = True
+    ):
+        """
+        Case study collection for anomaly detection.
 
-    # ------------------------------------------------------------
-    # Load case definition if follower
-    # ------------------------------------------------------------
-    selected_ids = None
-    threshold = None
+        Key design:
+        - Primary model:
+            * Computes global threshold
+            * Selects TP / FP / FN cases
+            * Saves threshold + selected IDs
+        - Follower models:
+            * Load threshold + IDs
+            * Evaluate ONLY those samples
 
-    if not primary:
-        if case_json is None:
-            raise ValueError("case_json must be provided for follower models")
+        Assumptions:
+        - DataLoader must be deterministic (shuffle=False)
+        - Prefer dataset to provide 'sample_id'
+        """
 
-        with open(case_json) as f:
-            saved = json.load(f)
+        # ------------------------------------------------------------
+        # Load case definition if follower
+        # ------------------------------------------------------------
+        selected_ids = None
+        threshold = None
 
-        threshold = saved["threshold"]
-        selected_ids = set(sum(saved["ids"].values(), []))
+        if not primary:
+            if case_json is None:
+                raise ValueError("case_json must be provided for follower models")
 
-    # ------------------------------------------------------------
-    # Model setup
-    # ------------------------------------------------------------
-    self.model.eval()
-    device = torch.device("cuda" if use_gpu and torch.cuda.is_available() else "cpu")
-    self.model.to(device)
+            with open(case_json) as f:
+                saved = json.load(f)
 
-    cases = {"TP": [], "FP": [], "FN": []}
-    all_errors = []  # only used for primary threshold computation
+            threshold = saved["threshold"]
+            selected_ids = set(sum(saved["ids"].values(), []))
 
-    global_idx = 0
+        # ------------------------------------------------------------
+        # Model setup
+        # ------------------------------------------------------------
+        self.model.eval()
+        device = torch.device("cuda" if use_gpu and torch.cuda.is_available() else "cpu")
+        self.model.to(device)
 
-    # ------------------------------------------------------------
-    # Forward pass
-    # ------------------------------------------------------------
-    with torch.no_grad():
-        for batch_input in test_loader:
+        cases = {"TP": [], "FP": [], "FN": []}
+        all_errors = []  # only used for primary threshold computation
 
-            gt = batch_input["groundtruth_real"]
-            labels = batch_input.get("label", None)
+        global_idx = 0
 
-            # Prefer stable dataset-provided IDs
-            if "sample_id" in batch_input:
-                batch_ids = batch_input["sample_id"]
-            else:
-                batch_size = gt.size(0)
-                batch_ids = list(range(global_idx, global_idx + batch_size))
+        # ------------------------------------------------------------
+        # Forward pass
+        # ------------------------------------------------------------
+        with torch.no_grad():
+            for batch_input in test_loader:
 
-            batch_input = self.input2device(batch_input, use_gpu)
-            raw_result, _ = self.model(batch_input, evaluate=True)
+                gt = batch_input["groundtruth_real"]
+                #labels = batch_input.get("groundtruth_cls", None)
+                # FIX: Define labels based on whether any node/pod is anomalous
+                # We sum over the pod dimension and the class dimension.
+                # If the sum of anomaly indicators is > 0, the whole sample is labeled 1.
+                labels = (gt.sum(dim=(1, 2)) > 0).int()
 
-            gt = gt.to(raw_result.device)
+                # Prefer stable dataset-provided IDs
+                if "sample_id" in batch_input:
+                    batch_ids = batch_input["sample_id"]
+                else:
+                    batch_size = gt.size(0)
+                    batch_ids = list(range(global_idx, global_idx + batch_size))
 
-            # ----------------------------------------
-            # Anomaly score
-            # ----------------------------------------
-            error = torch.abs(raw_result - gt).mean(dim=(1, 2))  # [B]
+                batch_input = self.input2device(batch_input, use_gpu)
+                raw_result, _ = self.model(batch_input, evaluate=True)
 
-            if primary:
-                all_errors.append(error.detach().cpu())
+                gt = gt.to(raw_result.device)
 
-            for i in range(len(error)):
+                # ----------------------------------------
+                # Anomaly score
+                # ----------------------------------------
+                error = torch.abs(raw_result - gt).mean(dim=(1, 2))  # [B]
 
-                sample_id = int(batch_ids[i])
+                if primary:
+                    all_errors.append(error.detach().cpu())
 
-                # Filter for follower models
-                if selected_ids is not None and sample_id not in selected_ids:
-                    continue
+                for i in range(len(error)):
 
-                record = {
-                    "id": sample_id,
-                    "label": int(labels[i]) if labels is not None else -1,
-                    "score": float(error[i].item())
-                }
+                    sample_id = int(batch_ids[i])
 
-                # Store prediction later (after threshold known)
-                record["_raw_pred_score"] = float(error[i].item())
+                    # Filter for follower models
+                    if selected_ids is not None and sample_id not in selected_ids:
+                        continue
 
-                # -----------------------------
-                # Store modalities
-                # -----------------------------
-                if "metric" in batch_input:
-                    record["metric"] = batch_input["metric"][i].cpu().tolist()
+                    record = {
+                        "id": sample_id,
+                        "label": int(labels[i]) if labels is not None else -1,
+                        "score": float(error[i].item())
+                    }
 
-                if "log" in batch_input:
-                    record["log"] = batch_input["log"][i].cpu().tolist()
+                    # Store prediction later (after threshold known)
+                    record["_raw_pred_score"] = float(error[i].item())
 
-                if "trace" in batch_input:
-                    record["trace"] = batch_input["trace"][i].cpu().tolist()
+                    # -----------------------------
+                    # Store modalities
+                    # -----------------------------
+                    if "data_node" in batch_input:
+                        record["metric"] = batch_input["data_node"][i].cpu().tolist()
 
-                # Temporarily store (categorization later if needed)
-                cases.setdefault("ALL", []).append(record)
+                    if "data_log" in batch_input:
+                        record["log"] = batch_input["data_log"][i].cpu().tolist()
 
-            global_idx += len(error)
+                    if "data_edge" in batch_input:
+                        record["trace"] = batch_input["data_edge"][i].cpu().tolist()
 
-    # ------------------------------------------------------------
-    # Compute threshold (PRIMARY ONLY)
-    # ------------------------------------------------------------
-    if primary:
-        all_errors = torch.cat(all_errors)
-        threshold = (all_errors.mean() + 3 * all_errors.std()).item()
+                    # Temporarily store (categorization later if needed)
+                    cases.setdefault("ALL", []).append(record)
 
-    # ------------------------------------------------------------
-    # Categorize cases
-    # ------------------------------------------------------------
-    categorized = {"TP": [], "FP": [], "FN": []}
+                global_idx += len(error)
 
-    for record in cases.get("ALL", []):
+        # ------------------------------------------------------------
+        # Compute threshold (PRIMARY ONLY)
+        # ------------------------------------------------------------
+        if primary:
+            all_errors = torch.cat(all_errors)
+            threshold = (all_errors.mean() + 3 * all_errors.std()).item()
 
-        pred = int(record["_raw_pred_score"] > threshold)
-        label = record["label"]
+        # ------------------------------------------------------------
+        # Categorize cases
+        # ------------------------------------------------------------
+        categorized = {"TP": [], "FP": [], "FN": []}
 
-        record["pred"] = pred
-        del record["_raw_pred_score"]
+        for record in cases.get("ALL", []):
 
-        if label == -1:
-            continue  # skip if no ground truth
+            pred = int(record["_raw_pred_score"] > threshold)
+            label = record["label"]
 
-        if label == 1 and pred == 1:
-            categorized["TP"].append(record)
+            record["pred"] = pred
+            del record["_raw_pred_score"]
 
-        elif label == 1 and pred == 0:
-            categorized["FN"].append(record)
+            if label == -1:
+                continue  # skip if no ground truth
 
-        elif label == 0 and pred == 1:
-            categorized["FP"].append(record)
+            if label == 1 and pred == 1:
+                categorized["TP"].append(record)
 
-    # ------------------------------------------------------------
-    # Select top-K informative cases
-    # ------------------------------------------------------------
-    selected_cases = {}
+            elif label == 1 and pred == 0:
+                categorized["FN"].append(record)
 
-    for key in categorized:
-        selected_cases[key] = sorted(
-            categorized[key],
-            key=lambda x: x["score"],
-            reverse=True
-        )[:top_k]
+            elif label == 0 and pred == 1:
+                categorized["FP"].append(record)
 
-    # ------------------------------------------------------------
-    # Save outputs
-    # ------------------------------------------------------------
-    output = {
-        "threshold": threshold,
-        "cases": selected_cases
-    }
+        # ------------------------------------------------------------
+        # Select top-K informative cases
+        # ------------------------------------------------------------
+        selected_cases = {}
 
-    if record_json is not None:
-        with open(record_json, "w") as f:
-            json.dump(output, f, indent=2)
+        for key in categorized:
+            selected_cases[key] = sorted(
+                categorized[key],
+                key=lambda x: x["score"],
+                reverse=True
+            )[:top_k]
 
-    # Save IDs for follower models
-    if primary and case_json is not None:
-        ids = {k: [r["id"] for r in selected_cases[k]] for k in selected_cases}
-        save_obj = {
+        # ------------------------------------------------------------
+        # Save outputs
+        # ------------------------------------------------------------
+        output = {
             "threshold": threshold,
-            "ids": ids
+            "cases": selected_cases
         }
-        with open(case_json, "w") as f:
-            json.dump(save_obj, f, indent=2)
 
-    return output
+        if record_json is not None:
+            with open(record_json, "w") as f:
+                json.dump(output, f, indent=2)
+
+        # Save IDs for follower models
+        if primary and case_json is not None:
+            ids = {k: [r["id"] for r in selected_cases[k]] for k in selected_cases}
+            save_obj = {
+                "threshold": threshold,
+                "ids": ids
+            }
+            with open(case_json, "w") as f:
+                json.dump(save_obj, f, indent=2)
+
+        return output
