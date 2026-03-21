@@ -37,10 +37,10 @@ class Process:
             self.load_raw()
             self.graph = read_graph(data_dir=self.rawdata_path)
             logging.info("Tranform data into timewindows")
-            self.dataset = self._transform()
+            self.dataset, self.data_real_list = self._transform()
             self.save_data()
-            
-    # reading multidata
+       
+       # reading multidata
     def load_raw(self):
         if not os.path.exists(self.rawdata_path):
             logging.info("Find no data")
@@ -74,15 +74,42 @@ class Process:
         log = pd.read_csv(os.path.join(self.rawdata_path, 'log.csv'), sep=',')
         log = log.sort_values(by='@timestamp', ascending=True)
         log_record = {}
+        log_real = {}     # ✅ real logs
+
+        # ✅ Template mapping
+        if 'Payload' in log.columns:
+            self.template_map = (
+                log[['templateid', 'Payload']]
+                .drop_duplicates()
+                .set_index('templateid')['Payload']
+                .to_dict()
+            )
+        else:
+            self.template_map = {tid: f"Template_{tid}" for tid in log['templateid'].unique()}
+
         max_record = np.zeros(self.log_len)
         min_record = np.ones(self.log_len)
         for timestamp, data in log.groupby(['@timestamp']):
             new = np.zeros((len(MSDS_pod), self.log_len))
-            for idx, item in data.groupby(['Hostname', 'templateid']):
-                if idx[0] not in MSDS_pod:
+            entries = []  # ✅ real log entries
+
+            for (host, template_id), item in data.groupby(['Hostname', 'templateid']):
+                if host not in MSDS_pod:
                     continue
-                new[MSDS_pod.index(idx[0]), idx[1] - 1] = item.shape[0]
+                count = item.shape[0]
+                new[MSDS_pod.index(host), template_id - 1] = item.shape[0]
+                # ✅ real log entry
+                entries.append({
+                    "pod": host,
+                    "template_id": int(template_id),
+                    "template": self.template_map.get(template_id, f"Template_{template_id}"),
+                    "count": int(count)
+                })
+            # limiting to 5 entries per timestamp for the "real" logs to keep it manageable (can be adjusted as needed)
+            top_k = 5
+            entries = sorted(entries, key=lambda x: x["count"], reverse=True)[:top_k]
             log_record[timestamp] = new
+            log_real[timestamp] = entries
             new = new.max(axis=0)
             max_record = np.where(new > max_record, new, max_record)
             min_record = np.where(new < min_record, new, min_record)
@@ -91,6 +118,8 @@ class Process:
             for item in time_list:
                 if item not in log_record:
                     log_record[item] = np.zeros((len(MSDS_pod), self.log_len))
+                if item not in log_real:
+                    log_real[item] = []
             min_record = np.zeros(self.log_len)
         
         dis = max_record - min_record + 1e-6
@@ -106,10 +135,17 @@ class Process:
                     continue
             trace_a[MSDS_pod.index(name[0]), MSDS_pod.index(name[1]), self.trace_type.index(name[2]), int(name[3]-timestart)] = item['duration'].sum()
         trace = trace_a.transpose(3, 0, 1, 2) / (trace_a.mean(axis=-1)*10 + 1e-6)
+        trace_real = trace_a.transpose(3, 0, 1, 2) # For Case Study (ms latency)
 
         self.set['metric'] = metirc
+        self.set['metric_df'] = metirc    # For Case Study (CSV-friendly)
+
         self.set['log'] = log_record
+        self.set['log_real'] = log_real    # For Case Study (Actual counts)
+
         self.set['trace'] = trace
+        self.set['trace_real'] = trace_real # For Case Study (ms latency)
+
         self.set['label'] = label
         self.set['mask'] = label_mask
 
@@ -125,6 +161,7 @@ class Process:
         
         for file in tqdm(dataset):
             data = pickle.load(open(os.path.join(self.dataset_path, file), 'rb'))
+            data['filename'] = file  # Store filename for reference 
             self.dataset.append(data)
 
     # saving data
@@ -132,8 +169,14 @@ class Process:
         logging.info("save Tranform data")
         if not os.path.exists(self.dataset_path):
             os.makedirs(self.dataset_path, exist_ok=True)
+        if not os.path.exists(f'{self.dataset_path}_real'):
+            os.makedirs(f'{self.dataset_path}_real', exist_ok=True)
         for _, item in tqdm(enumerate(self.dataset)):
             with open(f'{self.dataset_path}/{item["name"]}.pkl', 'wb') as f:
+                del item['name']
+                pickle.dump(item, f)
+        for _, item in tqdm(enumerate(self.data_real_list)):
+            with open(f'{self.dataset_path}_real/{item["name"]}_real.pkl', 'wb') as f:
                 del item['name']
                 pickle.dump(item, f)
 
@@ -143,10 +186,14 @@ class Process:
         num = 0
         count1, count2, count3 = 0, 0, 0
         data_list = []
+        data_real_list = [] # <--- Parallel list for "informative" data
 
         metirc = self.set['metric']#(N,26) --> (N,5,5)
         log = self.set['log']#dict of size N, with keys timestamp, each of size (5,256)
+        log_real = self.set['log_real']#dict of size N, with keys timestamp, each is a list of log entries (pod, template_id, template, count)
         trace = self.set['trace']# (N,5,5,7)
+        trace_real = self.set['trace_real']
+        
         label = self.set['label']#(N,5,2)
         label_mask = self.set['mask']#(N,5,3)
 
@@ -156,6 +203,7 @@ class Process:
         
         while starttime + (self.window - 1) * self.step <= endtime:
             record = {}
+            real_record = {}
             if num % 500 == 0:
                 logging.info(f"deal ...{num}...trace:{count3}...error see:{count1}...error real:{count2}...{starttime}")
             
@@ -166,10 +214,19 @@ class Process:
             select_metirc = select_metirc.reshape(self.window, 5, -1)
             assert select_metirc.shape == (self.window, len(MSDS_pod), 5), f"Worng kpi"
             record['data_node'] = select_metirc[:, :, :self.metric_len]# (window, 5, 5)
-
+            # For data_real_list: Store with headers/names for CSV export
+            real_record['metric_raw'] = select_metirc.copy() 
             # log
             log_record = np.stack([log[time] for time in range(int(starttime), int(starttime + (self.window - 1) * self.step + 1), self.step)], axis=0)
             record['data_log'] = np.nan_to_num(log_record)
+            # data_real_list: Here you'd ideally grab the actual log strings or templates
+            # If log[time] is just indices, real_record should store the mapping
+            real_record['logs'] = [
+                                        log_real[t]
+                                        for t in range(int(starttime),
+                                                    int(starttime + self.window),
+                                                    self.step)
+                                    ]
             assert log_record.shape == (self.window, len(MSDS_pod), self.log_len), f"Worng log"
 
             #label
@@ -178,6 +235,8 @@ class Process:
 
             record['groundtruth_cls'] = select_mask
             record['groundtruth_real'] = select_label
+            real_record['label'] = select_label
+            real_record['label_mask'] = select_mask
             count1 += 1 if record['groundtruth_cls'].sum(axis=0)[1] > 0 else 0
             count2 += 1 if record['groundtruth_real'].sum(axis=0)[1] > 0 else 0
             assert record['groundtruth_cls'].shape == (len(MSDS_pod), 3), f"Worng label"    
@@ -187,10 +246,21 @@ class Process:
             count3 += 1 if select_trace.sum() > 0 else 0
             assert select_trace.shape == (self.window, len(MSDS_pod), len(MSDS_pod), len(self.trace_type)), f"Worng Trace"
             record['data_edge'] = select_trace
+            # For real_record: Filter only active edges for the case study
+            # This makes the "real" pkl much smaller
+            real_record['trace_raw'] = trace_real[num : num + self.window]
+            threshold_for_active_edge = 0.1  # This threshold can be tuned based on the dataset 
+            real_record['active_edges'] = np.where(trace_real[num : num + self.window] > threshold_for_active_edge)  # Store indices of active edges
+            real_record['name'] = f'{num}_real'
+            real_record['id'] = num
+            real_record['timestamp_range'] = (starttime, starttime + (self.window - 1) * self.step)
+
             record['name'] = f'{num}'
             num += 1
             data_list.append(record)
+            data_real_list.append(real_record)
+
             starttime += self.step
             del record
         logging.info(f"deal ...{num}...error see:{count1}...error real:{count2}...")
-        return data_list
+        return data_list, data_real_list

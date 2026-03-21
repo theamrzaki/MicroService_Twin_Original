@@ -13,7 +13,7 @@ import os
 import sys
 import torch 
 import argparse
-from util.train import collect_case_study
+
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 sys.path.append('/code')
 warnings.filterwarnings("ignore")
@@ -126,7 +126,7 @@ if __name__ == '__main__':
     #if args.get("case_study", False):
     exp_name = ""
     if args["experiment_name"]=="RQ1_main":
-        exp_name = "RQ1_main"
+        exp_name = "RQ1_main_accurate_cpu_energy"
     elif args["experiment_name"]=="RQ2_ablations_components":
         exp_name = "RQ2_ablations"
     elif args["experiment_name"]=="RQ2_basis_comparison":
@@ -156,18 +156,20 @@ if __name__ == '__main__':
         if args['FREQ_DOMAIN'] in ['encoder-decoder','Eadro','Art']:
             primary = True
             print("####---> Primary case study collection for encoder-decoder model.")
-            case_data = collect_case_study(
+            case_data = sys.collect_case_study(
                 test_dl,
                 primary=primary,
                 case_json=case_path,
-                top_k=10
+                top_k=10,
+                dataset_path=args['dataset_path']
             )
         else:
             primary = False
             print("@@@@---> Secondary case study collection for other model types.")
-            case_data = collect_case_study(
+            case_data = sys.collect_case_study(
                 test_dl,
                 primary=False,
-                case_json=case_path
+                case_json=case_path,
+                dataset_path=args['dataset_path']
             )
         util.json_pretty_dump(case_data, case_output)

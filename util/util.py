@@ -54,12 +54,20 @@ def calc_index(predict, actual):
     return information, {'pr': ps, 'rc': rs, 'auc': auc, 'ap': ap, 'f1': effection}
 
 
+class NumpyEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        if isinstance(obj, np.generic):
+            return obj.item()
+        return super().default(obj)
 
 
 def json_pretty_dump(obj, filename):
+    
     with open(filename, "w") as fw:
         json.dump(obj, fw, sort_keys=True, indent=4,
-                  separators=(",", ": "), ensure_ascii=False, )
+                  separators=(",", ": "), ensure_ascii=False, cls=NumpyEncoder)
 
 
 def dump_params(args):

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 FREQ_DOMAINS=(
-  "Art"
+  #"Art"
   "FITS_Legendre"  
 )
 

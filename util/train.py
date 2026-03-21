@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+import pickle
 import time
 import copy
 from typing import Optional
@@ -66,14 +67,21 @@ class Base(nn.Module):
         if isinstance(batch_input, dict):
             if use_gpu:
                 for name, data in batch_input.items():
-                    if torch.any(torch.isnan(data)):
-                        data = torch.where(torch.isnan(data), torch.full_like(data, 0), data)
-                    batch_input[name] = torch.tensor(data, dtype=torch.float32, requires_grad=True).cuda()
+                    if name == "filename":  # if the data is filename which is a string, skip to convert to tensor and move to GPU
+                        batch_input[name] = data
+                    else:
+                        if torch.any(torch.isnan(data)):
+                            data = torch.where(torch.isnan(data), torch.full_like(data, 0), data)
+                        batch_input[name] = torch.tensor(data, dtype=torch.float32, requires_grad=True).cuda()
+
             else:
                 for name, data in batch_input.items():
-                    if torch.any(torch.isnan(data)):
-                        data = torch.where(torch.isnan(data), torch.full_like(data, 0), data)
-                    batch_input[name] = torch.tensor(data, dtype=torch.float32, requires_grad=True)
+                    if name == "filename":  # if the data is filename which is a string, skip to convert to tensor and move to CPU
+                        batch_input[name] = data
+                    else:
+                        if torch.any(torch.isnan(data)):
+                            data = torch.where(torch.isnan(data), torch.full_like(data, 0), data)
+                        batch_input[name] = torch.tensor(data, dtype=torch.float32, requires_grad=True)
         else:
             if use_gpu:
                 if torch.any(torch.isnan(batch_input)):
@@ -376,6 +384,7 @@ class MY(Base):
         case_json: Optional[str] = None,
         record_json: Optional[str] = None,
         top_k: int = 5,
+        dataset_path: Optional[str] = None,
         store_pred: bool = True
     ):
         """
@@ -411,6 +420,18 @@ class MY(Base):
             threshold = saved["threshold"]
             selected_ids = set(sum(saved["ids"].values(), []))
 
+        #------------------------------------------------------------  
+        # Dataset real data
+        #------------------------------------------------------------
+        def get_real_record(sample_id): #sample_id is the filename in the dataset
+            file_path = os.path.join(
+                dataset_path+"_real",
+                f"{sample_id.split('.')[0]}_real_real.pkl"
+            )
+            with open(file_path, 'rb') as f:
+                return pickle.load(f)
+
+
         # ------------------------------------------------------------
         # Model setup
         # ------------------------------------------------------------
@@ -437,8 +458,8 @@ class MY(Base):
                 labels = (gt.sum(dim=(1, 2)) > 0).int()
 
                 # Prefer stable dataset-provided IDs
-                if "sample_id" in batch_input:
-                    batch_ids = batch_input["sample_id"]
+                if "filename" in batch_input:
+                    batch_ids = batch_input["filename"]
                 else:
                     batch_size = gt.size(0)
                     batch_ids = list(range(global_idx, global_idx + batch_size))
@@ -458,7 +479,7 @@ class MY(Base):
 
                 for i in range(len(error)):
 
-                    sample_id = int(batch_ids[i])
+                    sample_id = batch_ids[i]
 
                     # Filter for follower models
                     if selected_ids is not None and sample_id not in selected_ids:
@@ -472,18 +493,13 @@ class MY(Base):
 
                     # Store prediction later (after threshold known)
                     record["_raw_pred_score"] = float(error[i].item())
-
+                    record_real = get_real_record(sample_id)
                     # -----------------------------
                     # Store modalities
                     # -----------------------------
-                    if "data_node" in batch_input:
-                        record["metric"] = batch_input["data_node"][i].cpu().tolist()
-
-                    if "data_log" in batch_input:
-                        record["log"] = batch_input["data_log"][i].cpu().tolist()
-
-                    if "data_edge" in batch_input:
-                        record["trace"] = batch_input["data_edge"][i].cpu().tolist()
+                    record["metric"] = record_real["metric_raw"]
+                    record["log"] = record_real["logs"]
+                    record["trace"] = record_real["trace_raw"]
 
                     # Temporarily store (categorization later if needed)
                     cases.setdefault("ALL", []).append(record)
@@ -521,19 +537,25 @@ class MY(Base):
 
             elif label == 0 and pred == 1:
                 categorized["FP"].append(record)
+            
+            else:
+                record["details"]={"label": label, "pred": pred}
+                categorized.setdefault("TN", []).append(record)  # for completeness, though TNs are not the focus
 
         # ------------------------------------------------------------
-        # Select top-K informative cases
+        # Select top-K informative cases dont select, just sort all cases
         # ------------------------------------------------------------
         selected_cases = {}
 
         for key in categorized:
-            selected_cases[key] = sorted(
-                categorized[key],
-                key=lambda x: x["score"],
-                reverse=True
-            )[:top_k]
-
+            if primary: 
+                selected_cases[key] = sorted(
+                    categorized[key],
+                    key=lambda x: x["score"],
+                    reverse=True
+                )[:top_k]
+            else:
+                selected_cases[key] = categorized[key]  # for followers, keep all cases that meet the threshold criteria
         # ------------------------------------------------------------
         # Save outputs
         # ------------------------------------------------------------
