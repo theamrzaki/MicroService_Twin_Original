@@ -150,7 +150,8 @@ if __name__ == '__main__':
     if args.get("case_study", False):
         logging.info("Collecting case-study samples...")
         case_path = os.path.join( "case_ids.json")
-        case_output = os.path.join(f"case_output_{args['FREQ_DOMAIN']}.json")
+        #include num of epochs in the titl
+        case_output = os.path.join(f"case_output_{args['FREQ_DOMAIN']}_{args['epochs']}.json")
 
         #if model = encoder-decoder type, primary = True
         if args['FREQ_DOMAIN'] in ['encoder-decoder','Eadro','Art']:
