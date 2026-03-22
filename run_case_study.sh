@@ -1,7 +1,7 @@
 #!/bin/bash
 
 FREQ_DOMAINS=(
-  #"Art"
+  #"Eadro"
   "FITS_Legendre"  
 )
 
@@ -17,7 +17,7 @@ for SEED in "${SEEDS[@]}"; do
         --filter_used="LPF" \
         --random_seed="$SEED" \
         --case_study=True \
-        --epochs=5 \
+        --epochs=300 \
         --experiment_name="RQ3_case_study" \
         --data_source=MSDS
     else
@@ -26,7 +26,7 @@ for SEED in "${SEEDS[@]}"; do
         --random_seed="$SEED" \
         --req_loss_approach='Normal-Recreation' \
         --case_study=True \
-        --epochs=5 \
+        --epochs=300 \
         --experiment_name="RQ3_case_study" \
         --data_source=MSDS
     fi

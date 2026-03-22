@@ -4,12 +4,12 @@ FREQ_DOMAIN="FITS_Legendre"
 data_source="TT"
 
 SEEDS=(1)
-# OrAnomaly / without TexFilter (LPF) / without time-freq fredf loss
+# OrAnomaly / without LPF / without time-freq fredf loss
 for SEED in "${SEEDS[@]}"; do
 
       # OrAnomaly (ours)
       echo "================================================================="
-      echo "Running ablation: without TexFilter (LPF)"  
+      echo "Running ablation: without LPF (with linear attention, with FreDF loss)"  
       echo "================================================================="
       /bin/python3 main.py \
         --FREQ_DOMAIN="$FREQ_DOMAIN" \
@@ -22,7 +22,7 @@ for SEED in "${SEEDS[@]}"; do
       #
       # Ablation: LPF + no linear attention
       echo "================================================================="
-      echo "Running ablation: LPF + no linear attention"
+      echo "Running ablation: no linear attention (with LPF, with FreDF loss)"
       echo "================================================================="
       /bin/python3 main.py \
         --FREQ_DOMAIN="$FREQ_DOMAIN" \
@@ -35,7 +35,7 @@ for SEED in "${SEEDS[@]}"; do
       #
       # Ablation: without time-freq (remove time dimension lambda) fredf loss
       echo "================================================================="
-      echo "Running ablation: LPF + without time-freq (remove time dimension lambda) fredf loss"
+      echo "Running ablation: without FreDF [remove time dimension lambda] (with linear attention and LPF)"
       echo "================================================================="
       /bin/python3 main.py \
         --FREQ_DOMAIN="$FREQ_DOMAIN" \
@@ -47,7 +47,7 @@ for SEED in "${SEEDS[@]}"; do
 
 
       echo "================================================================="
-      echo "Running ablation: No filter applied"
+      echo "Running ablation: No filter applied (with linear attention, with FreDF loss)"
       echo "================================================================="
       /bin/python3 main.py \
         --FREQ_DOMAIN="$FREQ_DOMAIN" \

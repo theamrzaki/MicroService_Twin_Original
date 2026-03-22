@@ -128,9 +128,9 @@ if __name__ == '__main__':
     if args["experiment_name"]=="RQ1_main":
         exp_name = "RQ1_main_accurate_cpu_energy"
     elif args["experiment_name"]=="RQ2_ablations_components":
-        exp_name = "RQ2_ablations"
+        exp_name = "RQ2_ablations_withNorm_accMem"
     elif args["experiment_name"]=="RQ2_basis_comparison":
-        exp_name = "RQ2_basis"
+        exp_name = "RQ2_basis_withNorm_accMem"
     elif args["experiment_name"]=="RQ3_case_study":
         exp_name = "RQ3_case_study"
     #results_path = f'./output/result_msds_{exp_name}.csv'#msds

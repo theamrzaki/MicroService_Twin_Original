@@ -3,78 +3,59 @@
 
 
 FREQ_DOMAINS=(
+
   "Eadro"  
-
-  #"FITS_Legendre" #OrEdge
-
+#
+"FITS_Legendre" #OrEdge
+#
 "AnoFusion"
 "encoder_decoder"
 "Art"
-
-
+##
+##
  "FreTS"
  "DLinear"
 "iTransformer"
- "TimesNet"
+ #"TimesNet"
   "FEDformerModel"
 
 
-
 )
+ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel")
 
 
-SEEDS=(2 3)
+#SEEDS=(1 2 3)
+#
+#for SEED in "${SEEDS[@]}"; do
+#    for FREQ in "${FREQ_DOMAINS[@]}"; do
+#  
+#    if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
+#      /bin/python3 main.py \
+#        --FREQ_DOMAIN="$FREQ" \
+#        --req_loss_approach='Legendre-style' \
+#        --filter_used="LPF" \
+#        --random_seed="$SEED" \
+#        --data_source=MSDS \
+#        --experiment_name="RQ1_main"
+#    else
+#      /bin/python3 main.py \
+#        --FREQ_DOMAIN="$FREQ" \
+#        --req_loss_approach='Normal-Recreation' \
+#        --random_seed="$SEED" \
+#        --data_source=MSDS \
+#        --experiment_name="RQ1_main"
+#    fi
+#
+#  done
+#done
+
+
+SEEDS=(1 2 3)
 
 for SEED in "${SEEDS[@]}"; do
     for FREQ in "${FREQ_DOMAINS[@]}"; do
   
-    if [ "$FREQ" = "FITS_Legendre" ]; then
-      /bin/python3 main.py \
-        --FREQ_DOMAIN="$FREQ" \
-        --req_loss_approach='Legendre-style' \
-        --filter_used="LPF" \
-        --random_seed="$SEED" \
-        --data_source=MSDS \
-        --experiment_name="RQ1_main"
-    else
-      /bin/python3 main.py \
-        --FREQ_DOMAIN="$FREQ" \
-        --req_loss_approach='Normal-Recreation' \
-        --random_seed="$SEED" \
-        --data_source=MSDS \
-        --experiment_name="RQ1_main"
-    fi
-
-  done
-done
-
-
-FREQ_DOMAINS=(
-  "Eadro"  
-
-  #"FITS_Legendre" #OrEdge
-
-"AnoFusion"
-"encoder_decoder"
-"Art"
-#
-#
- "FreTS"
- "DLinear"
-"iTransformer"
- "TimesNet"
-  "FEDformerModel"
-
-
-
-)
-
-SEEDS=(2 3)
-
-for SEED in "${SEEDS[@]}"; do
-    for FREQ in "${FREQ_DOMAINS[@]}"; do
-  
-    if [ "$FREQ" = "FITS_Legendre" ]; then
+    if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
       /bin/python3 main.py \
         --FREQ_DOMAIN="$FREQ" \
         --req_loss_approach='Legendre-style' \
@@ -94,7 +75,9 @@ for SEED in "${SEEDS[@]}"; do
   done
 done
 
-#SEEDS=(1 2 3)
+
+
+#SEEDS=(1)
 #
 #for SEED in "${SEEDS[@]}"; do
 #    for FREQ in "${FREQ_DOMAINS[@]}"; do
