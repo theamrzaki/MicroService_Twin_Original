@@ -105,6 +105,7 @@ class MyModel(nn.Module):
 			config.basis_type = args['basis_type']
 			self.basis_type = args['basis_type']
 			config.degree = 5
+			config.use_normlin = args['use_normlin']
 
 			t = np.linspace(-1, 1, config.seq_len)
 			if config.basis_type == "legendre":

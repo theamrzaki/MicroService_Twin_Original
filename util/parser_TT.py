@@ -21,6 +21,8 @@ parser.add_argument("--modules_attn", default="linear_attn", type=str,
                     help='the attention type used in model, options: linear_attn, full_attn, cos_attn')
 parser.add_argument("--basis_type", default="legendre", type=str,
                     help='the basis function type used in frequency domain, options: Legendre, Fourier')
+parser.add_argument("--use_normlin", default=True, type=lambda x: x.lower() == "true",
+                    help='whether to use normlin in frequency domain')
 # training setting
 parser.add_argument("--gpu", default=True, type=lambda x: x.lower() == "true")
 parser.add_argument("--epochs", default=50, type=int,
