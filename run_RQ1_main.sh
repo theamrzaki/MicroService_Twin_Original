@@ -8,16 +8,16 @@ FREQ_DOMAINS=(
 ##
 #"FITS_Legendre" #OrEdge
 ##
-#"AnoFusion"
-#"encoder_decoder"
-#"Art"
+"AnoFusion"
+"encoder_decoder"
+"Art"
 ##
 ##
- "FreTS"
- "DLinear"
-"iTransformer"
+# "FreTS"
+# "DLinear"
+#"iTransformer"
  #"TimesNet"
-  "FEDformerModel"
+ # "FEDformerModel"
 
 
 )
@@ -77,7 +77,7 @@ ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerMod
 
 
 
-SEEDS=(1 2 3)
+SEEDS=(2 3)
 
 for SEED in "${SEEDS[@]}"; do
     for FREQ in "${FREQ_DOMAINS[@]}"; do
