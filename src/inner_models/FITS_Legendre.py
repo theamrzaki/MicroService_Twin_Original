@@ -458,44 +458,70 @@ class Model(nn.Module):
         if self.optimize_precompute_legendre:
 
             t = np.linspace(-1, 1, self.seq_len)
+            if self.basis_type != "fourier":
+                if self.basis_type == "legendre":
+                    from scipy.special import legendre
+                    basis = np.array([legendre(i)(t) for i in range(self.degree)])
 
-            if self.basis_type == "legendre":
-                from scipy.special import legendre
-                basis = np.array([legendre(i)(t) for i in range(self.degree)])
+                elif self.basis_type == "chebyshev":
+                    from numpy.polynomial.chebyshev import chebvander
+                    basis = chebvander(t, self.degree - 1).T
 
-            elif self.basis_type == "chebyshev":
-                from numpy.polynomial.chebyshev import chebvander
-                basis = chebvander(t, self.degree - 1).T
+
+                elif self.basis_type == "hermite":
+                    from numpy.polynomial.hermite import hermvander
+                    basis = hermvander(t, self.degree - 1).T
+
+                elif self.basis_type == "laguerre":
+                    from numpy.polynomial.laguerre import lagvander
+                    basis = lagvander(t, self.degree - 1).T
+
+                basis = torch.tensor(basis, dtype=torch.float32)
+
+                self.register_buffer("basis", basis)
+                self.register_buffer("basis_T", basis.t().contiguous())
 
             elif self.basis_type == "fourier":
-                t = np.linspace(0, 1, self.seq_len)
-                basis = self._build_fourier_basis(t)
-                assert self.degree % 2 == 0
-
-            elif self.basis_type == "hermite":
-                from numpy.polynomial.hermite import hermvander
-                basis = hermvander(t, self.degree - 1).T
-
-            elif self.basis_type == "laguerre":
-                from numpy.polynomial.laguerre import lagvander
-                basis = lagvander(t, self.degree - 1).T
-
-            basis = torch.tensor(basis, dtype=torch.float32)
-
-            self.register_buffer("basis", basis)
-            self.register_buffer("basis_T", basis.t().contiguous())
+                self.optimize_precompute_legendre = False
+                self.freq_dim = 2 * self.degree # because of sin/cos pairs
+                self.normlin_W = nn.Parameter(torch.randn(self.freq_dim, self.freq_dim))
+                if self.individual:
+                    self.freq_upsampler = nn.ModuleList([
+                        nn.Linear(self.freq_dim, self.freq_dim)
+                        for _ in range(self.channels)
+                    ])
+                else:
+                    self.freq_upsampler = nn.Linear(self.freq_dim, self.freq_dim)
+            
+            #t = np.linspace(0, 1, self.seq_len)
+            #device = self.normlin_W.device  # use same device as parameters
+            #basis = self._build_fourier_basis(t,device)
+            #assert self.degree % 2 == 0
 
     # -----------------------------
     # Fourier basis (if used)
     # -----------------------------
-    def _build_fourier_basis(self, t):
-        basis = []
-        basis.append(np.ones_like(t))
-        for k in range(1, self.degree // 2):
+    def _build_fourier_basis_not_used(self, t,device):
+        """
+        Build a Fourier basis with exactly `degree` vectors, adding 1 if degree is odd.
+        """
+        # Ensure even degree for consistent sin/cos pairing
+        degree = self.degree
+        if degree % 2 != 0:
+            degree += 1  # add 1 if odd
+
+        # Convert t to tensor if it's not already
+        if not isinstance(t, torch.Tensor):
+            t = torch.tensor(t, dtype=torch.float32, device=device)
+
+        # Start with constant term
+        basis = [torch.ones_like(t)]
+
+        for k in range(1, degree // 2):
             basis.append(np.sin(2 * np.pi * k * t))
             basis.append(np.cos(2 * np.pi * k * t))
-        return np.array(basis)
 
+        return np.array(basis)
     # -----------------------------
     # Forward
     # -----------------------------
@@ -515,8 +541,28 @@ class Model(nn.Module):
             x_t = x.transpose(1, 2).contiguous()
             spec = torch.matmul(x_t, self.basis_T)
         else:
-            spec = legendre_encode(x, degree=self.degree)
-            spec = spec.transpose(1, 2)
+            # -------------------------------------------------
+            # 2. Encode (Fourier - correct)
+            # -------------------------------------------------
+            if self.basis_type == "fourier":
+                # FFT: [B, L, C] → [B, L/2+1, C] (complex)
+                spec = torch.fft.rfft(x, dim=1)
+
+                # Truncate low frequencies
+                spec = spec[:, :self.degree, :]                      # [B, degree, C]
+
+                # Move to [B, C, degree]
+                spec = spec.permute(0, 2, 1)
+
+                # Convert complex → real representation
+                spec = torch.view_as_real(spec)                      # [B, C, degree, 2]
+
+                # Merge real/imag into feature dimension
+                B, C, D, _ = spec.shape
+                spec = spec.reshape(B, C, 2 * D)                     # [B, C, 2*degree]
+
+            #spec = legendre_encode(x, degree=self.degree)
+            #spec = spec.transpose(1, 2)
 
         # spec: [B, C, degree]
 
@@ -531,10 +577,19 @@ class Model(nn.Module):
         # -------------------------------------------------
         # 3. LPF (optional hard constraint)
         # -------------------------------------------------
-        if self.filter_used == "LPF":
+        if self.filter_used == "LPF" and self.basis_type == "fourier":
+            cutoff = self.degree // 2
+
+            real = spec[:, :, :self.degree]
+            imag = spec[:, :, self.degree:]
+
+            real[:, :, cutoff:] = 0
+            imag[:, :, cutoff:] = 0
+
+            spec = torch.cat([real, imag], dim=2)
+        else:
             cutoff = self.degree // 2
             spec[:, :, cutoff:] = 0
-
         # -------------------------------------------------
         # 4. Frequency Interpolation
         # -------------------------------------------------
@@ -551,10 +606,35 @@ class Model(nn.Module):
         if self.optimize_precompute_legendre:
             low_xy = torch.matmul(spec_up, self.basis)
         else:
-            low_xy = legendre_decode(
-                spec_up.transpose(1, 2),
-                seq_len=self.seq_len
-            ).transpose(1, 2)
+            # -------------------------------------------------
+            # 5. Decode (Fourier - correct)
+            # -------------------------------------------------
+            if self.basis_type == "fourier":
+                B, C, D2 = spec_up.shape
+                D = self.degree  # number of frequency bins
+
+                # Restore real/imag pairs
+                spec_up = spec_up.view(B, C, D, 2)                   # [B, C, degree, 2]
+
+                # Convert back to complex
+                spec_up_complex = torch.view_as_complex(spec_up)     # [B, C, degree]
+
+                # Prepare full spectrum
+                full_spec = torch.zeros(
+                    B, self.seq_len // 2 + 1, C,
+                    dtype=torch.cfloat,
+                    device=spec_up.device
+                )
+
+                # Place learned low frequencies
+                full_spec[:, :D, :] = spec_up_complex.permute(0, 2, 1)  # [B, degree, C]
+
+                # Inverse FFT → time domain
+                low_xy = torch.fft.irfft(full_spec, n=self.seq_len, dim=1)  # [B, L, C]
+            #low_xy = legendre_decode(
+            #    spec_up.transpose(1, 2),
+            #    seq_len=self.seq_len
+            #).transpose(1, 2)
 
         low_xy = low_xy.transpose(1, 2)
         low_xy = low_xy * self.length_ratio

@@ -118,8 +118,8 @@ class MyModel(nn.Module):
 
 			elif config.basis_type == "fourier":
 				t = np.linspace(0, 1, config.seq_len)
-				basis = self._build_fourier_basis(t, config.degree)
-				assert config.degree % 2 == 0, "Fourier basis requires even degree."
+				device = self.graph.device
+				basis = self._build_fourier_basis(t, config.degree, device)
 
 			elif config.basis_type == "hermite":
 				from numpy.polynomial.hermite import hermvander
@@ -384,15 +384,25 @@ class MyModel(nn.Module):
 	# =====================================================
 	# Basis Construction (Fourier), using real sines and cosines
 	# =====================================================
-	def _build_fourier_basis(self, t,degree):
-		basis = []
-		basis.append(np.ones_like(t))
-		for k in range(1, degree // 2):
+	def _build_fourier_basis(self, t, degree,device):
+		"""
+		Build a Fourier basis with exactly `degree` vectors, adding 1 if degree is odd.
+		"""
+		# Ensure even degree for consistent sin/cos pairing
+		if degree % 2 != 0:
+			degree += 1  # add 1 if odd
 
-			basis.append(np.sin(2 * np.pi * k * t))
-			basis.append(np.cos(2 * np.pi * k * t))
+		# Convert t to tensor if it's not already
+		if not isinstance(t, torch.Tensor):
+			t = torch.tensor(t, dtype=torch.float32, device=device)
+		with torch.no_grad():
+			# Start with constant term
+			basis = [torch.ones_like(t.cpu())]
+			for k in range(1, degree // 2):
+				basis.append(np.sin(2 * np.pi * k * t.cpu()))
+				basis.append(np.cos(2 * np.pi * k * t.cpu()))
 
-		return np.array(basis)
+		return torch.tensor(np.array(basis))
 
 	def forward(self, x, evaluate=False):
 		if self.FREQ_DOMAIN == "encoder_decoder":
@@ -598,13 +608,13 @@ class MyModel(nn.Module):
 					true_edge_leg = FITS_hermite_operations.hermite_encode(true_edge_merged, degree=5)
 				elif self.basis_type == "fourier":
 					# Fourier encode: outputs [B, C, degree]
-					pred_metric_leg = self._build_fourier_basis(pred_metric_merged, degree=5)  # [B, N*F, D]
-					true_metric_leg = self._build_fourier_basis(true_metric_merged, degree=5)  # [B, N*F, D]
+					pred_metric_leg = self._build_fourier_basis(pred_metric_merged, degree=5,device=self.graph.device)  # [B, N*F, D]
+					true_metric_leg = self._build_fourier_basis(true_metric_merged, degree=5,device=self.graph.device)  # [B, N*F, D]
 
-					pred_log_leg = self._build_fourier_basis(pred_log_merged, degree=5)
-					true_log_leg = self._build_fourier_basis(true_log_merged, degree=5)
-					pred_edge_leg = self._build_fourier_basis(pred_edge_merged, degree=5)
-					true_edge_leg = self._build_fourier_basis(true_edge_merged, degree=5)
+					pred_log_leg = self._build_fourier_basis(pred_log_merged, degree=5,device=self.graph.device)
+					true_log_leg = self._build_fourier_basis(true_log_merged, degree=5,device=self.graph.device)
+					pred_edge_leg = self._build_fourier_basis(pred_edge_merged, degree=5,device=self.graph.device)
+					true_edge_leg = self._build_fourier_basis(true_edge_merged, degree=5,device=self.graph.device)
 
 				#				# ground truth projection
 				#def project_to_basis(x):
