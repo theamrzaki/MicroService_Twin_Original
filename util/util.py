@@ -25,8 +25,8 @@ def calc_index(predict, actual):
     predict_np = predict.detach().cpu().numpy()
     actual_np = actual.detach().cpu().numpy()
 
-    ap = average_precision_score(actual_np, predict_np, average='macro').tolist()
-    auc = roc_auc_score(actual_np, predict_np, average='macro').tolist()
+    ap = average_precision_score(actual_np, predict_np, average='macro')#.tolist()
+    auc = roc_auc_score(actual_np, predict_np, average='macro')#.tolist()
 
     if predict.shape[-1] == 2 and actual.shape[-1] == 2:
         actual_cls = torch.argmax(actual, dim=-1)
@@ -39,9 +39,9 @@ def calc_index(predict, actual):
     actual_cls_np = actual_cls.detach().cpu().numpy()
     predict_cls_np = predict_cls.detach().cpu().numpy()
 
-    ps = precision_score(actual_cls_np, predict_cls_np, average="binary").tolist()
-    rs = recall_score(actual_cls_np, predict_cls_np, average="binary").tolist()
-    effection = f1_score(actual_cls_np, predict_cls_np, average="binary", zero_division=1).tolist()
+    ps = precision_score(actual_cls_np, predict_cls_np, average="binary")#.tolist()
+    rs = recall_score(actual_cls_np, predict_cls_np, average="binary")#.tolist()
+    effection = f1_score(actual_cls_np, predict_cls_np, average="binary", zero_division=1)#.tolist()
 
     pred = np.bincount(predict_cls_np)
     actu = np.bincount(actual_cls_np)

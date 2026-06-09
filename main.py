@@ -140,7 +140,7 @@ if __name__ == '__main__':
     #    results_path = f'./output/result_SN_{exp_name}.csv'
     #elif args["data_source"] == "ART":
     #    results_path = f'./output/result_ART_{exp_name}.csv'
-    results_path = f'./output/result_{exp_name}.csv'
+    results_path = f'./result_journal/result_{exp_name}.csv'
     util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,results_path)
     #else:
     #    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'./result_casestudy.csv')
