@@ -646,3 +646,7 @@ class Model(nn.Module):
         xy = xy_with_sqrt + x_mean
 
         return xy, xy_with_sqrt
+    
+
+
+    

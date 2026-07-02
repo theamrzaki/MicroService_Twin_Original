@@ -1,4 +1,5 @@
 import argparse
+from urllib import parse
 
 def str2bool(v):
     if v.lower() in ('true', '1', 'yes', 'y'):
@@ -112,8 +113,8 @@ parser.add_argument("--result_dir", default="./result",
 
 parser.add_argument("--main_model", default='MSTGAD', type=str,
                     help='switch the model that will run')
-parser.add_argument("--evaluate", default=False, 
-                    type=lambda x: x.lower() == "true", help='Evaluate the exist model')
+parser.add_argument("--evaluate", default=False, type=str2bool,
+                    help='whether to evaluate the model')
 parser.add_argument("--model_path", default=None,
                     type=str, help=' the path of exist model')
 

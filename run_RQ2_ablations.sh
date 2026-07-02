@@ -72,35 +72,42 @@
 
 
 #!/bin/bash
+#!/bin/bash
 
-FREQ_DOMAIN="FITS_Legendre" 
+# Initialize conda
+source ~/anaconda3/etc/profile.d/conda.sh
+# or:
+# source ~/miniconda3/etc/profile.d/conda.sh
+
+conda activate RCAEval
+
+FREQ_DOMAIN="FITS_Legendre"
 req_loss_approach="Legendre-style"
 
 basis_type=("fourier")
 SEEDS=(1)
-#"fourier"
-# Run OrAnomaly with different basis types (both in the projection and FreDF loss)
+
 for SEED in "${SEEDS[@]}"; do
-      for basis in "${basis_type[@]}"; do
+    for basis in "${basis_type[@]}"; do
+
         echo "================================================================="
         echo "Running OrAnomaly with basis: $basis"
         echo "================================================================="
 
-        # if fourier --> FreDF-style 
         if [ "$basis" == "fourier" ]; then
-          req_loss_approach="FreDF-style"
+            req_loss_approach="FreDF-style"
         else
-          req_loss_approach="Legendre-style"
+            req_loss_approach="Legendre-style"
         fi
-        
-        /bin/python3 main.py \
-          --FREQ_DOMAIN="$FREQ_DOMAIN" \
-          --req_loss_approach="$req_loss_approach" \
-          --random_seed="$SEED" \
-          --data_source=TT \
-          --basis_type="$basis" \
-          --experiment_name="RQ2_basis_comparison"  \
-          --filter_used="LPF" \
 
-      done
+        python main.py \
+            --FREQ_DOMAIN="$FREQ_DOMAIN" \
+            --req_loss_approach="$req_loss_approach" \
+            --random_seed="$SEED" \
+            --data_source=TT \
+            --basis_type="$basis" \
+            --experiment_name="RQ2_basis_comparison" \
+            --filter_used="LPF"
+
+    done
 done

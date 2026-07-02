@@ -72,7 +72,7 @@ def json_pretty_dump(obj, filename):
 
 def dump_params(args):
     hash_id = hashlib.md5(str(sorted([(k, v) for k, v in args.items()])).encode("utf-8")).hexdigest()[0:8]
-    save_path = os.path.join(args['result_dir'], args['main_model'] + '-' +args['dataset_path'].split('/')[-1] + '-' + hash_id + '-'+ str(int(time.time())))
+    save_path = os.path.join(args['result_dir'], args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-' + str(args['random_seed']))
     os.makedirs(save_path, exist_ok=True)
 
     log_file = os.path.join(save_path, "running.log")
@@ -159,7 +159,7 @@ def count_parameters(model, verbose=True):
         "common_params": common_params
     }
 
-def write_results(args, info_dict,total_params,avg_training_time_per_epoch,performance, file_name='result.csv'):
+def write_results(args, info_dict,total_params,avg_training_time_per_epoch,performance,benchmark_result, file_name='result.csv'):
     file_path = file_name
     #infodict = {'pr':ps, 'rc':rs, 'auc':auc, 'ap':ap, 'f1':effection}
     """
@@ -209,6 +209,10 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         'energy_per_sample_joules (GPU)': performance['GPU']['energy_per_sample_joules'] if 'GPU' in performance else None,
         'energy_per_sample_joules (CPU)': performance['CPU']['energy_per_sample_joules'] if 'CPU' in performance else None,
 
+        '(benchmark_result) parameters_million': benchmark_result["parameters_million"],
+        '(benchmark_result) flops_million': benchmark_result["flops_million"],
+        '(benchmark_result) inference_time_ms': benchmark_result["inference_time_ms"],
+        '(benchmark_result) inference_memory_mb': benchmark_result["inference_memory_mb"],
 
         'fewshot_ratio': args['fewshot_ratio'],
         'experiment_name': args['experiment_name'],

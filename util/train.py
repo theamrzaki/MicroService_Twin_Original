@@ -16,6 +16,8 @@ import util.util as util
 
 # GPU energy
 import pynvml
+from fvcore.nn import FlopCountAnalysis
+import gc
 
 # Optional CPU energy (Linux)
 try:
@@ -218,12 +220,149 @@ class MY(Base):
             scheduler.step()
 
         logging.info('saving model...')
+
+
         self.save_model(best['loss'], self.model_save_dir, name='loss')
         self.save_model(best['f1'], self.model_save_dir, name='f1')
         avg_training_time_per_epoch = np.mean(training_epoch_time_list)
         logging.info(f'Average training time per epoch: {avg_training_time_per_epoch:.2f} seconds')
         return avg_training_time_per_epoch
-    
+
+    def compute_model_stats(self, model, args,test_loader, is_gpu, use_gpu_flag,  num_iterations=50):
+        assert num_iterations > 10, 'num_iterations should be greater than 10'
+        #if not args.model_stats_mode:
+        #    print('No compute_model_stats because model_stats_mode is False!')
+        #    return False
+
+        logging.getLogger('fvcore').setLevel(logging.ERROR)
+        # 确保CUDA可用
+        if not torch.cuda.is_available():
+            print("CUDA is not available. Cannot measure GPU memory and timings.")
+            return False
+
+        device = torch.device("cuda")
+        #input_size = (1, args.seq_len, args.enc_in)
+        #inputs = torch.randn(input_size).to(device)
+        with torch.no_grad():
+            for batch_input in tqdm(test_loader, desc=f"Running on {'GPU' if is_gpu else 'CPU'}"):
+                inputs = self.input2device(batch_input, use_gpu_flag)
+                break  # only need one batch for benchmarking
+
+        # gpu
+        model = model.to(device).eval()
+
+        params = sum(p.numel() for p in model.parameters() if p.requires_grad) / 1e6
+        print(f"Parameters(M): {params:.3f}")
+
+        # use fvcore to get flops
+        flops = FlopCountAnalysis(model, inputs)
+        flops = flops.total() / 1e6
+
+        print(f"FLOPS(M): {flops:.3f}")
+
+        #if 'PEMS' in args.data:
+        #    num_iterations = 15
+
+        #  training and inferring
+        #inputs = torch.randn(args.batch_size, args.seq_len, args.enc_in).to(device)
+
+        # inference, make gpu memory more precise
+        torch.cuda.reset_peak_memory_stats()
+        inference_times = []
+        for i in range(num_iterations):
+            start_time = time.time()
+            if args.use_amp:
+                with torch.cuda.amp.autocast():
+                    _ = model(inputs)
+            else:
+                with torch.no_grad():
+                    _ = model(inputs)
+
+            inference_times.append(time.time() - start_time)
+        avg_inference_time = np.mean(inference_times[-10:])
+        inference_memory = torch.cuda.max_memory_allocated() / (1024 ** 2)
+
+        print(f"Inference Time / iter: {avg_inference_time * 1000:.3f} ms")
+        print(f"Inference Memory Usage: {inference_memory:.3f} MB")
+
+        # training
+        #criterion = WeightedL1Loss(args.lossfun_alpha, args.loss_mode)
+        #targets = torch.randn(args.batch_size, args.pred_len, args.enc_in).to(device)
+        ## print(inputs.shape, targets.shape)
+        #optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate)
+        #training_times = []
+        #torch.cuda.reset_peak_memory_stats()
+        #for _ in range(num_iterations):
+        #    model.train()
+        #    # torch.cuda.reset_peak_memory_stats()
+        #    start_time = time.time()
+        #    optimizer.zero_grad()
+        #    outputs = model(inputs)
+        #    loss = criterion(outputs, targets)
+#
+        #    scaler = None
+        #    if args.use_amp:
+        #        scaler = torch.cuda.amp.GradScaler()
+#
+        #    if args.use_amp:
+        #        scaler.scale(loss).backward()
+        #        scaler.step(optimizer)
+        #        scaler.update()
+        #    else:
+        #        loss.backward()
+        #        optimizer.step()
+#
+        #    training_times.append(time.time() - start_time)
+        #avg_training_time = np.mean(training_times[-10:])
+        #training_memory = torch.cuda.max_memory_allocated() / (1024 ** 2)
+
+        # 保存结果到文件
+        #with open('model_stats.txt', 'a') as f:
+        #    f.write(f'============================ stats {args.model_id_ori}============================= ' + '\n')
+        #    args_dict = vars(args)
+        #    for k, v in sorted(args_dict.items()):
+        #        f.write(f'{k}: {v}, ')
+        #    f.write('\n\n')
+        #    f.write(f"\tParameters(M): {params:.3f}\n")
+        #    f.write(f"\tFLOPS(M): {flops:.3f}\n")
+        #    f.write(f"\tTraining Time / iter: {avg_training_time * 1000:.3f} ms\n")
+        #    f.write(f"\tTraining Memory Usage: {training_memory:.3f} MB\n")
+        #    f.write(f"\tInference Time / iter: {avg_inference_time * 1000:.3f} ms\n")
+        #    f.write(f"\tInference Memory Usage: {inference_memory:.2f} MB\n\n\n")
+#
+        ## save to folder best_results
+        #best_log_dataset_path = 'best_results'
+        #best_log_dataset_txt = os.path.join(best_log_dataset_path, args.model_id_ori + '_stats.txt')
+        #with open(best_log_dataset_txt, 'a') as f:
+        #    f.write(f'============================ stats {args.model_id_ori}============================= ' + '\n')
+        #    args_dict = vars(args)
+        #    for k, v in sorted(args_dict.items()):
+        #        f.write(f'{k}: {v}, ')
+        #    f.write('\n\n')
+        #    f.write(f"\tParameters(M): {params:.3f}\n")
+        #    f.write(f"\tFLOPS(M): {flops:.3f}\n")
+        #    f.write(f"\tTraining Time / iter: {avg_training_time * 1000:.3f} ms\n")
+        #    f.write(f"\tTraining Memory Usage: {training_memory:.3f} MB\n")
+        #    f.write(f"\tInference Time / iter: {avg_inference_time * 1000:.3f} ms\n")
+        #    f.write(f"\tInference Memory Usage: {inference_memory:.2f} MB\n\n\n")
+#
+        ## 打印结果
+#
+        #print(f"Training Time / iter: {avg_training_time * 1000:.3f} ms")
+        #print(f"Training Memory Usage: {training_memory:.3f} MB")
+
+        benchmark_result = {
+            "parameters_million": params,
+            "flops_million": flops,
+            "inference_time_ms": avg_inference_time * 1000,
+            "inference_memory_mb": inference_memory,
+        }
+        return benchmark_result
+
+
+
+
+
     def evaluate(self, test_loader, isFinall=False, final_evaluation=False):
 
         import threading
@@ -372,9 +511,33 @@ class MY(Base):
             }
 
             logging.info(f"Performance Summary:\n{performance}")
-            return gpu_metrics["info"], performance
+
+
+
+
+            # =============================
+            # Benchmarking in a clean environment (like in Olinear)
+            # =============================
+            logging.info("Starting clean-room hardware benchmarking...")
+            
+            # Load the best weights back to make sure you're profiling the final optimized model
+            #self.model.load_state_dict(best["f1"]["state"])
+            
+            # Completely purge training artifacts from VRAM before measuring
+            gc.collect()
+            torch.cuda.empty_cache()
+            
+            # Run the stats in a clean environment
+            args = type('Args', (object,), {})()  # create a simple args object
+            args.use_amp = False  # or True if you want to test with AMP     
+
+            benchmark_result = self.compute_model_stats(self.model, args, test_loader, is_gpu=self.use_gpu, use_gpu_flag=self.use_gpu)
+
+            return gpu_metrics["info"], performance, benchmark_result
 
         return gpu_metrics["result"]
+
+
 
     def collect_case_study(
         self,

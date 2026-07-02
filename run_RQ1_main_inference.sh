@@ -96,6 +96,8 @@ for SEED in "${SEEDS[@]}"; do
         --random_seed="$SEED" \
         --data_source=TT \
         --epochs=10 \
+        --evaluate=true \
+        --model_path="./result/$FREQ-TT-$SEED" \
         --experiment_name="RQ1_main"
     else
       echo "--------------------------------"
@@ -107,7 +109,7 @@ for SEED in "${SEEDS[@]}"; do
         --random_seed="$SEED" \
         --data_source=TT \
         --epochs=10 \
-        --evaluate='true' \
+        --evaluate=true \
         --experiment_name="RQ1_main"
     fi
 

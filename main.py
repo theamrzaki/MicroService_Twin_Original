@@ -120,13 +120,13 @@ if __name__ == '__main__':
         for statue in ['loss', 'f1']:
             logging.info(f'calculate label with {statue}...')
             sys.load_model(args['model_path'], name=statue)
-            info, performance = sys.evaluate(test_dl, isFinall=True)
+            info, performance,benchmark_result = sys.evaluate(test_dl, isFinall=True)
             info_dict[statue] = info
             file.writelines(statue + '   ' + info + '\n')
     #if args.get("case_study", False):
     exp_name = ""
     if args["experiment_name"]=="RQ1_main":
-        exp_name = "RQ1_main_accurate_cpu_energy"
+        exp_name = "RQ1_benchmark"
     elif args["experiment_name"]=="RQ2_ablations_components":
         exp_name = "RQ2_ablations_withNorm_accMem"
     elif args["experiment_name"]=="RQ2_basis_comparison":
@@ -141,7 +141,7 @@ if __name__ == '__main__':
     #elif args["data_source"] == "ART":
     #    results_path = f'./output/result_ART_{exp_name}.csv'
     results_path = f'./result_journal/result_{exp_name}.csv'
-    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,results_path)
+    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,benchmark_result,results_path)
     #else:
     #    util.write_results(args,info_dict,total_params,avg_training_time_per_epoch,performance,'./result_casestudy.csv')
     #logging.info("^^^^^^ Current Model: ----" + args['main_model'] + "-" * 4 + args['hash_id'] + " ^^^^^")
