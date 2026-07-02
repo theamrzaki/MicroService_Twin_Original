@@ -9,6 +9,7 @@ import numpy as np
 import torch
 from sklearn.metrics import *
 from util.constant import *
+from pathlib import Path
 
 def calc_index(predict, actual):
     """
@@ -238,3 +239,11 @@ def load_pickle(file_path):
     logging.info("Loading from {}".format(file_path))
     with open(file_path, "rb") as fr:
         return pickle.load(fr)
+
+
+def is_raspberry_pi():
+    model_file = Path("/proc/device-tree/model")
+    if model_file.exists():
+        return "Raspberry Pi" in model_file.read_text(errors="ignore")
+    return False
+

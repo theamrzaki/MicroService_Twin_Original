@@ -74,7 +74,7 @@ class Base(nn.Module):
                     else:
                         if torch.any(torch.isnan(data)):
                             data = torch.where(torch.isnan(data), torch.full_like(data, 0), data)
-                        batch_input[name] = torch.tensor(data, dtype=torch.float32, requires_grad=True).cuda()
+                        batch_input[name] = torch.tensor(data, dtype=torch.float32, requires_grad=True)#.cuda()
 
             else:
                 for name, data in batch_input.items():
@@ -88,7 +88,7 @@ class Base(nn.Module):
             if use_gpu:
                 if torch.any(torch.isnan(batch_input)):
                         data = torch.where(torch.isnan(batch_input), torch.full_like(batch_input, 0), batch_input)
-                batch_input = torch.tensor(batch_input, dtype=torch.float32, requires_grad=True).cuda()
+                batch_input = torch.tensor(batch_input, dtype=torch.float32, requires_grad=True)#.cuda()
             else:
                 if torch.any(torch.isnan(batch_input)):
                         data = torch.where(torch.isnan(batch_input), torch.full_like(batch_input, 0), batch_input)
@@ -101,8 +101,14 @@ class Base(nn.Module):
             logging.info(f'No {self.model.name} statue file')
         else:
             logging.info(f'{self.model.name} on {model_save_file} loading...')
-            self.model.load_state_dict(torch.load(
-                    os.path.join(model_save_file, f"{self.model.name}_{name}_stage.ckpt")))
+            #if gpu is available, load model to gpu, otherwise load to cpu
+            if torch.cuda.is_available():
+                self.model.load_state_dict(torch.load(
+                        os.path.join(model_save_file, f"{self.model.name}_{name}_stage.ckpt")))
+            else:
+                # case of Raspberry Pi or CPU only machine, load model to CPU
+                self.model.load_state_dict(torch.load(
+                        os.path.join(model_save_file, f"{self.model.name}_{name}_stage.ckpt"), map_location=torch.device('cpu')))
 
     # Saving modal paras
     def save_model(self, best_dict, model_save_dir="", name='loss'):
@@ -127,7 +133,7 @@ class MY(Base):
         pre_loss, worse_count, isWrong = float("inf"), 0, False
 
         label_weight = torch.tensor(
-            np.array(list(self.True_list.values())), dtype=torch.float).cuda()
+            np.array(list(self.True_list.values())), dtype=torch.float)#.cuda()
         losser = nn.BCEWithLogitsLoss(reduce='mean', weight=label_weight)
         logging.info('optimizer : using AdaBelief')
 
@@ -151,7 +157,7 @@ class MY(Base):
 
                     rec_loss = sum(raw_loss)
                     if cls_result.shape[0] == 0:
-                        cls_loss = torch.tensor(0, dtype=torch.float).cuda()
+                        cls_loss = torch.tensor(0, dtype=torch.float)#.cuda()
                     else:
                         cls_loss = losser(cls_result, cls_label)
 
@@ -237,10 +243,11 @@ class MY(Base):
         logging.getLogger('fvcore').setLevel(logging.ERROR)
         # 确保CUDA可用
         if not torch.cuda.is_available():
-            print("CUDA is not available. Cannot measure GPU memory and timings.")
-            return False
-
-        device = torch.device("cuda")
+            print("CUDA is not available")#. Cannot measure GPU memory and timings.")
+            device = torch.device("cpu")
+        else:
+            device = torch.device("cuda")
+            
         #input_size = (1, args.seq_len, args.enc_in)
         #inputs = torch.randn(input_size).to(device)
         with torch.no_grad():
@@ -267,11 +274,14 @@ class MY(Base):
         #inputs = torch.randn(args.batch_size, args.seq_len, args.enc_in).to(device)
 
         # inference, make gpu memory more precise
-        torch.cuda.reset_peak_memory_stats()
+        if torch.cuda.is_available():
+            torch.cuda.reset_peak_memory_stats()
+        else:
+            process = psutil.Process()
         inference_times = []
         for i in range(num_iterations):
             start_time = time.time()
-            if args.use_amp:
+            if args.use_amp and torch.cuda.is_available():
                 with torch.cuda.amp.autocast():
                     _ = model(inputs)
             else:
@@ -280,8 +290,10 @@ class MY(Base):
 
             inference_times.append(time.time() - start_time)
         avg_inference_time = np.mean(inference_times[-10:])
-        inference_memory = torch.cuda.max_memory_allocated() / (1024 ** 2)
-
+        if torch.cuda.is_available():
+            inference_memory = torch.cuda.max_memory_allocated() / (1024 ** 2)
+        else:
+            inference_memory = process.memory_info().rss / (1024 ** 2)  # in MB
         print(f"Inference Time / iter: {avg_inference_time * 1000:.3f} ms")
         print(f"Inference Memory Usage: {inference_memory:.3f} MB")
 
@@ -487,7 +499,11 @@ class MY(Base):
         # -----------------------------
         # Run GPU
         # -----------------------------
-        gpu_metrics = run_inference(use_gpu_flag=True)
+        if util.is_raspberry_pi():
+            logging.info("CUDA is not available on Raspberry Pi. Skipping GPU inference.")
+            gpu_metrics = None
+        else:
+            gpu_metrics = run_inference(use_gpu_flag=True)
 
         if isFinall:
             # -----------------------------
@@ -497,10 +513,10 @@ class MY(Base):
 
             performance = {
                 "GPU": {
-                    "inference_time_per_sample_ms": gpu_metrics["inference_time_per_sample_ms"],
-                    "throughput_samples_per_sec": gpu_metrics["throughput_samples_per_sec"],
-                    "peak_memory_mb": gpu_metrics["peak_memory_mb"],
-                    "energy_per_sample_joules": gpu_metrics["energy_per_sample_joules"]
+                    "inference_time_per_sample_ms": gpu_metrics["inference_time_per_sample_ms"] if gpu_metrics else None,
+                    "throughput_samples_per_sec": gpu_metrics["throughput_samples_per_sec"] if gpu_metrics else None,
+                    "peak_memory_mb": gpu_metrics["peak_memory_mb"] if gpu_metrics else None,
+                    "energy_per_sample_joules": gpu_metrics["energy_per_sample_joules"] if gpu_metrics else None
                 },
                 "CPU": {
                     "inference_time_per_sample_ms": cpu_metrics["inference_time_per_sample_ms"],
@@ -530,10 +546,12 @@ class MY(Base):
             # Run the stats in a clean environment
             args = type('Args', (object,), {})()  # create a simple args object
             args.use_amp = False  # or True if you want to test with AMP     
-
+            print("==================================================================")
+            print(f"Running model stats computation on with use_gpu={self.use_gpu}...")
+            print("==================================================================") 
             benchmark_result = self.compute_model_stats(self.model, args, test_loader, is_gpu=self.use_gpu, use_gpu_flag=self.use_gpu)
 
-            return gpu_metrics["info"], performance, benchmark_result
+            return gpu_metrics["info"] if gpu_metrics else None, performance, benchmark_result
 
         return gpu_metrics["result"]
 

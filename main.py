@@ -122,11 +122,24 @@ if __name__ == '__main__':
             sys.load_model(args['model_path'], name=statue)
             info, performance,benchmark_result = sys.evaluate(test_dl, isFinall=True)
             info_dict[statue] = info
-            file.writelines(statue + '   ' + info + '\n')
+            if info is not None:
+                logging.info(f"Performance with {statue}: {info}")
+                file.writelines(statue + '   ' + info + '\n')
+            else:
+                logging.info(f"Performance with {statue}: No GPU metrics available.")
+                file.writelines(statue + '   ' + ",,," + '\n')
     #if args.get("case_study", False):
     exp_name = ""
     if args["experiment_name"]=="RQ1_main":
         exp_name = "RQ1_benchmark"
+    elif args["experiment_name"] == "RQ1_main_Edge":
+        if not util.is_raspberry_pi():
+            raise RuntimeError(
+                "RQ1_main_Edge can only be run on a Raspberry Pi."
+            )
+        else:
+            print("Running on Raspberry Pi, proceeding with RQ1_main_Edge experiment.")
+        exp_name = "RQ1_main_Edge"
     elif args["experiment_name"]=="RQ2_ablations_components":
         exp_name = "RQ2_ablations_withNorm_accMem"
     elif args["experiment_name"]=="RQ2_basis_comparison":

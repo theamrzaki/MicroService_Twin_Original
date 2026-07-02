@@ -22,7 +22,7 @@ import src.inner_models.FITS_lag as FITS_lag_operations
 import src.inner_models.FITS_hermite as FITS_hermite_operations
 from src.inner_models.Eadro import MainModel 	
 from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
-from src.inner_models.Art import ARTWrapper as Art_Model
+#from src.inner_models.Art import ARTWrapper as Art_Model
 from src.inner_models.Hades import HadesWrapper as Hades_Model
 import numpy as np
 import argparse
@@ -60,7 +60,7 @@ class MyModel(nn.Module):
 	def __init__(self, graph, **args):
 		super(MyModel, self).__init__()
 		self.name = args['FREQ_DOMAIN']
-		self.graph = torch.tensor(graph).cuda()
+		self.graph = torch.tensor(graph)#.cuda()
 		self.label_weight = args['label_weight']
 		self.multi_fits = args["MULTI_FITS"]
 		adj = dense_to_sparse(self.graph)[0]

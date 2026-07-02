@@ -171,7 +171,7 @@ def assert_shapes(shapes, dataset):
     assert dataset.label_mask.shape == (batch, shapes["node_num"],3), f"Wrong losses shape"
 
 def run(data="TT"):
-    data_dir = os.path.join("/home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks", data)
+    data_dir = os.path.join("/home/db2003/Desktop/MicroService_Twin_Original/data", data)
 
     metadata = read_json(os.path.join(data_dir, "metadata.json"))
     event_num, node_num, metric_num =  metadata["event_num"], metadata["node_num"], metadata["metric_num"]

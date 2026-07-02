@@ -74,10 +74,8 @@ ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerMod
 #  done
 #done
 
-source ~/miniconda3/etc/profile.d/conda.sh
-# or:
-# source ~/miniconda3/etc/profile.d/conda.sh
-
+# as miniforge is installed on Raspberry Pi
+source ~/miniforge3/etc/profile.d/conda.sh
 conda activate RCAEval
 
 SEEDS=(1)
@@ -97,8 +95,9 @@ for SEED in "${SEEDS[@]}"; do
         --data_source=TT \
         --epochs=10 \
         --evaluate=true \
+        --gpu=false\
         --model_path="./result/$FREQ-TT-$SEED" \
-        --experiment_name="RQ1_main"
+        --experiment_name="RQ1_main_Edge"
     else
       echo "--------------------------------"
       echo "2) Running $FREQ with Normal-Recreation loss, seed $SEED"
@@ -109,8 +108,9 @@ for SEED in "${SEEDS[@]}"; do
         --random_seed="$SEED" \
         --data_source=TT \
         --epochs=10 \
+        --gpu=false \
         --evaluate=true \
-        --experiment_name="RQ1_main"
+        --experiment_name="RQ1_main_Edge"
     fi
 
   done
