@@ -22,7 +22,7 @@ import src.inner_models.FITS_lag as FITS_lag_operations
 import src.inner_models.FITS_hermite as FITS_hermite_operations
 from src.inner_models.Eadro import MainModel 	
 from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
-from src.inner_models.Art import ARTWrapper as Art_Model
+#from src.inner_models.Art import ARTWrapper as Art_Model
 from src.inner_models.Hades import HadesWrapper as Hades_Model
 from util.util import is_raspberry_pi
 import numpy as np
