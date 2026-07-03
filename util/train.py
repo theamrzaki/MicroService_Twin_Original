@@ -439,16 +439,16 @@ class MY(Base):
             # -----------------------------
             with torch.no_grad():
                 for batch_input in tqdm(test_loader, desc=f"Running on {'GPU' if is_gpu else 'CPU'}"):
-                    try:
+                    #try:
                         batch_input = self.input2device(batch_input, use_gpu_flag)
                         raw_result, _ = self.model(batch_input, evaluate=True)
 
                         predict_list.append(raw_result)
                         label_list.append(batch_input['groundtruth_real'])
-                    except Exception as e:
-                        logging.error(f"Error during inference: {e}")
-                        continue
-
+                    #except Exception as e:
+                    #    logging.error(f"Error during inference: {e}")
+                    #    continue
+#
             # -----------------------------
             # Stop timing + energy
             # -----------------------------

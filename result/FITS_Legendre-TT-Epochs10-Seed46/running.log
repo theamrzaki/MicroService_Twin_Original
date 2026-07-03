@@ -1,0 +1,283 @@
+2026-07-03 12:04:27,357 P1631720 INFO ---- Model: ----MSTGAD-a4900849----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.1----Freq Domain : FITS_Legendre----Multi Fits : false----train : True----evaluate : False
+2026-07-03 12:04:27,357 P1631720 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-03 12:04:41,877 P1631720 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-03 12:04:49,696 P1631720 INFO Trainable Parameters Breakdown:
+2026-07-03 12:04:49,696 P1631720 INFO --------------------------------------------------------------------------------
+2026-07-03 12:04:49,696 P1631720 INFO Reconstruction-Specific Parameters:
+2026-07-03 12:04:49,696 P1631720 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-07-03 12:04:49,696 P1631720 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-07-03 12:04:49,697 P1631720 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-07-03 12:04:49,697 P1631720 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-07-03 12:04:49,697 P1631720 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-07-03 12:04:49,697 P1631720 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-07-03 12:04:49,697 P1631720 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-07-03 12:04:49,697 P1631720 INFO shared_fits.normlin_W                    | shape: (5, 5)                    | params: 25
+2026-07-03 12:04:49,697 P1631720 INFO shared_fits.freq_upsampler.weight        | shape: (5, 5)                    | params: 25
+2026-07-03 12:04:49,697 P1631720 INFO shared_fits.freq_upsampler.bias          | shape: (5,)                      | params: 5
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj.node.weight                | shape: (10, 8)                   | params: 80
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj.node.bias                  | shape: (10,)                     | params: 10
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj.log.weight                 | shape: (10, 32)                  | params: 320
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj.log.bias                   | shape: (10,)                     | params: 10
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj.edge.weight                | shape: (10, 8)                   | params: 80
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj.edge.bias                  | shape: (10,)                     | params: 10
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj_out.node.weight            | shape: (8, 10)                   | params: 80
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj_out.node.bias              | shape: (8,)                      | params: 8
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj_out.log.weight             | shape: (32, 10)                  | params: 320
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj_out.log.bias               | shape: (32,)                     | params: 32
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj_out.edge.weight            | shape: (8, 10)                   | params: 80
+2026-07-03 12:04:49,697 P1631720 INFO modality_proj_out.edge.bias              | shape: (8,)                      | params: 8
+2026-07-03 12:04:49,697 P1631720 INFO Subtotal: 1,523
+2026-07-03 12:04:49,697 P1631720 INFO --------------------------------------------------------------------------------
+2026-07-03 12:04:49,697 P1631720 INFO Common Parameters:
+2026-07-03 12:04:49,697 P1631720 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-03 12:04:49,697 P1631720 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-03 12:04:49,698 P1631720 INFO log_emb.linear.weight                    | shape: (32, 60)                  | params: 1,920
+2026-07-03 12:04:49,698 P1631720 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-03 12:04:49,698 P1631720 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-03 12:04:49,698 P1631720 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-03 12:04:49,698 P1631720 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-03 12:04:49,698 P1631720 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-03 12:04:49,698 P1631720 INFO dense_log.weight                         | shape: (60, 32)                  | params: 1,920
+2026-07-03 12:04:49,698 P1631720 INFO dense_log.bias                           | shape: (60,)                     | params: 60
+2026-07-03 12:04:49,698 P1631720 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-03 12:04:49,698 P1631720 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-03 12:04:49,698 P1631720 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-03 12:04:49,698 P1631720 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-03 12:04:49,698 P1631720 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-03 12:04:49,698 P1631720 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-03 12:04:49,698 P1631720 INFO Subtotal: 13,319
+2026-07-03 12:04:49,698 P1631720 INFO --------------------------------------------------------------------------------
+2026-07-03 12:04:49,698 P1631720 INFO Total Trainable Parameters: 14,842
+
+2026-07-03 12:04:49,698 P1631720 INFO Trainable Parameters: 14842, reconstruction: 1523, common: 13319
+2026-07-03 12:04:49,698 P1631720 INFO model : init weight
+2026-07-03 12:04:49,699 P1631720 INFO Using GPU...
+2026-07-03 12:04:49,703 P1631720 INFO optimizer : using AdaBelief
+2026-07-03 12:04:49,703 P1631720 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 12:04:49,703 P1631720 INFO 0/10 starting... lr: 0.001 para:1.0
+2026-07-03 12:05:08,523 P1631720 INFO Epoch 0/10, all_loss:0.08527 cls_loss:42.81200 rec_loss:0.08527 [18.81s]; best loss:0.08527, patience : 0
+2026-07-03 12:05:08,523 P1631720 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 12:05:08,523 P1631720 INFO 1/10 starting... lr: 0.001 para:0.5
+2026-07-03 12:05:28,170 P1631720 INFO Epoch 1/10, all_loss:2.14986 cls_loss:4.07219 rec_loss:0.22753 [19.63s]; best loss:2.14986, patience : 0
+2026-07-03 12:05:28,171 P1631720 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 12:05:28,171 P1631720 INFO 2/10 starting... lr: 0.001 para:0.3333333432674408
+2026-07-03 12:05:51,251 P1631720 INFO Epoch 2/10, all_loss:1.51140 cls_loss:2.14652 rec_loss:0.24116 [23.07s]; best loss:1.51140, patience : 0
+2026-07-03 12:06:01,334 P1631720 INFO pr:0.8916  rc:0.5173  auc:0.9887 ap:0.9017 f1: 0.6548 pred_right: 1076188 pred_wrong:20012 actu_right: 1061709 actu_wrong: 34491
+2026-07-03 12:06:05,446 P1631720 INFO pr:0.8908  rc:0.5210  auc:0.9892 ap:0.9028 f1: 0.6575 pred_right: 461139 pred_wrong:8661 actu_right: 454992 actu_wrong: 14808
+2026-07-03 12:06:05,450 P1631720 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 12:06:05,450 P1631720 INFO 3/10 starting... lr: 0.001 para:0.25
+2026-07-03 12:06:24,545 P1631720 INFO Epoch 3/10, all_loss:1.48565 cls_loss:1.90308 rec_loss:0.23334 [19.09s]; best loss:1.48565, patience : 0
+2026-07-03 12:06:34,325 P1631720 INFO pr:0.8762  rc:0.5947  auc:0.9905 ap:0.9200 f1: 0.7085 pred_right: 1072792 pred_wrong:23408 actu_right: 1061712 actu_wrong: 34488
+2026-07-03 12:06:38,389 P1631720 INFO pr:0.8825  rc:0.5951  auc:0.9909 ap:0.9211 f1: 0.7108 pred_right: 459815 pred_wrong:9985 actu_right: 454992 actu_wrong: 14808
+2026-07-03 12:06:38,393 P1631720 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 12:06:38,393 P1631720 INFO 4/10 starting... lr: 0.001 para:0.20000000298023224
+2026-07-03 12:06:57,415 P1631720 INFO Epoch 4/10, all_loss:1.45920 cls_loss:1.76793 rec_loss:0.22429 [19.02s]; best loss:1.45920, patience : 0
+2026-07-03 12:07:13,397 P1631720 INFO pr:0.8632  rc:0.6469  auc:0.9930 ap:0.9308 f1: 0.7396 pred_right: 1070351 pred_wrong:25849 actu_right: 1061708 actu_wrong: 34492
+2026-07-03 12:07:18,134 P1631720 INFO pr:0.8708  rc:0.6479  auc:0.9931 ap:0.9321 f1: 0.7430 pred_right: 458783 pred_wrong:11017 actu_right: 454992 actu_wrong: 14808
+2026-07-03 12:07:18,138 P1631720 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 12:07:18,138 P1631720 INFO 5/10 starting... lr: 0.001 para:0.1666666716337204
+2026-07-03 12:07:37,540 P1631720 INFO Epoch 5/10, all_loss:1.40459 cls_loss:1.63929 rec_loss:0.23105 [19.40s]; best loss:1.40459, patience : 0
+2026-07-03 12:07:47,358 P1631720 INFO pr:0.9190  rc:0.5915  auc:0.9937 ap:0.9364 f1: 0.7198 pred_right: 1074003 pred_wrong:22197 actu_right: 1061711 actu_wrong: 34489
+2026-07-03 12:07:51,428 P1631720 INFO pr:0.9259  rc:0.5964  auc:0.9939 ap:0.9376 f1: 0.7255 pred_right: 460262 pred_wrong:9538 actu_right: 454992 actu_wrong: 14808
+2026-07-03 12:07:51,428 P1631720 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 12:07:51,428 P1631720 INFO 6/10 starting... lr: 0.001 para:0.1428571492433548
+2026-07-03 12:08:12,135 P1631720 INFO Epoch 6/10, all_loss:1.36802 cls_loss:1.55302 rec_loss:0.25808 [20.70s]; best loss:1.36802, patience : 0
+2026-07-03 12:08:20,626 P1631720 INFO pr:0.8899  rc:0.6321  auc:0.9946 ap:0.9410 f1: 0.7392 pred_right: 1071706 pred_wrong:24494 actu_right: 1061715 actu_wrong: 34485
+2026-07-03 12:08:24,763 P1631720 INFO pr:0.8954  rc:0.6340  auc:0.9948 ap:0.9425 f1: 0.7424 pred_right: 459314 pred_wrong:10486 actu_right: 454992 actu_wrong: 14808
+2026-07-03 12:08:24,763 P1631720 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 12:08:24,763 P1631720 INFO 7/10 starting... lr: 0.001 para:0.125
+2026-07-03 12:08:50,781 P1631720 INFO Epoch 7/10, all_loss:1.29478 cls_loss:1.43606 rec_loss:0.30582 [26.01s]; best loss:1.29478, patience : 0
+2026-07-03 12:09:00,906 P1631720 INFO pr:0.8232  rc:0.8177  auc:0.9960 ap:0.9549 f1: 0.8205 pred_right: 1061943 pred_wrong:34257 actu_right: 1061712 actu_wrong: 34488
+2026-07-03 12:09:05,061 P1631720 INFO pr:0.8267  rc:0.8196  auc:0.9961 ap:0.9558 f1: 0.8232 pred_right: 455119 pred_wrong:14681 actu_right: 454992 actu_wrong: 14808
+2026-07-03 12:09:05,065 P1631720 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 12:09:05,065 P1631720 INFO 8/10 starting... lr: 0.001 para:0.1111111119389534
+2026-07-03 12:09:25,077 P1631720 INFO Epoch 8/10, all_loss:1.17648 cls_loss:1.27721 rec_loss:0.37061 [20.01s]; best loss:1.17648, patience : 0
+2026-07-03 12:09:36,740 P1631720 INFO pr:0.9242  rc:0.6866  auc:0.9966 ap:0.9649 f1: 0.7879 pred_right: 1070576 pred_wrong:25624 actu_right: 1061712 actu_wrong: 34488
+2026-07-03 12:09:40,253 P1631720 INFO pr:0.9302  rc:0.6835  auc:0.9968 ap:0.9660 f1: 0.7880 pred_right: 458919 pred_wrong:10881 actu_right: 454992 actu_wrong: 14808
+2026-07-03 12:09:40,253 P1631720 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 12:09:40,253 P1631720 INFO 9/10 starting... lr: 0.001 para:0.10000000149011612
+2026-07-03 12:10:05,428 P1631720 INFO Epoch 9/10, all_loss:1.06264 cls_loss:1.12796 rec_loss:0.47470 [25.17s]; best loss:1.06264, patience : 0
+2026-07-03 12:10:15,637 P1631720 INFO pr:0.8820  rc:0.8189  auc:0.9972 ap:0.9674 f1: 0.8493 pred_right: 1064181 pred_wrong:32019 actu_right: 1061714 actu_wrong: 34486
+2026-07-03 12:10:20,060 P1631720 INFO pr:0.8877  rc:0.8117  auc:0.9970 ap:0.9680 f1: 0.8480 pred_right: 456260 pred_wrong:13540 actu_right: 454992 actu_wrong: 14808
+2026-07-03 12:10:20,064 P1631720 INFO saving model...
+2026-07-03 12:10:20,064 P1631720 INFO FITS_Legendre - loss  best score:1.062637448310852 at epoch 9
+2026-07-03 12:10:20,070 P1631720 INFO FITS_Legendre - f1  best score:0.8492895271032254 at epoch 9
+2026-07-03 12:10:20,074 P1631720 INFO Average training time per epoch: 21.09 seconds
+2026-07-03 12:10:20,074 P1631720 INFO calculate scores...
+2026-07-03 12:10:20,074 P1631720 INFO calculate label with loss...
+2026-07-03 12:10:20,074 P1631720 INFO FITS_Legendre on ./result/FITS_Legendre-TT-Epochs10-Seed46 loading...
+2026-07-03 12:10:24,596 P1631720 INFO pr:0.8877  rc:0.8117  auc:0.9970 ap:0.9680 f1: 0.8480 pred_right: 456260 pred_wrong:13540 actu_right: 454992 actu_wrong: 14808
+2026-07-03 12:10:24,650 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:24,694 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:24,740 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:24,783 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:24,826 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:24,873 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:24,916 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:24,960 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,007 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,052 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,099 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,152 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,198 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,247 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,292 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,337 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,383 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,429 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,477 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,522 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,567 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,611 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,656 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,704 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,754 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,799 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,842 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,887 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,933 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:25,983 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,033 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,079 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,125 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,173 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,221 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,265 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,311 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,359 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,413 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,480 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,533 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,585 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,638 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,690 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,742 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,801 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,865 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,920 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:26,973 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,026 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,095 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,159 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,214 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,266 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,327 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,380 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,433 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,487 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,539 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,596 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,650 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,708 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,761 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,814 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,866 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,917 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:27,969 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,021 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,073 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,126 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,178 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,227 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,276 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,325 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,376 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,434 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,486 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,549 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,602 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,659 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,709 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,761 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,810 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,863 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,914 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:28,971 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,022 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,072 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,126 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,179 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,233 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,286 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,347 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,406 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,482 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,550 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,603 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,664 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,717 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,769 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,829 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,883 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:29,936 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,001 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,056 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,109 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,165 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,230 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,294 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,350 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,410 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,461 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,513 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,563 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,611 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,657 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,712 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,763 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,815 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,862 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,907 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,953 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:30,999 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,053 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,099 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,155 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,209 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,268 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,324 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,373 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,426 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,474 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,521 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,571 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,626 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,679 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,732 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,785 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,838 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,897 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:31,949 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,001 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,057 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,110 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,159 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,212 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,262 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,311 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,365 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,415 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,464 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,513 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,562 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,613 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,663 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,712 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,762 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,814 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,863 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,911 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:32,958 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,006 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,061 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,113 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,165 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,217 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,273 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,323 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,374 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,424 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,474 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,524 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,574 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)
+2026-07-03 12:10:33,631 P1631720 ERROR Error during inference: Expected all tensors to be on the same device, but got mask is on cuda:0, different from other tensors on cpu (when checking argument in method wrapper_CUDA__masked_select)

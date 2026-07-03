@@ -601,6 +601,8 @@ class MyModel(nn.Module):
 			pred_edge_masked = rec_edge_fits.reshape(B, edge_mask_flat.sum().item(), -1, E).permute(0, 2, 1, 3)  # [B, T, num_edges, E]
 #
 			# Extract ground truth edges using mask: [B, T, num_edges, E]
+			#make edge_exists_mask_batch onto the same device as x['data_edge']
+			edge_exists_mask_batch = edge_exists_mask_batch.to(x['data_edge'].device)
 			mask = edge_exists_mask_batch.to(x['data_edge'].device).unsqueeze(-1)
 			l_edge = torch.masked_select(x['data_edge'], mask).reshape(B, T, edge_mask_flat.sum().item(), -1)
 			l_edge = torch.masked_select(x['data_edge'], edge_exists_mask_batch.unsqueeze(-1)).reshape(B, T, edge_mask_flat.sum().item(), -1)
