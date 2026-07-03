@@ -3,12 +3,12 @@
 
 
 FREQ_DOMAINS=(
-# "Eadro"  
+"Eadro"  
 ##
 "FITS_Legendre" #OrEdge
 ##
-#"AnoFusion"
-#"encoder_decoder"
+"AnoFusion"
+"encoder_decoder"
 #"Art"
 ##
 ##
@@ -93,7 +93,6 @@ for SEED in "${SEEDS[@]}"; do
         --filter_used="LPF" \
         --random_seed="$SEED" \
         --data_source=TT \
-        --epochs=10 \
         --evaluate=true \
         --gpu=false\
         --model_path="./result/$FREQ-TT-$SEED" \
@@ -107,7 +106,6 @@ for SEED in "${SEEDS[@]}"; do
         --req_loss_approach='Normal-Recreation' \
         --random_seed="$SEED" \
         --data_source=TT \
-        --epochs=10 \
         --gpu=false \
         --evaluate=true \
         --experiment_name="RQ1_main_Edge"

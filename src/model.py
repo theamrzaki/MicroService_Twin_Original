@@ -22,8 +22,9 @@ import src.inner_models.FITS_lag as FITS_lag_operations
 import src.inner_models.FITS_hermite as FITS_hermite_operations
 from src.inner_models.Eadro import MainModel 	
 from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
-#from src.inner_models.Art import ARTWrapper as Art_Model
+from src.inner_models.Art import ARTWrapper as Art_Model
 from src.inner_models.Hades import HadesWrapper as Hades_Model
+from util.util import is_raspberry_pi
 import numpy as np
 import argparse
 
@@ -60,7 +61,10 @@ class MyModel(nn.Module):
 	def __init__(self, graph, **args):
 		super(MyModel, self).__init__()
 		self.name = args['FREQ_DOMAIN']
-		self.graph = torch.tensor(graph)#.cuda()
+		if is_raspberry_pi():
+			self.graph = torch.tensor(graph)#.cuda()
+		else:
+			self.graph = torch.tensor(graph).cuda()
 		self.label_weight = args['label_weight']
 		self.multi_fits = args["MULTI_FITS"]
 		adj = dense_to_sparse(self.graph)[0]
@@ -431,11 +435,11 @@ class MyModel(nn.Module):
 							nn.LeakyReLU(inplace=True),
 							nn.Linear(128, 2))
 
-		edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
-		edge_index = torch.nonzero(edge_exists_mask, as_tuple=False)  # [num_edges, 2]
-		self.register_buffer("edge_index", edge_index)
-
-		self.num_edges = edge_index.shape[0]
+		#edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
+		#edge_index = torch.nonzero(edge_exists_mask, as_tuple=False)  # [num_edges, 2]
+		#self.register_buffer("edge_index", edge_index)
+#
+		#self.num_edges = edge_index.shape[0]
 
 	def upsample_time_dim(self, tensor_4d: torch.Tensor, target_time: int) -> torch.Tensor:
 		B, T_old, N, F_ = tensor_4d.shape
@@ -501,43 +505,43 @@ class MyModel(nn.Module):
 			x_edge_fits, _ = self.egde_emb(x['data_edge'])  # Shape: [B, T, E, F]
 
 			# Permute to FITS input shape: [B*N, T, F]
-			#_, _, N, F_METRIC = x_node_metric_fits.shape
-			#x_node_metric_fits_input = x_node_metric_fits.permute(0, 2, 1, 3).reshape(B*N, T, F_METRIC) # [B*N, T, F]
-			#_, _, N, F_LOG = x_node_logs_fits.shape
-			#x_node_logs_fits_input = x_node_logs_fits.permute(0, 2, 1, 3).reshape(B*N, T, F_LOG) # [B*N, T, F]
-			#_, _, _, _, E = x_edge_fits.shape
-			#x_edge_flat = x_edge_fits.reshape(B, T, N*N, E)  # [B, T, N*N, E]
-			#edge_mask_flat = edge_exists_mask.view(-1)  # [N*N]
-			#edge_mask_flat = edge_mask_flat.to(x_edge_flat.device)
-			#x_edge_masked = x_edge_flat[:, :, edge_mask_flat, :]  # select only existing edges
-			#x_edge_fits_input = x_edge_masked.permute(0, 2, 1, 3).reshape(B * edge_mask_flat.sum().item(), T, E)  # [B*num_edges, T, E]
+			_, _, N, F_METRIC = x_node_metric_fits.shape
+			x_node_metric_fits_input = x_node_metric_fits.permute(0, 2, 1, 3).reshape(B*N, T, F_METRIC) # [B*N, T, F]
+			_, _, N, F_LOG = x_node_logs_fits.shape
+			x_node_logs_fits_input = x_node_logs_fits.permute(0, 2, 1, 3).reshape(B*N, T, F_LOG) # [B*N, T, F]
+			_, _, _, _, E = x_edge_fits.shape
+			x_edge_flat = x_edge_fits.reshape(B, T, N*N, E)  # [B, T, N*N, E]
+			edge_mask_flat = edge_exists_mask.view(-1)  # [N*N]
+			edge_mask_flat = edge_mask_flat.to(x_edge_flat.device)
+			x_edge_masked = x_edge_flat[:, :, edge_mask_flat, :]  # select only existing edges
+			x_edge_fits_input = x_edge_masked.permute(0, 2, 1, 3).reshape(B * edge_mask_flat.sum().item(), T, E)  # [B*num_edges, T, E]
 
 			# -------------------------------------------------
 			# Node streams → FITS input
-			# -------------------------------------------------
-			B, T, N, F_METRIC = x_node_metric_fits.shape
-			_, _, _, F_LOG = x_node_logs_fits.shape
-
-			x_node_metric_fits_input = (
-				x_node_metric_fits.permute(0, 2, 1, 3)
-				.reshape(B * N, T, F_METRIC)
-			)
-
-			x_node_logs_fits_input = (
-				x_node_logs_fits.permute(0, 2, 1, 3)
-				.reshape(B * N, T, F_LOG)
-			)
-
-			# -------------------------------------------------
-			# Edge stream → NO MASKING, NO NxN MATERIALIZATION
-			# -------------------------------------------------
-			i, j = self.edge_index[:, 0], self.edge_index[:, 1]
-			E = x_edge_fits.shape[-1]
-
-			x_edge_fits_input = (
-				x_edge_fits[:, :, i, j, :]   # [B, T, num_edges, E]
-				.permute(0, 2, 1, 3)         # [B, num_edges, T, E]
-			)
+			## -------------------------------------------------
+			#B, T, N, F_METRIC = x_node_metric_fits.shape
+			#_, _, _, F_LOG = x_node_logs_fits.shape
+#
+			#x_node_metric_fits_input = (
+			#	x_node_metric_fits.permute(0, 2, 1, 3)
+			#	.reshape(B * N, T, F_METRIC)
+			#)
+#
+			#x_node_logs_fits_input = (
+			#	x_node_logs_fits.permute(0, 2, 1, 3)
+			#	.reshape(B * N, T, F_LOG)
+			#)
+#
+			## -------------------------------------------------
+			## Edge stream → NO MASKING, NO NxN MATERIALIZATION
+			## -------------------------------------------------
+			#i, j = self.edge_index[:, 0], self.edge_index[:, 1]
+			#E = x_edge_fits.shape[-1]
+#
+			#x_edge_fits_input = (
+			#	x_edge_fits[:, :, i, j, :]   # [B, T, num_edges, E]
+			#	.permute(0, 2, 1, 3)         # [B, num_edges, T, E]
+			#)
 
 
 			if self.multi_fits == 'false':
@@ -591,27 +595,27 @@ class MyModel(nn.Module):
 				rec_node_logs_fits, _   = self.fits_log(x_node_logs_fits_input)  # [B*N, T', F]
 				rec_edge_fits, _ = self.fits_edge(x_edge_fits_input)  # [B*N*N, T', E]
 			# Reshape back to original shape
-			#pred_metric_node = rec_node_metric_fits.reshape(B, N, -1, F_METRIC).permute(0, 2, 1, 3)  # [B, T, N, F]
-			#pred_log_node    = rec_node_logs_fits.reshape(B, N, -1, F_LOG).permute(0, 2, 1, 3)  # [B, T, N, F]
-			## Keep edge predictions in masked form: [B, T, num_edges, E]
-			#pred_edge_masked = rec_edge_fits.reshape(B, edge_mask_flat.sum().item(), -1, E).permute(0, 2, 1, 3)  # [B, T, num_edges, E]
+			pred_metric_node = rec_node_metric_fits.reshape(B, N, -1, F_METRIC).permute(0, 2, 1, 3)  # [B, T, N, F]
+			pred_log_node    = rec_node_logs_fits.reshape(B, N, -1, F_LOG).permute(0, 2, 1, 3)  # [B, T, N, F]
+			# Keep edge predictions in masked form: [B, T, num_edges, E]
+			pred_edge_masked = rec_edge_fits.reshape(B, edge_mask_flat.sum().item(), -1, E).permute(0, 2, 1, 3)  # [B, T, num_edges, E]
 #
-			## Extract ground truth edges using mask: [B, T, num_edges, E]
-			#mask = edge_exists_mask_batch.to(x['data_edge'].device).unsqueeze(-1)
-			#l_edge = torch.masked_select(x['data_edge'], mask).reshape(B, T, edge_mask_flat.sum().item(), -1)
-			##l_edge = torch.masked_select(x['data_edge'], edge_exists_mask_batch.unsqueeze(-1)).reshape(B, T, edge_mask_flat.sum().item(), -1)
+			# Extract ground truth edges using mask: [B, T, num_edges, E]
+			mask = edge_exists_mask_batch.to(x['data_edge'].device).unsqueeze(-1)
+			l_edge = torch.masked_select(x['data_edge'], mask).reshape(B, T, edge_mask_flat.sum().item(), -1)
+			l_edge = torch.masked_select(x['data_edge'], edge_exists_mask_batch.unsqueeze(-1)).reshape(B, T, edge_mask_flat.sum().item(), -1)
 			# -------------------------------------------------
 			# Node reconstruction (unchanged structure, cleaned)
 			# -------------------------------------------------
-			pred_metric_node = rec_node_metric_fits.reshape(B, N, T, F_METRIC).permute(0, 2, 1, 3)
-			pred_log_node    = rec_node_logs_fits.reshape(B, N, T, F_LOG).permute(0, 2, 1, 3)
+			#pred_metric_node = rec_node_metric_fits.reshape(B, N, T, F_METRIC).permute(0, 2, 1, 3)
+			#pred_log_node    = rec_node_logs_fits.reshape(B, N, T, F_LOG).permute(0, 2, 1, 3)
 
 			# -------------------------------------------------
 			# Edge reconstruction (NO MASKING)
 			# -------------------------------------------------
-			pred_edge_masked = rec_edge_fits.permute(0, 2, 1, 3)   # [B, T, num_edges, E]
-			i, j = self.edge_index[:, 0], self.edge_index[:, 1]
-			l_edge = x['data_edge'][:, :, i, j, :]   # [B, T, num_edges, E]
+			#pred_edge_masked = rec_edge_fits.permute(0, 2, 1, 3)   # [B, T, num_edges, E]
+			#i, j = self.edge_index[:, 0], self.edge_index[:, 1]
+			#l_edge = x['data_edge'][:, :, i, j, :]   # [B, T, num_edges, E]
 			# Square Loss
 			if self.req_loss_approach == "Normal-Recreation":
 				rec_node_metric_fits = torch.square(self.dense_node(pred_metric_node) - x['data_node'])  # Calculate squared loss on nodes (full) [B, T, N, F]

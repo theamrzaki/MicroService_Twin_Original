@@ -3,12 +3,12 @@
 
 
 FREQ_DOMAINS=(
-# "Eadro"  
+"Eadro"  
 ##
 "FITS_Legendre" #OrEdge
 ##
-#"AnoFusion"
-#"encoder_decoder"
+"AnoFusion"
+"encoder_decoder"
 #"Art"
 ##
 ##
@@ -22,67 +22,15 @@ FREQ_DOMAINS=(
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
 
-
-#SEEDS=(1 2 3)
-#
-#for SEED in "${SEEDS[@]}"; do
-#    for FREQ in "${FREQ_DOMAINS[@]}"; do
-#  
-#    if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
-#      /bin/python3 main.py \
-#        --FREQ_DOMAIN="$FREQ" \
-#        --req_loss_approach='Legendre-style' \
-#        --filter_used="LPF" \
-#        --random_seed="$SEED" \
-#        --data_source=MSDS \
-#        --experiment_name="RQ1_main"
-#    else
-#      /bin/python3 main.py \
-#        --FREQ_DOMAIN="$FREQ" \
-#        --req_loss_approach='Normal-Recreation' \
-#        --random_seed="$SEED" \
-#        --data_source=MSDS \
-#        --experiment_name="RQ1_main"
-#    fi
-#
-#  done
-#done
-
-
-#SEEDS=(1 2 3)
-#
-#for SEED in "${SEEDS[@]}"; do
-#    for FREQ in "${FREQ_DOMAINS[@]}"; do
-#  
-#    if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
-#      /bin/python3 main.py \
-#        --FREQ_DOMAIN="$FREQ" \
-#        --req_loss_approach='Legendre-style' \
-#        --filter_used="LPF" \
-#        --random_seed="$SEED" \
-#        --data_source=SN \
-#        --experiment_name="RQ1_main" 
-#    else
-#      /bin/python3 main.py \
-#        --FREQ_DOMAIN="$FREQ" \
-#        --req_loss_approach='Normal-Recreation' \
-#        --random_seed="$SEED" \
-#        --data_source=SN \
-#        --experiment_name="RQ1_main"
-#    fi
-#
-#  done
-#done
+DATA_SOURCES=("TT" "MSDS" "SN")
 
 source ~/miniconda3/etc/profile.d/conda.sh
-# or:
-# source ~/miniconda3/etc/profile.d/conda.sh
-
 conda activate RCAEval
 
-SEEDS=(1)
+SEEDS=(1 2 3)
 
 for SEED in "${SEEDS[@]}"; do
+  for datasource in "${DATA_SOURCES[@]}"; do
     for FREQ in "${FREQ_DOMAINS[@]}"; do
   
     if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
@@ -94,8 +42,9 @@ for SEED in "${SEEDS[@]}"; do
         --req_loss_approach='Legendre-style' \
         --filter_used="LPF" \
         --random_seed="$SEED" \
-        --data_source=TT \
-        --epochs=10 \
+        --data_source="$datasource" \
+        --evaluate=false \
+        --gpu=true \
         --experiment_name="RQ1_main"
     else
       echo "--------------------------------"
@@ -105,64 +54,12 @@ for SEED in "${SEEDS[@]}"; do
         --FREQ_DOMAIN="$FREQ" \
         --req_loss_approach='Normal-Recreation' \
         --random_seed="$SEED" \
-        --data_source=TT \
-        --epochs=10 \
-        --evaluate='true' \
+        --data_source="$datasource" \
+        --evaluate=false \
+        --gpu=true \
         --experiment_name="RQ1_main"
     fi
-
+  done
   done
 done
 
-
-
-#for SEED in "${SEEDS[@]}"; do
-#    for FREQ in "${FREQ_DOMAINS[@]}"; do
-#  
-#    if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
-#      python main.py \
-#        --FREQ_DOMAIN="$FREQ" \
-#        --req_loss_approach='Legendre-style' \
-#        --filter_used="LPF" \
-#        --random_seed="$SEED" \
-#        --data_source=SN \
-#        --experiment_name="RQ1_main"
-#    else
-#      python main.py \
-#        --FREQ_DOMAIN="$FREQ" \
-#        --req_loss_approach='Normal-Recreation' \
-#        --random_seed="$SEED" \
-#        --data_source=SN \
-#        --experiment_name="RQ1_main"
-#    fi
-#
-#  done
-#done
-#
-#
-#
-#
-#
-#for SEED in "${SEEDS[@]}"; do
-#    for FREQ in "${FREQ_DOMAINS[@]}"; do
-#  
-#    if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
-#      python main.py \
-#        --FREQ_DOMAIN="$FREQ" \
-#        --req_loss_approach='Legendre-style' \
-#        --filter_used="LPF" \
-#        --random_seed="$SEED" \
-#        --data_source=MSDS \
-#        --experiment_name="RQ1_main"
-#    else
-#      python main.py \
-#        --FREQ_DOMAIN="$FREQ" \
-#        --req_loss_approach='Normal-Recreation' \
-#        --random_seed="$SEED" \
-#        --data_source=MSDS \
-#        --experiment_name="RQ1_main"
-#    fi
-#
-#  done
-#done
-#

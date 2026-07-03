@@ -1,6 +1,6 @@
 from torch.utils.data import Dataset, DataLoader
 import torch
-
+import util.util as util
 class chunkDataset(Dataset): #[node_num, T, else]
     def __init__(self, chunks, node_num, edges, window_size):
         self.dataset = []
@@ -171,7 +171,11 @@ def assert_shapes(shapes, dataset):
     assert dataset.label_mask.shape == (batch, shapes["node_num"],3), f"Wrong losses shape"
 
 def run(data="TT"):
-    data_dir = os.path.join("/home/db2003/Desktop/MicroService_Twin_Original/data", data)
+    if util.is_raspberry_pi():
+        data_dir = os.path.join("/home/db2003/Desktop/MicroService_Twin_Original/data", data)
+    else:
+        data_dir = os.path.join("/home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks", data)
+
 
     metadata = read_json(os.path.join(data_dir, "metadata.json"))
     event_num, node_num, metric_num =  metadata["event_num"], metadata["node_num"], metadata["metric_num"]

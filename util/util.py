@@ -73,7 +73,7 @@ def json_pretty_dump(obj, filename):
 
 def dump_params(args):
     hash_id = hashlib.md5(str(sorted([(k, v) for k, v in args.items()])).encode("utf-8")).hexdigest()[0:8]
-    save_path = os.path.join(args['result_dir'], args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-' + str(args['random_seed']))
+    save_path = os.path.join(args['result_dir'], args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']))
     os.makedirs(save_path, exist_ok=True)
 
     log_file = os.path.join(save_path, "running.log")

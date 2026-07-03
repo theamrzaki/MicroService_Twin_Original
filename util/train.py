@@ -18,6 +18,7 @@ import util.util as util
 import pynvml
 from fvcore.nn import FlopCountAnalysis
 import gc
+import util.util as util
 
 # Optional CPU energy (Linux)
 try:
@@ -74,7 +75,10 @@ class Base(nn.Module):
                     else:
                         if torch.any(torch.isnan(data)):
                             data = torch.where(torch.isnan(data), torch.full_like(data, 0), data)
-                        batch_input[name] = torch.tensor(data, dtype=torch.float32, requires_grad=True)#.cuda()
+                        if util.is_raspberry_pi():
+                            batch_input[name] = torch.tensor(data, dtype=torch.float32, requires_grad=True)
+                        else:
+                            batch_input[name] = torch.tensor(data, dtype=torch.float32, requires_grad=True).cuda()
 
             else:
                 for name, data in batch_input.items():
@@ -88,7 +92,7 @@ class Base(nn.Module):
             if use_gpu:
                 if torch.any(torch.isnan(batch_input)):
                         data = torch.where(torch.isnan(batch_input), torch.full_like(batch_input, 0), batch_input)
-                batch_input = torch.tensor(batch_input, dtype=torch.float32, requires_grad=True)#.cuda()
+                batch_input = torch.tensor(batch_input, dtype=torch.float32, requires_grad=True).cuda()
             else:
                 if torch.any(torch.isnan(batch_input)):
                         data = torch.where(torch.isnan(batch_input), torch.full_like(batch_input, 0), batch_input)
@@ -133,7 +137,7 @@ class MY(Base):
         pre_loss, worse_count, isWrong = float("inf"), 0, False
 
         label_weight = torch.tensor(
-            np.array(list(self.True_list.values())), dtype=torch.float)#.cuda()
+            np.array(list(self.True_list.values())), dtype=torch.float).cuda()
         losser = nn.BCEWithLogitsLoss(reduce='mean', weight=label_weight)
         logging.info('optimizer : using AdaBelief')
 
@@ -157,7 +161,7 @@ class MY(Base):
 
                     rec_loss = sum(raw_loss)
                     if cls_result.shape[0] == 0:
-                        cls_loss = torch.tensor(0, dtype=torch.float)#.cuda()
+                        cls_loss = torch.tensor(0, dtype=torch.float).cuda()
                     else:
                         cls_loss = losser(cls_result, cls_label)
 
