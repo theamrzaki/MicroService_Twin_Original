@@ -1,9 +1,12 @@
 #!/bin/bash
 
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate RCAEval
+
 #FREQ_DOMAIN="FITS_Legendre" 
 #data_source="TT"
 #
-#SEEDS=(2 3)
+#SEEDS=(1)
 ## OrAnomaly / without LPF / without time-freq fredf loss
 #for SEED in "${SEEDS[@]}"; do
 #
@@ -11,7 +14,7 @@
 #      echo "================================================================="
 #      echo "Running ablation: without LPF (with linear attention, with FreDF loss)"  
 #      echo "================================================================="
-#      /bin/python3 main.py \
+#      python main.py \
 #        --FREQ_DOMAIN="$FREQ_DOMAIN" \
 #        --req_loss_approach='Legendre-style' \
 #        --random_seed="$SEED" \
@@ -24,7 +27,7 @@
 #      echo "================================================================="
 #      echo "Running ablation: no linear attention (with LPF, with FreDF loss)"
 #      echo "================================================================="
-#      /bin/python3 main.py \
+#      python main.py \
 #        --FREQ_DOMAIN="$FREQ_DOMAIN" \
 #        --random_seed="$SEED" \
 #        --data_source="$data_source" \
@@ -37,7 +40,7 @@
 #      echo "================================================================="
 #      echo "Running ablation: without FreDF [remove time dimension lambda] (with linear attention and LPF)"
 #      echo "================================================================="
-#      /bin/python3 main.py \
+#      python main.py \
 #        --FREQ_DOMAIN="$FREQ_DOMAIN" \
 #        --random_seed="$SEED" \
 #        --data_source="$data_source" \
@@ -49,7 +52,7 @@
 #      echo "================================================================="
 #      echo "Running ablation: No filter applied (with linear attention, with FreDF loss)"
 #      echo "================================================================="
-#      /bin/python3 main.py \
+#      python main.py \
 #        --FREQ_DOMAIN="$FREQ_DOMAIN" \
 #        --random_seed="$SEED" \
 #        --data_source="$data_source" \
@@ -60,7 +63,7 @@
 #      echo "================================================================="
 #      echo "Running ablation: No normlin applied (with linear attention, with FreDF loss, with LPF)"
 #      echo "================================================================="
-#      /bin/python3 main.py \
+#      python main.py \
 #        --FREQ_DOMAIN="$FREQ_DOMAIN" \
 #        --random_seed="$SEED" \
 #        --data_source="$data_source" \
@@ -84,7 +87,7 @@ conda activate RCAEval
 FREQ_DOMAIN="FITS_Legendre"
 req_loss_approach="Legendre-style"
 
-basis_type=("fourier")
+basis_type=("chebyshev" "fourier" "hermite" "laguerre" "legendre" )
 SEEDS=(1)
 
 for SEED in "${SEEDS[@]}"; do
@@ -106,6 +109,7 @@ for SEED in "${SEEDS[@]}"; do
             --random_seed="$SEED" \
             --data_source=TT \
             --basis_type="$basis" \
+            --gpu=true \
             --experiment_name="RQ2_basis_comparison" \
             --filter_used="LPF"
 

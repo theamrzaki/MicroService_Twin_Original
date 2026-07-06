@@ -1,0 +1,133 @@
+2026-07-03 18:02:30,177 P1808550 INFO ---- Model: ----MSTGAD-a7d90642----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.1----Freq Domain : FITS_Legendre----Multi Fits : false----train : True----evaluate : False
+2026-07-03 18:02:30,177 P1808550 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-03 18:02:40,570 P1808550 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-03 18:02:48,604 P1808550 INFO Trainable Parameters Breakdown:
+2026-07-03 18:02:48,604 P1808550 INFO --------------------------------------------------------------------------------
+2026-07-03 18:02:48,604 P1808550 INFO Reconstruction-Specific Parameters:
+2026-07-03 18:02:48,604 P1808550 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-07-03 18:02:48,604 P1808550 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-07-03 18:02:48,604 P1808550 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-07-03 18:02:48,604 P1808550 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-07-03 18:02:48,604 P1808550 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-07-03 18:02:48,604 P1808550 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-07-03 18:02:48,604 P1808550 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-07-03 18:02:48,604 P1808550 INFO shared_fits.normlin_W                    | shape: (5, 5)                    | params: 25
+2026-07-03 18:02:48,604 P1808550 INFO shared_fits.freq_upsampler.weight        | shape: (5, 5)                    | params: 25
+2026-07-03 18:02:48,604 P1808550 INFO shared_fits.freq_upsampler.bias          | shape: (5,)                      | params: 5
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj.node.weight                | shape: (10, 8)                   | params: 80
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj.node.bias                  | shape: (10,)                     | params: 10
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj.log.weight                 | shape: (10, 32)                  | params: 320
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj.log.bias                   | shape: (10,)                     | params: 10
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj.edge.weight                | shape: (10, 8)                   | params: 80
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj.edge.bias                  | shape: (10,)                     | params: 10
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj_out.node.weight            | shape: (8, 10)                   | params: 80
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj_out.node.bias              | shape: (8,)                      | params: 8
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj_out.log.weight             | shape: (32, 10)                  | params: 320
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj_out.log.bias               | shape: (32,)                     | params: 32
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj_out.edge.weight            | shape: (8, 10)                   | params: 80
+2026-07-03 18:02:48,605 P1808550 INFO modality_proj_out.edge.bias              | shape: (8,)                      | params: 8
+2026-07-03 18:02:48,605 P1808550 INFO Subtotal: 1,523
+2026-07-03 18:02:48,605 P1808550 INFO --------------------------------------------------------------------------------
+2026-07-03 18:02:48,605 P1808550 INFO Common Parameters:
+2026-07-03 18:02:48,605 P1808550 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-03 18:02:48,605 P1808550 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-03 18:02:48,605 P1808550 INFO log_emb.linear.weight                    | shape: (32, 60)                  | params: 1,920
+2026-07-03 18:02:48,605 P1808550 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-03 18:02:48,605 P1808550 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-03 18:02:48,605 P1808550 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-03 18:02:48,605 P1808550 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-03 18:02:48,605 P1808550 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-03 18:02:48,605 P1808550 INFO dense_log.weight                         | shape: (60, 32)                  | params: 1,920
+2026-07-03 18:02:48,605 P1808550 INFO dense_log.bias                           | shape: (60,)                     | params: 60
+2026-07-03 18:02:48,605 P1808550 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-03 18:02:48,606 P1808550 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-03 18:02:48,606 P1808550 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-03 18:02:48,606 P1808550 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-03 18:02:48,606 P1808550 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-03 18:02:48,606 P1808550 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-03 18:02:48,606 P1808550 INFO Subtotal: 13,319
+2026-07-03 18:02:48,606 P1808550 INFO --------------------------------------------------------------------------------
+2026-07-03 18:02:48,606 P1808550 INFO Total Trainable Parameters: 14,842
+
+2026-07-03 18:02:48,606 P1808550 INFO Trainable Parameters: 14842, reconstruction: 1523, common: 13319
+2026-07-03 18:02:48,606 P1808550 INFO model : init weight
+2026-07-03 18:02:48,606 P1808550 INFO Using GPU...
+2026-07-03 18:02:48,611 P1808550 INFO optimizer : using AdaBelief
+2026-07-03 18:02:48,611 P1808550 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 18:02:48,611 P1808550 INFO 0/5 starting... lr: 0.001 para:1.0
+2026-07-03 18:03:08,244 P1808550 INFO Epoch 0/5, all_loss:0.08527 cls_loss:42.81200 rec_loss:0.08527 [19.63s]; best loss:0.08527, patience : 0
+2026-07-03 18:03:08,244 P1808550 INFO ----------------------------------------------------------------------------------------------------
+2026-07-03 18:03:08,244 P1808550 INFO 1/5 starting... lr: 0.001 para:0.5
+2026-07-06 12:10:30,054 P3035218 INFO ---- Model: ----MSTGAD-722217df----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.1----Freq Domain : FITS_Legendre----Multi Fits : false----train : True----evaluate : False
+2026-07-06 12:10:30,054 P3035218 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-06 12:10:39,709 P3035218 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-06 12:10:47,118 P3035218 INFO Trainable Parameters Breakdown:
+2026-07-06 12:10:47,118 P3035218 INFO --------------------------------------------------------------------------------
+2026-07-06 12:10:47,118 P3035218 INFO Reconstruction-Specific Parameters:
+2026-07-06 12:10:47,118 P3035218 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-07-06 12:10:47,118 P3035218 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-07-06 12:10:47,118 P3035218 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-07-06 12:10:47,118 P3035218 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-07-06 12:10:47,118 P3035218 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-07-06 12:10:47,118 P3035218 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-07-06 12:10:47,118 P3035218 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-07-06 12:10:47,118 P3035218 INFO shared_fits.normlin_W                    | shape: (5, 5)                    | params: 25
+2026-07-06 12:10:47,118 P3035218 INFO shared_fits.freq_upsampler.weight        | shape: (5, 5)                    | params: 25
+2026-07-06 12:10:47,118 P3035218 INFO shared_fits.freq_upsampler.bias          | shape: (5,)                      | params: 5
+2026-07-06 12:10:47,118 P3035218 INFO modality_proj.node.weight                | shape: (10, 8)                   | params: 80
+2026-07-06 12:10:47,118 P3035218 INFO modality_proj.node.bias                  | shape: (10,)                     | params: 10
+2026-07-06 12:10:47,118 P3035218 INFO modality_proj.log.weight                 | shape: (10, 32)                  | params: 320
+2026-07-06 12:10:47,119 P3035218 INFO modality_proj.log.bias                   | shape: (10,)                     | params: 10
+2026-07-06 12:10:47,119 P3035218 INFO modality_proj.edge.weight                | shape: (10, 8)                   | params: 80
+2026-07-06 12:10:47,119 P3035218 INFO modality_proj.edge.bias                  | shape: (10,)                     | params: 10
+2026-07-06 12:10:47,119 P3035218 INFO modality_proj_out.node.weight            | shape: (8, 10)                   | params: 80
+2026-07-06 12:10:47,119 P3035218 INFO modality_proj_out.node.bias              | shape: (8,)                      | params: 8
+2026-07-06 12:10:47,119 P3035218 INFO modality_proj_out.log.weight             | shape: (32, 10)                  | params: 320
+2026-07-06 12:10:47,119 P3035218 INFO modality_proj_out.log.bias               | shape: (32,)                     | params: 32
+2026-07-06 12:10:47,119 P3035218 INFO modality_proj_out.edge.weight            | shape: (8, 10)                   | params: 80
+2026-07-06 12:10:47,119 P3035218 INFO modality_proj_out.edge.bias              | shape: (8,)                      | params: 8
+2026-07-06 12:10:47,119 P3035218 INFO Subtotal: 1,523
+2026-07-06 12:10:47,119 P3035218 INFO --------------------------------------------------------------------------------
+2026-07-06 12:10:47,119 P3035218 INFO Common Parameters:
+2026-07-06 12:10:47,119 P3035218 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-06 12:10:47,119 P3035218 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-06 12:10:47,119 P3035218 INFO log_emb.linear.weight                    | shape: (32, 60)                  | params: 1,920
+2026-07-06 12:10:47,119 P3035218 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-06 12:10:47,119 P3035218 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-06 12:10:47,119 P3035218 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-06 12:10:47,119 P3035218 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-06 12:10:47,119 P3035218 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-06 12:10:47,119 P3035218 INFO dense_log.weight                         | shape: (60, 32)                  | params: 1,920
+2026-07-06 12:10:47,119 P3035218 INFO dense_log.bias                           | shape: (60,)                     | params: 60
+2026-07-06 12:10:47,119 P3035218 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-06 12:10:47,119 P3035218 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-06 12:10:47,119 P3035218 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-06 12:10:47,119 P3035218 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-06 12:10:47,119 P3035218 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-06 12:10:47,119 P3035218 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-06 12:10:47,119 P3035218 INFO Subtotal: 13,319
+2026-07-06 12:10:47,120 P3035218 INFO --------------------------------------------------------------------------------
+2026-07-06 12:10:47,120 P3035218 INFO Total Trainable Parameters: 14,842
+
+2026-07-06 12:10:47,120 P3035218 INFO Trainable Parameters: 14842, reconstruction: 1523, common: 13319
+2026-07-06 12:10:47,120 P3035218 INFO model : init weight
+2026-07-06 12:10:47,120 P3035218 INFO Using GPU...
+2026-07-06 12:10:47,124 P3035218 INFO optimizer : using AdaBelief
+2026-07-06 12:10:47,125 P3035218 INFO ----------------------------------------------------------------------------------------------------
+2026-07-06 12:10:47,125 P3035218 INFO 0/5 starting... lr: 0.001 para:1.0
+2026-07-06 12:11:07,521 P3035218 INFO Epoch 0/5, all_loss:0.08186 cls_loss:42.25628 rec_loss:0.08186 [20.39s]; best loss:0.08186, patience : 0
+2026-07-06 12:11:07,521 P3035218 INFO ----------------------------------------------------------------------------------------------------
+2026-07-06 12:11:07,522 P3035218 INFO 1/5 starting... lr: 0.001 para:0.5
+2026-07-06 12:11:27,731 P3035218 INFO Epoch 1/5, all_loss:1.92121 cls_loss:3.65066 rec_loss:0.19177 [20.20s]; best loss:1.92121, patience : 0
+2026-07-06 12:11:27,731 P3035218 INFO ----------------------------------------------------------------------------------------------------
+2026-07-06 12:11:27,731 P3035218 INFO 2/5 starting... lr: 0.001 para:0.3333333432674408
+2026-07-06 12:11:44,924 P3035218 INFO Epoch 2/5, all_loss:1.46047 cls_loss:2.09959 rec_loss:0.18223 [17.19s]; best loss:1.46047, patience : 0
+2026-07-06 12:11:54,077 P3035218 INFO pr:0.8650  rc:0.5563  auc:0.9877 ap:0.8990 f1: 0.6772 pred_right: 1074016 pred_wrong:22184 actu_right: 1061709 actu_wrong: 34491
+2026-07-06 12:11:57,877 P3035218 INFO pr:0.8659  rc:0.5529  auc:0.9882 ap:0.8998 f1: 0.6749 pred_right: 460344 pred_wrong:9456 actu_right: 454992 actu_wrong: 14808
+2026-07-06 12:11:57,880 P3035218 INFO ----------------------------------------------------------------------------------------------------
+2026-07-06 12:11:57,881 P3035218 INFO 3/5 starting... lr: 0.001 para:0.25
+2026-07-06 12:12:15,189 P3035218 INFO Epoch 3/5, all_loss:1.50385 cls_loss:1.94751 rec_loss:0.17287 [17.31s]; best loss:1.46047, patience : 1
+2026-07-06 12:12:23,572 P3035218 INFO pr:0.8224  rc:0.6202  auc:0.9900 ap:0.9141 f1: 0.7072 pred_right: 1070189 pred_wrong:26011 actu_right: 1061712 actu_wrong: 34488
+2026-07-06 12:12:33,350 P3035218 INFO pr:0.8272  rc:0.6176  auc:0.9905 ap:0.9151 f1: 0.7072 pred_right: 458744 pred_wrong:11056 actu_right: 454992 actu_wrong: 14808
+2026-07-06 12:12:33,357 P3035218 INFO ----------------------------------------------------------------------------------------------------
+2026-07-06 12:12:33,358 P3035218 INFO 4/5 starting... lr: 0.001 para:0.20000000298023224

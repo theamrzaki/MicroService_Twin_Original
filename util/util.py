@@ -73,7 +73,18 @@ def json_pretty_dump(obj, filename):
 
 def dump_params(args):
     hash_id = hashlib.md5(str(sorted([(k, v) for k, v in args.items()])).encode("utf-8")).hexdigest()[0:8]
-    save_path = os.path.join(args['result_dir'], args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']))
+    if args['experiment_name'] == "RQ1_main":
+        save_path = os.path.join(args['result_dir'], args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + 'ExpName' + str(args["experiment_name"]))
+    
+    
+    elif args['experiment_name'] == "RQ2_basis_comparison":
+        save_path = os.path.join(args['result_dir']+"/server_only_exps/Basis", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"])) + '-BasisType' + str(args["basis_type"])
+    
+    
+    elif args['experiment_name'] == "RQ2_ablations_components":
+        save_path = os.path.join(args['result_dir']+"/server_only_exps/Ablations", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])   
+    
+    
     os.makedirs(save_path, exist_ok=True)
 
     log_file = os.path.join(save_path, "running.log")
