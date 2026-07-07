@@ -1,30 +1,34 @@
+print("aaaaa")
 import json
 import logging
 import os
 import pickle
 import time
 import copy
+print("bbbbbb")
 from typing import Optional
 import numpy as np
 import torch
 import torch.nn as nn
 from adabelief_pytorch import AdaBelief
 import psutil
-
+print("ccccc")
 from tqdm import tqdm
 import util.util as util
 
 # GPU energy
-import pynvml
-from fvcore.nn import FlopCountAnalysis
+##import pynvml
+##from fvcore.nn import FlopCountAnalysis
 import gc
 import util.util as util
-
+print("ddddddd")
 # Optional CPU energy (Linux)
 try:
     import pyRAPL
-    pyRAPL.setup()
+    print("eee")
+    ###pyRAPL.setup()
     CPU_ENERGY_AVAILABLE = True
+    print("fffff")
 except:
     CPU_ENERGY_AVAILABLE = False
 class Base(nn.Module):

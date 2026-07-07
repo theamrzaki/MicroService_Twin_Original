@@ -12,6 +12,7 @@ def load_chunks(data_dir):
 
 import json
 def read_json(filepath):
+    print("Reading json from {}".format(filepath))
     if os.path.exists(filepath):
         assert filepath.endswith('.json')
         with open(filepath, 'r') as f:

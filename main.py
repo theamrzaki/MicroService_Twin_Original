@@ -1,18 +1,26 @@
+print("00000 tessting")
+
 import util.util as util
+
+print("11111 tessting")
 import util.train as train
+
 import util.data_MSDS as data_loads
 import util.data_RE2 as data_loads_RE2
 import util.data_Eadro as data_Eadro
 import util.data_art as data_ART
-
+print("3333 tessting")
 import src.model as model
+print("444444 tessting")
 from torch.utils.data import DataLoader
+print("555555 tessting")
 import warnings
 import logging
 import os
 import sys
 import torch 
 import argparse
+print("66666 tessting")
 
 os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 sys.path.append('/code')
@@ -65,6 +73,7 @@ if __name__ == '__main__':
     elif args["data_source"] == "RQ2_OB":
         processed = data_loads_RE2.Process(**args)
     elif args["data_source"] == "SN" or args["data_source"] == "TT":
+        print("data source is ", args["data_source"])
         processed_train,  processed_test = data_Eadro.run(args["data_source"])
     elif args["data_source"] == "ART":
         processed = data_ART.Process(**args)

@@ -1,14 +1,16 @@
 import torch
 import torch.nn as nn
-from torch_geometric.utils import dense_to_sparse
-from src.model_util import *
+print("1. model ")
+##from torch_geometric.utils import dense_to_sparse
+print("2. model ")
+#######from src.model_util import *
 from src.inner_models.FITS import Model as FITSModel 
 from src.inner_models.FITS_LPF import Model as FITSModel_LPF 
 from src.inner_models.FITS_Pai import Model as FITSModel_Pai
 from src.inner_models.iTransformer import Model as iTransformerModel
 from src.inner_models.DLinear import Model as DLinearModel
 from src.inner_models.FourierGNN import FGN
-from src.inner_models.GPT4TS import Model as GPT2Model
+#from src.inner_models.GPT4TS import Model as GPT2Model
 from src.inner_models.FreTS import Model as FreTSModel
 from src.inner_models.TimesNet import Model as TimesNetModel
 from src.inner_models.FEDformer import Model as FEDformerModel
@@ -20,19 +22,19 @@ import src.inner_models.FITS_Legendre as FITS_Legendre_operations
 import src.inner_models.FITS_chebyshev as FITS_chebyshev_operations
 import src.inner_models.FITS_lag as FITS_lag_operations
 import src.inner_models.FITS_hermite as FITS_hermite_operations
-from src.inner_models.Eadro import MainModel 	
-from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
-#from src.inner_models.Art import ARTWrapper as Art_Model
-from src.inner_models.Hades import HadesWrapper as Hades_Model
-from util.util import is_raspberry_pi
+#from src.inner_models.Eadro import MainModel 	
+#from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
+##from src.inner_models.Art import ARTWrapper as Art_Model
+#from src.inner_models.Hades import HadesWrapper as Hades_Model
+#from util.util import is_raspberry_pi
 import numpy as np
 import argparse
-
+print("3. model ")
 from numpy.polynomial import Legendre as L
 
 def phi(x):
     return torch.nn.functional.elu(x) + 1
-
+print("4. model ")
 class LinearAttention(nn.Module):
     def __init__(self, dim):
         super().__init__()

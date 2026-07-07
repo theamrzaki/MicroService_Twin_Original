@@ -1,16 +1,19 @@
+print("1. tessting")
 import hashlib
 import json
 import logging
 import os
 import time
+print("2. tessting")
 import pickle
 import random
 import numpy as np
 import torch
+print("3. tessting")
 from sklearn.metrics import *
 from util.constant import *
 from pathlib import Path
-
+print("4. tessting")
 def calc_index(predict, actual):
     """
     calculate f1 score by predict and actual.
@@ -54,7 +57,7 @@ def calc_index(predict, actual):
     logging.info(information)
     return information, {'pr': ps, 'rc': rs, 'auc': auc, 'ap': ap, 'f1': effection}
 
-
+print("5. tessting")
 class NumpyEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, np.ndarray):
@@ -62,7 +65,7 @@ class NumpyEncoder(json.JSONEncoder):
         if isinstance(obj, np.generic):
             return obj.item()
         return super().default(obj)
-
+print("6. tessting")
 
 def json_pretty_dump(obj, filename):
     
@@ -110,7 +113,7 @@ def seed_everything(seed=1234):
     np.random.seed(seed)
     torch.manual_seed(seed)
     torch.cuda.manual_seed_all(seed)
-
+print("7. tessting")
 def count_parameters(model, verbose=True):
     reconstruction_params = 0
     common_params = 0
@@ -246,4 +249,4 @@ def is_raspberry_pi():
     if model_file.exists():
         return "Raspberry Pi" in model_file.read_text(errors="ignore")
     return False
-
+print("8. tessting")
