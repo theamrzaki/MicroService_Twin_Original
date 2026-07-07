@@ -3,11 +3,11 @@
 
 
 FREQ_DOMAINS=(
-"Eadro"  
+#"Eadro"  
 ##
 #"FITS_Legendre" #OrEdge
 ##
-#"AnoFusion"
+"AnoFusion"
 #"encoder_decoder"
 #"Art"
 ##
