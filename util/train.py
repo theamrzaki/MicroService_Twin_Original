@@ -27,7 +27,7 @@ try:
     import pyRAPL
     print("eee")
     ###pyRAPL.setup()
-    CPU_ENERGY_AVAILABLE = True
+    CPU_ENERGY_AVAILABLE = False
     print("fffff")
 except:
     CPU_ENERGY_AVAILABLE = False
@@ -270,10 +270,13 @@ class MY(Base):
         print(f"Parameters(M): {params:.3f}")
 
         # use fvcore to get flops
-        flops = FlopCountAnalysis(model, inputs)
-        flops = flops.total() / 1e6
+        if util.is_raspberry_pi():
+            flops = 0 
+        else:
+            flops = FlopCountAnalysis(model, inputs)
+            flops = flops.total() / 1e6
 
-        print(f"FLOPS(M): {flops:.3f}")
+            print(f"FLOPS(M): {flops:.3f}")
 
         #if 'PEMS' in args.data:
         #    num_iterations = 15

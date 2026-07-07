@@ -1,9 +1,13 @@
 import torch
 import torch.nn as nn
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.autograd import Variable
 print("1. model ")
-##from torch_geometric.utils import dense_to_sparse
+#from torch_geometric.utils import dense_to_sparse
 print("2. model ")
-#######from src.model_util import *
+#from src.model_util import *
 from src.inner_models.FITS import Model as FITSModel 
 from src.inner_models.FITS_LPF import Model as FITSModel_LPF 
 from src.inner_models.FITS_Pai import Model as FITSModel_Pai
@@ -26,11 +30,70 @@ import src.inner_models.FITS_hermite as FITS_hermite_operations
 #from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
 ##from src.inner_models.Art import ARTWrapper as Art_Model
 #from src.inner_models.Hades import HadesWrapper as Hades_Model
-#from util.util import is_raspberry_pi
+from util.util import is_raspberry_pi
 import numpy as np
 import argparse
 print("3. model ")
 from numpy.polynomial import Legendre as L
+
+
+class Embed(nn.Module):
+    def __init__(self, raw_dim, embedding_dim, max_len=1000, dim=4):
+        super(Embed, self).__init__()
+        self.linear = nn.Linear(raw_dim, embedding_dim)
+        self.dim = dim
+        pe = torch.zeros((1, max_len, embedding_dim))
+        X = torch.arange(max_len, dtype=torch.float32).reshape(-1, 1) / torch.pow(10000,
+                                                                                  torch.arange(0, embedding_dim, 2,
+                                                                                               dtype=torch.float32) / embedding_dim)
+        pe[:, :, 0::2] = torch.sin(X)
+        pe[:, :, 1::2] = torch.cos(X)
+        if dim == 4:
+            pe = pe.unsqueeze(2)
+        elif dim == 5:
+            pe = pe.unsqueeze(2).unsqueeze(2)
+        self.register_buffer('pe', pe)
+
+    def forward(self, X):
+        X = self.linear(X)
+        if self.dim == 4:
+                padding = (0, 0, 0, 0, 1, 0)
+                X_new = F.pad(X, padding, "constant", 0)
+                return X + Variable(self.pe[:, :X.shape[1], :, :], requires_grad=False), X_new[:, :X.shape[1], :, :] + Variable(self.pe[:, :X.shape[1], :, :], requires_grad=False)
+        else:
+                padding = (0, 0, 0, 0, 0, 0, 1, 0)
+                X_new = F.pad(X, padding, "constant", 0)
+                return X + Variable(self.pe[:, :X.shape[1], :, :, :], requires_grad=False), X_new[:, :X.shape[1], :, :, :] + Variable(self.pe[:, :X.shape[1], :, :, :], requires_grad=False)
+				
+def adj2adj(graph, batch_size, window_size, zdim):
+    graph1 = graph.squeeze(0).squeeze(0).repeat(batch_size, window_size, 1, 1) \
+        .reshape(-1, graph.shape[-2], graph.shape[-1])
+    adj0, adj1, fea = [], [], []
+    
+    # 1. Native replacement for dense_to_sparse
+    node_adj = torch.nonzero(graph1).t()
+    node_efea = graph.unsqueeze(-1).repeat(1, 1, zdim)
+    
+    for num in range(node_adj.shape[1]):
+        idx = torch.argwhere(node_adj[1] == num)
+        idy = torch.argwhere(node_adj[0] == num)
+        adj0.append(idx.repeat(1, idy.shape[0]).reshape(-1))
+        adj1.append(idy.repeat(idx.shape[0], 1).reshape(-1))
+        fea.append(torch.ones(
+            idy.shape[0] * idx.shape[0], device=graph.device) * num)
+
+    adj = torch.stack([torch.concat(adj0), torch.concat(adj1)], dim=0)
+    fea = torch.concat(fea)
+    
+    # 2. Native PyTorch implementation to remove self-loops
+    # Find positions where source index equals destination index
+    non_self_loop_mask = adj[0] != adj[1]
+    
+    # Filter both the adjacency list and the edge features
+    edge_adj = adj[:, non_self_loop_mask]
+    edge_efea = fea[non_self_loop_mask]
+    
+    return node_adj, node_efea, edge_adj, edge_efea
 
 def phi(x):
     return torch.nn.functional.elu(x) + 1
@@ -65,11 +128,13 @@ class MyModel(nn.Module):
 		self.name = args['FREQ_DOMAIN']
 		if is_raspberry_pi():
 			self.graph = torch.tensor(graph)#.cuda()
+			adj = torch.nonzero(self.graph).t()
 		else:
 			self.graph = torch.tensor(graph).cuda()
+			adj = dense_to_sparse(self.graph)[0]
 		self.label_weight = args['label_weight']
 		self.multi_fits = args["MULTI_FITS"]
-		adj = dense_to_sparse(self.graph)[0]
+		#
 		trace2pod = torch.nn.functional.one_hot(adj[0], num_classes=graph.shape[0]) \
 			+ torch.nn.functional.one_hot(adj[1], num_classes=graph.shape[0])
 		trace2pod = trace2pod / trace2pod.sum(axis=0, keepdim=True)
