@@ -2,9 +2,59 @@ import torch
 from torch import dropout, dropout, nn
 #from dgl.nn.pytorch import GATv2Conv
 #from dgl.nn import GlobalAttentionPooling
-from torch_geometric.nn import GATv2Conv, GlobalAttention
+#from torch_geometric.nn import GATv2Conv, GlobalAttention
 import torch.nn.functional as F
 
+class NativeGATv2Conv(nn.Module):
+    def __init__(self, in_channels, out_channels, heads=4, negative_slope=0.2):
+        super().__init__()
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.heads = heads
+        self.negative_slope = negative_slope
+
+        # Flip bias=True to match the saved checkpoint layout exactly
+        self.lin_l = nn.Linear(in_channels, heads * out_channels, bias=True)
+        self.lin_r = nn.Linear(in_channels, heads * out_channels, bias=True)
+
+        self.att = nn.Parameter(torch.Tensor(1, heads, out_channels))
+        self.bias = nn.Parameter(torch.Tensor(out_channels))
+        
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        nn.init.xavier_uniform_(self.lin_l.weight)
+        nn.init.xavier_uniform_(self.lin_r.weight)
+        nn.init.zeros_(self.lin_l.bias)
+        nn.init.zeros_(self.lin_r.bias)
+        nn.init.xavier_uniform_(self.att)
+        nn.init.zeros_(self.bias)
+
+    def forward(self, x, edge_index):
+        num_nodes = x.size(0)
+        src_idx, dst_idx = edge_index[0], edge_index[1]
+
+        h_src = self.lin_l(x).view(num_nodes, self.heads, self.out_channels)
+        h_dst = self.lin_r(x).view(num_nodes, self.heads, self.out_channels)
+
+        h_src_edges = h_src[src_idx]  
+        h_dst_edges = h_dst[dst_idx]  
+
+        edge_attn_input = F.leaky_relu(h_src_edges + h_dst_edges, self.negative_slope)
+        alpha = (edge_attn_input * self.att).sum(dim=-1)  
+
+        alpha = torch.exp(alpha - alpha.max()) 
+        sum_denom = torch.zeros(num_nodes, self.heads, device=x.device)
+        sum_denom.scatter_add_(0, dst_idx.unsqueeze(-1).expand(-1, self.heads), alpha)
+        alpha = alpha / (sum_denom[dst_idx] + 1e-16) 
+
+        weighted_messages = h_src_edges * alpha.unsqueeze(-1) 
+        
+        out = torch.zeros(num_nodes, self.heads, self.out_channels, device=x.device)
+        out.scatter_add_(0, dst_idx.unsqueeze(-1).unsqueeze(-1).expand(-1, self.heads, self.out_channels), weighted_messages)
+
+        out = out.mean(dim=1) + self.bias
+        return out
 
 class GraphModel(nn.Module):
     def __init__(self, in_dim, graph_hiddens=[64, 128], attn_head=4, activation=0.2, **kwargs):
@@ -14,11 +64,17 @@ class GraphModel(nn.Module):
         for i, hidden in enumerate(graph_hiddens):
             in_feats = in_dim if i == 0 else graph_hiddens[i-1]
             self.layers.append(
-                GATv2Conv(
+                #GATv2Conv(
+                #    in_channels=in_feats,
+                #    out_channels=hidden,
+                #    heads=attn_head,
+                #    concat=False,          # key line
+                #    negative_slope=activation
+                #)
+                NativeGATv2Conv(
                     in_channels=in_feats,
                     out_channels=hidden,
                     heads=attn_head,
-                    concat=False,          # key line
                     negative_slope=activation
                 )
             )
