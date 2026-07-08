@@ -91,7 +91,7 @@ parser.add_argument("--dropout", default=0.2, type=float)
 
 
 # dataset setting
-parser.add_argument("--batch_size", default=100, type=int,#100
+parser.add_argument("--batch_size", default=1, type=int,#100
                     help='the data number at one epoch')
 parser.add_argument("--window", default=10, type=int,
                     help='size of sliding window')

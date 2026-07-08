@@ -79,7 +79,10 @@ if __name__ == '__main__':
         processed = data_loads_RE2.Process(**args)
     elif args["data_source"] == "SN" or args["data_source"] == "TT":
         print("data source is ", args["data_source"])
-        processed_train,  processed_test = data_Eadro.run(args["data_source"])
+        # on Raspberry Pi, only load testing data, no training data
+        #processed_train,  processed_test = data_Eadro.run(args["data_source"])
+        processed_train = []
+        processed_test = data_Eadro.run(args["data_source"])
     elif args["data_source"] == "ART":
         processed = data_ART.Process(**args)
     #train_dl = DataLoader(processed.dataset[:int(len(processed.dataset)*0.7)],
@@ -104,7 +107,7 @@ if __name__ == '__main__':
     train_dl = None #DataLoader(fewshot_dataset,
                     #         batch_size=args['batch_size'],
                     #        shuffle=True, pin_memory=False, drop_last=True)
-    test_dl = DataLoader(processed.dataset,
+    test_dl = DataLoader(processed.dataset if args["data_source"] not in ["SN", "TT"] else processed_test,
                         batch_size=args['batch_size'],
                         num_workers=0,  # as to avoid async randomness
                         shuffle=False, pin_memory=False, drop_last=False if args["case_study"] else True)
@@ -114,7 +117,7 @@ if __name__ == '__main__':
     if args["data_source"] not in ["SN", "TT"]:
         graph = processed.graph
     else:
-        graph = processed_train.first_graph
+        graph = processed_test.first_graph
     models = model.MyModel(graph, **args)
     total_params = util.count_parameters(models)
     print(total_params)

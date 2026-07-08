@@ -450,8 +450,8 @@ class MY(Base):
                         batch_input = self.input2device(batch_input, use_gpu_flag)
                         raw_result, _ = self.model(batch_input, evaluate=True)
 
-                        predict_list.append(raw_result)
-                        label_list.append(batch_input['groundtruth_real'])
+                        predict_list.append(raw_result.detach().cpu().numpy())
+                        label_list.append(batch_input['groundtruth_real'].cpu().numpy())
                     except Exception as e:
                         logging.error(f"Error during inference: {e}")
                         continue
@@ -490,8 +490,8 @@ class MY(Base):
             # -----------------------------
             # Aggregate predictions
             # -----------------------------
-            predict_all = torch.concat(predict_list, dim=0).cpu()
-            label_all = torch.concat(label_list, dim=0).cpu()
+            predict_all = torch.from_numpy(np.concatenate(predict_list, axis=0))
+            label_all = torch.from_numpy(np.concatenate(label_list, axis=0))
 
             info, result = util.calc_index(predict_all, label_all)
             dataset_size = len(test_loader.dataset)

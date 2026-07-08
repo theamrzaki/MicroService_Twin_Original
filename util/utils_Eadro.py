@@ -4,11 +4,12 @@ import pickle
 
 def load_chunks(data_dir):
     logging.info("Load from {}".format(data_dir))
-    with open(os.path.join(data_dir, "chunk_train.pkl"), "rb") as fr:
-        chunk_train = pickle.load(fr)
+    ####with open(os.path.join(data_dir, "chunk_train.pkl"), "rb") as fr:
+    ####    chunk_train = pickle.load(fr)
     with open(os.path.join(data_dir, "chunk_test.pkl"), "rb") as fr:
         chunk_test = pickle.load(fr)
-    return chunk_train, chunk_test
+    #return chunk_train, chunk_test
+    return chunk_test
 
 import json
 def read_json(filepath):

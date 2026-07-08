@@ -112,6 +112,119 @@ class chunkDataset(Dataset): #[node_num, T, else]
     def __get_chunk_id__(self, idx):
         return self.idx2id[idx]
 
+import os
+import pickle
+import torch
+import numpy as np
+from torch.utils.data import Dataset
+
+class ShardedChunkDataset(Dataset):
+    def __init__(self, chunk_file_paths, node_num, edges, window_size):
+        self.file_paths = chunk_file_paths 
+        self.node_num = node_num
+        self.edges = edges
+        self.window = window_size
+        self.percent = 0.5
+        
+        # 1. Create the base graph ONCE right here using your method
+        base_graph = self.create_graph(edges, node_num)
+        self.first_graph = base_graph["adjacency_matrix"] # Stored as a static tensor
+        
+        # Precompute lookups for tracking IDs
+        self.idx2id = {}
+        losses_list = []
+        
+        print("Initializing dataset structures cleanly...")
+        for idx, path in enumerate(self.file_paths):
+            with open(path, "rb") as f:
+                single_chunk_dict = pickle.load(f)
+                chunk_id = list(single_chunk_dict.keys())[0]
+                chunk_data = single_chunk_dict[chunk_id]
+                
+                self.idx2id[idx] = chunk_id
+                
+                # Extract culprit for the label mask calculation
+                culprit = chunk_data["culprit"]
+                hot_encode_label = torch.zeros(self.node_num)
+                if culprit >= 0:
+                    hot_encode_label[culprit] = 1.0
+                losses_list.append(hot_encode_label)
+                
+        # --- Precalculate the label mask history matrix ---
+        self.losses_array = torch.stack(losses_list) 
+        self.label = np.eye(2)[self.losses_array.numpy().astype(int)] 
+        
+        self.label_mask = self.losses_array.numpy().copy() 
+        times = np.zeros((self.node_num, 2))  
+        for idx in range(self.label.shape[0]):
+            if idx < self.window:
+                continue
+            times += self.label[idx]
+            mask = times[self.label[idx] == 1] % 10 >= 10 * self.percent
+            self.label_mask[idx, mask] = 2
+        self.label_mask = np.eye(3)[self.label_mask.astype(int)] 
+
+    def create_graph(self, edges, node_num):
+        # Convert lists to NumPy arrays for easier processing
+        source_nodes = np.array(edges[0])
+        destination_nodes = np.array(edges[1])
+
+        # Determine the total number of nodes (num_nodes) by finding the max ID and adding 1
+        all_nodes = np.concatenate((source_nodes, destination_nodes))
+        num_nodes = all_nodes.max() + 1
+
+        # Initialize the adjacency matrix with zeros
+        adjacency_matrix = np.zeros((num_nodes, num_nodes), dtype=int)
+
+        # Populate the adjacency matrix: A[u, v] = 1 for an edge from u to v
+        for u, v in zip(source_nodes, destination_nodes):
+            adjacency_matrix[u, v] = 1
+        return {"adjacency_matrix"  :adjacency_matrix}
+
+    def __len__(self):
+        return len(self.file_paths)
+
+    def __getitem__(self, idx):
+        target_path = self.file_paths[idx]
+        
+        with open(target_path, "rb") as f:
+            single_chunk_dict = pickle.load(f)
+            chunk_id = list(single_chunk_dict.keys())[0]
+            chunk = single_chunk_dict[chunk_id]
+        
+        # --- Process Logs On-The-Fly ---
+        log_tensor = torch.FloatTensor(chunk["logs"]) 
+        logs_expanded = log_tensor.unsqueeze(0).numpy() 
+        target_log_shape = (self.window, self.node_num, log_tensor.shape[-1])
+        data_log = np.broadcast_to(logs_expanded, target_log_shape)
+        
+        # --- Process Metrics On-The-Fly ---
+        metric_tensor = torch.FloatTensor(chunk["metrics"]) 
+        data_node = metric_tensor.permute(1, 0, 2).numpy() 
+        
+        # --- Process Traces On-The-Fly ---
+        trace_tensor = torch.FloatTensor(chunk["traces"]) 
+        traces_permuted = trace_tensor.permute(1, 0, 2) 
+        traces_expanded = traces_permuted.unsqueeze(2) 
+        data_edge = traces_expanded.expand(-1, -1, self.node_num, -1).numpy() 
+        
+        # --- Pack Single Record ---
+        record = {
+            'data_log': data_log,
+            'data_node': data_node,
+            'data_edge': data_edge,
+            'groundtruth_real': self.label[idx],
+            'groundtruth_cls': self.label_mask[idx],
+            # If your create_graph outputs a PyTorch Tensor, convert it to numpy for the DataLoader collation
+            'first_graph': self.first_graph.numpy() if isinstance(self.first_graph, torch.Tensor) else self.first_graph
+        }
+        
+        return record
+
+    def __get_chunk_id__(self, idx):
+        return self.idx2id[idx]
+
+
 from util.utils_Eadro import *
 
 #import argparse
@@ -182,19 +295,29 @@ def run(data="TT"):
     edges = metadata["edges"]
     chunk_lenth = 10
 
-    train_chunks, test_chunks = load_chunks(data_dir)
+    #####train_chunks, test_chunks = load_chunks(data_dir)
+    ####test_chunks = load_chunks(data_dir)
+    ####
+    ########train_data = chunkDataset(train_chunks, node_num, edges,chunk_lenth)
+    ####test_data = chunkDataset(test_chunks, node_num, edges, chunk_lenth)
+    print("step TT.1: Loading test chunks from disk...")
+    shard_dir = os.path.join(data_dir, "test_chunks/chunk_test_shards")
+    chunk_files = [os.path.join(shard_dir, f) for f in os.listdir(shard_dir) if f.endswith('.pkl')]
+    print(f"Found {len(chunk_files)} chunk files in {shard_dir}.")
 
-    train_data = chunkDataset(train_chunks, node_num, edges,chunk_lenth)
-    test_data = chunkDataset(test_chunks, node_num, edges, chunk_lenth)
+    print("step TT.2: Creating ShardedChunkDataset...")
+    # Pass the FILE LIST to the dataset instead of the giant dictionary object
+    test_data = ShardedChunkDataset(chunk_files, node_num, edges, chunk_lenth)
+    print(f"ShardedChunkDataset created with {len(test_data)} items.")
     
-    shapes = {
-        "metric_dim": metric_num,
-        "trace_dim": 2,
-        "window_size": chunk_lenth,
-        "node_num": node_num,
-        "event_num": event_num
-    }
-    assert_shapes(shapes,train_data)
+    #shapes = {
+    #    "metric_dim": metric_num,
+    #    "trace_dim": 2,
+    #    "window_size": chunk_lenth,
+    #    "node_num": node_num,
+    #    "event_num": event_num
+    #}
+    #assert_shapes(shapes,train_data)
 
 
     #train_dl = DataLoader(train_data, batch_size=params["batch_size"], shuffle=True, collate_fn=collate, pin_memory=True)
@@ -202,7 +325,9 @@ def run(data="TT"):
 
 
     #logging.info("Current hash_id {}".format(hash_id))
-    return train_data, test_data
+    #return train_data, test_data
+    return test_data
+    
 if "__main__" == __name__:
     run()
 
