@@ -5,7 +5,7 @@
 FREQ_DOMAINS=(
 #"Eadro"  
 ##
-#"FITS_Legendre" #OrEdge
+"FITS_Legendre" #OrEdge
 ##
 "AnoFusion"
 #"encoder_decoder"
@@ -21,7 +21,7 @@ FREQ_DOMAINS=(
 
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
-DATA_SOURCES=("SN") # "SN")
+DATA_SOURCES=("MSDS") # "SN")
 
 # as miniforge is installed on Raspberry Pi
 source ~/miniforge3/etc/profile.d/conda.sh

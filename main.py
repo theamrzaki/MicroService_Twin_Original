@@ -1,3 +1,7 @@
+import os
+# Restrict PyTorch to a single thread execution profile to minimize internal memory overhead
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["MKL_NUM_THREADS"] = "1"
 print("00000 tessting")
 
 import util.util as util
@@ -19,6 +23,7 @@ import logging
 import os
 import sys
 import torch 
+torch.set_num_threads(1)
 import argparse
 print("66666 tessting")
 
@@ -95,10 +100,11 @@ if __name__ == '__main__':
     fewshot_indices = list(range(fewshot_size))  # or use random.sample(...) for random sampling
     fewshot_dataset = torch.utils.data.Subset(full_train_data, fewshot_indices)
 
-    train_dl = DataLoader(fewshot_dataset,
-                        batch_size=args['batch_size'],
-                        shuffle=True, pin_memory=False, drop_last=True)
-    test_dl = DataLoader(processed.dataset[int(len(processed.dataset)*0.7):] if args["data_source"] not in ["SN", "TT"] else processed_test,
+    # here for Raspberry Pi, only load testing only, no training
+    train_dl = None #DataLoader(fewshot_dataset,
+                    #         batch_size=args['batch_size'],
+                    #        shuffle=True, pin_memory=False, drop_last=True)
+    test_dl = DataLoader(processed.dataset,
                         batch_size=args['batch_size'],
                         num_workers=0,  # as to avoid async randomness
                         shuffle=False, pin_memory=False, drop_last=False if args["case_study"] else True)

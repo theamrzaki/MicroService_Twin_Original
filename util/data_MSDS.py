@@ -159,8 +159,17 @@ class Process:
         dataset = os.listdir(self.dataset_path)
         dataset.sort(key=lambda x: (int(re.split(r"[-_.]", x)[0])))
         
-        for file in tqdm(dataset):
-            data = pickle.load(open(os.path.join(self.dataset_path, file), 'rb'))
+        # Calculate the 70% split boundary on the file list directly
+        split_idx = int(len(dataset) * 0.7)
+        
+        # Slice the file list to ONLY keep the test files (the last 30%)
+        test_dataset_files = dataset[split_idx:]
+        logging.info(f"Skipping {split_idx} training files. Loading {len(test_dataset_files)} testing files.")
+        
+        # Only iterate over and load the testing files
+        for file in tqdm(test_dataset_files):
+            with open(os.path.join(self.dataset_path, file), 'rb') as f:
+                data = pickle.load(f)
             data['filename'] = file  # Store filename for reference 
             self.dataset.append(data)
 
