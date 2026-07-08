@@ -84,7 +84,11 @@ def dump_params(args):
     elif args['experiment_name'] == "RQ2_ablations_components":
         save_path = os.path.join(args['result_dir']+"/server_only_exps/Ablations", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])   
     
-    
+    elif args['experiment_name'] == "RQ2_architecture":
+        save_path = os.path.join(args['result_dir']+"/server_only_exps/Architecture", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])
+
+    #if args["raspberry_pi_smaller_model"] == 'true':
+    #    save_path = save_path + '-RaspberryPiSmallerModel'
     os.makedirs(save_path, exist_ok=True)
 
     log_file = os.path.join(save_path, "running.log")

@@ -11,6 +11,11 @@ class GraphModel(nn.Module):
         super().__init__()
         self.layers = nn.ModuleList()
 
+        ##just for the case of smaller raspberry pi model
+        #if kwargs.get("graph_hiddens") is not None:
+        #    graph_hiddens = kwargs.get("graph_hiddens")
+        #    print("Using smaller graph_hiddens for raspberry pi model:", graph_hiddens)
+#
         for i, hidden in enumerate(graph_hiddens):
             in_feats = in_dim if i == 0 else graph_hiddens[i-1]
             self.layers.append(
@@ -104,7 +109,9 @@ class SelfAttention(nn.Module):
 class TraceModel(nn.Module):
     def __init__(self, node_num, trace_hiddens=[20, 50], trace_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
         super(TraceModel, self).__init__()
-
+        #if kwargs.get("trace_hiddens") is not None:
+        #    trace_hiddens = kwargs.get("trace_hiddens")
+        #    print("Using smaller trace_hiddens for raspberry pi model:", trace_hiddens)
         self.out_dim = trace_hiddens[-1]
         assert len(trace_hiddens) == len(trace_kernel_sizes)
         self.net = ConvNet(node_num, num_channels=trace_hiddens, kernel_sizes=trace_kernel_sizes, **kwargs)
@@ -124,6 +131,9 @@ class MetricModel(nn.Module):
     def __init__(self, metric_num, metric_hiddens=[64, 128], metric_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
         super(MetricModel, self).__init__()
         self.metric_num = metric_num
+        #if kwargs.get("metric_hiddens") is not None:
+        #    metric_hiddens = kwargs.get("metric_hiddens")
+        #    print("Using smaller metric_hiddens for raspberry pi model:", metric_hiddens)
         self.out_dim = metric_hiddens[-1]
         in_dim = metric_num
 

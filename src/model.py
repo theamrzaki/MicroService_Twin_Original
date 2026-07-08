@@ -383,7 +383,21 @@ class MyModel(nn.Module):
 			event_num = args['log_len']
 			metric_num = args['raw_node']
 			node_num = args['raw_edge']
-			self.Eadro_Model = MainModel(event_num, metric_num, node_num)
+			#if args["raspberry_pi_smaller_model"] == 'true':
+			#	graph_hiddens = [16, 32]
+			#	trace_hiddens = [16, 32]
+			#	metric_hiddens = [16, 32]
+			#else:
+			#	graph_hiddens = None #work with the default graph_hiddens in Eadro
+			#	trace_hiddens = None #work with the default trace_hiddens in Eadro
+			#	metric_hiddens = None #work with the default metric_hiddens in Eadro
+			## now combine them all as kwargs for Eadro_Model
+			#kwargs = {
+			#	'graph_hiddens': graph_hiddens,
+			#	'trace_hiddens': trace_hiddens,
+			#	'metric_hiddens': metric_hiddens
+			#}
+			self.Eadro_Model = MainModel(event_num, metric_num, node_num)#, **kwargs)
 		
 		elif self.FREQ_DOMAIN == "AnoFusion":
 			self.AnoFusion = AnoFusion(

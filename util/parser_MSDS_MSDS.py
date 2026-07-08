@@ -117,4 +117,8 @@ parser.add_argument("--evaluate", default=False,
 parser.add_argument("--model_path", default=None,
                     type=str, help=' the path of exist model')
 
+
+###parser.add_argument("--raspberry_pi_smaller_model", default='false', 
+###                    type=str, help='Whether to use smaller model for raspberry pi')
+
 args = vars(parser.parse_args())

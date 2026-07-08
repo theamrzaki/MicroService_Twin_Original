@@ -3,45 +3,24 @@
 
 
 FREQ_DOMAINS=(
-#"Eadro"  
-##
-"FITS_Legendre" #OrEdge
-##
-#"AnoFusion"
-#"encoder_decoder"
-#"Art"
-##
-##
-# "FreTS"
-# "DLinear"
-#"iTransformer"
- #"TimesNet"
- # "FEDformerModel"
-
-
+  "FreTS"
+  "DLinear"
+  "iTransformer"
+  "TimesNet"
+  "FEDformerModel"
 )
-ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
+ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel")
 
-DATA_SOURCES=("MSDS") # "SN" "MSDS" "TT"
-###raspberry_pi_smaller_model='true' # 'false' for normal model, 'true' for smaller model for raspberry pi
+DATA_SOURCES=("SN" "MSDS" "TT") 
+
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval
 
-SEEDS=(1)
+SEEDS=(1 2 3)
 
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
     for FREQ in "${FREQ_DOMAINS[@]}"; do
-
-    # if raspberry_pi_smaller_model == 'true', make window 5
-    #if [[ "$raspberry_pi_smaller_model" == 'true' ]]; then
-    #  echo "--------------------------------"
-    #  echo "Using smaller model for Raspberry Pi, setting window to 5"
-    #  echo "--------------------------------"
-    #  export WINDOW=5
-    #else
-    #  export WINDOW=10
-    #fi
 
     if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
       echo "--------------------------------"
@@ -55,10 +34,7 @@ for SEED in "${SEEDS[@]}"; do
         --data_source="$datasource" \
         --evaluate=false \
         --gpu=true \
-        #--epochs=10 \
-        #--raspberry_pi_smaller_model="$raspberry_pi_smaller_model" \
-        #--window="$WINDOW" \
-        --experiment_name="RQ1_main"
+        --experiment_name="RQ2_architecture"
     else
       echo "--------------------------------"
       echo "2) Running $FREQ with Normal-Recreation loss, seed $SEED"
@@ -70,10 +46,7 @@ for SEED in "${SEEDS[@]}"; do
         --data_source="$datasource" \
         --evaluate=false \
         --gpu=true \
-        #--epochs=10 \
-        #--raspberry_pi_smaller_model="$raspberry_pi_smaller_model" \
-        #--window="$WINDOW" \
-        --experiment_name="RQ1_main"
+        --experiment_name="RQ2_architecture"
     fi
   done
   done
