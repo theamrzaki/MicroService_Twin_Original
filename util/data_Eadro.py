@@ -203,8 +203,40 @@ def run(data="TT"):
 
     #logging.info("Current hash_id {}".format(hash_id))
     return train_data, test_data
+
+
+import os
+import pickle
+from tqdm import tqdm
+
+def shard_chunk_test(mega_pkl_path, output_dir):
+    print("Loading mega file into RAM...")
+    with open(mega_pkl_path, "rb") as fr:
+        chunk_test = pickle.load(fr)
+        
+    os.makedirs(output_dir, exist_ok=True)
+    
+    print(f"Splitting {len(chunk_test)} chunks into individual files...")
+    # Assuming chunk_test is a dictionary where keys are chunk IDs
+    for chunk_id, chunk_data in tqdm(chunk_test.items()):
+        # Clean string just in case it contains invalid filename characters
+        safe_id = str(chunk_id).replace("/", "_").replace("\\", "_")
+        
+        file_path = os.path.join(output_dir, f"chunk_{safe_id}.pkl")
+        with open(file_path, "wb") as fw:
+            pickle.dump({chunk_id: chunk_data}, fw)
+            
+    print(f"Done! Move the folder '{output_dir}' to your 1GB RAM environment.")
+
+
+
+
 if "__main__" == __name__:
-    run()
+    # Example usage:
+    data_dir = "/home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks"
+    path = data_dir + "/SN/chunk_test.pkl"
+    output_dir = data_dir + "/SN/chunk_test_shards"
+    shard_chunk_test(path, output_dir)
 
 
 """
