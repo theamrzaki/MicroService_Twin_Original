@@ -7,7 +7,7 @@ FREQ_DOMAINS=(
 "FITS_Legendre" #OrEdge
 ##
 "AnoFusion"
-"Eadro"  
+#"Eadro"  
 #"encoder_decoder"
 #"Art"
 ##
@@ -27,7 +27,7 @@ DATA_SOURCES=("TT") # "SN") MSDS
 source ~/miniforge3/etc/profile.d/conda.sh
 conda activate RCAEval
 
-SEEDS=(1)
+SEEDS=(2 3)
 
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
