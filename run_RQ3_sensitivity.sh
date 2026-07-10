@@ -2,24 +2,23 @@
 
 
 
-FREQ_DOMAINS=(
+FREQ=(
 "FITS_Legendre"
 )
-ORANOMALY_MODELS=("FITS_Legendre")
 
-DATA_SOURCES=("MSDS" "TT") # "MSDS" "TT"
+DATA_SOURCES=("TT" "MSDS") # "MSDS" "TT"
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval
 
 SEEDS=(1 2 3)
-#degrees=(1 7)
+#auxi_lambdas=(0.0 0.01 0.2 0.5 1.0)
 #for SEED in "${SEEDS[@]}"; do
 #  for datasource in "${DATA_SOURCES[@]}"; do
 #    for FREQ in "${FREQ_DOMAINS[@]}"; do
-#      for degree in "${degrees[@]}"; do
+#      for a in "${auxi_lambdas[@]}"; do
 #      echo "--------------------------------"
-#      echo "1) Running $FREQ with Legendre-style loss and LPF filter, seed $SEED"
+#      echo "1) Running auxi_lambdas of $a with Legendre-style loss and LPF filter, seed $SEED"
 #      echo "--------------------------------"
 #      python main.py \
 #        --FREQ_DOMAIN="$FREQ" \
@@ -29,7 +28,7 @@ SEEDS=(1 2 3)
 #        --data_source="$datasource" \
 #        --evaluate=false \
 #        --gpu=true \
-#        --degree="$degree" \
+#        --auxi_lambda="$a" \
 #        --experiment_name="RQ3_sensitivity"
 #      done
 #  done
@@ -39,13 +38,13 @@ SEEDS=(1 2 3)
 
 
 
-auxi_lambdas=(0.0 0.01 0.2 0.5 1.0)
+
+linear_attn_dim=(5 10 20)
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
-    for FREQ in "${FREQ_DOMAINS[@]}"; do
-      for a in "${auxi_lambdas[@]}"; do
+      for dim in "${linear_attn_dim[@]}"; do
       echo "--------------------------------"
-      echo "1) Running $a with Legendre-style loss and LPF filter, seed $SEED"
+      echo "1) Running Linear attn of $dim with Legendre-style loss and LPF filter, seed $SEED"
       echo "--------------------------------"
       python main.py \
         --FREQ_DOMAIN="$FREQ" \
@@ -55,9 +54,8 @@ for SEED in "${SEEDS[@]}"; do
         --data_source="$datasource" \
         --evaluate=false \
         --gpu=true \
-        --auxi_lambda="$a" \
+        --linear_attn_dim="$dim" \
         --experiment_name="RQ3_sensitivity"
       done
-  done
   done
 done

@@ -59,10 +59,12 @@ parser.add_argument("--req_loss_approach", default="Legendre-style",
                     help='fits model for each modality')
 parser.add_argument("--rec_lambda", default=1.0, type=float, 
                     help='time reconstruction loss weight')
-parser.add_argument("--auxi_lambda", default=0.1, type=float, 
+parser.add_argument("--auxi_lambda", default=0.2, type=float,  # from sensitivity analysis, we can set it to 0.2
                     help='frequency reconstruction loss weight')
 parser.add_argument("--degree", default=5, type=int,
                     help='the degree of Orthogonal polynomial')
+parser.add_argument("--linear_attn_dim", default=10, type=int,
+                    help='the input dimension of linear attention')
 
 # model setting
 parser.add_argument("--feature_node", default=8, type=int,

@@ -34,13 +34,13 @@ def phi(x):
     return torch.nn.functional.elu(x) + 1
 
 class LinearAttention(nn.Module):
-    def __init__(self, dim):
+    def __init__(self, enc_in, dim):
         super().__init__()
-        self.Wq = nn.Linear(dim, dim, bias=False)
-        self.Wk = nn.Linear(dim, dim, bias=False)
-        self.Wv = nn.Linear(dim, dim, bias=False)
-        self.out = nn.Linear(dim, dim)
-        self.norm = nn.LayerNorm(dim)
+        self.Wq = nn.Linear(enc_in, dim, bias=False)
+        self.Wk = nn.Linear(enc_in, dim, bias=False)
+        self.Wv = nn.Linear(enc_in, dim, bias=False)
+        self.out = nn.Linear(dim, enc_in)
+        self.norm = nn.LayerNorm(enc_in)
 
     def forward(self, Z):  
         # Z: [B*N, M, D]   (M = number of modalities)
@@ -217,8 +217,8 @@ class MyModel(nn.Module):
 				elif self.FREQ_DOMAIN == "FITS_hermite":
 					self.fits_edge = FITS_hermite(configs=config)
 			else:
-				self.linear_attn = LinearAttention(dim=10)
-				config.enc_in = 10
+				config.enc_in = 10 
+				self.linear_attn = LinearAttention(config.enc_in, dim=args['linear_attn_dim'])
 				if self.FREQ_DOMAIN == "FITS":
 					self.shared_fits = FITSModel(configs=config)
 				elif self.FREQ_DOMAIN == "FITS_LPF":

@@ -238,6 +238,7 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         'use_normlin': args['use_normlin'],
 
         'degree': args['degree'],
+        'linear_attn_dim': args['linear_attn_dim'],
     }
     
     if not os.path.exists(file_path):
