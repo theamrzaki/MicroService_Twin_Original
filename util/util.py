@@ -87,6 +87,8 @@ def dump_params(args):
     elif args['experiment_name'] == "RQ2_architecture":
         save_path = os.path.join(args['result_dir']+"/server_only_exps/Architecture", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])
 
+    elif args['experiment_name'] == "RQ3_sensitivity":
+        save_path = os.path.join(args['result_dir']+"/server_only_exps/Sensitivity", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])  + '-Degree' + str(args["degree"])
     #if args["raspberry_pi_smaller_model"] == 'true':
     #    save_path = save_path + '-RaspberryPiSmallerModel'
     os.makedirs(save_path, exist_ok=True)
@@ -234,6 +236,8 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         'experiment_name': args['experiment_name'],
         'random_seed': args['random_seed'],
         'use_normlin': args['use_normlin'],
+
+        'degree': args['degree'],
     }
     
     if not os.path.exists(file_path):

@@ -61,6 +61,8 @@ parser.add_argument("--rec_lambda", default=1.0, type=float,
                     help='time reconstruction loss weight')
 parser.add_argument("--auxi_lambda", default=0.1, type=float, 
                     help='frequency reconstruction loss weight')
+parser.add_argument("--degree", default=5, type=int,
+                    help='the degree of Orthogonal polynomial')
 
 # model setting
 parser.add_argument("--feature_node", default=8, type=int,

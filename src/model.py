@@ -108,7 +108,7 @@ class MyModel(nn.Module):
 			config.filter_used = args['filter_used']
 			config.basis_type = args['basis_type']
 			self.basis_type = args['basis_type']
-			config.degree = 5
+			config.degree = args['degree']
 			config.use_normlin = args.get('use_normlin', False)
 
 			t = np.linspace(-1, 1, config.seq_len)

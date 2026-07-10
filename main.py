@@ -148,6 +148,8 @@ if __name__ == '__main__':
         exp_name = "RQ2_architecture"
     elif args["experiment_name"]=="RQ3_case_study":
         exp_name = "RQ3_case_study"
+    elif args["experiment_name"]=="RQ3_sensitivity":
+        exp_name = "RQ3_sensitivity"
     #results_path = f'./output/result_msds_{exp_name}.csv'#msds
     #if args["data_source"] == "TT":
     #    results_path = f'./output/result_TT_{exp_name}.csv'
