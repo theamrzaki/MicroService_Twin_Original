@@ -6,7 +6,7 @@ FREQ=(
 "FITS_Legendre"
 )
 
-DATA_SOURCES=("TT" "MSDS") # "MSDS" "TT"
+DATA_SOURCES=("SN" "TT" "MSDS") # "MSDS" "TT"
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval
@@ -39,7 +39,7 @@ SEEDS=(1 2 3)
 
 
 
-linear_attn_dim=(5 10 20)
+linear_attn_dim=(7 15)
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
       for dim in "${linear_attn_dim[@]}"; do
