@@ -141,11 +141,11 @@ if __name__ == '__main__':
             print("Running on Raspberry Pi, proceeding with RQ1_main_Edge experiment.")
         exp_name = "RQ1_main_Edge"
     elif args["experiment_name"]=="RQ2_ablations_components":
-        exp_name = "RQ2_ablations_withNorm_accMem"
+        exp_name = "RQ2_ablations_withNorm_accMem_updatedFreDF"
     elif args["experiment_name"]=="RQ2_basis_comparison":
-        exp_name = "RQ2_basis_withNorm_accMem"
+        exp_name = "RQ2_basis_withNorm_accMem_updatedFreDF"
     elif args["experiment_name"]=="RQ2_architecture":
-        exp_name = "RQ2_architecture"
+        exp_name = "RQ2_architecture_updatedFreDF"
     elif args["experiment_name"]=="RQ3_case_study":
         exp_name = "RQ3_case_study"
     elif args["experiment_name"]=="RQ3_sensitivity":
