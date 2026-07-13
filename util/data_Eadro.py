@@ -295,11 +295,8 @@ def run(data="TT"):
     edges = metadata["edges"]
     chunk_lenth = 10
 
-    #####train_chunks, test_chunks = load_chunks(data_dir)
-    ####test_chunks = load_chunks(data_dir)
-    ####
-    ########train_data = chunkDataset(train_chunks, node_num, edges,chunk_lenth)
-    ####test_data = chunkDataset(test_chunks, node_num, edges, chunk_lenth)
+
+    #if data == "TT":
     print("step TT.1: Loading test chunks from disk...")
     shard_dir = os.path.join(data_dir, "test_chunks/chunk_test_shards")
     chunk_files = [os.path.join(shard_dir, f) for f in os.listdir(shard_dir) if f.endswith('.pkl')]
@@ -309,6 +306,13 @@ def run(data="TT"):
     # Pass the FILE LIST to the dataset instead of the giant dictionary object
     test_data = ShardedChunkDataset(chunk_files, node_num, edges, chunk_lenth)
     print(f"ShardedChunkDataset created with {len(test_data)} items.")
+    #else:
+    #    test_chunks = load_chunks(data_dir)
+    #    
+    #    ###train_data = chunkDataset(train_chunks, node_num, edges,chunk_lenth)
+    #    test_data = chunkDataset(test_chunks, node_num, edges, chunk_lenth)
+
+
     
     #shapes = {
     #    "metric_dim": metric_num,

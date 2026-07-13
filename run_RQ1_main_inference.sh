@@ -6,7 +6,7 @@ FREQ_DOMAINS=(
 ##
 "FITS_Legendre" #OrEdge
 ##
-"AnoFusion"
+#"AnoFusion"
 #"Eadro"  
 #"encoder_decoder"
 #"Art"
@@ -21,13 +21,13 @@ FREQ_DOMAINS=(
 
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
-DATA_SOURCES=("TT") # "SN") MSDS
+DATA_SOURCES=("MSDS" "SN") # "SN") MSDS TT
 
 # as miniforge is installed on Raspberry Pi
 source ~/miniforge3/etc/profile.d/conda.sh
 conda activate RCAEval
 
-SEEDS=(2 3)
+SEEDS=(1 2 3)
 
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
@@ -50,7 +50,7 @@ for SEED in "${SEEDS[@]}"; do
         --data_source="$datasource" \
         --evaluate=true \
         --gpu=false\
-        --model_path="./result/$FREQ-$datasource-Epochs$EPOCHS-Seed$SEED" \
+        --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main" \
         --experiment_name="RQ1_main_Edge"
     else
       echo "--------------------------------"

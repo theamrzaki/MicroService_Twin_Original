@@ -57,7 +57,7 @@ parser.add_argument("--req_loss_approach", default="Legendre-style",
                     help='fits model for each modality')
 parser.add_argument("--rec_lambda", default=1.0, type=float, 
                     help='time reconstruction loss weight')
-parser.add_argument("--auxi_lambda", default=0.1, type=float, 
+parser.add_argument("--auxi_lambda", default=0.5, type=float, 
                     help='frequency reconstruction loss weight')
 
 # model setting
@@ -89,7 +89,7 @@ parser.add_argument("--dropout", default=0.2, type=float)
 
 
 # dataset setting
-parser.add_argument("--batch_size", default=100, type=int,
+parser.add_argument("--batch_size", default=1, type=int,
                     help='the data number at one epoch')
 parser.add_argument("--window", default=10, type=int,
                     help='size of sliding window')

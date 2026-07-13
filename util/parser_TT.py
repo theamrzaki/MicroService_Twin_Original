@@ -59,7 +59,7 @@ parser.add_argument("--req_loss_approach", default="Legendre-style",
                     help='fits model for each modality')
 parser.add_argument("--rec_lambda", default=1.0, type=float, 
                     help='time reconstruction loss weight')
-parser.add_argument("--auxi_lambda", default=0.1, type=float, 
+parser.add_argument("--auxi_lambda", default=0.2, type=float, 
                     help='frequency reconstruction loss weight')
 
 # model setting
