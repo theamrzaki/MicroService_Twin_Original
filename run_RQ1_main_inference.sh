@@ -4,7 +4,7 @@
 
 FREQ_DOMAINS=(
 ##
-"FITS_Legendre" #OrEdge
+#"FITS_Legendre" #OrEdge
 ##
 "AnoFusion"
 "Eadro"  
@@ -21,13 +21,13 @@ FREQ_DOMAINS=(
 
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
-DATA_SOURCES=("TT") # "SN") MSDS TT
+DATA_SOURCES=("SN" "MSDS") # "SN") MSDS TT
 
 # as miniforge is installed on Raspberry Pi
 source ~/miniforge3/etc/profile.d/conda.sh
 conda activate RCAEval
 
-SEEDS=(1)
+SEEDS=(2 3)
 
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
