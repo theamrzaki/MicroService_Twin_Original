@@ -5,7 +5,7 @@ conda activate RCAEval
 
 FREQ_DOMAIN="FITS_Legendre" 
 DATA_SOURCES=("SN" "TT" "MSDS")
-SEEDS=(1)
+SEEDS=(2)
 # OrAnomaly / without LPF / without time-freq fredf loss
 for SEED in "${SEEDS[@]}"; do
     for data_source in "${DATA_SOURCES[@]}"; do
