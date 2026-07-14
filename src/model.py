@@ -37,6 +37,19 @@ print("3. model ")
 from numpy.polynomial import Legendre as L
 
 
+##import gc
+##
+##def enforce_memory_guardrail(forward_func):
+##    """Decorator to apply to evaluation/inference blocks on Raspberry Pi."""
+##    def wrapper(self, x, evaluate=False):
+##        if evaluate:
+##            # Force cleanup of any lingering tensors before running inference
+##            gc.collect()
+##            with torch.no_grad():
+##                return forward_func(self, x, evaluate=evaluate)
+##        return forward_func(self, x, evaluate=evaluate)
+##    return wrapper
+
 
 class Temporal_Attention(nn.Module):
     def __init__(self, node_embedding_dim, edge_embedding_dim, log_embedding_dim, trace2pod, heads_node=4, heads_edge=4, heads_log=4, dropout=0.1,
@@ -110,35 +123,135 @@ class Temporal_Attention(nn.Module):
             .reshape(self.batch_size, -1, self.window_size, x_log.shape[-1]).permute(0, 2, 1, 3)
         return x_node, x_trace, x_log
 
-
 class Spatial_Attention(nn.Module):
-    def __init__(self, node_embedding_dim, edge_embedding_dim, log_embedding_dim, heads_n2e=4, heads_e2n=4, dropout=0.1, batch_size=10,
-                 window_size=16):
-        super(Spatial_Attention, self).__init__()
+
+    def __init__(self, node_embedding_dim, edge_embedding_dim, log_embedding_dim,
+                 heads_n2e=4, heads_e2n=4, dropout=0.1,
+                 batch_size=10, window_size=16):
+
+        super().__init__()
 
         self.batch_size = batch_size
         self.window_size = window_size
+        self.hn, self.he = heads_n2e, heads_e2n
 
-        self.node2node = GATv2Conv(in_channels=node_embedding_dim + log_embedding_dim,
-                                   out_channels=int((node_embedding_dim + log_embedding_dim) / heads_n2e),
-                                   heads=heads_n2e, dropout=dropout, edge_dim=edge_embedding_dim, add_self_loops=False)
-        self.egde2node = GATv2Conv(in_channels=edge_embedding_dim, out_channels=int(edge_embedding_dim / heads_e2n),
-                                   heads=heads_e2n, dropout=dropout, edge_dim=node_embedding_dim + log_embedding_dim,
-                                   add_self_loops=False)
+        self.ndim = node_embedding_dim + log_embedding_dim
+        self.edim = edge_embedding_dim
 
-    def forward(self, x_node, x_trace, x_log, node_adj, edge_adj, edge_efea):
-        node = torch.concat([x_node, x_log], dim=-1)
-        node = node.reshape(-1, node.shape[-1])
-        x_trace = x_trace.reshape(-1, x_trace.shape[-1])
+        assert self.ndim % heads_n2e == 0
+        assert self.edim % heads_e2n == 0
+
+        self.nhd = self.ndim // heads_n2e
+        self.ehd = self.edim // heads_e2n
+
+        self.nv = nn.Linear(self.ndim, self.ndim)
+        self.ev = nn.Linear(self.edim, self.edim)
+
+        self.na = nn.Parameter(torch.Tensor(heads_n2e, self.nhd))
+        self.ea = nn.Parameter(torch.Tensor(heads_e2n, self.ehd))
+
+        self.drop = nn.Dropout(dropout)
+        self.act = nn.LeakyReLU(0.2)
+
+        nn.init.xavier_uniform_(self.na)
+        nn.init.xavier_uniform_(self.ea)
+
+
+    def forward(self, x_node, x_trace, x_log,
+                node_adj, edge_adj, edge_efea):
+
+        B,W,N,_ = x_node.shape
+        E = x_trace.shape[2]
+
+        n = self.nv(torch.cat([x_node,x_log],-1))
+        e = self.ev(x_trace)
+
+        n = n.view(B,W,N,self.hn,self.nhd)
+        e = e.view(B,W,E,self.he,self.ehd)
+
+        no = torch.zeros_like(n)
+        eo = torch.zeros_like(e)
+
+
+        node_adj = node_adj.long()
+        edge_adj = edge_adj.long()
         
-        node = self.node2node(node, node_adj, x_trace)
-        x_trace = self.egde2node(x_trace, edge_adj, node[edge_efea.long()])
+        if node_adj.dim() == 3:
+            sn, dn = node_adj[:,0], node_adj[:,1]
+        elif node_adj.dim() == 2:
+            sn, dn = node_adj[0], node_adj[1]
+        else:
+            raise ValueError(f"Unexpected node_adj shape {node_adj.shape}")
+        
+        
+        if edge_adj.dim() == 3:
+            se, de = edge_adj[:,0], edge_adj[:,1]
+        elif edge_adj.dim() == 2:
+            se, de = edge_adj[0], edge_adj[1]
+        else:
+            raise ValueError(f"Unexpected edge_adj shape {edge_adj.shape}")
+        
+        if sn.min()==1:
+            sn,dn = sn-1,dn-1
+        
+        if se.min()==1:
+            se,de = se-1,de-1
+        
 
-        x_node = node[:, :x_node.shape[-1]].reshape(self.batch_size, self.window_size, -1, x_node.shape[-1])
-        x_trace = x_trace.reshape(self.batch_size, self.window_size, -1, x_trace.shape[-1])
-        x_log = node[:, x_node.shape[-1]:].reshape(self.batch_size, self.window_size, -1, x_log.shape[-1])
-        return x_node, x_trace, x_log
+        m = (sn<N)&(dn<N)
+        sn,dn = sn[m],dn[m]
 
+        m = (se<E)&(de<E)
+        se,de = se[m],de[m]
+
+
+        for b in range(B):
+            for w in range(W):
+
+                # node attention
+                x = n[b,w]
+
+                score = self.act(
+                    (x[sn]*self.na).sum(-1)
+                )
+
+                a = torch.exp(score-score.max(0)[0])
+                z = torch.zeros(N,self.hn,device=x.device)
+                z.index_add_(0,dn,a)
+
+                a /= z[dn]+1e-12
+
+                no[b,w].index_add_(
+                    0,dn,x[sn]*a.unsqueeze(-1)
+                )
+
+
+                # edge attention
+                x = e[b,w]
+
+                score = self.act(
+                    (x[se]*self.ea).sum(-1)
+                )
+
+                a = torch.exp(score-score.max(0)[0])
+                z = torch.zeros(E,self.he,device=x.device)
+                z.index_add_(0,de,a)
+
+                a /= z[de]+1e-12
+
+                eo[b,w].index_add_(
+                    0,de,x[se]*a.unsqueeze(-1)
+                )
+
+
+        no = no.reshape(B,W,N,self.ndim)
+        eo = eo.reshape(B,W,E,self.edim)
+
+        return (
+            no[...,:x_node.shape[-1]],
+            eo,
+            no[...,x_node.shape[-1]:]
+        )
 
 class Encoder_Decoder_Attention(nn.Module):
     def __init__(self, node_embedding_dim, edge_embedding_dim, log_embedding_dim, heads_node=4, heads_edge=4, heads_log=4, dropout=0.1):
@@ -165,7 +278,56 @@ class Encoder_Decoder_Attention(nn.Module):
 
         return x_node, x_trace, x_log
 
+class AddNorm(nn.Module):
+    def __init__(self, node_embedding_dim, dropout=0.1):
+        super(AddNorm, self).__init__()
+        self.dropout = nn.Dropout(dropout)
+        self.ln = nn.LayerNorm(node_embedding_dim)
+        
 
+    def forward(self, X_old, X):
+        return self.ln(self.dropout(X) + X_old)
+
+
+class AddALL(nn.Module):
+    def __init__(self, node_embedding_dim, edge_embedding_dim, log_embedding_dim, dropout=0.1):
+        super().__init__()
+        self.addnorm_node = AddNorm(node_embedding_dim, dropout)
+        self.addnorm_trace = AddNorm(edge_embedding_dim, dropout)
+        self.addnorm_log = AddNorm(log_embedding_dim, dropout)
+
+    def forward(self, node_old, trace_old, log_old, x_node, x_trace, x_log):
+        return self.addnorm_node(node_old, x_node.reshape(node_old.shape)), \
+            self.addnorm_trace(trace_old, x_trace.reshape(trace_old.shape)), \
+            self.addnorm_log(log_old, x_log.reshape(log_old.shape))
+
+class FeedForward(nn.Module):
+    def __init__(self, node_embedding_dim, FeedForward_dim, Dropout):
+        super(FeedForward, self).__init__()
+        self.ff = nn.Sequential(
+            nn.Linear(node_embedding_dim, FeedForward_dim),
+            nn.LeakyReLU(inplace=True),
+            nn.Dropout(Dropout),
+            nn.Linear(FeedForward_dim, node_embedding_dim)
+        )
+
+    def forward(self, X):
+        return self.ff(X)
+
+class FFN(nn.Module):
+    def __init__(self, node_embedding_dim, edge_embedding_dim, log_embedding_dim, dropout=0.1):
+        super(FFN, self).__init__()
+        self.ff_node = FeedForward(node_embedding_dim, node_embedding_dim*4, dropout)
+        self.addnorm_node = AddNorm(node_embedding_dim, dropout)
+        self.ff_trace = FeedForward(edge_embedding_dim, edge_embedding_dim*4, dropout)
+        self.addnorm_trace = AddNorm(edge_embedding_dim, dropout)
+        self.ff_log = FeedForward(log_embedding_dim, log_embedding_dim*4, dropout)
+        self.addnorm_log = AddNorm(log_embedding_dim, dropout)
+
+    def forward(self, x_node, x_trace, x_log):
+        return self.addnorm_node(x_node, self.ff_node(x_node)), \
+            self.addnorm_trace(x_trace, self.ff_trace(x_trace)), \
+            self.addnorm_log(x_log, self.ff_log(x_log))
 
 class Encoder(nn.Module):
     def __init__(self, graph, node_embedding, edge_embedding, log_embedding, node_heads, log_heads, edge_heads, n2e_heads, e2n_heads, dropout, batch_size, window_size, num_layer, trace2pod):

@@ -8,7 +8,9 @@ print("2. tessting")
 import pickle
 import random
 import numpy as np
+print("BEFORE TORCH")
 import torch
+print("AFTER TORCH")
 print("3. tessting")
 from sklearn.metrics import *
 from util.constant import *
