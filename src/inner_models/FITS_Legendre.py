@@ -476,10 +476,8 @@ class Model(nn.Module):
                     from numpy.polynomial.laguerre import lagvander
                     basis = lagvander(t, self.degree - 1).T
 
-                basis = torch.tensor(basis, dtype=torch.float32)
-
+                basis = torch.tensor(basis, dtype=torch.float16)
                 self.register_buffer("basis", basis)
-                self.register_buffer("basis_T", basis.t().contiguous())
 
             elif self.basis_type == "fourier":
                 self.optimize_precompute_legendre = False
@@ -539,7 +537,7 @@ class Model(nn.Module):
         # -------------------------------------------------
         if self.optimize_precompute_legendre:
             x_t = x.transpose(1, 2).contiguous()
-            spec = torch.matmul(x_t, self.basis_T)
+            spec = torch.matmul(x_t.to(self.basis.dtype), self.basis.T)
         else:
             # -------------------------------------------------
             # 2. Encode (Fourier - correct)
@@ -561,7 +559,7 @@ class Model(nn.Module):
                 B, C, D, _ = spec.shape
                 spec = spec.reshape(B, C, 2 * D)                     # [B, C, 2*degree]
 
-            #spec = legendre_encode(x, degree=self.degree)
+            spec = legendre_encode(x, degree=self.degree)
             #spec = spec.transpose(1, 2)
 
         # spec: [B, C, degree]
@@ -572,7 +570,7 @@ class Model(nn.Module):
         if self.use_normlin:
             W_pos = F.softplus(self.normlin_W)
             W_norm = W_pos / (W_pos.sum(dim=1, keepdim=True) + 1e-8)
-            spec = torch.matmul(spec, W_norm.T)
+            spec = torch.matmul(spec.to(W_norm.dtype), W_norm.T)
 
         # -------------------------------------------------
         # 3. LPF (optional hard constraint)
@@ -604,7 +602,7 @@ class Model(nn.Module):
         # 5. Decode
         # -------------------------------------------------
         if self.optimize_precompute_legendre:
-            low_xy = torch.matmul(spec_up, self.basis)
+            low_xy = torch.matmul(spec_up.to(self.basis.dtype)  , self.basis)
         else:
             # -------------------------------------------------
             # 5. Decode (Fourier - correct)
@@ -631,11 +629,14 @@ class Model(nn.Module):
 
                 # Inverse FFT → time domain
                 low_xy = torch.fft.irfft(full_spec, n=self.seq_len, dim=1)  # [B, L, C]
-            #low_xy = legendre_decode(
-            #    spec_up.transpose(1, 2),
-            #    seq_len=self.seq_len
-            #).transpose(1, 2)
+            low_xy = legendre_decode(
+                spec_up,
+                seq_len=self.seq_len
+            )#.transpose(1, 2)
 
+        #low_xy.shape
+        #torch.Size([1200, 10, 10])
+        
         low_xy = low_xy.transpose(1, 2)
         low_xy = low_xy * self.length_ratio
 

@@ -24,6 +24,13 @@ def adj2adj(graph, batch_size, window_size, zdim):
     edge_adj, edge_efea = remove_self_loops(adj, fea)
     return node_adj, node_efea, edge_adj, edge_efea
 
+
+def adj2adj_simple(graph, zdim):
+    node_efea = graph.unsqueeze(-1).repeat(1, 1, zdim)
+    return node_efea
+
+
+
 class FeedForward(nn.Module):
     def __init__(self, node_embedding_dim, FeedForward_dim, Dropout):
         super(FeedForward, self).__init__()
