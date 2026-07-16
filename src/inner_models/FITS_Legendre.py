@@ -43,28 +43,169 @@ def leg_torch(data, degree, rtn_data=False, device='cpu'):
         return coeffs
 
 
-def legendre_encode(input_seq, degree=64):
-    B, T, C = input_seq.shape
-    input_seq_flat = input_seq.reshape(B * C, T).T  # shape: [T, B*C]
+import torch
 
-    device = input_seq.device
-    coeffs = leg_torch(input_seq_flat, degree - 1, rtn_data=False, device=device)
-    coeffs = coeffs.reshape(B, C, degree).to(device)
+# ---------------------------------------------------------------------
+# Cache Legendre basis
+# ---------------------------------------------------------------------
+
+_legendre_basis_cache = {}
+
+def _get_legendre_basis(seq_len, degree, device, dtype=torch.float32):
+    key = (seq_len, degree, str(device), dtype)
+
+    if key not in _legendre_basis_cache:
+
+        x = torch.linspace(-1, 1, seq_len, device=device, dtype=dtype)
+
+        basis = torch.empty(degree, seq_len, device=device, dtype=dtype)
+
+        # P0
+        basis[0] = 1.0
+
+        if degree > 1:
+            # P1
+            basis[1] = x
+
+            # Three-term recurrence
+            for n in range(2, degree):
+                basis[n] = (
+                    ((2 * n - 1) * x * basis[n - 1]
+                     - (n - 1) * basis[n - 2]) / n
+                )
+
+        # Normalize each polynomial
+        basis = basis / torch.linalg.norm(basis, dim=1, keepdim=True)
+
+        _legendre_basis_cache[key] = basis
+
+    return _legendre_basis_cache[key]
+
+
+# ---------------------------------------------------------------------
+# Encode
+# ---------------------------------------------------------------------
+def legendre_encode(input_seq, degree=64):
+    
+
+    B, T, C = input_seq.shape
+
+    basis = _get_legendre_basis(
+        seq_len=T,
+        degree=degree,
+        device=input_seq.device,
+        dtype=input_seq.dtype
+    )
+
+    # Projection onto basis
+    coeffs = torch.einsum("btc,dt->bcd", input_seq, basis)
 
     return coeffs
 
+
+# ---------------------------------------------------------------------
+# Decode
+# ---------------------------------------------------------------------
 def legendre_decode(coeffs, seq_len):
-    B, C, D = coeffs.shape
-    coeffs_flat = coeffs.reshape(B * C, D)
 
-    # Generate Legendre basis on correct device
-    tvals = np.linspace(-1, 1, seq_len)
-    legendre_polys = np.array([L.basis(i)(tvals) for i in range(D)])  # [D, T]
-    legendre_polys = torch.from_numpy(legendre_polys).float().to(coeffs.device)
 
-    reconstructed = torch.mm(coeffs_flat, legendre_polys).reshape(B, C, seq_len).permute(0, 2, 1)
+    _, _, degree = coeffs.shape
+
+    basis = _get_legendre_basis(
+        seq_len=seq_len,
+        degree=degree,
+        device=coeffs.device,
+        dtype=coeffs.dtype
+    )
+
+    reconstructed = torch.einsum("bcd,dt->btc", coeffs, basis)
+
     return reconstructed
 
+"""
+import torch
+
+# ---------------------------------------------------------------------
+# Encode (O(seq_len) extra memory)
+# ---------------------------------------------------------------------
+def legendre_encode(input_seq, degree=64):
+
+
+    B, T, C = input_seq.shape
+    device = input_seq.device
+    dtype = input_seq.dtype
+
+    coeffs = torch.empty(B, C, degree, device=device, dtype=dtype)
+
+    x = torch.linspace(-1, 1, T, device=device, dtype=dtype)
+
+    # P0
+    P0 = torch.ones(T, device=device, dtype=dtype)
+    coeffs[:, :, 0] = torch.einsum("btc,t->bc", input_seq, P0 / P0.norm())
+
+    if degree == 1:
+        return coeffs
+
+    # P1
+    P1 = x
+    coeffs[:, :, 1] = torch.einsum("btc,t->bc", input_seq, P1 / P1.norm())
+
+    for n in range(2, degree):
+        P2 = ((2*n-1)*x*P1 - (n-1)*P0) / n
+        coeffs[:, :, n] = torch.einsum(
+            "btc,t->bc",
+            input_seq,
+            P2 / P2.norm()
+        )
+        P0, P1 = P1, P2
+
+    return coeffs
+
+
+# ---------------------------------------------------------------------
+# Decode (O(seq_len) extra memory)
+# ---------------------------------------------------------------------
+def legendre_decode(coeffs, seq_len):
+
+
+    B, C, degree = coeffs.shape
+    device = coeffs.device
+    dtype = coeffs.dtype
+
+    output = torch.zeros(B, seq_len, C, device=device, dtype=dtype)
+
+    x = torch.linspace(-1, 1, seq_len, device=device, dtype=dtype)
+
+    # P0
+    P0 = torch.ones(seq_len, device=device, dtype=dtype)
+    output += torch.einsum(
+        "bc,t->btc",
+        coeffs[:, :, 0],
+        P0 / P0.norm()
+    )
+
+    if degree == 1:
+        return output
+
+    # P1
+    P1 = x
+    output += torch.einsum(
+        "bc,t->btc",
+        coeffs[:, :, 1],
+        P1 / P1.norm()
+    )
+
+    for n in range(2, degree):
+        P2 = ((2*n-1)*x*P1 - (n-1)*P0) / n
+        output += torch.einsum(
+            "bc,t->btc",
+            coeffs[:, :, n],
+            P2 / P2.norm()
+        )
+        P0, P1 = P1, P2
+
+    return output
+"""
 
 
 
@@ -412,7 +553,9 @@ class Model_old(nn.Module):
         xy = xy_with_sqrt + x_mean
 
         return xy, xy_with_sqrt
-    
+
+
+
 
 class Model(nn.Module):
 
@@ -476,10 +619,8 @@ class Model(nn.Module):
                     from numpy.polynomial.laguerre import lagvander
                     basis = lagvander(t, self.degree - 1).T
 
-                basis = torch.tensor(basis, dtype=torch.float32)
-
+                basis = torch.tensor(basis, dtype=torch.float16)
                 self.register_buffer("basis", basis)
-                self.register_buffer("basis_T", basis.t().contiguous())
 
             elif self.basis_type == "fourier":
                 self.optimize_precompute_legendre = False
@@ -539,7 +680,7 @@ class Model(nn.Module):
         # -------------------------------------------------
         if self.optimize_precompute_legendre:
             x_t = x.transpose(1, 2).contiguous()
-            spec = torch.matmul(x_t, self.basis_T)
+            spec = torch.matmul(x_t.to(self.basis.dtype), self.basis.T)
         else:
             # -------------------------------------------------
             # 2. Encode (Fourier - correct)
@@ -561,7 +702,7 @@ class Model(nn.Module):
                 B, C, D, _ = spec.shape
                 spec = spec.reshape(B, C, 2 * D)                     # [B, C, 2*degree]
 
-            #spec = legendre_encode(x, degree=self.degree)
+            spec = legendre_encode(x, degree=self.degree)
             #spec = spec.transpose(1, 2)
 
         # spec: [B, C, degree]
@@ -572,7 +713,7 @@ class Model(nn.Module):
         if self.use_normlin:
             W_pos = F.softplus(self.normlin_W)
             W_norm = W_pos / (W_pos.sum(dim=1, keepdim=True) + 1e-8)
-            spec = torch.matmul(spec, W_norm.T)
+            spec = torch.matmul(spec.to(W_norm.dtype), W_norm.T)
 
         # -------------------------------------------------
         # 3. LPF (optional hard constraint)
@@ -604,7 +745,7 @@ class Model(nn.Module):
         # 5. Decode
         # -------------------------------------------------
         if self.optimize_precompute_legendre:
-            low_xy = torch.matmul(spec_up, self.basis)
+            low_xy = torch.matmul(spec_up.to(self.basis.dtype)  , self.basis)
         else:
             # -------------------------------------------------
             # 5. Decode (Fourier - correct)
@@ -631,11 +772,14 @@ class Model(nn.Module):
 
                 # Inverse FFT → time domain
                 low_xy = torch.fft.irfft(full_spec, n=self.seq_len, dim=1)  # [B, L, C]
-            #low_xy = legendre_decode(
-            #    spec_up.transpose(1, 2),
-            #    seq_len=self.seq_len
-            #).transpose(1, 2)
+            low_xy = legendre_decode(
+                spec_up,
+                seq_len=self.seq_len
+            )#.transpose(1, 2)
 
+        #low_xy.shape
+        #torch.Size([1200, 10, 10])
+        
         low_xy = low_xy.transpose(1, 2)
         low_xy = low_xy * self.length_ratio
 
@@ -649,4 +793,81 @@ class Model(nn.Module):
     
 
 
-    
+
+
+class Model_dummy(nn.Module):
+    def __init__(self, configs):
+        super(Model, self).__init__()
+
+        self.seq_len = configs.seq_len
+        self.pred_len = configs.pred_len
+        self.channels = configs.enc_in
+        self.degree = getattr(configs, "degree", 5)
+        self.length_ratio = (self.seq_len + self.pred_len) / self.seq_len
+
+        # -----------------------------
+        # NormLin (minimal params)
+        # -----------------------------
+        self.use_normlin = getattr(configs, "use_normlin", True)
+        if self.use_normlin:
+            self.normlin_W = nn.Parameter(torch.randn(self.degree, self.degree))
+            nn.init.xavier_uniform_(self.normlin_W)
+
+        # -----------------------------
+        # Frequency Upsampler
+        # -----------------------------
+        self.freq_upsampler = nn.Linear(self.degree, self.degree)
+
+    def forward(self, x):
+        # x shape assumed: [B, L, C]
+        B, L, C = x.shape
+
+        # -------------------------------------------------
+        # 1. RevIN
+        # -------------------------------------------------
+        x_mean = x.mean(dim=1, keepdim=True)
+        x_std = x.std(dim=1, keepdim=True) + 1e-5
+        x = (x - x_mean) / x_std
+
+        # -------------------------------------------------
+        # 2. MOCK Encode (No basis used at all!)
+        # Create a dummy 'spec' matching the exact expected shape [B, C, degree]
+        # -------------------------------------------------
+        spec = torch.zeros(B, C, self.degree, dtype=x.dtype, device=x.device)
+
+        # -------------------------------------------------
+        # 2.5 NormLin (frequency mixing)
+        # -------------------------------------------------
+        if self.use_normlin:
+            W_pos = F.softplus(self.normlin_W)
+            W_norm = W_pos / (W_pos.sum(dim=1, keepdim=True) + 1e-8)
+            spec = torch.matmul(spec, W_norm.T)
+
+        # -------------------------------------------------
+        # 3. LPF (optional hard constraint)
+        # -------------------------------------------------
+        cutoff = self.degree // 2
+        spec[:, :, cutoff:].zero_()
+
+        # -------------------------------------------------
+        # 4. Frequency Interpolation
+        # -------------------------------------------------
+        spec_up = self.freq_upsampler(spec)
+
+        # -------------------------------------------------
+        # 5. MOCK Decode (No basis used at all!)
+        # Create a dummy output matching your final shape layout
+        # -------------------------------------------------
+        low_xy = torch.zeros(B, C, self.seq_len, dtype=x.dtype, device=x.device)
+
+        low_xy = low_xy.transpose(1, 2)
+        low_xy = low_xy * self.length_ratio
+
+        # -------------------------------------------------
+        # 6. Reverse RevIN
+        # -------------------------------------------------
+        xy_with_sqrt = low_xy * x_std
+        xy = xy_with_sqrt + x_mean
+
+        return xy, xy_with_sqrt
+

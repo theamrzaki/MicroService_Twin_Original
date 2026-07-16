@@ -118,59 +118,6 @@ class Base(nn.Module):
                 self.model.load_state_dict(torch.load(
                         os.path.join(model_save_file, f"{self.model.name}_{name}_stage.ckpt"), map_location=torch.device('cpu')))
 
-    def load_modelaaaaaaaaa(self, model_save_file="", name='loss'):
-        if model_save_file == ' ':
-            logging.info(f'No {self.model.name} statue file')
-        else:
-            logging.info(f'{self.model.name} on {model_save_file} loading...')
-            
-            # Determine path to target checkpoint
-            ckpt_path = os.path.join(model_save_file, f"{self.model.name}_{name}_stage.ckpt")
-            
-            # Load the raw checkpoint bytes to correct device architecture
-            if torch.cuda.is_available():
-                old_state_dict = torch.load(ckpt_path)
-            else:
-                old_state_dict = torch.load(ckpt_path, map_location=torch.device('cpu'))
-                
-            # --- Dynamic parameter name transformation mapping ---
-            new_state_dict = self.model.state_dict()
-            mapped_state_dict = {}
-            
-            for old_key, weight in old_state_dict.items():
-                new_key = old_key
-                
-                # Translate node2node architecture pathways
-                if "node2node" in old_key:
-                    if "lin_l.weight" in old_key:   new_key = old_key.replace("node2node.lin_l.weight", "n2n_lin_src.weight")
-                    elif "lin_l.bias" in old_key:   new_key = old_key.replace("node2node.lin_l.bias", "n2n_lin_src.bias")
-                    elif "lin_edge.weight" in old_key: new_key = old_key.replace("node2node.lin_edge.weight", "n2n_lin_edge.weight")
-                    elif "att" in old_key:          new_key = old_key.replace("node2node.att", "n2n_att")
-                    
-                # Translate egde2node architecture pathways
-                elif "egde2node" in old_key:
-                    if "lin_l.weight" in old_key:   new_key = old_key.replace("egde2node.lin_l.weight", "e2n_lin_src.weight")
-                    elif "lin_l.bias" in old_key:   new_key = old_key.replace("egde2node.lin_l.bias", "e2n_lin_src.bias")
-                    elif "lin_edge.weight" in old_key: new_key = old_key.replace("egde2node.lin_edge.weight", "e2n_lin_node.weight")
-                    elif "att" in old_key:          new_key = old_key.replace("egde2node.att", "e2n_att")
-                
-                # Safely verify weight shapes match up to handle underlying layout changes
-                if new_key in new_state_dict:
-                    if weight.shape == new_state_dict[new_key].shape:
-                        mapped_state_dict[new_key] = weight
-                    else:
-                        try:
-                            mapped_state_dict[new_key] = weight.view(new_state_dict[new_key].shape)
-                        except Exception:
-                            logging.warning(f"Shape mismatch for key: {new_key}, skipping weight assignment.")
-                else:
-                    mapped_state_dict[new_key] = weight
-
-            # Load the adapted weights dictionary (strict=False ensures missing bias targets don't crash)
-            self.model.load_state_dict(mapped_state_dict, strict=False)
-            logging.info("Successfully loaded and converted weights to non-geometric native layers.")
-
-
     # Saving modal paras
     def save_model(self, best_dict, model_save_dir="", name='loss'):
         file_status = os.path.join(model_save_dir, f"{self.model.name}_{name}_stage.ckpt")

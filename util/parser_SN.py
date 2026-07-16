@@ -61,6 +61,8 @@ parser.add_argument("--auxi_lambda", default=0.5, type=float,
                     help='frequency reconstruction loss weight')
 
 # model setting
+parser.add_argument("--DEVICE_NAME", default="-", type=str,
+                    help='the device name for logging purposes')
 parser.add_argument("--feature_node", default=8, type=int,#64
                     help='the pod kpi data number at one epoch')
 parser.add_argument("--feature_edge", default=8, type=int,#64

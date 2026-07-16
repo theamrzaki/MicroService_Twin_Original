@@ -24,6 +24,8 @@ parser.add_argument("--basis_type", default="legendre", type=str,
 parser.add_argument("--use_normlin", default=True, type=lambda x: x.lower() == "true",
                     help='whether to use normlin in frequency domain')
 # training setting
+parser.add_argument("--DEVICE_NAME", default="-", type=str,
+                    help='the device name for logging purposes')
 parser.add_argument("--gpu", default=True, type=lambda x: x.lower() == "true")
 parser.add_argument("--epochs", default=300, type=int,
                     help='the number of training epochs')

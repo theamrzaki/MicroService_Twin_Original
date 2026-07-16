@@ -224,6 +224,8 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         'experiment_name': args['experiment_name'],
         'random_seed': args['random_seed'],
         'use_normlin': args['use_normlin'],
+
+        'DEVICE_NAME': args['DEVICE_NAME']
     }
     
     if not os.path.exists(file_path):
