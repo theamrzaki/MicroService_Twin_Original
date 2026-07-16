@@ -1,0 +1,120 @@
+2026-07-15 20:38:47,756 P2492886 INFO ---- Model: ----MSTGAD-3886e178----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : AnoFusion----Multi Fits : false----train : True----evaluate : False
+2026-07-15 20:38:47,756 P2492886 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-15 20:38:48,562 P2492886 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-15 20:38:48,731 P2492886 INFO Trainable Parameters Breakdown:
+2026-07-15 20:38:48,731 P2492886 INFO --------------------------------------------------------------------------------
+2026-07-15 20:38:48,731 P2492886 INFO Reconstruction-Specific Parameters:
+2026-07-15 20:38:48,731 P2492886 INFO AnoFusion.metric_proj.weight             | shape: (10, 7)                   | params: 70
+2026-07-15 20:38:48,731 P2492886 INFO AnoFusion.metric_proj.bias               | shape: (10,)                     | params: 10
+2026-07-15 20:38:48,731 P2492886 INFO AnoFusion.log_proj.weight                | shape: (10, 7)                   | params: 70
+2026-07-15 20:38:48,731 P2492886 INFO AnoFusion.log_proj.bias                  | shape: (10,)                     | params: 10
+2026-07-15 20:38:48,731 P2492886 INFO AnoFusion.trace_proj.weight              | shape: (10, 2)                   | params: 20
+2026-07-15 20:38:48,731 P2492886 INFO AnoFusion.trace_proj.bias                | shape: (10,)                     | params: 10
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GTN.weight           | shape: (1, 1)                    | params: 1
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GTN.layers.0.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GTN.layers.0.layer2.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GTN.layers.1.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GTN.layers.2.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GTN.layers.3.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GTN.layers.4.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.weight       | shape: (1, 1)                    | params: 1
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.soft         | shape: (2,)                      | params: 2
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gru.weight_ih_l0 | shape: (60, 20)                  | params: 1,200
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gru.weight_hh_l0 | shape: (60, 20)                  | params: 1,200
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gru.bias_ih_l0 | shape: (60,)                     | params: 60
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gru.bias_hh_l0 | shape: (60,)                     | params: 60
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.BN.weight    | shape: (10,)                     | params: 10
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.BN.bias      | shape: (10,)                     | params: 10
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.linear.weight | shape: (20, 20)                  | params: 400
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.linear.bias  | shape: (20,)                     | params: 20
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.0.b | shape: (20,)                     | params: 20
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.0.W.weight | shape: (20, 30)                  | params: 600
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.1.b | shape: (20,)                     | params: 20
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.1.W.weight | shape: (20, 30)                  | params: 600
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.2.b | shape: (20,)                     | params: 20
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.2.W.weight | shape: (20, 30)                  | params: 600
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.3.b | shape: (20,)                     | params: 20
+2026-07-15 20:38:48,732 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.3.W.weight | shape: (20, 30)                  | params: 600
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.4.b | shape: (20,)                     | params: 20
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.4.W.weight | shape: (20, 30)                  | params: 600
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.5.b | shape: (20,)                     | params: 20
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.5.W.weight | shape: (20, 30)                  | params: 600
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.out_att.b | shape: (20,)                     | params: 20
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.out_att.W.weight | shape: (20, 120)                 | params: 2,400
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.linT.weight          | shape: (5, 10)                   | params: 50
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.linT.bias            | shape: (5,)                      | params: 5
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.lin1.weight          | shape: (64, 120)                 | params: 7,680
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.lin1.bias            | shape: (64,)                     | params: 64
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.lin2.weight          | shape: (2, 64)                   | params: 128
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.anofusion.lin2.bias            | shape: (2,)                      | params: 2
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.post_proj.weight               | shape: (16, 20)                  | params: 320
+2026-07-15 20:38:48,733 P2492886 INFO AnoFusion.post_proj.bias                 | shape: (16,)                     | params: 16
+2026-07-15 20:38:48,733 P2492886 INFO Subtotal: 17,583
+2026-07-15 20:38:48,733 P2492886 INFO --------------------------------------------------------------------------------
+2026-07-15 20:38:48,733 P2492886 INFO Common Parameters:
+2026-07-15 20:38:48,733 P2492886 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-15 20:38:48,733 P2492886 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-15 20:38:48,733 P2492886 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-07-15 20:38:48,733 P2492886 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-15 20:38:48,733 P2492886 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-15 20:38:48,733 P2492886 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-15 20:38:48,733 P2492886 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-15 20:38:48,733 P2492886 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-15 20:38:48,733 P2492886 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-07-15 20:38:48,734 P2492886 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-07-15 20:38:48,734 P2492886 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-15 20:38:48,734 P2492886 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-15 20:38:48,734 P2492886 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-07-15 20:38:48,734 P2492886 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-15 20:38:48,734 P2492886 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-15 20:38:48,734 P2492886 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-15 20:38:48,734 P2492886 INFO Subtotal: 3,090
+2026-07-15 20:38:48,734 P2492886 INFO --------------------------------------------------------------------------------
+2026-07-15 20:38:48,734 P2492886 INFO Total Trainable Parameters: 20,673
+
+2026-07-15 20:38:48,734 P2492886 INFO Trainable Parameters: 20673, reconstruction: 17583, common: 3090
+2026-07-15 20:38:48,734 P2492886 INFO model : init weight
+2026-07-15 20:38:48,735 P2492886 INFO Using GPU...
+2026-07-15 20:38:48,754 P2492886 INFO optimizer : using AdaBelief
+2026-07-15 20:38:48,754 P2492886 INFO ----------------------------------------------------------------------------------------------------
+2026-07-15 20:38:48,754 P2492886 INFO 0/5 starting... lr: 0.001 para:1.0
+2026-07-15 20:38:51,045 P2492886 INFO Epoch 0/5, all_loss:26.14426 cls_loss:26.14426 rec_loss:0.19134 [2.28s]; best loss:26.14426, patience : 0
+2026-07-15 20:38:51,045 P2492886 INFO ----------------------------------------------------------------------------------------------------
+2026-07-15 20:38:51,045 P2492886 INFO 1/5 starting... lr: 0.001 para:0.5
+2026-07-15 20:38:52,678 P2492886 INFO Epoch 1/5, all_loss:13.19275 cls_loss:13.19275 rec_loss:0.44741 [1.63s]; best loss:13.19275, patience : 0
+2026-07-15 20:38:52,678 P2492886 INFO ----------------------------------------------------------------------------------------------------
+2026-07-15 20:38:52,678 P2492886 INFO 2/5 starting... lr: 0.001 para:0.3333333432674408
+2026-07-15 20:38:54,340 P2492886 INFO Epoch 2/5, all_loss:11.28889 cls_loss:11.28889 rec_loss:0.47341 [1.66s]; best loss:11.28889, patience : 0
+2026-07-15 20:38:54,953 P2492886 INFO pr:0.0000  rc:0.0000  auc:0.6954 ap:0.6441 f1: 0.0000 pred_right: 46800 pred_wrong: 0  actu_right: 43559 actu_wrong: 3241
+2026-07-15 20:38:55,363 P2492886 INFO pr:0.0000  rc:0.0000  auc:0.6997 ap:0.6459 f1: 0.0000 pred_right: 19200 pred_wrong: 0  actu_right: 17874 actu_wrong: 1326
+2026-07-15 20:38:55,371 P2492886 INFO ----------------------------------------------------------------------------------------------------
+2026-07-15 20:38:55,371 P2492886 INFO 3/5 starting... lr: 0.001 para:0.25
+2026-07-15 20:38:58,301 P2492886 INFO Epoch 3/5, all_loss:10.28101 cls_loss:10.28101 rec_loss:0.48667 [2.93s]; best loss:10.28101, patience : 0
+2026-07-15 20:38:58,794 P2492886 INFO pr:0.9631  rc:0.2495  auc:0.7386 ap:0.6956 f1: 0.3963 pred_right: 45961 pred_wrong:839 actu_right: 43561 actu_wrong: 3239
+2026-07-15 20:38:59,002 P2492886 INFO pr:0.9742  rc:0.2278  auc:0.7418 ap:0.6962 f1: 0.3692 pred_right: 18890 pred_wrong:310 actu_right: 17874 actu_wrong: 1326
+2026-07-15 20:38:59,009 P2492886 INFO ----------------------------------------------------------------------------------------------------
+2026-07-15 20:38:59,009 P2492886 INFO 4/5 starting... lr: 0.001 para:0.20000000298023224
+2026-07-15 20:39:00,328 P2492886 INFO Epoch 4/5, all_loss:9.56581 cls_loss:9.56581 rec_loss:0.50535 [1.31s]; best loss:9.56581, patience : 0
+2026-07-15 20:39:00,853 P2492886 INFO pr:0.9678  rc:0.2968  auc:0.7803 ap:0.7259 f1: 0.4542 pred_right: 45805 pred_wrong:995 actu_right: 43555 actu_wrong: 3245
+2026-07-15 20:39:01,076 P2492886 INFO pr:0.9821  rc:0.2888  auc:0.7836 ap:0.7229 f1: 0.4464 pred_right: 18810 pred_wrong:390 actu_right: 17874 actu_wrong: 1326
+2026-07-15 20:39:01,081 P2492886 INFO saving model...
+2026-07-15 20:39:01,081 P2492886 INFO AnoFusion - loss  best score:9.565805435180664 at epoch 4
+2026-07-15 20:39:01,089 P2492886 INFO AnoFusion - f1  best score:0.4542452830188679 at epoch 4
+2026-07-15 20:39:01,096 P2492886 INFO Average training time per epoch: 1.96 seconds
+2026-07-15 20:39:01,096 P2492886 INFO calculate scores...
+2026-07-15 20:39:01,096 P2492886 INFO calculate label with loss...
+2026-07-15 20:39:01,096 P2492886 INFO AnoFusion on ./result/AnoFusion-SN-Epochs5-Seed46ExpNameRQ1_main loading...
+2026-07-15 20:39:01,338 P2492886 INFO pr:0.9821  rc:0.2888  auc:0.7836 ap:0.7229 f1: 0.4464 pred_right: 18810 pred_wrong:390 actu_right: 17874 actu_wrong: 1326
+2026-07-15 20:39:01,784 P2492886 INFO pr:0.9821  rc:0.2888  auc:0.7836 ap:0.7229 f1: 0.4464 pred_right: 18810 pred_wrong:390 actu_right: 17874 actu_wrong: 1326
+2026-07-15 20:39:01,784 P2492886 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.11190987199952188, 'throughput_samples_per_sec': 8935.762164076752, 'peak_memory_mb': 51.58837890625, 'energy_per_sample_joules': 0.008508787342803647}, 'CPU': {'inference_time_per_sample_ms': 0.23945767611743293, 'throughput_samples_per_sec': 4176.103335729308, 'peak_memory_mb': 1740.89453125, 'energy_per_sample_joules': 0.015564748947633142}}
+2026-07-15 20:39:01,784 P2492886 INFO Starting clean-room hardware benchmarking...
+2026-07-15 20:39:02,501 P2492886 INFO Performance with loss: pr:0.9821  rc:0.2888  auc:0.7836 ap:0.7229 f1: 0.4464 pred_right: 18810 pred_wrong:390 actu_right: 17874 actu_wrong: 1326
+2026-07-15 20:39:02,501 P2492886 INFO calculate label with f1...
+2026-07-15 20:39:02,502 P2492886 INFO AnoFusion on ./result/AnoFusion-SN-Epochs5-Seed46ExpNameRQ1_main loading...
+2026-07-15 20:39:02,750 P2492886 INFO pr:0.9821  rc:0.2888  auc:0.7836 ap:0.7229 f1: 0.4464 pred_right: 18810 pred_wrong:390 actu_right: 17874 actu_wrong: 1326
+2026-07-15 20:39:03,245 P2492886 INFO pr:0.9821  rc:0.2888  auc:0.7836 ap:0.7229 f1: 0.4464 pred_right: 18810 pred_wrong:390 actu_right: 17874 actu_wrong: 1326
+2026-07-15 20:39:03,245 P2492886 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.11071125467972463, 'throughput_samples_per_sec': 9032.505348195076, 'peak_memory_mb': 51.13671875, 'energy_per_sample_joules': 0.006826234541042462}, 'CPU': {'inference_time_per_sample_ms': 0.26795953352821067, 'throughput_samples_per_sec': 3731.9067802255317, 'peak_memory_mb': 1739.98046875, 'energy_per_sample_joules': 0.017417369679333692}}
+2026-07-15 20:39:03,245 P2492886 INFO Starting clean-room hardware benchmarking...
+2026-07-15 20:39:04,019 P2492886 INFO Performance with f1: pr:0.9821  rc:0.2888  auc:0.7836 ap:0.7229 f1: 0.4464 pred_right: 18810 pred_wrong:390 actu_right: 17874 actu_wrong: 1326

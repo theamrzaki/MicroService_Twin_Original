@@ -1,0 +1,35 @@
+2026-07-15 20:38:22,580 P2492630 INFO ---- Model: ----MSTGAD-dd5c2129----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : Anofusion----Multi Fits : false----train : True----evaluate : False
+2026-07-15 20:38:22,580 P2492630 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-15 20:38:23,428 P2492630 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-15 20:38:23,625 P2492630 INFO Trainable Parameters Breakdown:
+2026-07-15 20:38:23,625 P2492630 INFO --------------------------------------------------------------------------------
+2026-07-15 20:38:23,625 P2492630 INFO Reconstruction-Specific Parameters:
+2026-07-15 20:38:23,625 P2492630 INFO Subtotal: 0
+2026-07-15 20:38:23,625 P2492630 INFO --------------------------------------------------------------------------------
+2026-07-15 20:38:23,625 P2492630 INFO Common Parameters:
+2026-07-15 20:38:23,626 P2492630 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-15 20:38:23,626 P2492630 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-15 20:38:23,626 P2492630 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-07-15 20:38:23,626 P2492630 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-15 20:38:23,626 P2492630 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-15 20:38:23,626 P2492630 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-15 20:38:23,626 P2492630 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-15 20:38:23,626 P2492630 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-15 20:38:23,626 P2492630 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-07-15 20:38:23,626 P2492630 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-07-15 20:38:23,626 P2492630 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-15 20:38:23,626 P2492630 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-15 20:38:23,626 P2492630 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-07-15 20:38:23,626 P2492630 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-15 20:38:23,626 P2492630 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-15 20:38:23,626 P2492630 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-15 20:38:23,626 P2492630 INFO Subtotal: 3,090
+2026-07-15 20:38:23,626 P2492630 INFO --------------------------------------------------------------------------------
+2026-07-15 20:38:23,626 P2492630 INFO Total Trainable Parameters: 3,090
+
+2026-07-15 20:38:23,626 P2492630 INFO Trainable Parameters: 3090, reconstruction: 0, common: 3090
+2026-07-15 20:38:23,627 P2492630 INFO model : init weight
+2026-07-15 20:38:23,627 P2492630 INFO Using GPU...
+2026-07-15 20:38:23,630 P2492630 INFO optimizer : using AdaBelief
+2026-07-15 20:38:23,630 P2492630 INFO ----------------------------------------------------------------------------------------------------
+2026-07-15 20:38:23,630 P2492630 INFO 0/5 starting... lr: 0.001 para:1.0
