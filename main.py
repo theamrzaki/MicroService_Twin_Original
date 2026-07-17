@@ -149,7 +149,7 @@ if __name__ == '__main__':
     #if args.get("case_study", False):
     exp_name = ""
     if args["experiment_name"]=="RQ1_main":
-        exp_name = "RQ1_benchmark_memOptimized"
+        exp_name = "RQ1_benchmark_memOptimized_Larger"
     elif args["experiment_name"] == "RQ1_main_Edge":
         if not util.is_raspberry_pi():
             raise RuntimeError(

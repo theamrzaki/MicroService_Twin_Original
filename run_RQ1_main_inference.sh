@@ -6,9 +6,9 @@ FREQ_DOMAINS=(
 ##
 "FITS_Legendre" #OrEdge
 ##
-#"AnoFusion"
-#"Eadro"  
-#"encoder_decoder"
+"AnoFusion"
+"Eadro"  
+"encoder_decoder"
 #"Art"
 ##
 ##
@@ -21,8 +21,8 @@ FREQ_DOMAINS=(
 
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
-DATA_SOURCES=("MSDS" "SN" "TT") # ) MSDS 
-DEVICE_NAME="Raspberry Pi Smaller"
+DATA_SOURCES=("SN") # ) MSDS 
+DEVICE_NAME="Raspberry Pi Larger"
 # as miniforge is installed on Raspberry Pi
 source ~/miniforge3/etc/profile.d/conda.sh
 conda activate RCAEval
@@ -43,6 +43,7 @@ for SEED in "${SEEDS[@]}"; do
       echo "--------------------------------"
       echo "1) Running $FREQ with Legendre-style loss and LPF filter, seed $SEED"
       echo "--------------------------------"
+      echo "reading model from ./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main"
       python main.py \
         --FREQ_DOMAIN="$FREQ" \
         --req_loss_approach='Legendre-style' \
@@ -58,6 +59,7 @@ for SEED in "${SEEDS[@]}"; do
       echo "--------------------------------"
       echo "2) Running $FREQ with Normal-Recreation loss, seed $SEED"
       echo "--------------------------------"
+      echo "reading model from ./result/$FREQ-$datasource-Epochs$EPOCHS-Seed$SEED"
       python main.py \
         --FREQ_DOMAIN="$FREQ" \
         --req_loss_approach='Normal-Recreation' \
