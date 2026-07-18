@@ -220,10 +220,10 @@ class MyModel(nn.Module):
 		self.dense_log = nn.Linear(args['feature_log'], args['log_len'])
 		self.dense_edge = nn.Linear(args['feature_edge'], args['raw_edge'])
 
-		self.show = nn.Sequential(nn.Linear(args['raw_node'] + args['raw_edge'] + args['log_len'], 128),
-							nn.LeakyReLU(inplace=True),
-							nn.Linear(128, 2))
-
+		#self.show = nn.Sequential(nn.Linear(args['raw_node'] + args['raw_edge'] + args['log_len'], 128),
+		#					nn.LeakyReLU(inplace=True),
+		#					nn.Linear(128, 2))
+		self.show = nn.Sequential(nn.Linear(args['raw_node'] + args['raw_edge'] + args['log_len'], 2))
 		#edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
 		#edge_index = torch.nonzero(edge_exists_mask, as_tuple=False)  # [num_edges, 2]
 		#self.register_buffer("edge_index", edge_index)

@@ -74,7 +74,7 @@ def json_pretty_dump(obj, filename):
 def dump_params(args):
     hash_id = hashlib.md5(str(sorted([(k, v) for k, v in args.items()])).encode("utf-8")).hexdigest()[0:8]
     if args['experiment_name'] == "RQ1_main":
-        save_path = os.path.join(args['result_dir'], args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + 'ExpName' + str(args["experiment_name"]))
+        save_path = os.path.join(args['result_dir'], args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + 'ExpName' + str(args["experiment_name"]) + '-lowshow')
     
     
     elif args['experiment_name'] == "RQ2_basis_comparison":
@@ -88,7 +88,7 @@ def dump_params(args):
         save_path = os.path.join(args['result_dir']+"/server_only_exps/Architecture_updatedFreDF", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])
 
     elif args['experiment_name'] == "RQ3_sensitivity":
-        save_path = os.path.join(args['result_dir']+"/server_only_exps/Sensitivity", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])  + '-Degree' + str(args["degree"])
+        save_path = os.path.join(args['result_dir']+"/server_only_exps/Sensitivity", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])  + '-Degree' + str(args["degree"] + '-lowshow')
     #if args["raspberry_pi_smaller_model"] == 'true':
     #    save_path = save_path + '-RaspberryPiSmallerModel'
     os.makedirs(save_path, exist_ok=True)
