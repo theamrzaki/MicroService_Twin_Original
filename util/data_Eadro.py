@@ -285,7 +285,7 @@ def assert_shapes(shapes, dataset):
 
 def run(data="TT"):
     if util.is_raspberry_pi():
-        data_dir = os.path.join("/home/db2003smaller/MicroService_Twin_Original/data", data)
+        data_dir = os.path.join("/home/db2003larger/MicroService_Twin_Original/data", data)
     else:
         data_dir = os.path.join("/home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks", data)
 

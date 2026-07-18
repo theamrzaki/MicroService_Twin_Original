@@ -43,169 +43,28 @@ def leg_torch(data, degree, rtn_data=False, device='cpu'):
         return coeffs
 
 
-import torch
-
-# ---------------------------------------------------------------------
-# Cache Legendre basis
-# ---------------------------------------------------------------------
-
-_legendre_basis_cache = {}
-
-def _get_legendre_basis(seq_len, degree, device, dtype=torch.float32):
-    key = (seq_len, degree, str(device), dtype)
-
-    if key not in _legendre_basis_cache:
-
-        x = torch.linspace(-1, 1, seq_len, device=device, dtype=dtype)
-
-        basis = torch.empty(degree, seq_len, device=device, dtype=dtype)
-
-        # P0
-        basis[0] = 1.0
-
-        if degree > 1:
-            # P1
-            basis[1] = x
-
-            # Three-term recurrence
-            for n in range(2, degree):
-                basis[n] = (
-                    ((2 * n - 1) * x * basis[n - 1]
-                     - (n - 1) * basis[n - 2]) / n
-                )
-
-        # Normalize each polynomial
-        basis = basis / torch.linalg.norm(basis, dim=1, keepdim=True)
-
-        _legendre_basis_cache[key] = basis
-
-    return _legendre_basis_cache[key]
-
-
-# ---------------------------------------------------------------------
-# Encode
-# ---------------------------------------------------------------------
 def legendre_encode(input_seq, degree=64):
-    
-
     B, T, C = input_seq.shape
+    input_seq_flat = input_seq.reshape(B * C, T).T  # shape: [T, B*C]
 
-    basis = _get_legendre_basis(
-        seq_len=T,
-        degree=degree,
-        device=input_seq.device,
-        dtype=input_seq.dtype
-    )
-
-    # Projection onto basis
-    coeffs = torch.einsum("btc,dt->bcd", input_seq, basis)
+    device = input_seq.device
+    coeffs = leg_torch(input_seq_flat, degree - 1, rtn_data=False, device=device)
+    coeffs = coeffs.reshape(B, C, degree).to(device)
 
     return coeffs
 
-
-# ---------------------------------------------------------------------
-# Decode
-# ---------------------------------------------------------------------
 def legendre_decode(coeffs, seq_len):
+    B, C, D = coeffs.shape
+    coeffs_flat = coeffs.reshape(B * C, D)
 
+    # Generate Legendre basis on correct device
+    tvals = np.linspace(-1, 1, seq_len)
+    legendre_polys = np.array([L.basis(i)(tvals) for i in range(D)])  # [D, T]
+    legendre_polys = torch.from_numpy(legendre_polys).float().to(coeffs.device)
 
-    _, _, degree = coeffs.shape
-
-    basis = _get_legendre_basis(
-        seq_len=seq_len,
-        degree=degree,
-        device=coeffs.device,
-        dtype=coeffs.dtype
-    )
-
-    reconstructed = torch.einsum("bcd,dt->btc", coeffs, basis)
-
+    reconstructed = torch.mm(coeffs_flat, legendre_polys).reshape(B, C, seq_len).permute(0, 2, 1)
     return reconstructed
 
-"""
-import torch
-
-# ---------------------------------------------------------------------
-# Encode (O(seq_len) extra memory)
-# ---------------------------------------------------------------------
-def legendre_encode(input_seq, degree=64):
-
-
-    B, T, C = input_seq.shape
-    device = input_seq.device
-    dtype = input_seq.dtype
-
-    coeffs = torch.empty(B, C, degree, device=device, dtype=dtype)
-
-    x = torch.linspace(-1, 1, T, device=device, dtype=dtype)
-
-    # P0
-    P0 = torch.ones(T, device=device, dtype=dtype)
-    coeffs[:, :, 0] = torch.einsum("btc,t->bc", input_seq, P0 / P0.norm())
-
-    if degree == 1:
-        return coeffs
-
-    # P1
-    P1 = x
-    coeffs[:, :, 1] = torch.einsum("btc,t->bc", input_seq, P1 / P1.norm())
-
-    for n in range(2, degree):
-        P2 = ((2*n-1)*x*P1 - (n-1)*P0) / n
-        coeffs[:, :, n] = torch.einsum(
-            "btc,t->bc",
-            input_seq,
-            P2 / P2.norm()
-        )
-        P0, P1 = P1, P2
-
-    return coeffs
-
-
-# ---------------------------------------------------------------------
-# Decode (O(seq_len) extra memory)
-# ---------------------------------------------------------------------
-def legendre_decode(coeffs, seq_len):
-
-
-    B, C, degree = coeffs.shape
-    device = coeffs.device
-    dtype = coeffs.dtype
-
-    output = torch.zeros(B, seq_len, C, device=device, dtype=dtype)
-
-    x = torch.linspace(-1, 1, seq_len, device=device, dtype=dtype)
-
-    # P0
-    P0 = torch.ones(seq_len, device=device, dtype=dtype)
-    output += torch.einsum(
-        "bc,t->btc",
-        coeffs[:, :, 0],
-        P0 / P0.norm()
-    )
-
-    if degree == 1:
-        return output
-
-    # P1
-    P1 = x
-    output += torch.einsum(
-        "bc,t->btc",
-        coeffs[:, :, 1],
-        P1 / P1.norm()
-    )
-
-    for n in range(2, degree):
-        P2 = ((2*n-1)*x*P1 - (n-1)*P0) / n
-        output += torch.einsum(
-            "bc,t->btc",
-            coeffs[:, :, n],
-            P2 / P2.norm()
-        )
-        P0, P1 = P1, P2
-
-    return output
-"""
 
 
 
@@ -553,9 +412,7 @@ class Model_old(nn.Module):
         xy = xy_with_sqrt + x_mean
 
         return xy, xy_with_sqrt
-
-
-
+    
 
 class Model(nn.Module):
 
@@ -619,7 +476,7 @@ class Model(nn.Module):
                     from numpy.polynomial.laguerre import lagvander
                     basis = lagvander(t, self.degree - 1).T
 
-                basis = torch.tensor(basis, dtype=torch.float16)
+                basis = torch.tensor(basis, dtype=torch.float32)
                 self.register_buffer("basis", basis)
 
             elif self.basis_type == "fourier":

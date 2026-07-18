@@ -157,7 +157,7 @@ if __name__ == '__main__':
             )
         else:
             print("Running on Raspberry Pi, proceeding with RQ1_main_Edge experiment.")
-        exp_name = "RQ1_main_Edge"
+        exp_name = "RQ1_benchmark_memOptimized_simplegraph_LargerRaspberryPi"
     elif args["experiment_name"]=="RQ2_ablations_components":
         exp_name = "RQ2_ablations_withNorm_accMem"
     elif args["experiment_name"]=="RQ2_basis_comparison":

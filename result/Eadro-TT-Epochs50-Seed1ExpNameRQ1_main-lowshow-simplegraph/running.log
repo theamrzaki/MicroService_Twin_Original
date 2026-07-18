@@ -1,0 +1,326 @@
+2026-07-18 02:39:19,004 P4024958 INFO ---- Model: ----MSTGAD-a1b5e8f7----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Eadro----Multi Fits : false----train : True----evaluate : False
+2026-07-18 02:39:19,004 P4024958 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-18 02:39:30,409 P4024958 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-18 02:39:30,550 P4024958 INFO Trainable Parameters Breakdown:
+2026-07-18 02:39:30,550 P4024958 INFO --------------------------------------------------------------------------------
+2026-07-18 02:39:30,550 P4024958 INFO Reconstruction-Specific Parameters:
+2026-07-18 02:39:30,550 P4024958 INFO Eadro_Model.encoder.trace_model.net.network.0.weight | shape: (20, 2, 3)                | params: 120
+2026-07-18 02:39:30,550 P4024958 INFO Eadro_Model.encoder.trace_model.net.network.0.bias | shape: (20,)                     | params: 20
+2026-07-18 02:39:30,550 P4024958 INFO Eadro_Model.encoder.trace_model.net.network.1.weight | shape: (20,)                     | params: 20
+2026-07-18 02:39:30,550 P4024958 INFO Eadro_Model.encoder.trace_model.net.network.1.bias | shape: (20,)                     | params: 20
+2026-07-18 02:39:30,550 P4024958 INFO Eadro_Model.encoder.trace_model.net.network.4.weight | shape: (50, 20, 3)               | params: 3,000
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.trace_model.net.network.4.bias | shape: (50,)                     | params: 50
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.trace_model.net.network.5.weight | shape: (50,)                     | params: 50
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.trace_model.net.network.5.bias | shape: (50,)                     | params: 50
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.log_model.embedder.weight | shape: (64, 60)                  | params: 3,840
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.log_model.embedder.bias | shape: (64,)                     | params: 64
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.metric_model.net.network.0.weight | shape: (64, 7, 3)                | params: 1,344
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.metric_model.net.network.0.bias | shape: (64,)                     | params: 64
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.metric_model.net.network.1.weight | shape: (64,)                     | params: 64
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.metric_model.net.network.1.bias | shape: (64,)                     | params: 64
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.metric_model.net.network.4.weight | shape: (128, 64, 3)              | params: 24,576
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.metric_model.net.network.4.bias | shape: (128,)                    | params: 128
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.metric_model.net.network.5.weight | shape: (128,)                    | params: 128
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.metric_model.net.network.5.bias | shape: (128,)                    | params: 128
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.fuse.weight          | shape: (64, 242)                 | params: 15,488
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.fuse.bias            | shape: (64,)                     | params: 64
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.0.att | shape: (1, 4, 64)                | params: 256
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.0.bias | shape: (64,)                     | params: 64
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.0.lin_l.weight | shape: (256, 32)                 | params: 8,192
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.0.lin_l.bias | shape: (256,)                    | params: 256
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.0.lin_r.weight | shape: (256, 32)                 | params: 8,192
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.0.lin_r.bias | shape: (256,)                    | params: 256
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.1.att | shape: (1, 4, 128)               | params: 512
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.1.bias | shape: (128,)                    | params: 128
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.1.lin_l.weight | shape: (512, 64)                 | params: 32,768
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.1.lin_l.bias | shape: (512,)                    | params: 512
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.1.lin_r.weight | shape: (512, 64)                 | params: 32,768
+2026-07-18 02:39:30,551 P4024958 INFO Eadro_Model.encoder.status_model.layers.1.lin_r.bias | shape: (512,)                    | params: 512
+2026-07-18 02:39:30,552 P4024958 INFO Eadro_Model.reconstructor.0.weight       | shape: (128, 128)                | params: 16,384
+2026-07-18 02:39:30,552 P4024958 INFO Eadro_Model.reconstructor.0.bias         | shape: (128,)                    | params: 128
+2026-07-18 02:39:30,552 P4024958 INFO Eadro_Model.reconstructor.1.weight       | shape: (128,)                    | params: 128
+2026-07-18 02:39:30,552 P4024958 INFO Eadro_Model.reconstructor.1.bias         | shape: (128,)                    | params: 128
+2026-07-18 02:39:30,552 P4024958 INFO Eadro_Model.reconstructor.2.weight       | shape: (69, 128)                 | params: 8,832
+2026-07-18 02:39:30,552 P4024958 INFO Eadro_Model.reconstructor.2.bias         | shape: (69,)                     | params: 69
+2026-07-18 02:39:30,552 P4024958 INFO Subtotal: 159,367
+2026-07-18 02:39:30,552 P4024958 INFO --------------------------------------------------------------------------------
+2026-07-18 02:39:30,552 P4024958 INFO Common Parameters:
+2026-07-18 02:39:30,552 P4024958 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-18 02:39:30,552 P4024958 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-18 02:39:30,552 P4024958 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-18 02:39:30,552 P4024958 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-18 02:39:30,552 P4024958 INFO Subtotal: 9,218
+2026-07-18 02:39:30,552 P4024958 INFO --------------------------------------------------------------------------------
+2026-07-18 02:39:30,552 P4024958 INFO Total Trainable Parameters: 168,585
+
+2026-07-18 02:39:30,552 P4024958 INFO Trainable Parameters: 168585, reconstruction: 159367, common: 9218
+2026-07-18 02:39:30,552 P4024958 INFO model : init weight
+2026-07-18 02:39:30,553 P4024958 INFO Using GPU...
+2026-07-18 02:39:30,557 P4024958 INFO optimizer : using AdaBelief
+2026-07-18 02:39:30,557 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:39:30,557 P4024958 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-18 02:39:48,626 P4024958 INFO Epoch 0/50, all_loss:0.03295 cls_loss:31.48005 rec_loss:0.03295 [18.06s]; best loss:0.03295, patience : 0
+2026-07-18 02:39:48,626 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:39:48,626 P4024958 INFO 1/50 starting... lr: 0.001 para:0.5
+2026-07-18 02:40:14,680 P4024958 INFO Epoch 1/50, all_loss:1.75422 cls_loss:3.40629 rec_loss:0.10215 [26.05s]; best loss:1.75422, patience : 0
+2026-07-18 02:40:14,680 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:40:14,680 P4024958 INFO 2/50 starting... lr: 0.001 para:0.3333333432674408
+2026-07-18 02:40:32,232 P4024958 INFO Epoch 2/50, all_loss:1.05044 cls_loss:1.53965 rec_loss:0.07203 [17.55s]; best loss:1.05044, patience : 0
+2026-07-18 02:40:42,443 P4024958 INFO pr:0.8729  rc:0.7217  auc:0.9949 ap:0.9479 f1: 0.7901 pred_right: 1067684 pred_wrong:28516 actu_right: 1061709 actu_wrong: 34491
+2026-07-18 02:40:46,713 P4024958 INFO pr:0.8699  rc:0.7245  auc:0.9949 ap:0.9483 f1: 0.7906 pred_right: 457468 pred_wrong:12332 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:40:46,719 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:40:46,719 P4024958 INFO 3/50 starting... lr: 0.001 para:0.25
+2026-07-18 02:41:04,619 P4024958 INFO Epoch 3/50, all_loss:1.04895 cls_loss:1.37799 rec_loss:0.06184 [17.89s]; best loss:1.04895, patience : 0
+2026-07-18 02:41:14,823 P4024958 INFO pr:0.9303  rc:0.7148  auc:0.9959 ap:0.9561 f1: 0.8085 pred_right: 1069700 pred_wrong:26500 actu_right: 1061710 actu_wrong: 34490
+2026-07-18 02:41:18,650 P4024958 INFO pr:0.9293  rc:0.7151  auc:0.9958 ap:0.9556 f1: 0.8083 pred_right: 458406 pred_wrong:11394 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:41:18,655 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:41:18,656 P4024958 INFO 4/50 starting... lr: 0.001 para:0.20000000298023224
+2026-07-18 02:41:36,545 P4024958 INFO Epoch 4/50, all_loss:1.01851 cls_loss:1.25912 rec_loss:0.05605 [17.88s]; best loss:1.01851, patience : 0
+2026-07-18 02:41:47,210 P4024958 INFO pr:0.8396  rc:0.8089  auc:0.9965 ap:0.9606 f1: 0.8240 pred_right: 1062975 pred_wrong:33225 actu_right: 1061713 actu_wrong: 34487
+2026-07-18 02:41:55,367 P4024958 INFO pr:0.8384  rc:0.8063  auc:0.9964 ap:0.9601 f1: 0.8221 pred_right: 455559 pred_wrong:14241 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:41:55,379 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:41:55,379 P4024958 INFO 5/50 starting... lr: 0.001 para:0.1666666716337204
+2026-07-18 02:42:14,642 P4024958 INFO Epoch 5/50, all_loss:0.96426 cls_loss:1.14668 rec_loss:0.05218 [19.26s]; best loss:0.96426, patience : 0
+2026-07-18 02:42:23,754 P4024958 INFO pr:0.8964  rc:0.8035  auc:0.9973 ap:0.9689 f1: 0.8474 pred_right: 1065284 pred_wrong:30916 actu_right: 1061707 actu_wrong: 34493
+2026-07-18 02:42:27,519 P4024958 INFO pr:0.8966  rc:0.7994  auc:0.9972 ap:0.9681 f1: 0.8452 pred_right: 456598 pred_wrong:13202 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:42:27,524 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:42:27,524 P4024958 INFO 6/50 starting... lr: 0.001 para:0.1428571492433548
+2026-07-18 02:42:45,327 P4024958 INFO Epoch 6/50, all_loss:0.94286 cls_loss:1.09231 rec_loss:0.04615 [17.80s]; best loss:0.94286, patience : 0
+2026-07-18 02:42:54,221 P4024958 INFO pr:0.9183  rc:0.7869  auc:0.9968 ap:0.9689 f1: 0.8475 pred_right: 1066646 pred_wrong:29554 actu_right: 1061710 actu_wrong: 34490
+2026-07-18 02:42:58,317 P4024958 INFO pr:0.9192  rc:0.7828  auc:0.9968 ap:0.9679 f1: 0.8455 pred_right: 457190 pred_wrong:12610 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:42:58,322 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:42:58,323 P4024958 INFO 7/50 starting... lr: 0.001 para:0.125
+2026-07-18 02:43:17,044 P4024958 INFO Epoch 7/50, all_loss:0.91631 cls_loss:1.04077 rec_loss:0.04507 [18.72s]; best loss:0.91631, patience : 0
+2026-07-18 02:43:24,936 P4024958 INFO pr:0.9239  rc:0.7879  auc:0.9976 ap:0.9718 f1: 0.8505 pred_right: 1066789 pred_wrong:29411 actu_right: 1061713 actu_wrong: 34487
+2026-07-18 02:43:29,748 P4024958 INFO pr:0.9211  rc:0.7842  auc:0.9972 ap:0.9705 f1: 0.8472 pred_right: 457194 pred_wrong:12606 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:43:29,759 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:43:29,760 P4024958 INFO 8/50 starting... lr: 0.001 para:0.1111111119389534
+2026-07-18 02:43:54,954 P4024958 INFO Epoch 8/50, all_loss:0.88634 cls_loss:0.99162 rec_loss:0.04416 [25.19s]; best loss:0.88634, patience : 0
+2026-07-18 02:44:03,877 P4024958 INFO pr:0.8723  rc:0.8498  auc:0.9978 ap:0.9741 f1: 0.8609 pred_right: 1062600 pred_wrong:33600 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 02:44:07,673 P4024958 INFO pr:0.8744  rc:0.8469  auc:0.9975 ap:0.9733 f1: 0.8604 pred_right: 455458 pred_wrong:14342 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:44:07,679 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:44:07,679 P4024958 INFO 9/50 starting... lr: 0.001 para:0.10000000149011612
+2026-07-18 02:44:26,157 P4024958 INFO Epoch 9/50, all_loss:0.85345 cls_loss:0.94332 rec_loss:0.04464 [18.47s]; best loss:0.85345, patience : 0
+2026-07-18 02:44:36,186 P4024958 INFO pr:0.9378  rc:0.7870  auc:0.9978 ap:0.9761 f1: 0.8558 pred_right: 1067256 pred_wrong:28944 actu_right: 1061710 actu_wrong: 34490
+2026-07-18 02:44:40,398 P4024958 INFO pr:0.9397  rc:0.7835  auc:0.9971 ap:0.9744 f1: 0.8545 pred_right: 457454 pred_wrong:12346 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:44:40,399 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:44:40,399 P4024958 INFO 10/50 starting... lr: 0.001 para:0.09090909361839294
+2026-07-18 02:44:58,689 P4024958 INFO Epoch 10/50, all_loss:0.83263 cls_loss:0.91155 rec_loss:0.04348 [18.28s]; best loss:0.83263, patience : 0
+2026-07-18 02:45:08,161 P4024958 INFO pr:0.9017  rc:0.8490  auc:0.9982 ap:0.9775 f1: 0.8746 pred_right: 1063722 pred_wrong:32478 actu_right: 1061708 actu_wrong: 34492
+2026-07-18 02:45:11,458 P4024958 INFO pr:0.9009  rc:0.8437  auc:0.9978 ap:0.9758 f1: 0.8714 pred_right: 455931 pred_wrong:13869 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:45:11,463 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:45:11,463 P4024958 INFO 11/50 starting... lr: 0.001 para:0.0833333358168602
+2026-07-18 02:45:37,457 P4024958 INFO Epoch 11/50, all_loss:0.81562 cls_loss:0.88569 rec_loss:0.04485 [25.99s]; best loss:0.81562, patience : 0
+2026-07-18 02:45:46,732 P4024958 INFO pr:0.8997  rc:0.8517  auc:0.9982 ap:0.9780 f1: 0.8751 pred_right: 1063550 pred_wrong:32650 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 02:45:50,803 P4024958 INFO pr:0.8986  rc:0.8477  auc:0.9980 ap:0.9771 f1: 0.8724 pred_right: 455831 pred_wrong:13969 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:45:50,809 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:45:50,809 P4024958 INFO 12/50 starting... lr: 0.001 para:0.07692307978868484
+2026-07-18 02:46:08,581 P4024958 INFO Epoch 12/50, all_loss:0.78392 cls_loss:0.84549 rec_loss:0.04503 [17.77s]; best loss:0.78392, patience : 0
+2026-07-18 02:46:17,232 P4024958 INFO pr:0.9351  rc:0.8188  auc:0.9982 ap:0.9788 f1: 0.8731 pred_right: 1066004 pred_wrong:30196 actu_right: 1061713 actu_wrong: 34487
+2026-07-18 02:46:20,833 P4024958 INFO pr:0.9316  rc:0.8100  auc:0.9978 ap:0.9773 f1: 0.8666 pred_right: 456926 pred_wrong:12874 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:46:20,834 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:46:20,835 P4024958 INFO 13/50 starting... lr: 0.001 para:0.0714285746216774
+2026-07-18 02:46:39,101 P4024958 INFO Epoch 13/50, all_loss:0.79550 cls_loss:0.85329 rec_loss:0.04418 [18.27s]; best loss:0.78392, patience : 1
+2026-07-18 02:46:49,926 P4024958 INFO pr:0.8660  rc:0.8813  auc:0.9983 ap:0.9788 f1: 0.8736 pred_right: 1061104 pred_wrong:35096 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 02:46:53,075 P4024958 INFO pr:0.8646  rc:0.8764  auc:0.9981 ap:0.9772 f1: 0.8704 pred_right: 454790 pred_wrong:15010 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:46:53,076 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:46:53,076 P4024958 INFO 14/50 starting... lr: 0.001 para:0.06666667014360428
+2026-07-18 02:47:17,979 P4024958 INFO Epoch 14/50, all_loss:0.76767 cls_loss:0.81923 rec_loss:0.04581 [24.89s]; best loss:0.76767, patience : 0
+2026-07-18 02:47:27,740 P4024958 INFO pr:0.9389  rc:0.8184  auc:0.9982 ap:0.9796 f1: 0.8745 pred_right: 1066136 pred_wrong:30064 actu_right: 1061710 actu_wrong: 34490
+2026-07-18 02:47:31,436 P4024958 INFO pr:0.9361  rc:0.8128  auc:0.9977 ap:0.9779 f1: 0.8701 pred_right: 456943 pred_wrong:12857 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:47:31,437 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:47:31,437 P4024958 INFO 15/50 starting... lr: 0.001 para:0.0625
+2026-07-18 02:47:49,381 P4024958 INFO Epoch 15/50, all_loss:0.76234 cls_loss:0.81002 rec_loss:0.04710 [17.94s]; best loss:0.76234, patience : 0
+2026-07-18 02:47:58,010 P4024958 INFO pr:0.9081  rc:0.8526  auc:0.9984 ap:0.9796 f1: 0.8795 pred_right: 1063816 pred_wrong:32384 actu_right: 1061709 actu_wrong: 34491
+2026-07-18 02:48:01,736 P4024958 INFO pr:0.9066  rc:0.8446  auc:0.9982 ap:0.9781 f1: 0.8745 pred_right: 456005 pred_wrong:13795 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:48:01,741 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:48:01,741 P4024958 INFO 16/50 starting... lr: 0.001 para:0.05882352963089943
+2026-07-18 02:48:19,791 P4024958 INFO Epoch 16/50, all_loss:0.75956 cls_loss:0.80441 rec_loss:0.04203 [18.04s]; best loss:0.75956, patience : 0
+2026-07-18 02:48:29,678 P4024958 INFO pr:0.9284  rc:0.8439  auc:0.9983 ap:0.9810 f1: 0.8841 pred_right: 1064847 pred_wrong:31353 actu_right: 1061710 actu_wrong: 34490
+2026-07-18 02:48:33,874 P4024958 INFO pr:0.9248  rc:0.8367  auc:0.9977 ap:0.9793 f1: 0.8786 pred_right: 456403 pred_wrong:13397 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:48:33,879 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:48:33,879 P4024958 INFO 17/50 starting... lr: 0.001 para:0.0555555559694767
+2026-07-18 02:48:51,248 P4024958 INFO Epoch 17/50, all_loss:0.75675 cls_loss:0.79855 rec_loss:0.04612 [17.36s]; best loss:0.75675, patience : 0
+2026-07-18 02:49:06,289 P4024958 INFO pr:0.9323  rc:0.8224  auc:0.9982 ap:0.9796 f1: 0.8739 pred_right: 1065782 pred_wrong:30418 actu_right: 1061715 actu_wrong: 34485
+2026-07-18 02:49:11,166 P4024958 INFO pr:0.9304  rc:0.8148  auc:0.9976 ap:0.9778 f1: 0.8687 pred_right: 456832 pred_wrong:12968 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:49:11,167 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:49:11,167 P4024958 INFO 18/50 starting... lr: 0.001 para:0.05263157933950424
+2026-07-18 02:49:29,652 P4024958 INFO Epoch 18/50, all_loss:0.73906 cls_loss:0.77762 rec_loss:0.04494 [18.48s]; best loss:0.73906, patience : 0
+2026-07-18 02:49:39,266 P4024958 INFO pr:0.9218  rc:0.8553  auc:0.9984 ap:0.9813 f1: 0.8873 pred_right: 1064192 pred_wrong:32008 actu_right: 1061704 actu_wrong: 34496
+2026-07-18 02:49:42,879 P4024958 INFO pr:0.9180  rc:0.8491  auc:0.9979 ap:0.9795 f1: 0.8822 pred_right: 456103 pred_wrong:13697 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:49:42,884 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:49:42,885 P4024958 INFO 19/50 starting... lr: 0.001 para:0.05000000074505806
+2026-07-18 02:50:01,610 P4024958 INFO Epoch 19/50, all_loss:0.73962 cls_loss:0.77630 rec_loss:0.04265 [18.73s]; best loss:0.73906, patience : 1
+2026-07-18 02:50:11,175 P4024958 INFO pr:0.9250  rc:0.8489  auc:0.9985 ap:0.9820 f1: 0.8853 pred_right: 1064553 pred_wrong:31647 actu_right: 1061715 actu_wrong: 34485
+2026-07-18 02:50:14,905 P4024958 INFO pr:0.9219  rc:0.8422  auc:0.9981 ap:0.9804 f1: 0.8802 pred_right: 456272 pred_wrong:13528 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:50:14,906 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:50:14,913 P4024958 INFO 20/50 starting... lr: 0.001 para:0.0476190485060215
+2026-07-18 02:50:33,922 P4024958 INFO Epoch 20/50, all_loss:0.73263 cls_loss:0.76709 rec_loss:0.04329 [19.00s]; best loss:0.73263, patience : 0
+2026-07-18 02:50:42,194 P4024958 INFO pr:0.9292  rc:0.8459  auc:0.9983 ap:0.9814 f1: 0.8856 pred_right: 1064800 pred_wrong:31400 actu_right: 1061708 actu_wrong: 34492
+2026-07-18 02:50:47,925 P4024958 INFO pr:0.9263  rc:0.8383  auc:0.9979 ap:0.9796 f1: 0.8801 pred_right: 456399 pred_wrong:13401 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:50:47,926 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:50:47,927 P4024958 INFO 21/50 starting... lr: 0.001 para:0.04545454680919647
+2026-07-18 02:51:11,953 P4024958 INFO Epoch 21/50, all_loss:0.73124 cls_loss:0.76394 rec_loss:0.04438 [24.02s]; best loss:0.73124, patience : 0
+2026-07-18 02:51:21,186 P4024958 INFO pr:0.9068  rc:0.8788  auc:0.9986 ap:0.9829 f1: 0.8926 pred_right: 1062778 pred_wrong:33422 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 02:51:25,153 P4024958 INFO pr:0.9009  rc:0.8710  auc:0.9981 ap:0.9807 f1: 0.8857 pred_right: 455483 pred_wrong:14317 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:51:25,158 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:51:25,159 P4024958 INFO 22/50 starting... lr: 0.001 para:0.043478261679410934
+2026-07-18 02:51:43,812 P4024958 INFO Epoch 22/50, all_loss:0.71011 cls_loss:0.74030 rec_loss:0.04592 [18.65s]; best loss:0.71011, patience : 0
+2026-07-18 02:51:52,839 P4024958 INFO pr:0.9327  rc:0.8452  auc:0.9982 ap:0.9815 f1: 0.8868 pred_right: 1064950 pred_wrong:31250 actu_right: 1061713 actu_wrong: 34487
+2026-07-18 02:51:57,172 P4024958 INFO pr:0.9275  rc:0.8367  auc:0.9976 ap:0.9793 f1: 0.8798 pred_right: 456441 pred_wrong:13359 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:51:57,173 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:51:57,173 P4024958 INFO 23/50 starting... lr: 0.001 para:0.0416666679084301
+2026-07-18 02:52:17,055 P4024958 INFO Epoch 23/50, all_loss:0.72198 cls_loss:0.75146 rec_loss:0.04387 [19.88s]; best loss:0.71011, patience : 1
+2026-07-18 02:52:24,605 P4024958 INFO pr:0.9153  rc:0.8719  auc:0.9986 ap:0.9833 f1: 0.8931 pred_right: 1063346 pred_wrong:32854 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 02:52:28,156 P4024958 INFO pr:0.9069  rc:0.8624  auc:0.9980 ap:0.9802 f1: 0.8841 pred_right: 455718 pred_wrong:14082 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:52:28,161 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:52:28,161 P4024958 INFO 24/50 starting... lr: 0.001 para:0.03999999910593033
+2026-07-18 02:52:55,369 P4024958 INFO Epoch 24/50, all_loss:0.71975 cls_loss:0.74786 rec_loss:0.04504 [27.21s]; best loss:0.71011, patience : 1
+2026-07-18 02:53:04,183 P4024958 INFO pr:0.9381  rc:0.8431  auc:0.9983 ap:0.9828 f1: 0.8881 pred_right: 1065203 pred_wrong:30997 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 02:53:08,173 P4024958 INFO pr:0.9344  rc:0.8337  auc:0.9976 ap:0.9802 f1: 0.8812 pred_right: 456587 pred_wrong:13213 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:53:08,173 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:53:08,174 P4024958 INFO 25/50 starting... lr: 0.001 para:0.03846153989434242
+2026-07-18 02:53:26,360 P4024958 INFO Epoch 25/50, all_loss:0.71461 cls_loss:0.74136 rec_loss:0.04574 [18.19s]; best loss:0.71011, patience : 1
+2026-07-18 02:53:36,888 P4024958 INFO pr:0.9158  rc:0.8512  auc:0.9984 ap:0.9815 f1: 0.8823 pred_right: 1064138 pred_wrong:32062 actu_right: 1061708 actu_wrong: 34492
+2026-07-18 02:53:41,165 P4024958 INFO pr:0.9143  rc:0.8463  auc:0.9978 ap:0.9796 f1: 0.8790 pred_right: 456093 pred_wrong:13707 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:53:41,166 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:53:41,166 P4024958 INFO 26/50 starting... lr: 0.001 para:0.03703703731298447
+2026-07-18 02:53:59,571 P4024958 INFO Epoch 26/50, all_loss:0.70289 cls_loss:0.72821 rec_loss:0.04473 [18.40s]; best loss:0.70289, patience : 0
+2026-07-18 02:54:09,242 P4024958 INFO pr:0.9236  rc:0.8645  auc:0.9986 ap:0.9835 f1: 0.8930 pred_right: 1063917 pred_wrong:32283 actu_right: 1061710 actu_wrong: 34490
+2026-07-18 02:54:13,045 P4024958 INFO pr:0.9165  rc:0.8537  auc:0.9981 ap:0.9810 f1: 0.8840 pred_right: 456007 pred_wrong:13793 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:54:13,046 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:54:13,046 P4024958 INFO 27/50 starting... lr: 0.001 para:0.0357142873108387
+2026-07-18 02:54:39,549 P4024958 INFO Epoch 27/50, all_loss:0.69725 cls_loss:0.72147 rec_loss:0.04353 [26.50s]; best loss:0.69725, patience : 0
+2026-07-18 02:54:49,407 P4024958 INFO pr:0.9144  rc:0.8710  auc:0.9985 ap:0.9825 f1: 0.8922 pred_right: 1063351 pred_wrong:32849 actu_right: 1061714 actu_wrong: 34486
+2026-07-18 02:54:53,606 P4024958 INFO pr:0.9078  rc:0.8637  auc:0.9980 ap:0.9797 f1: 0.8852 pred_right: 455712 pred_wrong:14088 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:54:53,606 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:54:53,607 P4024958 INFO 28/50 starting... lr: 0.001 para:0.03448275849223137
+2026-07-18 02:55:10,827 P4024958 INFO Epoch 28/50, all_loss:0.69106 cls_loss:0.71419 rec_loss:0.04363 [17.21s]; best loss:0.69106, patience : 0
+2026-07-18 02:55:20,692 P4024958 INFO pr:0.9159  rc:0.8679  auc:0.9986 ap:0.9834 f1: 0.8913 pred_right: 1063514 pred_wrong:32686 actu_right: 1061707 actu_wrong: 34493
+2026-07-18 02:55:24,840 P4024958 INFO pr:0.9108  rc:0.8616  auc:0.9980 ap:0.9812 f1: 0.8855 pred_right: 455793 pred_wrong:14007 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:55:24,841 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:55:24,841 P4024958 INFO 29/50 starting... lr: 0.001 para:0.03333333507180214
+2026-07-18 02:55:43,066 P4024958 INFO Epoch 29/50, all_loss:0.68817 cls_loss:0.71029 rec_loss:0.04665 [18.22s]; best loss:0.68817, patience : 0
+2026-07-18 02:55:53,694 P4024958 INFO pr:0.9344  rc:0.8264  auc:0.9980 ap:0.9789 f1: 0.8771 pred_right: 1065700 pred_wrong:30500 actu_right: 1061712 actu_wrong: 34488
+2026-07-18 02:55:56,705 P4024958 INFO pr:0.9316  rc:0.8187  auc:0.9977 ap:0.9769 f1: 0.8715 pred_right: 456787 pred_wrong:13013 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:55:56,706 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:55:56,706 P4024958 INFO 30/50 starting... lr: 0.001 para:0.032258063554763794
+2026-07-18 02:56:22,551 P4024958 INFO Epoch 30/50, all_loss:0.68189 cls_loss:0.70282 rec_loss:0.05400 [25.84s]; best loss:0.68189, patience : 0
+2026-07-18 02:56:32,911 P4024958 INFO pr:0.9341  rc:0.8674  auc:0.9986 ap:0.9839 f1: 0.8995 pred_right: 1064170 pred_wrong:32030 actu_right: 1061710 actu_wrong: 34490
+2026-07-18 02:56:37,261 P4024958 INFO pr:0.9247  rc:0.8578  auc:0.9978 ap:0.9810 f1: 0.8900 pred_right: 456062 pred_wrong:13738 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:56:37,267 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:56:37,267 P4024958 INFO 31/50 starting... lr: 0.001 para:0.03125
+2026-07-18 02:56:55,460 P4024958 INFO Epoch 31/50, all_loss:0.67322 cls_loss:0.69355 rec_loss:0.04293 [18.19s]; best loss:0.67322, patience : 0
+2026-07-18 02:57:04,265 P4024958 INFO pr:0.8952  rc:0.8968  auc:0.9987 ap:0.9839 f1: 0.8960 pred_right: 1061646 pred_wrong:34554 actu_right: 1061710 actu_wrong: 34490
+2026-07-18 02:57:07,850 P4024958 INFO pr:0.8878  rc:0.8916  auc:0.9981 ap:0.9815 f1: 0.8897 pred_right: 454928 pred_wrong:14872 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:57:07,851 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:57:07,858 P4024958 INFO 32/50 starting... lr: 0.001 para:0.03030303120613098
+2026-07-18 02:57:26,233 P4024958 INFO Epoch 32/50, all_loss:0.66298 cls_loss:0.68235 rec_loss:0.04316 [18.37s]; best loss:0.66298, patience : 0
+2026-07-18 02:57:36,172 P4024958 INFO pr:0.9263  rc:0.8604  auc:0.9985 ap:0.9836 f1: 0.8921 pred_right: 1064166 pred_wrong:32034 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 02:57:39,300 P4024958 INFO pr:0.9199  rc:0.8495  auc:0.9980 ap:0.9806 f1: 0.8833 pred_right: 456125 pred_wrong:13675 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:57:39,301 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:57:39,301 P4024958 INFO 33/50 starting... lr: 0.001 para:0.029411764815449715
+2026-07-18 02:58:03,678 P4024958 INFO Epoch 33/50, all_loss:0.66314 cls_loss:0.68195 rec_loss:0.04234 [24.38s]; best loss:0.66298, patience : 1
+2026-07-18 02:58:14,627 P4024958 INFO pr:0.9401  rc:0.8507  auc:0.9982 ap:0.9845 f1: 0.8932 pred_right: 1064994 pred_wrong:31206 actu_right: 1061714 actu_wrong: 34486
+2026-07-18 02:58:18,354 P4024958 INFO pr:0.9346  rc:0.8394  auc:0.9971 ap:0.9813 f1: 0.8844 pred_right: 456500 pred_wrong:13300 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:58:18,355 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:58:18,355 P4024958 INFO 34/50 starting... lr: 0.001 para:0.02857142873108387
+2026-07-18 02:58:36,711 P4024958 INFO Epoch 34/50, all_loss:0.65741 cls_loss:0.67548 rec_loss:0.04302 [18.35s]; best loss:0.65741, patience : 0
+2026-07-18 02:58:45,771 P4024958 INFO pr:0.9335  rc:0.8656  auc:0.9984 ap:0.9841 f1: 0.8982 pred_right: 1064223 pred_wrong:31977 actu_right: 1061714 actu_wrong: 34486
+2026-07-18 02:58:49,554 P4024958 INFO pr:0.9268  rc:0.8556  auc:0.9978 ap:0.9813 f1: 0.8898 pred_right: 456130 pred_wrong:13670 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:58:49,554 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:58:49,555 P4024958 INFO 35/50 starting... lr: 0.001 para:0.02777777798473835
+2026-07-18 02:59:08,064 P4024958 INFO Epoch 35/50, all_loss:0.65826 cls_loss:0.67586 rec_loss:0.04237 [18.51s]; best loss:0.65741, patience : 1
+2026-07-18 02:59:17,963 P4024958 INFO pr:0.9430  rc:0.8467  auc:0.9984 ap:0.9832 f1: 0.8923 pred_right: 1065228 pred_wrong:30972 actu_right: 1061708 actu_wrong: 34492
+2026-07-18 02:59:22,258 P4024958 INFO pr:0.9369  rc:0.8327  auc:0.9978 ap:0.9795 f1: 0.8817 pred_right: 456638 pred_wrong:13162 actu_right: 454992 actu_wrong: 14808
+2026-07-18 02:59:22,258 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 02:59:22,259 P4024958 INFO 36/50 starting... lr: 0.001 para:0.027027027681469917
+2026-07-18 02:59:40,031 P4024958 INFO Epoch 36/50, all_loss:0.64839 cls_loss:0.66524 rec_loss:0.04214 [17.76s]; best loss:0.64839, patience : 0
+2026-07-18 02:59:57,762 P4024958 INFO pr:0.9298  rc:0.8655  auc:0.9986 ap:0.9834 f1: 0.8965 pred_right: 1064096 pred_wrong:32104 actu_right: 1061712 actu_wrong: 34488
+2026-07-18 03:00:01,940 P4024958 INFO pr:0.9191  rc:0.8566  auc:0.9980 ap:0.9799 f1: 0.8867 pred_right: 456000 pred_wrong:13800 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:00:01,941 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:00:01,941 P4024958 INFO 37/50 starting... lr: 0.001 para:0.02631578966975212
+2026-07-18 03:00:20,231 P4024958 INFO Epoch 37/50, all_loss:0.66908 cls_loss:0.68607 rec_loss:0.04045 [18.29s]; best loss:0.64839, patience : 1
+2026-07-18 03:00:30,279 P4024958 INFO pr:0.9146  rc:0.8822  auc:0.9986 ap:0.9850 f1: 0.8981 pred_right: 1062933 pred_wrong:33267 actu_right: 1061712 actu_wrong: 34488
+2026-07-18 03:00:34,561 P4024958 INFO pr:0.9036  rc:0.8722  auc:0.9980 ap:0.9820 f1: 0.8876 pred_right: 455506 pred_wrong:14294 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:00:34,562 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:00:34,569 P4024958 INFO 38/50 starting... lr: 0.001 para:0.025641025975346565
+2026-07-18 03:00:52,741 P4024958 INFO Epoch 38/50, all_loss:0.64921 cls_loss:0.66519 rec_loss:0.04215 [18.17s]; best loss:0.64839, patience : 1
+2026-07-18 03:01:01,706 P4024958 INFO pr:0.9269  rc:0.8753  auc:0.9988 ap:0.9855 f1: 0.9004 pred_right: 1063629 pred_wrong:32571 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 03:01:05,845 P4024958 INFO pr:0.9172  rc:0.8634  auc:0.9983 ap:0.9819 f1: 0.8895 pred_right: 455861 pred_wrong:13939 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:01:05,851 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:01:05,851 P4024958 INFO 39/50 starting... lr: 0.001 para:0.02500000037252903
+2026-07-18 03:01:23,712 P4024958 INFO Epoch 39/50, all_loss:0.63545 cls_loss:0.65067 rec_loss:0.04219 [17.85s]; best loss:0.63545, patience : 0
+2026-07-18 03:01:34,567 P4024958 INFO pr:0.9301  rc:0.8606  auc:0.9983 ap:0.9834 f1: 0.8940 pred_right: 1064288 pred_wrong:31912 actu_right: 1061712 actu_wrong: 34488
+2026-07-18 03:01:43,464 P4024958 INFO pr:0.9212  rc:0.8482  auc:0.9975 ap:0.9798 f1: 0.8832 pred_right: 456165 pred_wrong:13635 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:01:43,466 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:01:43,466 P4024958 INFO 40/50 starting... lr: 0.001 para:0.024390242993831635
+2026-07-18 03:02:02,857 P4024958 INFO Epoch 40/50, all_loss:0.63678 cls_loss:0.65171 rec_loss:0.03952 [19.39s]; best loss:0.63545, patience : 1
+2026-07-18 03:02:13,711 P4024958 INFO pr:0.9347  rc:0.8652  auc:0.9986 ap:0.9846 f1: 0.8986 pred_right: 1064277 pred_wrong:31923 actu_right: 1061713 actu_wrong: 34487
+2026-07-18 03:02:18,010 P4024958 INFO pr:0.9238  rc:0.8536  auc:0.9979 ap:0.9812 f1: 0.8873 pred_right: 456118 pred_wrong:13682 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:02:18,011 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:02:18,011 P4024958 INFO 41/50 starting... lr: 0.001 para:0.02380952425301075
+2026-07-18 03:02:36,608 P4024958 INFO Epoch 41/50, all_loss:0.62926 cls_loss:0.64360 rec_loss:0.04140 [18.59s]; best loss:0.62926, patience : 0
+2026-07-18 03:02:45,911 P4024958 INFO pr:0.9284  rc:0.8601  auc:0.9985 ap:0.9825 f1: 0.8930 pred_right: 1064245 pred_wrong:31955 actu_right: 1061709 actu_wrong: 34491
+2026-07-18 03:02:49,869 P4024958 INFO pr:0.9180  rc:0.8477  auc:0.9976 ap:0.9789 f1: 0.8814 pred_right: 456125 pred_wrong:13675 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:02:49,870 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:02:49,870 P4024958 INFO 42/50 starting... lr: 0.001 para:0.023255813866853714
+2026-07-18 03:03:09,144 P4024958 INFO Epoch 42/50, all_loss:0.63131 cls_loss:0.64542 rec_loss:0.03872 [19.27s]; best loss:0.62926, patience : 1
+2026-07-18 03:03:17,185 P4024958 INFO pr:0.9411  rc:0.8539  auc:0.9981 ap:0.9837 f1: 0.8954 pred_right: 1064909 pred_wrong:31291 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 03:03:21,668 P4024958 INFO pr:0.9345  rc:0.8384  auc:0.9971 ap:0.9797 f1: 0.8839 pred_right: 456515 pred_wrong:13285 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:03:21,669 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:03:21,670 P4024958 INFO 43/50 starting... lr: 0.001 para:0.022727273404598236
+2026-07-18 03:03:47,963 P4024958 INFO Epoch 43/50, all_loss:0.62780 cls_loss:0.64147 rec_loss:0.04024 [26.29s]; best loss:0.62780, patience : 0
+2026-07-18 03:03:58,212 P4024958 INFO pr:0.9253  rc:0.8746  auc:0.9985 ap:0.9844 f1: 0.8992 pred_right: 1063597 pred_wrong:32603 actu_right: 1061707 actu_wrong: 34493
+2026-07-18 03:04:01,868 P4024958 INFO pr:0.9135  rc:0.8622  auc:0.9974 ap:0.9803 f1: 0.8871 pred_right: 455824 pred_wrong:13976 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:04:01,869 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:04:01,869 P4024958 INFO 44/50 starting... lr: 0.001 para:0.02222222276031971
+2026-07-18 03:04:20,213 P4024958 INFO Epoch 44/50, all_loss:0.63180 cls_loss:0.64523 rec_loss:0.04086 [18.34s]; best loss:0.62780, patience : 1
+2026-07-18 03:04:29,708 P4024958 INFO pr:0.9351  rc:0.8512  auc:0.9982 ap:0.9830 f1: 0.8912 pred_right: 1064805 pred_wrong:31395 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 03:04:34,059 P4024958 INFO pr:0.9270  rc:0.8378  auc:0.9969 ap:0.9786 f1: 0.8801 pred_right: 456417 pred_wrong:13383 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:04:34,060 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:04:34,060 P4024958 INFO 45/50 starting... lr: 0.001 para:0.021739130839705467
+2026-07-18 03:04:54,125 P4024958 INFO Epoch 45/50, all_loss:0.63082 cls_loss:0.64394 rec_loss:0.04049 [20.06s]; best loss:0.62780, patience : 1
+2026-07-18 03:05:01,872 P4024958 INFO pr:0.9331  rc:0.8744  auc:0.9984 ap:0.9847 f1: 0.9028 pred_right: 1063881 pred_wrong:32319 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 03:05:05,359 P4024958 INFO pr:0.9253  rc:0.8627  auc:0.9974 ap:0.9810 f1: 0.8929 pred_right: 455993 pred_wrong:13807 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:05:05,364 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:05:05,364 P4024958 INFO 46/50 starting... lr: 0.001 para:0.021276595070958138
+2026-07-18 03:05:31,678 P4024958 INFO Epoch 46/50, all_loss:0.62796 cls_loss:0.64073 rec_loss:0.04054 [26.31s]; best loss:0.62780, patience : 1
+2026-07-18 03:05:40,951 P4024958 INFO pr:0.9173  rc:0.8778  auc:0.9983 ap:0.9836 f1: 0.8971 pred_right: 1063196 pred_wrong:33004 actu_right: 1061709 actu_wrong: 34491
+2026-07-18 03:05:45,245 P4024958 INFO pr:0.9044  rc:0.8673  auc:0.9974 ap:0.9798 f1: 0.8854 pred_right: 455599 pred_wrong:14201 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:05:45,246 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:05:45,246 P4024958 INFO 47/50 starting... lr: 0.001 para:0.02083333395421505
+2026-07-18 03:06:03,538 P4024958 INFO Epoch 47/50, all_loss:0.62107 cls_loss:0.63339 rec_loss:0.04190 [18.29s]; best loss:0.62107, patience : 0
+2026-07-18 03:06:12,501 P4024958 INFO pr:0.9438  rc:0.8509  auc:0.9979 ap:0.9841 f1: 0.8950 pred_right: 1065105 pred_wrong:31095 actu_right: 1061709 actu_wrong: 34491
+2026-07-18 03:06:16,423 P4024958 INFO pr:0.9365  rc:0.8335  auc:0.9964 ap:0.9795 f1: 0.8820 pred_right: 456621 pred_wrong:13179 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:06:16,424 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:06:16,424 P4024958 INFO 48/50 starting... lr: 0.001 para:0.020408162847161293
+2026-07-18 03:06:35,183 P4024958 INFO Epoch 48/50, all_loss:0.62011 cls_loss:0.63217 rec_loss:0.04161 [18.75s]; best loss:0.62011, patience : 0
+2026-07-18 03:06:47,217 P4024958 INFO pr:0.9322  rc:0.8700  auc:0.9983 ap:0.9842 f1: 0.9000 pred_right: 1064010 pred_wrong:32190 actu_right: 1061712 actu_wrong: 34488
+2026-07-18 03:06:50,242 P4024958 INFO pr:0.9223  rc:0.8570  auc:0.9974 ap:0.9801 f1: 0.8885 pred_right: 456040 pred_wrong:13760 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:06:50,242 P4024958 INFO ----------------------------------------------------------------------------------------------------
+2026-07-18 03:06:50,243 P4024958 INFO 49/50 starting... lr: 0.001 para:0.019999999552965164
+2026-07-18 03:07:16,476 P4024958 INFO Epoch 49/50, all_loss:0.61701 cls_loss:0.62874 rec_loss:0.04228 [26.23s]; best loss:0.61701, patience : 0
+2026-07-18 03:07:25,931 P4024958 INFO pr:0.9297  rc:0.8704  auc:0.9986 ap:0.9841 f1: 0.8991 pred_right: 1063912 pred_wrong:32288 actu_right: 1061711 actu_wrong: 34489
+2026-07-18 03:07:30,150 P4024958 INFO pr:0.9161  rc:0.8599  auc:0.9979 ap:0.9801 f1: 0.8871 pred_right: 455901 pred_wrong:13899 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:07:30,151 P4024958 INFO saving model...
+2026-07-18 03:07:30,151 P4024958 INFO Eadro - loss  best score:0.6170085072517395 at epoch 49
+2026-07-18 03:07:30,159 P4024958 INFO Eadro - f1  best score:0.9027661357921207 at epoch 45
+2026-07-18 03:07:30,165 P4024958 INFO Average training time per epoch: 20.14 seconds
+2026-07-18 03:07:30,165 P4024958 INFO calculate scores...
+2026-07-18 03:07:30,166 P4024958 INFO calculate label with loss...
+2026-07-18 03:07:30,166 P4024958 INFO Eadro on ./result/Eadro-TT-Epochs50-Seed1ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-18 03:07:34,467 P4024958 INFO pr:0.9161  rc:0.8599  auc:0.9979 ap:0.9801 f1: 0.8871 pred_right: 455901 pred_wrong:13899 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:07:46,359 P4024958 INFO pr:0.9162  rc:0.8599  auc:0.9979 ap:0.9801 f1: 0.8871 pred_right: 455902 pred_wrong:13898 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:07:46,366 P4024958 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.21318698537062283, 'throughput_samples_per_sec': 4690.717860949686, 'peak_memory_mb': 121.04541015625, 'energy_per_sample_joules': 0.012232456033580969}, 'CPU': {'inference_time_per_sample_ms': 0.647455611267265, 'throughput_samples_per_sec': 1544.507426605972, 'peak_memory_mb': 5652.5625, 'energy_per_sample_joules': 0.042084614732372225}}
+2026-07-18 03:07:46,366 P4024958 INFO Starting clean-room hardware benchmarking...
+2026-07-18 03:07:47,124 P4024958 INFO Performance with loss: pr:0.9161  rc:0.8599  auc:0.9979 ap:0.9801 f1: 0.8871 pred_right: 455901 pred_wrong:13899 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:07:47,124 P4024958 INFO calculate label with f1...
+2026-07-18 03:07:47,124 P4024958 INFO Eadro on ./result/Eadro-TT-Epochs50-Seed1ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-18 03:07:51,276 P4024958 INFO pr:0.9253  rc:0.8627  auc:0.9974 ap:0.9810 f1: 0.8929 pred_right: 455993 pred_wrong:13807 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:08:03,629 P4024958 INFO pr:0.9253  rc:0.8627  auc:0.9974 ap:0.9810 f1: 0.8929 pred_right: 455993 pred_wrong:13807 actu_right: 454992 actu_wrong: 14808
+2026-07-18 03:08:03,678 P4024958 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.20532675041260046, 'throughput_samples_per_sec': 4870.286009935469, 'peak_memory_mb': 119.73779296875, 'energy_per_sample_joules': 0.012319605024756028}, 'CPU': {'inference_time_per_sample_ms': 0.6748686017453602, 'throughput_samples_per_sec': 1481.7699288628596, 'peak_memory_mb': 6710.12890625, 'energy_per_sample_joules': 0.043866459113448414}}
+2026-07-18 03:08:03,678 P4024958 INFO Starting clean-room hardware benchmarking...
+2026-07-18 03:08:04,388 P4024958 INFO Performance with f1: pr:0.9253  rc:0.8627  auc:0.9974 ap:0.9810 f1: 0.8929 pred_right: 455993 pred_wrong:13807 actu_right: 454992 actu_wrong: 14808

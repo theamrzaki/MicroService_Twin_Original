@@ -8,7 +8,7 @@ FREQ_DOMAINS=(
 ##
 "AnoFusion"
 "Eadro"  
-"encoder_decoder"
+#"encoder_decoder"
 #"Art"
 ##
 ##
@@ -21,7 +21,7 @@ FREQ_DOMAINS=(
 
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
-DATA_SOURCES=("SN") # ) MSDS 
+DATA_SOURCES=("SN" "MSDS" "TT") # )  
 DEVICE_NAME="Raspberry Pi Larger"
 # as miniforge is installed on Raspberry Pi
 source ~/miniforge3/etc/profile.d/conda.sh
@@ -53,7 +53,7 @@ for SEED in "${SEEDS[@]}"; do
         --evaluate=true \
         --gpu=false\
         --DEVICE_NAME="$DEVICE_NAME" \
-        --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main" \
+        --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main-lowshow-simplegraph" \
         --experiment_name="RQ1_main_Edge"
     else
       echo "--------------------------------"
@@ -68,7 +68,7 @@ for SEED in "${SEEDS[@]}"; do
         --gpu=false \
         --evaluate=true \
         --DEVICE_NAME="$DEVICE_NAME" \
-        --model_path="./result/$FREQ-$datasource-Epochs$EPOCHS-Seed$SEED" \
+        --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main-lowshow-simplegraph" \
         --experiment_name="RQ1_main_Edge"
     fi
   done
