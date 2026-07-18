@@ -1,0 +1,111 @@
+2026-07-17 21:56:17,554 P3794215 INFO ---- Model: ----MSTGAD-2e9c09e0----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : Eadro----Multi Fits : false----train : True----evaluate : False
+2026-07-17 21:56:17,554 P3794215 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-17 21:56:18,338 P3794215 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-17 21:56:18,675 P3794215 INFO Trainable Parameters Breakdown:
+2026-07-17 21:56:18,675 P3794215 INFO --------------------------------------------------------------------------------
+2026-07-17 21:56:18,675 P3794215 INFO Reconstruction-Specific Parameters:
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.trace_model.net.network.0.weight | shape: (20, 2, 3)                | params: 120
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.trace_model.net.network.0.bias | shape: (20,)                     | params: 20
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.trace_model.net.network.1.weight | shape: (20,)                     | params: 20
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.trace_model.net.network.1.bias | shape: (20,)                     | params: 20
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.trace_model.net.network.4.weight | shape: (50, 20, 3)               | params: 3,000
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.trace_model.net.network.4.bias | shape: (50,)                     | params: 50
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.trace_model.net.network.5.weight | shape: (50,)                     | params: 50
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.trace_model.net.network.5.bias | shape: (50,)                     | params: 50
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.log_model.embedder.weight | shape: (64, 7)                   | params: 448
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.log_model.embedder.bias | shape: (64,)                     | params: 64
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.metric_model.net.network.0.weight | shape: (64, 7, 3)                | params: 1,344
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.metric_model.net.network.0.bias | shape: (64,)                     | params: 64
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.metric_model.net.network.1.weight | shape: (64,)                     | params: 64
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.metric_model.net.network.1.bias | shape: (64,)                     | params: 64
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.metric_model.net.network.4.weight | shape: (128, 64, 3)              | params: 24,576
+2026-07-17 21:56:18,675 P3794215 INFO Eadro_Model.encoder.metric_model.net.network.4.bias | shape: (128,)                    | params: 128
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.metric_model.net.network.5.weight | shape: (128,)                    | params: 128
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.metric_model.net.network.5.bias | shape: (128,)                    | params: 128
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.fuse.weight          | shape: (64, 242)                 | params: 15,488
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.fuse.bias            | shape: (64,)                     | params: 64
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.0.att | shape: (1, 4, 64)                | params: 256
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.0.bias | shape: (64,)                     | params: 64
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.0.lin_l.weight | shape: (256, 32)                 | params: 8,192
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.0.lin_l.bias | shape: (256,)                    | params: 256
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.0.lin_r.weight | shape: (256, 32)                 | params: 8,192
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.0.lin_r.bias | shape: (256,)                    | params: 256
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.1.att | shape: (1, 4, 128)               | params: 512
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.1.bias | shape: (128,)                    | params: 128
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.1.lin_l.weight | shape: (512, 64)                 | params: 32,768
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.1.lin_l.bias | shape: (512,)                    | params: 512
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.1.lin_r.weight | shape: (512, 64)                 | params: 32,768
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.encoder.status_model.layers.1.lin_r.bias | shape: (512,)                    | params: 512
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.reconstructor.0.weight       | shape: (128, 128)                | params: 16,384
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.reconstructor.0.bias         | shape: (128,)                    | params: 128
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.reconstructor.1.weight       | shape: (128,)                    | params: 128
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.reconstructor.1.bias         | shape: (128,)                    | params: 128
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.reconstructor.2.weight       | shape: (16, 128)                 | params: 2,048
+2026-07-17 21:56:18,676 P3794215 INFO Eadro_Model.reconstructor.2.bias         | shape: (16,)                     | params: 16
+2026-07-17 21:56:18,676 P3794215 INFO Subtotal: 149,138
+2026-07-17 21:56:18,676 P3794215 INFO --------------------------------------------------------------------------------
+2026-07-17 21:56:18,676 P3794215 INFO Common Parameters:
+2026-07-17 21:56:18,677 P3794215 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-17 21:56:18,677 P3794215 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-17 21:56:18,677 P3794215 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-07-17 21:56:18,677 P3794215 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-17 21:56:18,677 P3794215 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-17 21:56:18,677 P3794215 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-17 21:56:18,677 P3794215 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-17 21:56:18,677 P3794215 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-17 21:56:18,677 P3794215 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-07-17 21:56:18,677 P3794215 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-07-17 21:56:18,677 P3794215 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-17 21:56:18,677 P3794215 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-17 21:56:18,677 P3794215 INFO show.0.weight                            | shape: (2, 16)                   | params: 32
+2026-07-17 21:56:18,677 P3794215 INFO show.0.bias                              | shape: (2,)                      | params: 2
+2026-07-17 21:56:18,677 P3794215 INFO Subtotal: 690
+2026-07-17 21:56:18,677 P3794215 INFO --------------------------------------------------------------------------------
+2026-07-17 21:56:18,677 P3794215 INFO Total Trainable Parameters: 149,828
+
+2026-07-17 21:56:18,677 P3794215 INFO Trainable Parameters: 149828, reconstruction: 149138, common: 690
+2026-07-17 21:56:18,677 P3794215 INFO model : init weight
+2026-07-17 21:56:18,679 P3794215 INFO Using GPU...
+2026-07-17 21:56:18,684 P3794215 INFO optimizer : using AdaBelief
+2026-07-17 21:56:18,684 P3794215 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:56:18,684 P3794215 INFO 0/5 starting... lr: 0.001 para:1.0
+2026-07-17 21:56:20,652 P3794215 INFO Epoch 0/5, all_loss:0.20454 cls_loss:54.62595 rec_loss:0.20454 [1.96s]; best loss:0.20454, patience : 0
+2026-07-17 21:56:20,652 P3794215 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:56:20,652 P3794215 INFO 1/5 starting... lr: 0.001 para:0.5
+2026-07-17 21:56:21,824 P3794215 INFO Epoch 1/5, all_loss:8.81134 cls_loss:17.44231 rec_loss:0.18036 [1.16s]; best loss:8.81134, patience : 0
+2026-07-17 21:56:21,824 P3794215 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:56:21,824 P3794215 INFO 2/5 starting... lr: 0.001 para:0.3333333432674408
+2026-07-17 21:56:23,114 P3794215 INFO Epoch 2/5, all_loss:7.11189 cls_loss:10.52562 rec_loss:0.28443 [1.28s]; best loss:7.11189, patience : 0
+2026-07-17 21:56:23,662 P3794215 INFO pr:0.9979  rc:0.1465  auc:0.8316 ap:0.7288 f1: 0.2554 pred_right: 46324 pred_wrong:476 actu_right: 43557 actu_wrong: 3243
+2026-07-17 21:56:23,879 P3794215 INFO pr:0.9898  rc:0.1463  auc:0.8269 ap:0.7242 f1: 0.2549 pred_right: 19004 pred_wrong:196 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:56:23,886 P3794215 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:56:23,886 P3794215 INFO 3/5 starting... lr: 0.001 para:0.25
+2026-07-17 21:56:25,116 P3794215 INFO Epoch 3/5, all_loss:6.07910 cls_loss:7.99318 rec_loss:0.33685 [1.22s]; best loss:6.07910, patience : 0
+2026-07-17 21:56:25,646 P3794215 INFO pr:0.9971  rc:0.3145  auc:0.8769 ap:0.7791 f1: 0.4782 pred_right: 45778 pred_wrong:1022 actu_right: 43560 actu_wrong: 3240
+2026-07-17 21:56:25,885 P3794215 INFO pr:0.9975  rc:0.3039  auc:0.8726 ap:0.7746 f1: 0.4659 pred_right: 18796 pred_wrong:404 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:56:25,892 P3794215 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:56:25,892 P3794215 INFO 4/5 starting... lr: 0.001 para:0.20000000298023224
+2026-07-17 21:56:27,083 P3794215 INFO Epoch 4/5, all_loss:5.83628 cls_loss:7.20249 rec_loss:0.37141 [1.18s]; best loss:5.83628, patience : 0
+2026-07-17 21:56:27,556 P3794215 INFO pr:0.9914  rc:0.3207  auc:0.9052 ap:0.8107 f1: 0.4846 pred_right: 45752 pred_wrong:1048 actu_right: 43560 actu_wrong: 3240
+2026-07-17 21:56:27,751 P3794215 INFO pr:1.0000  rc:0.3100  auc:0.9013 ap:0.8030 f1: 0.4732 pred_right: 18789 pred_wrong:411 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:56:27,757 P3794215 INFO saving model...
+2026-07-17 21:56:27,757 P3794215 INFO Eadro - loss  best score:5.836277008056641 at epoch 4
+2026-07-17 21:56:27,768 P3794215 INFO Eadro - f1  best score:0.4846082089552239 at epoch 4
+2026-07-17 21:56:27,777 P3794215 INFO Average training time per epoch: 1.36 seconds
+2026-07-17 21:56:27,777 P3794215 INFO calculate scores...
+2026-07-17 21:56:27,777 P3794215 INFO calculate label with loss...
+2026-07-17 21:56:27,777 P3794215 INFO Eadro on ./result/Eadro-SN-Epochs5-Seed46ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-17 21:56:27,995 P3794215 INFO pr:1.0000  rc:0.3100  auc:0.9013 ap:0.8030 f1: 0.4732 pred_right: 18789 pred_wrong:411 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:56:28,525 P3794215 INFO pr:1.0000  rc:0.3100  auc:0.9013 ap:0.8030 f1: 0.4732 pred_right: 18789 pred_wrong:411 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:56:28,525 P3794215 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.09232829428824087, 'throughput_samples_per_sec': 10830.916001524814, 'peak_memory_mb': 59.943359375, 'energy_per_sample_joules': 0.006613475719866692}, 'CPU': {'inference_time_per_sample_ms': 0.28495142591615835, 'throughput_samples_per_sec': 3509.3700506493738, 'peak_memory_mb': 1884.21484375, 'energy_per_sample_joules': 0.018521842684550295}}
+2026-07-17 21:56:28,525 P3794215 INFO Starting clean-room hardware benchmarking...
+2026-07-17 21:56:29,148 P3794215 INFO Performance with loss: pr:1.0000  rc:0.3100  auc:0.9013 ap:0.8030 f1: 0.4732 pred_right: 18789 pred_wrong:411 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:56:29,148 P3794215 INFO calculate label with f1...
+2026-07-17 21:56:29,148 P3794215 INFO Eadro on ./result/Eadro-SN-Epochs5-Seed46ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-17 21:56:29,349 P3794215 INFO pr:1.0000  rc:0.3100  auc:0.9013 ap:0.8030 f1: 0.4732 pred_right: 18789 pred_wrong:411 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:56:29,858 P3794215 INFO pr:1.0000  rc:0.3100  auc:0.9013 ap:0.8030 f1: 0.4732 pred_right: 18789 pred_wrong:411 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:56:29,858 P3794215 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.08825626475288269, 'throughput_samples_per_sec': 11330.640411759974, 'peak_memory_mb': 59.0732421875, 'energy_per_sample_joules': 0.005044419196348139}, 'CPU': {'inference_time_per_sample_ms': 0.27559870279621523, 'throughput_samples_per_sec': 3628.4641032560507, 'peak_memory_mb': 1885.42578125, 'energy_per_sample_joules': 0.017913915681753993}}
+2026-07-17 21:56:29,858 P3794215 INFO Starting clean-room hardware benchmarking...
+2026-07-17 21:56:30,431 P3794215 INFO Performance with f1: pr:1.0000  rc:0.3100  auc:0.9013 ap:0.8030 f1: 0.4732 pred_right: 18789 pred_wrong:411 actu_right: 17874 actu_wrong: 1326

@@ -1,0 +1,192 @@
+2026-07-17 21:53:05,386 P3792717 INFO ---- Model: ----MSTGAD-8f80554e----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : FITS_Legendre----Multi Fits : false----train : True----evaluate : False
+2026-07-17 21:53:05,386 P3792717 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-17 21:53:06,149 P3792717 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-17 21:53:06,342 P3792717 INFO Trainable Parameters Breakdown:
+2026-07-17 21:53:06,342 P3792717 INFO --------------------------------------------------------------------------------
+2026-07-17 21:53:06,342 P3792717 INFO Reconstruction-Specific Parameters:
+2026-07-17 21:53:06,342 P3792717 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-07-17 21:53:06,342 P3792717 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-07-17 21:53:06,342 P3792717 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-07-17 21:53:06,342 P3792717 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-07-17 21:53:06,343 P3792717 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-07-17 21:53:06,343 P3792717 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-07-17 21:53:06,343 P3792717 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-07-17 21:53:06,343 P3792717 INFO shared_fits.normlin_W                    | shape: (5, 5)                    | params: 25
+2026-07-17 21:53:06,343 P3792717 INFO shared_fits.freq_upsampler.weight        | shape: (5, 5)                    | params: 25
+2026-07-17 21:53:06,343 P3792717 INFO shared_fits.freq_upsampler.bias          | shape: (5,)                      | params: 5
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj.node.weight                | shape: (10, 8)                   | params: 80
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj.node.bias                  | shape: (10,)                     | params: 10
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj.log.weight                 | shape: (10, 32)                  | params: 320
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj.log.bias                   | shape: (10,)                     | params: 10
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj.edge.weight                | shape: (10, 8)                   | params: 80
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj.edge.bias                  | shape: (10,)                     | params: 10
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj_out.node.weight            | shape: (8, 10)                   | params: 80
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj_out.node.bias              | shape: (8,)                      | params: 8
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj_out.log.weight             | shape: (32, 10)                  | params: 320
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj_out.log.bias               | shape: (32,)                     | params: 32
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj_out.edge.weight            | shape: (8, 10)                   | params: 80
+2026-07-17 21:53:06,343 P3792717 INFO modality_proj_out.edge.bias              | shape: (8,)                      | params: 8
+2026-07-17 21:53:06,343 P3792717 INFO Subtotal: 1,523
+2026-07-17 21:53:06,343 P3792717 INFO --------------------------------------------------------------------------------
+2026-07-17 21:53:06,343 P3792717 INFO Common Parameters:
+2026-07-17 21:53:06,343 P3792717 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-17 21:53:06,344 P3792717 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-17 21:53:06,344 P3792717 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-07-17 21:53:06,344 P3792717 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-17 21:53:06,344 P3792717 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-17 21:53:06,344 P3792717 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-17 21:53:06,344 P3792717 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-17 21:53:06,344 P3792717 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-17 21:53:06,344 P3792717 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-07-17 21:53:06,344 P3792717 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-07-17 21:53:06,344 P3792717 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-17 21:53:06,344 P3792717 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-17 21:53:06,344 P3792717 INFO show.0.weight                            | shape: (2, 16)                   | params: 32
+2026-07-17 21:53:06,344 P3792717 INFO show.0.bias                              | shape: (2,)                      | params: 2
+2026-07-17 21:53:06,344 P3792717 INFO Subtotal: 690
+2026-07-17 21:53:06,344 P3792717 INFO --------------------------------------------------------------------------------
+2026-07-17 21:53:06,344 P3792717 INFO Total Trainable Parameters: 2,213
+
+2026-07-17 21:53:06,344 P3792717 INFO Trainable Parameters: 2213, reconstruction: 1523, common: 690
+2026-07-17 21:53:06,344 P3792717 INFO model : init weight
+2026-07-17 21:53:06,345 P3792717 INFO Using GPU...
+2026-07-17 21:53:06,349 P3792717 INFO optimizer : using AdaBelief
+2026-07-17 21:53:06,349 P3792717 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:53:06,349 P3792717 INFO 0/5 starting... lr: 0.001 para:1.0
+2026-07-17 21:53:08,593 P3792717 INFO Epoch 0/5, all_loss:0.68863 cls_loss:26.40757 rec_loss:0.68863 [2.24s]; best loss:0.68863, patience : 0
+2026-07-17 21:53:08,593 P3792717 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:53:08,593 P3792717 INFO 1/5 starting... lr: 0.001 para:0.5
+2026-07-17 21:53:10,224 P3792717 INFO Epoch 1/5, all_loss:11.10265 cls_loss:21.63764 rec_loss:0.56766 [1.63s]; best loss:11.10265, patience : 0
+2026-07-17 21:53:10,225 P3792717 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:53:10,225 P3792717 INFO 2/5 starting... lr: 0.001 para:0.3333333432674408
+2026-07-17 21:53:13,333 P3792717 INFO Epoch 2/5, all_loss:10.35960 cls_loss:15.16688 rec_loss:0.74503 [3.11s]; best loss:10.35960, patience : 0
+2026-07-17 21:53:13,882 P3792717 INFO pr:0.3408  rc:0.0562  auc:0.6226 ap:0.5396 f1: 0.0965 pred_right: 46266 pred_wrong:534 actu_right: 43562 actu_wrong: 3238
+2026-07-17 21:53:14,093 P3792717 INFO pr:0.3348  rc:0.0558  auc:0.6303 ap:0.5401 f1: 0.0957 pred_right: 18979 pred_wrong:221 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:53:14,096 P3792717 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:53:14,097 P3792717 INFO 3/5 starting... lr: 0.001 para:0.25
+2026-07-17 21:53:15,402 P3792717 INFO Epoch 3/5, all_loss:9.36996 cls_loss:12.15993 rec_loss:1.00007 [1.30s]; best loss:9.36996, patience : 0
+2026-07-17 21:53:15,968 P3792717 INFO pr:0.6474  rc:0.0380  auc:0.7162 ap:0.5933 f1: 0.0717 pred_right: 46610 pred_wrong:190 actu_right: 43561 actu_wrong: 3239
+2026-07-17 21:53:16,172 P3792717 INFO pr:0.6111  rc:0.0415  auc:0.7203 ap:0.5910 f1: 0.0777 pred_right: 19110 pred_wrong:90 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:53:16,172 P3792717 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:53:16,172 P3792717 INFO 4/5 starting... lr: 0.001 para:0.20000000298023224
+2026-07-17 21:53:17,426 P3792717 INFO Epoch 4/5, all_loss:8.44941 cls_loss:10.25432 rec_loss:1.22974 [1.25s]; best loss:8.44941, patience : 0
+2026-07-17 21:53:17,947 P3792717 INFO pr:0.8765  rc:0.0459  auc:0.7832 ap:0.6472 f1: 0.0873 pred_right: 46630 pred_wrong:170 actu_right: 43557 actu_wrong: 3243
+2026-07-17 21:53:18,187 P3792717 INFO pr:0.8333  rc:0.0490  auc:0.7847 ap:0.6405 f1: 0.0926 pred_right: 19122 pred_wrong:78 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:53:18,188 P3792717 INFO saving model...
+2026-07-17 21:53:18,188 P3792717 INFO FITS_Legendre - loss  best score:8.449408531188965 at epoch 4
+2026-07-17 21:53:18,193 P3792717 INFO FITS_Legendre - f1  best score:0.09650053022269353 at epoch 2
+2026-07-17 21:53:18,197 P3792717 INFO Average training time per epoch: 1.91 seconds
+2026-07-17 21:53:18,197 P3792717 INFO calculate scores...
+2026-07-17 21:53:18,198 P3792717 INFO calculate label with loss...
+2026-07-17 21:53:18,198 P3792717 INFO FITS_Legendre on ./result/FITS_Legendre-SN-Epochs5-Seed46ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-17 21:53:18,437 P3792717 INFO pr:0.8333  rc:0.0490  auc:0.7847 ap:0.6405 f1: 0.0926 pred_right: 19122 pred_wrong:78 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:53:18,839 P3792717 INFO pr:0.8333  rc:0.0490  auc:0.7847 ap:0.6405 f1: 0.0926 pred_right: 19122 pred_wrong:78 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:53:18,840 P3792717 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.11414770986519608, 'throughput_samples_per_sec': 8760.578737680855, 'peak_memory_mb': 28.169921875, 'energy_per_sample_joules': 0.006086641259286918}, 'CPU': {'inference_time_per_sample_ms': 0.21557912752873404, 'throughput_samples_per_sec': 4638.667998443923, 'peak_memory_mb': 1846.19140625, 'energy_per_sample_joules': 0.014012643289367712}}
+2026-07-17 21:53:18,840 P3792717 INFO Starting clean-room hardware benchmarking...
+2026-07-17 21:53:19,533 P3792717 INFO Performance with loss: pr:0.8333  rc:0.0490  auc:0.7847 ap:0.6405 f1: 0.0926 pred_right: 19122 pred_wrong:78 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:53:19,534 P3792717 INFO calculate label with f1...
+2026-07-17 21:53:19,534 P3792717 INFO FITS_Legendre on ./result/FITS_Legendre-SN-Epochs5-Seed46ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-17 21:53:19,770 P3792717 INFO pr:0.3348  rc:0.0558  auc:0.6303 ap:0.5401 f1: 0.0957 pred_right: 18979 pred_wrong:221 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:53:20,331 P3792717 INFO pr:0.3348  rc:0.0558  auc:0.6303 ap:0.5401 f1: 0.0957 pred_right: 18979 pred_wrong:221 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:53:20,332 P3792717 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.11446653061230411, 'throughput_samples_per_sec': 8736.178118187056, 'peak_memory_mb': 27.7607421875, 'energy_per_sample_joules': 0.005804941166941779}, 'CPU': {'inference_time_per_sample_ms': 0.29729748508863624, 'throughput_samples_per_sec': 3363.634238957185, 'peak_memory_mb': 1853.7109375, 'energy_per_sample_joules': 0.019324336530761356}}
+2026-07-17 21:53:20,332 P3792717 INFO Starting clean-room hardware benchmarking...
+2026-07-17 21:53:21,026 P3792717 INFO Performance with f1: pr:0.3348  rc:0.0558  auc:0.6303 ap:0.5401 f1: 0.0957 pred_right: 18979 pred_wrong:221 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:58:15,915 P3795115 INFO ---- Model: ----MSTGAD-8f80554e----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : FITS_Legendre----Multi Fits : false----train : True----evaluate : False
+2026-07-17 21:58:15,916 P3795115 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-17 21:58:16,699 P3795115 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-17 21:58:16,892 P3795115 INFO Trainable Parameters Breakdown:
+2026-07-17 21:58:16,892 P3795115 INFO --------------------------------------------------------------------------------
+2026-07-17 21:58:16,892 P3795115 INFO Reconstruction-Specific Parameters:
+2026-07-17 21:58:16,892 P3795115 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-07-17 21:58:16,892 P3795115 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-07-17 21:58:16,892 P3795115 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-07-17 21:58:16,892 P3795115 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-07-17 21:58:16,892 P3795115 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-07-17 21:58:16,892 P3795115 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-07-17 21:58:16,892 P3795115 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-07-17 21:58:16,893 P3795115 INFO shared_fits.normlin_W                    | shape: (5, 5)                    | params: 25
+2026-07-17 21:58:16,893 P3795115 INFO shared_fits.freq_upsampler.weight        | shape: (5, 5)                    | params: 25
+2026-07-17 21:58:16,893 P3795115 INFO shared_fits.freq_upsampler.bias          | shape: (5,)                      | params: 5
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj.node.weight                | shape: (10, 8)                   | params: 80
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj.node.bias                  | shape: (10,)                     | params: 10
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj.log.weight                 | shape: (10, 32)                  | params: 320
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj.log.bias                   | shape: (10,)                     | params: 10
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj.edge.weight                | shape: (10, 8)                   | params: 80
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj.edge.bias                  | shape: (10,)                     | params: 10
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj_out.node.weight            | shape: (8, 10)                   | params: 80
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj_out.node.bias              | shape: (8,)                      | params: 8
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj_out.log.weight             | shape: (32, 10)                  | params: 320
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj_out.log.bias               | shape: (32,)                     | params: 32
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj_out.edge.weight            | shape: (8, 10)                   | params: 80
+2026-07-17 21:58:16,893 P3795115 INFO modality_proj_out.edge.bias              | shape: (8,)                      | params: 8
+2026-07-17 21:58:16,893 P3795115 INFO Subtotal: 1,523
+2026-07-17 21:58:16,893 P3795115 INFO --------------------------------------------------------------------------------
+2026-07-17 21:58:16,893 P3795115 INFO Common Parameters:
+2026-07-17 21:58:16,893 P3795115 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-17 21:58:16,893 P3795115 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-17 21:58:16,893 P3795115 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-07-17 21:58:16,893 P3795115 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-17 21:58:16,893 P3795115 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-17 21:58:16,893 P3795115 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-17 21:58:16,893 P3795115 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-17 21:58:16,894 P3795115 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-17 21:58:16,894 P3795115 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-07-17 21:58:16,894 P3795115 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-07-17 21:58:16,894 P3795115 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-17 21:58:16,894 P3795115 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-17 21:58:16,894 P3795115 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-07-17 21:58:16,894 P3795115 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-17 21:58:16,894 P3795115 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-17 21:58:16,894 P3795115 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-17 21:58:16,894 P3795115 INFO Subtotal: 3,090
+2026-07-17 21:58:16,894 P3795115 INFO --------------------------------------------------------------------------------
+2026-07-17 21:58:16,894 P3795115 INFO Total Trainable Parameters: 4,613
+
+2026-07-17 21:58:16,894 P3795115 INFO Trainable Parameters: 4613, reconstruction: 1523, common: 3090
+2026-07-17 21:58:16,894 P3795115 INFO model : init weight
+2026-07-17 21:58:16,895 P3795115 INFO Using GPU...
+2026-07-17 21:58:16,898 P3795115 INFO optimizer : using AdaBelief
+2026-07-17 21:58:16,899 P3795115 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:58:16,899 P3795115 INFO 0/5 starting... lr: 0.001 para:1.0
+2026-07-17 21:58:19,066 P3795115 INFO Epoch 0/5, all_loss:1.68098 cls_loss:25.60306 rec_loss:1.68098 [2.16s]; best loss:1.68098, patience : 0
+2026-07-17 21:58:19,067 P3795115 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:58:19,067 P3795115 INFO 1/5 starting... lr: 0.001 para:0.5
+2026-07-17 21:58:21,445 P3795115 INFO Epoch 1/5, all_loss:8.79657 cls_loss:16.32627 rec_loss:1.26688 [2.37s]; best loss:8.79657, patience : 0
+2026-07-17 21:58:21,445 P3795115 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:58:21,445 P3795115 INFO 2/5 starting... lr: 0.001 para:0.3333333432674408
+2026-07-17 21:58:23,301 P3795115 INFO Epoch 2/5, all_loss:6.49577 cls_loss:9.11017 rec_loss:1.26700 [1.85s]; best loss:6.49577, patience : 0
+2026-07-17 21:58:23,804 P3795115 INFO pr:0.9729  rc:0.2774  auc:0.8196 ap:0.7248 f1: 0.4317 pred_right: 45876 pred_wrong:924 actu_right: 43559 actu_wrong: 3241
+2026-07-17 21:58:23,999 P3795115 INFO pr:0.9738  rc:0.2519  auc:0.8222 ap:0.7211 f1: 0.4002 pred_right: 18857 pred_wrong:343 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:58:24,002 P3795115 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:58:24,002 P3795115 INFO 3/5 starting... lr: 0.001 para:0.25
+2026-07-17 21:58:25,363 P3795115 INFO Epoch 3/5, all_loss:6.15549 cls_loss:7.81707 rec_loss:1.17076 [1.36s]; best loss:6.15549, patience : 0
+2026-07-17 21:58:25,850 P3795115 INFO pr:0.9715  rc:0.3054  auc:0.8794 ap:0.7731 f1: 0.4648 pred_right: 45782 pred_wrong:1018 actu_right: 43562 actu_wrong: 3238
+2026-07-17 21:58:26,044 P3795115 INFO pr:0.9800  rc:0.2956  auc:0.8799 ap:0.7722 f1: 0.4542 pred_right: 18800 pred_wrong:400 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:58:26,047 P3795115 INFO ----------------------------------------------------------------------------------------------------
+2026-07-17 21:58:26,047 P3795115 INFO 4/5 starting... lr: 0.001 para:0.20000000298023224
+2026-07-17 21:58:27,330 P3795115 INFO Epoch 4/5, all_loss:5.94680 cls_loss:7.12240 rec_loss:1.24440 [1.28s]; best loss:5.94680, patience : 0
+2026-07-17 21:58:27,836 P3795115 INFO pr:0.9681  rc:0.3091  auc:0.9066 ap:0.8034 f1: 0.4686 pred_right: 45766 pred_wrong:1034 actu_right: 43562 actu_wrong: 3238
+2026-07-17 21:58:28,051 P3795115 INFO pr:0.9664  rc:0.3039  auc:0.9056 ap:0.8006 f1: 0.4624 pred_right: 18783 pred_wrong:417 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:58:28,054 P3795115 INFO saving model...
+2026-07-17 21:58:28,055 P3795115 INFO FITS_Legendre - loss  best score:5.9467997550964355 at epoch 4
+2026-07-17 21:58:28,060 P3795115 INFO FITS_Legendre - f1  best score:0.46863295880149813 at epoch 4
+2026-07-17 21:58:28,064 P3795115 INFO Average training time per epoch: 1.81 seconds
+2026-07-17 21:58:28,064 P3795115 INFO calculate scores...
+2026-07-17 21:58:28,064 P3795115 INFO calculate label with loss...
+2026-07-17 21:58:28,064 P3795115 INFO FITS_Legendre on ./result/FITS_Legendre-SN-Epochs5-Seed46ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-17 21:58:28,300 P3795115 INFO pr:0.9664  rc:0.3039  auc:0.9056 ap:0.8006 f1: 0.4624 pred_right: 18783 pred_wrong:417 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:58:28,691 P3795115 INFO pr:0.9664  rc:0.3039  auc:0.9056 ap:0.8006 f1: 0.4624 pred_right: 18783 pred_wrong:417 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:58:28,691 P3795115 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.11007665043704508, 'throughput_samples_per_sec': 9084.578755164057, 'peak_memory_mb': 29.7177734375, 'energy_per_sample_joules': 0.005876937328508618}, 'CPU': {'inference_time_per_sample_ms': 0.2109896761281676, 'throughput_samples_per_sec': 4739.568391927105, 'peak_memory_mb': 1861.15625, 'energy_per_sample_joules': 0.013714328948330893}}
+2026-07-17 21:58:28,691 P3795115 INFO Starting clean-room hardware benchmarking...
+2026-07-17 21:58:29,434 P3795115 INFO Performance with loss: pr:0.9664  rc:0.3039  auc:0.9056 ap:0.8006 f1: 0.4624 pred_right: 18783 pred_wrong:417 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:58:29,434 P3795115 INFO calculate label with f1...
+2026-07-17 21:58:29,434 P3795115 INFO FITS_Legendre on ./result/FITS_Legendre-SN-Epochs5-Seed46ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-17 21:58:29,690 P3795115 INFO pr:0.9664  rc:0.3039  auc:0.9056 ap:0.8006 f1: 0.4624 pred_right: 18783 pred_wrong:417 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:58:30,156 P3795115 INFO pr:0.9664  rc:0.3039  auc:0.9056 ap:0.8006 f1: 0.4624 pred_right: 18783 pred_wrong:417 actu_right: 17874 actu_wrong: 1326
+2026-07-17 21:58:30,156 P3795115 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.12529245559048666, 'throughput_samples_per_sec': 7981.326531490928, 'peak_memory_mb': 29.291015625, 'energy_per_sample_joules': 0.006308412492753208}, 'CPU': {'inference_time_per_sample_ms': 0.25274154336694726, 'throughput_samples_per_sec': 3956.6111161556546, 'peak_memory_mb': 1869.3046875, 'energy_per_sample_joules': 0.016428200318851574}}
+2026-07-17 21:58:30,156 P3795115 INFO Starting clean-room hardware benchmarking...
+2026-07-17 21:58:30,919 P3795115 INFO Performance with f1: pr:0.9664  rc:0.3039  auc:0.9056 ap:0.8006 f1: 0.4624 pred_right: 18783 pred_wrong:417 actu_right: 17874 actu_wrong: 1326

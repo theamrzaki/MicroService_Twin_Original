@@ -9,7 +9,7 @@ FREQ_DOMAINS=(
 ##
 "AnoFusion"
 "encoder_decoder"
-"Art"
+#"Art"
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
 

@@ -476,7 +476,7 @@ class Model(nn.Module):
                     from numpy.polynomial.laguerre import lagvander
                     basis = lagvander(t, self.degree - 1).T
 
-                basis = torch.tensor(basis, dtype=torch.float16)
+                basis = torch.tensor(basis, dtype=torch.float32)
                 self.register_buffer("basis", basis)
 
             elif self.basis_type == "fourier":
