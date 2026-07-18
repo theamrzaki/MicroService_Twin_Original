@@ -4,11 +4,11 @@
 
 FREQ_DOMAINS=(
 ##
-"FITS_Legendre" #OrEdge
+#"FITS_Legendre" #OrEdge
 ##
-"AnoFusion"
-"Eadro"  
-#"encoder_decoder"
+#"AnoFusion"
+#"Eadro"  
+"encoder_decoder"
 #"Art"
 ##
 ##
@@ -27,7 +27,7 @@ DEVICE_NAME="Raspberry Pi Larger"
 source ~/miniforge3/etc/profile.d/conda.sh
 conda activate RCAEval
 
-SEEDS=(1 2 3)
+SEEDS=(1)
 
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
