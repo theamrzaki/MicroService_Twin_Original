@@ -77,26 +77,18 @@ class LinearAttention(nn.Module):
         out = out / denom
 
         return self.norm(self.out(out) + Z)
-	
+
 class MyModel(nn.Module):
 	def __init__(self, graph, **args):
 		super(MyModel, self).__init__()
 		self.name = args['FREQ_DOMAIN']
 		if is_raspberry_pi():
 			self.graph = torch.tensor(graph)#.cuda()
-			adj = torch.nonzero(self.graph).t()
 		else:
 			self.graph = torch.tensor(graph).cuda()
-			adj = dense_to_sparse(self.graph)[0]
 		self.label_weight = args['label_weight']
 		self.multi_fits = args["MULTI_FITS"]
-		#
-		trace2pod = torch.nn.functional.one_hot(adj[0], num_classes=graph.shape[0]) \
-			+ torch.nn.functional.one_hot(adj[1], num_classes=graph.shape[0])
-		trace2pod = trace2pod / trace2pod.sum(axis=0, keepdim=True)
-		trace2pod = torch.where(torch.isnan(
-			trace2pod), torch.full_like(trace2pod, 0), trace2pod)
-		
+
 		self.num_classes = graph.shape[0]
 		self.FREQ_DOMAIN = args['FREQ_DOMAIN']
 		self.req_loss_approach = args['req_loss_approach']
@@ -105,6 +97,23 @@ class MyModel(nn.Module):
 		self.modules_attn = args['modules_attn']
 
 		if self.FREQ_DOMAIN == "encoder_decoder":
+			adj = dense_to_sparse(self.graph)[0]
+			trace2pod = torch.nn.functional.one_hot(adj[0], num_classes=graph.shape[0]) \
+				+ torch.nn.functional.one_hot(adj[1], num_classes=graph.shape[0])
+			trace2pod = trace2pod / trace2pod.sum(axis=0, keepdim=True)
+			trace2pod = torch.where(torch.isnan(
+				trace2pod), torch.full_like(trace2pod, 0), trace2pod)
+			
+			self.node_emb = Embed(args['raw_node'], args['feature_node'], dim=4)
+			self.log_emb = Embed(args['log_len'], args['feature_log'], dim=4)
+			self.egde_emb = Embed(args['raw_edge'], args['feature_edge'], dim=5)
+			self.dense_node = nn.Linear(args['feature_node'], args['raw_node'])
+			self.dense_log = nn.Linear(args['feature_log'], args['log_len'])
+			self.dense_edge = nn.Linear(args['feature_edge'], args['raw_edge'])
+
+			self.trace2pod = torch.nn.functional.one_hot(adj[0], num_classes=self.graph.shape[0]) \
+				+ torch.nn.functional.one_hot(adj[1], num_classes=self.graph.shape[0])
+			self.trace2pod = self.trace2pod / 2
 			self.encoder = Encoder(graph=self.graph, node_embedding=args['feature_node'], edge_embedding=args['feature_edge'], log_embedding=args['feature_log'],
 							node_heads=args['num_heads_node'], log_heads=args['num_heads_log'], edge_heads=args['num_heads_edge'],
 							n2e_heads=args['num_heads_n2e'], e2n_heads=args['num_heads_e2n'],
@@ -114,6 +123,14 @@ class MyModel(nn.Module):
 							n2e_heads=args['num_heads_n2e'], e2n_heads=args['num_heads_e2n'],
 							dropout=args['dropout'], batch_size=args['batch_size'], window_size=args['window'], num_layer=args['num_layer'], trace2pod=trace2pod)
 		elif self.FREQ_DOMAIN in ["FITS_Pai","FITS_LPF","FITS","iTransformer","DLinear", "FreTS","TimesNet", "FEDformerModel","FITS_Legendre","FITS_chebyshev","FITS_lag","FITS_hermite"]:
+			
+			self.node_emb = Embed(args['raw_node'], args['feature_node'], dim=4)
+			self.log_emb = Embed(args['log_len'], args['feature_log'], dim=4)
+			self.egde_emb = Embed(args['raw_edge'], args['feature_edge'], dim=4)
+			self.dense_node = nn.Linear(args['feature_node'], args['raw_node'])
+			self.dense_log = nn.Linear(args['feature_log'], args['log_len'])
+			self.dense_edge = nn.Linear(args['feature_edge'], args['raw_edge'])
+
 			class Config: pass
 			config = Config()
 
@@ -172,139 +189,30 @@ class MyModel(nn.Module):
 				'edge': nn.Linear(config.enc_in,args['feature_edge'])
 			})
 
-			self.node_efea = adj2adj_simple(self.graph, args['feature_edge']) 
+			#self.node_efea = adj2adj_simple(self.graph, args['feature_edge']) 
 			# get edge mask
-			self.edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
+			#self.edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
 			
-
-		elif self.FREQ_DOMAIN == "FITS_LENGDRE_parallel_oth_compoenents":
-			class Config: pass
-			config = Config()
-			config.win_size = args['window']
-			config.degree = args.get('basis_degree', 5)  # Number of orthogonal components (K)
-			config.basis_type = args.get('basis_type', 'legendre')
-			self.degree = config.degree
-			self.basis_type = args['basis_type']
-			# 1. Generate the Orthogonal Bases (T -> K)
-			t_steps = np.linspace(-1, 1, config.win_size)
-			if config.basis_type == "legendre":
-				from scipy.special import legendre
-				basis = np.array([legendre(i)(t_steps) for i in range(config.degree)])
-			elif config.basis_type == "chebyshev":
-				from numpy.polynomial.chebyshev import chebvander
-				basis = chebvander(t_steps, config.degree - 1).T
-			else:
-				raise ValueError(f"Basis {config.basis_type} not implemented for this parallel mode.")
-
-			# Shapes: basis is [K, T]
-			basis = torch.tensor(basis, dtype=torch.float32)
-			self.register_buffer("time_basis", basis)  # [K, T]
-
-			# 2. Define the Inner Core Spatial Model (No temporal parameters)
-			# This processes a single orthogonal component slice [B, N, F]
-			class SpatialReconstructionModel(nn.Module):
-				def __init__(self, f_dim):
-					super().__init__()
-					# Simple two-layer MLP for cross-feature spatial mapping
-					self.net = nn.Sequential(
-						nn.Linear(f_dim, f_dim * 2),
-						nn.GELU(),
-						nn.Linear(f_dim * 2, f_dim)
-					)
-				def forward(self, x):
-					return self.net(x)
-
-			if self.multi_fits == 'true':
-				self.spatial_node = SpatialReconstructionModel(args['feature_node'])
-				self.spatial_log  = SpatialReconstructionModel(args['feature_log'])
-				self.spatial_edge = SpatialReconstructionModel(args['feature_edge'])
-			else:
-				config.enc_in = 10
-				self.shared_spatial = SpatialReconstructionModel(config.enc_in)
-				self.modality_proj = nn.ModuleDict({
-					'node': nn.Linear(args['feature_node'], config.enc_in),
-					'log': nn.Linear(args['feature_log'], config.enc_in),
-					'edge': nn.Linear(args['feature_edge'], config.enc_in)
-				})
-				self.modality_proj_out = nn.ModuleDict({
-					'node': nn.Linear(config.enc_in, args['feature_node']),
-					'log': nn.Linear(config.enc_in, args['feature_log']),
-					'edge': nn.Linear(config.enc_in, args['feature_edge'])
-				})
-
-			self.node_adj, self.node_efea, self.edge_adj, self.edge_efea = adj2adj(self.graph, args['batch_size'], args['window'], args['feature_edge'])
-		elif self.FREQ_DOMAIN == "FourierGNN":
-			self.adj_proj = nn.Linear(args['feature_edge'], 1)               # Edge → scalar weight
-			class Config: pass
-			config = Config()
-			config.DSR = 1  # Downsampling rate
-			config.pre_length = args['window']  # Window size
-			config.embed_size = args['feature_node']
-			config.feature_size = args['feature_node']
-			config.seq_length = args['window'] // config.DSR
-			config.hidden_size = 10
-			config.enc_in = 10
-			if self.multi_fits == 'false':
-				self.shared_fgn = FGN(pre_length=config.pre_length, embed_size=config.embed_size, feature_size=config.feature_size, seq_length=config.seq_length, hidden_size=config.hidden_size)
-				#self.modality_proj = nn.ModuleDict({
-				#		'node': nn.Linear(args['feature_node'], config.enc_in),
-				#		'log': nn.Linear(args['feature_log'], config.enc_in),
-				#		'edge': nn.Linear(args['feature_edge'], config.enc_in)
-				#})
-				self.modality_proj_out = nn.ModuleDict({
-					'node': nn.Linear(config.enc_in,args['feature_node']),
-					'log': nn.Linear(config.enc_in,args['feature_log'] ),
-    				'edge': nn.Linear(2*config.enc_in, args['feature_edge'])  # <-- doubled input dim
-				})
-			self.node_adj, self.node_efea, self.edge_adj, self.edge_efea = adj2adj(self.graph, args['batch_size'], args['window'], args['feature_edge']) # <--- can by modified DynamicTopology (as a parameter instead of being in init)
-		elif self.FREQ_DOMAIN == "GPT2":
-			class Config: pass
-			config = Config()
-
-			# Core parameters from LLM4MST paper
-			config.ln = True
-			config.task_name = "anomaly_detection"
-			config.pred_len = 10
-			config.seq_len = 10
-			config.patch_size = 1
-			config.stride = 1
-			config.d_ff = 768
-			config.use_gpu = True
-			config.mlp = 0
-			config.gpt_layers = 6
-
-			# Embedding parameters
-			config.enc_in = 768
-			config.d_model = 768
-			config.embed = "timeF"
-			config.freq = "h"
-			config.dropout = 0.1
-
-			# Task-specific
-			config.c_out = 1  # For forecasting/anomaly detection
-			config.num_class = 2  # For classification
-			# Hardware
-			config.use_gpu = True
-			if self.multi_fits == 'false':
-				self.shared_fits = GPT2Model(configs=config)
-				# as it would be padded by the model, we can use nn.Identity() to be the same as FITS and FGN
-				self.modality_proj = nn.ModuleDict({
-						'node': nn.Linear(args['feature_node'], config.enc_in),
-						'log': nn.Linear(args['feature_log'], config.enc_in),
-						'edge': nn.Linear(args['feature_edge'], config.enc_in)
-				})
-				self.modality_proj_out = nn.ModuleDict({
-					'node': nn.Linear(config.enc_in,args['feature_node']),
-					'log': nn.Linear(config.enc_in,args['feature_log'] ),
-					'edge': nn.Linear(config.enc_in,args['feature_edge'])
-				})
-			self.node_adj, self.node_efea, self.edge_adj, self.edge_efea = adj2adj(self.graph, args['batch_size'], args['window'], args['feature_edge']) # <--- can by modified DynamicTopology (as a parameter instead of being in init)
 
 		elif self.FREQ_DOMAIN == "Eadro":
 			event_num = args['log_len']
 			metric_num = args['raw_node']
 			node_num = args['raw_edge']
-			self.Eadro_Model = MainModel(event_num, metric_num, node_num)
+			#if args["raspberry_pi_smaller_model"] == 'true':
+			#	graph_hiddens = [16, 32]
+			#	trace_hiddens = [16, 32]
+			#	metric_hiddens = [16, 32]
+			#else:
+			#	graph_hiddens = None #work with the default graph_hiddens in Eadro
+			#	trace_hiddens = None #work with the default trace_hiddens in Eadro
+			#	metric_hiddens = None #work with the default metric_hiddens in Eadro
+			## now combine them all as kwargs for Eadro_Model
+			#kwargs = {
+			#	'graph_hiddens': graph_hiddens,
+			#	'trace_hiddens': trace_hiddens,
+			#	'metric_hiddens': metric_hiddens
+			#}
+			self.Eadro_Model = MainModel(event_num, metric_num, node_num)#, **kwargs)
 		
 		elif self.FREQ_DOMAIN == "AnoFusion":
 			self.AnoFusion = AnoFusion(
@@ -340,27 +248,11 @@ class MyModel(nn.Module):
 				#TODO to be in the forward only
 			)
 			
-		self.node_emb = Embed(args['raw_node'], args['feature_node'], dim=4)
-		self.log_emb = Embed(args['log_len'], args['feature_log'], dim=4)
-		self.egde_emb = Embed(args['raw_edge'], args['feature_edge'], dim=5)
-
-		self.trace2pod = torch.nn.functional.one_hot(adj[0], num_classes=self.graph.shape[0]) \
-			+ torch.nn.functional.one_hot(adj[1], num_classes=self.graph.shape[0])
-		self.trace2pod = self.trace2pod / 2
-
-		self.dense_node = nn.Linear(args['feature_node'], args['raw_node'])
-		self.dense_log = nn.Linear(args['feature_log'], args['log_len'])
-		self.dense_edge = nn.Linear(args['feature_edge'], args['raw_edge'])
 
 		self.show = nn.Sequential(nn.Linear(args['raw_node'] + args['raw_edge'] + args['log_len'], 128),
 							nn.LeakyReLU(inplace=True),
 							nn.Linear(128, 2))
-
-		#edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
-		#edge_index = torch.nonzero(edge_exists_mask, as_tuple=False)  # [num_edges, 2]
-		#self.register_buffer("edge_index", edge_index)
-#
-		#self.num_edges = edge_index.shape[0]
+		
 
 	def upsample_time_dim(self, tensor_4d: torch.Tensor, target_time: int) -> torch.Tensor:
 		B, T_old, N, F_ = tensor_4d.shape
@@ -420,6 +312,8 @@ class MyModel(nn.Module):
 			# Get embeddings
 			x_node_metric_fits, _ = self.node_emb(x['data_node'])  # Shape: [B, T, N, F]
 			x_node_logs_fits, _ = self.log_emb(x['data_log'])  # Shape: [B, T, L, F]
+			if x["data_edge"].dim() == 5:
+				x["data_edge"] = x['data_edge'].mean(dim=3)
 			x_edge_fits, _ = self.egde_emb(x['data_edge'])  # Shape: [B, T, E, F]
 
 			# Permute to FITS input shape: [B*N, T, F]
@@ -427,18 +321,9 @@ class MyModel(nn.Module):
 			x_node_metric_fits_input = x_node_metric_fits.permute(0, 2, 1, 3).reshape(B*N, T, F_METRIC) # [B*N, T, F]
 			_, _, N, F_LOG = x_node_logs_fits.shape
 			x_node_logs_fits_input = x_node_logs_fits.permute(0, 2, 1, 3).reshape(B*N, T, F_LOG) # [B*N, T, F]
-			_, _, _, _, E = x_edge_fits.shape
-			edge_idx = self.edge_exists_mask.nonzero(as_tuple=True)
-			src, dst = edge_idx
+			_, _, N, E = x_edge_fits.shape
+			x_edge_fits_input = x_edge_fits.permute(0, 2, 1, 3).reshape(B*N, T, E) # [B*N, T, E]
 
-			# make src and dst on the same device as x_edge_fits
-			src = src.to(x_edge_fits.device)
-			dst = dst.to(x_edge_fits.device)
-			x_edge_fits_input = (
-				x_edge_fits[:, :, src, dst, :]     # [B,T,num_edges,E]
-				.permute(0,2,1,3)                  # [B,num_edges,T,E]
-				.reshape(B * src.numel(), T, E)     # [B*num_edges,T,E]
-			)
 			del x_node_metric_fits
 			del x_node_logs_fits
 			del x_edge_fits
@@ -493,12 +378,8 @@ class MyModel(nn.Module):
 			# Reshape back to original shape
 			pred_metric_node = rec_node_metric_fits.reshape(B, N, -1, F_METRIC).permute(0, 2, 1, 3)  # [B, T, N, F]
 			pred_log_node    = rec_node_logs_fits.reshape(B, N, -1, F_LOG).permute(0, 2, 1, 3)  # [B, T, N, F]
-			# Keep edge predictions in masked form: [B, T, num_edges, E]
-			num_edges = src.numel()
-			pred_edge_masked = rec_edge_fits.reshape(
-				B, num_edges, -1, E
-			).permute(0,2,1,3)
-			l_edge = x['data_edge'][:, :, src, dst, :]
+
+			pred_edge_masked = rec_edge_fits.reshape(B, N, -1, E).permute(0, 2, 1, 3)  # [B, T, num_edges, E]
 
 			if self.req_loss_approach == "Normal-Recreation":
 				rec_node_metric_fits = torch.square(self.dense_node(pred_metric_node) - x['data_node'])  # Calculate squared loss on nodes (full) [B, T, N, F]
@@ -536,7 +417,7 @@ class MyModel(nn.Module):
 				# --- Time domain losses (MSE) ---
 				loss_time_node_metric = torch.square(self.dense_node(pred_metric_node) - x['data_node'])                        # [B, T, N, F]
 				loss_time_log = torch.square(self.dense_log(pred_log_node) - x['data_log'])                                   # [B, T, N, F]
-				loss_time_edge = torch.square(self.dense_edge(pred_edge_masked) - l_edge)                                      # [B, T, E, F]
+				loss_time_edge = torch.square(self.dense_edge(pred_edge_masked) - x["data_edge"])                                      # [B, T, E, F]
 
 				# Merge node and feature dims for Legendre encoding: [B, T, N*F]
 				pred_metric_merged = self.dense_node(pred_metric_node).flatten(2)
@@ -546,7 +427,7 @@ class MyModel(nn.Module):
 				true_log_merged = x['data_log'].flatten(2)
 
 				pred_edge_merged = self.dense_edge(pred_edge_masked).flatten(2)
-				true_edge_merged = l_edge.flatten(2)
+				true_edge_merged = x['data_edge'].flatten(2)
 
 				if self.basis_type == "legendre":
 					# Legendre encode: outputs [B, C, degree]
@@ -618,307 +499,25 @@ class MyModel(nn.Module):
 				rec_node_log_fits = self.rec_lambda * loss_time_log + self.auxi_lambda * loss_leg_log
 				rec_edge1 = self.rec_lambda * loss_time_edge + self.auxi_lambda * loss_leg_edge
 
-			trace2pod = self.trace2pod.float().to(rec_edge1.device)
+			#trace2pod = self.trace2pod.float().to(rec_edge1.device)
+#
+			#chunks = []
+			#for idx in range(0, trace2pod.shape[0], 512):
+			#	edge_chunk = rec_edge1[:, :, idx:idx+512, :]
+			#	map_chunk = trace2pod[idx:idx+512]
+#
+			#	chunks.append(
+			#		torch.einsum(
+			#			'btne,np->btpe',
+			#			edge_chunk,
+			#			map_chunk
+			#		)
+			#	)
+#
+			#rec_edge = torch.cat(chunks, dim=2)
 
-			chunks = []
-			for idx in range(0, trace2pod.shape[0], 512):
-				edge_chunk = rec_edge1[:, :, idx:idx+512, :]
-				map_chunk = trace2pod[idx:idx+512]
-
-				chunks.append(
-					torch.einsum(
-						'btne,np->btpe',
-						edge_chunk,
-						map_chunk
-					)
-				)
-
-			rec_edge = torch.cat(chunks, dim=2)
-
-			rec = torch.concat([rec_node_metric_fits,rec_node_log_fits, rec_edge], dim=-1)
+			rec = torch.concat([rec_node_metric_fits,rec_node_log_fits, rec_edge1], dim=-1)
 		
-		elif self.FREQ_DOMAIN == "FITS_LENGDRE_parallel_oth_compoenents":
-			B, T, _,_ = x['data_node'].shape
-			# get edge mask
-			edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
-			edge_exists_mask_batch = edge_exists_mask.unsqueeze(0).unsqueeze(0).repeat(B, T, 1, 1)  # [B, T, N, N]
-
-			# Get embeddings
-			x_node_metric_fits, _ = self.node_emb(x['data_node'])  # Shape: [B, T, N, F]
-			x_node_logs_fits, _ = self.log_emb(x['data_log'])  # Shape: [B, T, L, F]
-			x_edge_fits, _ = self.egde_emb(x['data_edge'])  # Shape: [B, T, E, F]
-			B, T, N, F_METRIC = x_node_metric_fits.shape
-			_, _, _, F_LOG = x_node_logs_fits.shape
-			_, _, _, _, E = x_edge_fits.shape
-
-			# Isolate masked active edges
-			x_edge_flat = x_edge_fits.reshape(B, T, N*N, E)
-			edge_mask_flat = edge_exists_mask.view(-1).to(x_edge_flat.device)
-			x_edge_masked = x_edge_flat[:, :, edge_mask_flat, :]  # [B, T, num_edges, E]
-			num_edges = edge_mask_flat.sum().item()
-
-			# --- STEP 1: Transform Time (T) to Orthogonal Components (K) ---
-			# self.time_basis shape: [K, T]. We want to project along T.
-			# Node mapping: [B, T, N, F] -> [B, K, N, F]
-			x_node_orth = torch.einsum('btnd,kt->bknd', x_node_metric_fits, self.time_basis)
-			x_log_orth  = torch.einsum('btnd,kt->bknd', x_node_logs_fits, self.time_basis)
-			x_edge_orth = torch.einsum('bthe,kt->bkhe', x_edge_masked, self.time_basis)
-
-			# --- STEP 2: Optional Shared Reduction Projections ---
-			if self.multi_fits == 'false':
-				x_node_orth = self.modality_proj['node'](x_node_orth) # [B, K, N, 10]
-				x_log_orth  = self.modality_proj['log'](x_log_orth)   # [B, K, N, 10]
-				x_edge_orth = self.modality_proj['edge'](x_edge_orth) # [B, K, num_edges, 10]
-
-			rec_node_list, rec_log_list, rec_edge_list = [], [], []
-
-			# --- STEP 3: THE COMPONENT LOOP (Over K components) ---
-			for k in range(self.degree):
-				# Slice single independent component snapshot: [B, N, F]
-				node_k = x_node_orth[:, k, :, :]
-				log_k  = x_log_orth[:, k, :, :]
-				edge_k = x_edge_orth[:, k, :, :]
-
-				if self.multi_fits == 'true':
-					rec_node_k = self.spatial_node(node_k)
-					rec_log_k  = self.spatial_log(log_k)
-					rec_edge_k = self.spatial_edge(edge_k)
-				else:
-					rec_node_k = self.shared_spatial(node_k)
-					rec_log_k  = self.shared_spatial(log_k)
-					rec_edge_k = self.shared_spatial(edge_k)
-
-				rec_node_list.append(rec_node_k)
-				rec_log_list.append(rec_log_k)
-				rec_edge_list.append(rec_edge_k)
-
-			# Stack along the component axis back to: [B, K, Spatial, Feature]
-			rec_node_orth = torch.stack(rec_node_list, dim=1)
-			rec_log_orth  = torch.stack(rec_log_list, dim=1)
-			rec_edge_orth = torch.stack(rec_edge_list, dim=1)
-
-			# --- STEP 4: Optional Shared Output Expansions ---
-			if self.multi_fits == 'false':
-				rec_node_orth = self.modality_proj_out['node'](rec_node_orth)
-				rec_log_orth  = self.modality_proj_out['log'](rec_log_orth)
-				rec_edge_orth = self.modality_proj_out['edge'](rec_edge_orth)
-
-			# --- STEP 5: Inverse Transformation back to Full Time (K -> T) ---
-			pinv_basis = torch.pinverse(self.time_basis) # [T, K]
-
-			# Reconstruct to [B, T, Spatial, Feature]
-			pred_metric_node = torch.einsum('bknd,tk->btnd', rec_node_orth, pinv_basis)
-			pred_log_node    = torch.einsum('bknd,tk->btnd', rec_log_orth, pinv_basis)
-			pred_edge_masked = torch.einsum('bkhe,tk->bthe', rec_edge_orth, pinv_basis)
-
-			# --- STEP 6: Compute Residual Reconstruction Loss ---
-			# Extract ground-truth edges using your existing masking strategy
-			mask = edge_exists_mask_batch.to(x['data_edge'].device).unsqueeze(-1)
-			l_edge = torch.masked_select(x['data_edge'], mask).reshape(B, T, edge_mask_flat.sum().item(), -1)
-
-			if self.req_loss_approach == "Normal-Recreation":
-				# Compute square loss relative to raw data via your dense layers
-				rec_node_metric_fits = torch.square(self.dense_node(pred_metric_node) - x['data_node'])
-				rec_node_log_fits    = torch.square(self.dense_log(pred_log_node) - x['data_log'])
-				rec_edge1            = torch.square(self.dense_edge(pred_edge_masked) - l_edge)
-			elif self.req_loss_approach  == "Legendre-style":
-				# Helper to merge node and feature dims for Legendre encoding
-				def merge_nf(x):
-					B, T, N, F = x.shape
-					return x.reshape(B, T, N * F)
-
-				# Helper to expand Legendre losses to match [B, T, N, F]
-				def expand_leg_loss(loss_leg, ref_tensor):
-					# loss_leg: [B, N] or [B, E] — dims after mean over degree
-					# ref_tensor: [B, T, N, F] or [B, T, E, F]
-					expanded = loss_leg.unsqueeze(1).expand(B, ref_tensor.shape[1], -1)  # [B, T, N or E]
-					expanded = expanded.unsqueeze(-1).expand(-1, -1, -1, ref_tensor.shape[-1])  # [B, T, N or E, F]
-					return expanded
-
-				# --- Time domain residuals ---
-				diff_node_metric = self.dense_node(pred_metric_node) - x['data_node']         # [B, T, N, F]
-				diff_node_log = self.dense_log(pred_log_node) - x['data_log']                 # [B, T, N, F]
-				diff_edge = self.dense_edge(pred_edge_masked) - l_edge                        # [B, T, E, F]
-
-				# --- Time domain losses (MSE) ---
-				loss_time_node_metric = torch.square(diff_node_metric)                        # [B, T, N, F]
-				loss_time_log = torch.square(diff_node_log)                                   # [B, T, N, F]
-				loss_time_edge = torch.square(diff_edge)                                      # [B, T, E, F]
-
-				# Merge node and feature dims for Legendre encoding: [B, T, N*F]
-				pred_metric_merged = merge_nf(self.dense_node(pred_metric_node))
-				true_metric_merged = merge_nf(x['data_node'])
-
-				pred_log_merged = merge_nf(self.dense_log(pred_log_node))
-				true_log_merged = merge_nf(x['data_log'])
-
-				pred_edge_merged = merge_nf(self.dense_edge(pred_edge_masked))
-				true_edge_merged = merge_nf(l_edge)
-
-				if self.basis_type == "legendre":
-					# Legendre encode: outputs [B, C, degree]
-					pred_metric_leg = FITS_Legendre_operations.legendre_encode(pred_metric_merged, degree=5)  # [B, N*F, D]
-					true_metric_leg = FITS_Legendre_operations.legendre_encode(true_metric_merged, degree=5)  # [B, N*F, D]
-
-					pred_log_leg = FITS_Legendre_operations.legendre_encode(pred_log_merged, degree=5)
-					true_log_leg = FITS_Legendre_operations.legendre_encode(true_log_merged, degree=5)
-					
-					pred_edge_leg = FITS_Legendre_operations.legendre_encode(pred_edge_merged, degree=5)
-					true_edge_leg = FITS_Legendre_operations.legendre_encode(true_edge_merged, degree=5)
-				elif self.basis_type == "chebyshev":
-					# Legendre encode: outputs [B, C, degree]
-					pred_metric_leg = FITS_chebyshev_operations.chebyshev_encode(pred_metric_merged, degree=5)  # [B, N*F, D]
-					true_metric_leg = FITS_chebyshev_operations.chebyshev_encode(true_metric_merged, degree=5)  # [B, N*F, D]
-
-					pred_log_leg = FITS_chebyshev_operations.chebyshev_encode(pred_log_merged, degree=5)
-					true_log_leg = FITS_chebyshev_operations.chebyshev_encode(true_log_merged, degree=5)
-					pred_edge_leg = FITS_chebyshev_operations.chebyshev_encode(pred_edge_merged, degree=5)
-					true_edge_leg = FITS_chebyshev_operations.chebyshev_encode(true_edge_merged, degree=5)
-				elif self.basis_type == "laguerre":
-					# Lagurre encode: outputs [B, C, degree]
-					pred_metric_leg = FITS_lag_operations.laguerre_encode(pred_metric_merged, degree=5)  # [B, N*F, D]
-					true_metric_leg = FITS_lag_operations.laguerre_encode(true_metric_merged, degree=5)  # [B, N*F, D]
-
-					pred_log_leg = FITS_lag_operations.laguerre_encode(pred_log_merged, degree=5)
-					true_log_leg = FITS_lag_operations.laguerre_encode(true_log_merged, degree=5)
-					pred_edge_leg = FITS_lag_operations.laguerre_encode(pred_edge_merged, degree=5)
-					true_edge_leg = FITS_lag_operations.laguerre_encode(true_edge_merged, degree=5)
-				elif self.basis_type == "hermite":
-					# Lagurre encode: outputs [B, C, degree]
-					pred_metric_leg = FITS_hermite_operations.hermite_encode(pred_metric_merged, degree=5)  # [B, N*F, D]
-					true_metric_leg = FITS_hermite_operations.hermite_encode(true_metric_merged, degree=5)  # [B, N*F, D]
-
-					pred_log_leg = FITS_hermite_operations.hermite_encode(pred_log_merged, degree=5)
-					true_log_leg = FITS_hermite_operations.hermite_encode(true_log_merged, degree=5)
-					pred_edge_leg = FITS_hermite_operations.hermite_encode(pred_edge_merged, degree=5)
-					true_edge_leg = FITS_hermite_operations.hermite_encode(true_edge_merged, degree=5)
-				elif self.basis_type == "fourier":
-					# Fourier encode: outputs [B, C, degree]
-					pred_metric_leg = self._build_fourier_basis(pred_metric_merged, degree=5,device=self.graph.device)  # [B, N*F, D]
-					true_metric_leg = self._build_fourier_basis(true_metric_merged, degree=5,device=self.graph.device)  # [B, N*F, D]
-
-					pred_log_leg = self._build_fourier_basis(pred_log_merged, degree=5,device=self.graph.device)
-					true_log_leg = self._build_fourier_basis(true_log_merged, degree=5,device=self.graph.device)
-					pred_edge_leg = self._build_fourier_basis(pred_edge_merged, degree=5,device=self.graph.device)
-					true_edge_leg = self._build_fourier_basis(true_edge_merged, degree=5,device=self.graph.device)
-
-				#				# ground truth projection
-				#def project_to_basis(x):
-				#	return torch.matmul(x.transpose(1, 2).contiguous(), self.basis_T)
-				#pred_metric_leg = project_to_basis(pred_metric_merged)
-				#true_metric_leg = project_to_basis(true_metric_merged)
-				#pred_log_leg = project_to_basis(pred_log_merged)
-				#true_log_leg = project_to_basis(true_log_merged)
-				#pred_edge_leg = project_to_basis(pred_edge_merged)
-				#true_edge_leg = project_to_basis(true_edge_merged)
-
-				# Compute MSE in Legendre domain, mean over degree dim (last)
-				loss_leg_metric = torch.square(pred_metric_leg - true_metric_leg).mean(dim=-1)   # [B, N*F]
-				loss_leg_log = torch.square(pred_log_leg - true_log_leg).mean(dim=-1)            # [B, N*F]
-				loss_leg_edge = torch.square(pred_edge_leg - true_edge_leg).mean(dim=-1)         # [B, E*F]
-
-				# Reshape back to [B, N, F] or [B, E, F]
-				B, T, N, F = diff_node_metric.shape
-				B, T, N, FLOG = diff_node_log.shape
-				_, _, E, FEDGE = diff_edge.shape
-
-				loss_leg_metric = loss_leg_metric.reshape(B, N, F)  # [B, N, F]
-				loss_leg_log = loss_leg_log.reshape(B, N, FLOG)
-				loss_leg_edge = loss_leg_edge.reshape(B, E, FEDGE)
-
-				# Expand to match time dim [B, T, N, F] or [B, T, E, F]
-				loss_leg_metric = loss_leg_metric.unsqueeze(1).expand(B, T, N, F)
-				loss_leg_log = loss_leg_log.unsqueeze(1).expand(B, T, N, FLOG)
-				loss_leg_edge = loss_leg_edge.unsqueeze(1).expand(B, T, E, FEDGE)
-
-				# --- Final combined losses ---
-				rec_node_metric_fits = self.rec_lambda * loss_time_node_metric + self.auxi_lambda * loss_leg_metric
-				rec_node_log_fits = self.rec_lambda * loss_time_log + self.auxi_lambda * loss_leg_log
-				rec_edge1 = self.rec_lambda * loss_time_edge + self.auxi_lambda * loss_leg_edge
-				
-
-			# --- STEP 7: Scatter Masked Edges Back into Full Graph Space [B, T, N, N, E] ---
-			rec_edge = torch.matmul(rec_edge1.permute(
-				0, 1, 3, 2), self.trace2pod.float().to(rec_edge1.device)).permute(0, 1, 3, 2)
-			#rec_edge = torch.matmul(rec_edge1.permute(
-			#	0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
-			rec = torch.concat([rec_node_metric_fits,rec_node_log_fits, rec_edge], dim=-1)
-
-		elif self.FREQ_DOMAIN in ["FourierGNN"]:
-			B, T, _,_ = x['data_node'].shape
-			# get edge mask
-			edge_exists_mask = (self.node_efea.sum(dim=-1) != 0)  # [N, N] boolean mask
-			edge_exists_mask_batch = edge_exists_mask.unsqueeze(0).unsqueeze(0).repeat(B, T, 1, 1)  # [B, T, N, N]
-
-			# Get embeddings
-			x_node_metric_fits, _ = self.node_emb(x['data_node'])  # Shape: [B, T, N, F]
-			x_node_logs_fits, _ = self.log_emb(x['data_log'])  # Shape: [B, T, L, F]
-			x_edge_fits, _ = self.egde_emb(x['data_edge'])  # Shape: [B, T, E, F]
-			x_node_combined = torch.cat([x_node_metric_fits, x_node_logs_fits], dim=-1)  # [B, T, N, F_m + F_l]
-
-			# Permute to FITS input shape: [B*N, T, F]
-			_, _, N, F_METRIC = x_node_metric_fits.shape
-			x_node_input = x_node_combined.permute(0, 2, 1, 3).contiguous()  # [B, N, T, F]
-			_, _, N, F_LOG = x_node_logs_fits.shape
-			#x_node_logs_fits_input = x_node_logs_fits.permute(0, 2, 1, 3).reshape(B*N, T, F_LOG) # [B*N, T, F]
-			_, _, _, _, E = x_edge_fits.shape
-			#x_edge_flat = x_edge_fits.reshape(B, T, N*N, E)  # [B, T, N*N, E]
-			edge_mask_flat = edge_exists_mask.view(-1)  # [N*N]
-			#x_edge_masked = x_edge_flat[:, :, edge_mask_flat, :]  # select only existing edges --> # [B, T, N, N]
-			#x_edge_fits_input = x_edge_masked.permute(0, 2, 1, 3).reshape(B * edge_mask_flat.sum().item(), T, E)  # [B*num_edges, T, E]
-			#As fourierGC expects the full adjacency matrix of shape [B, T, N, N], not masked edges -> but zero masked edges
-			adj_ft_full = self.adj_proj(x_edge_fits)  # project edge features to scalar weights [B, T, N, N, 1]
-			adj_ft_full = adj_ft_full.squeeze(-1)    # [B, T, N, N]
-			adj_ft = adj_ft_full * edge_exists_mask.unsqueeze(0).unsqueeze(0)  # zero masked edges
-
-			rec_node_features = self.shared_fgn(x_node_input, adj_ft)  # [B, N, pre_length]
-			
-			"""
-			if self.FREQ_DOMAIN == "FourierGNN":
-				inner_model = self.shared_fgn
-			elif self.FREQ_DOMAIN == "FITS":
-				inner_model = self.shared_fits
-			elif self.FREQ_DOMAIN == "GPT2":
-				inner_model = self.shared_GPT2
-			
-			
-			if not self.multi_fits:
-				x_node_proj = self.modality_proj['node'](x_node_metric_fits_input)
-				rec_node_metric_fits = self.modality_proj_out['node'](inner_model(x_node_proj))
-
-				x_log_proj = self.modality_proj['log'](x_node_logs_fits_input)
-				rec_node_logs_fits = self.modality_proj_out['log'](inner_model(x_log_proj))
-
-				x_edge_proj = self.modality_proj['edge'](x_edge_fits_input)
-				rec_edge_fits = self.modality_proj_out['edge'](inner_model(x_edge_proj))
-			else:# only implemened for FITS
-				rec_node_metric_fits, _ = inner_model(x_node_metric_fits_input)  # [B*N, T', F]
-				rec_node_logs_fits, _   = inner_model(x_node_logs_fits_input)  # [B*N, T', F]
-				rec_edge_fits, _ = inner_model(x_edge_fits_input)  # [B*N*N, T', E]
-			"""
-			rec_node_metric_fits = self.modality_proj_out['node'](rec_node_features)  # [B, N, F_m]
-			rec_node_logs_fits   = self.modality_proj_out['log'](rec_node_features)    # [B, N, F_l]
-			
-			rec_edge_fits = self.shared_fgn.compute_edge_features(rec_node_features)  # [B, N*N, 2*D]
-			rec_edge_fits = self.modality_proj_out['edge'](rec_edge_fits)  # [B, N*N, E]
-
-			# Reshape back to original shape
-			pred_metric_node = rec_node_metric_fits.reshape(B, N, -1, F_METRIC).permute(0, 2, 1, 3)  # [B, T, N, F]
-			pred_log_node    = rec_node_logs_fits.reshape(B, N, -1, F_LOG).permute(0, 2, 1, 3)  # [B, T, N, F]
-			# Keep edge predictions in masked form: [B, T, num_edges, E]
-			pred_edge_masked = rec_edge_fits[:, edge_mask_flat, :]  # [B, num_edges, E]
-			pred_edge_masked = pred_edge_masked.reshape(B, edge_mask_flat.sum().item(), -1, E).permute(0, 2, 1, 3)  # [B, T, num_edges, E]
-
-			# Extract ground truth edges using mask: [B, T, num_edges, E]
-			l_edge = torch.masked_select(x['data_edge'], edge_exists_mask_batch.unsqueeze(-1)).reshape(B, T, edge_mask_flat.sum().item(), -1)
-
-			# Square Loss
-			rec_node_metric_fits = torch.square(self.dense_node(pred_metric_node) - x['data_node'])  # Calculate squared loss on nodes (full) [B, T, N, F]
-			rec_node_log_fits 	 = torch.square(self.dense_log(pred_log_node) - x['data_log'])  # Calculate squared loss on nodes (full) [B, T, N, F]
-			rec_edge1 = torch.square(self.dense_edge(pred_edge_masked) - l_edge)  #Calculate squared loss on edges (masked only) [B, T, num_edges, E]
-			rec_edge = torch.matmul(rec_edge1.permute(
-				0, 1, 3, 2), self.trace2pod.float()).permute(0, 1, 3, 2)
-			rec = torch.concat([rec_node_metric_fits,rec_node_log_fits, rec_edge], dim=-1)
 		elif self.FREQ_DOMAIN in ["Eadro"]:
 			device = x['data_edge'].device
 			self.graph = self.graph.to(device)
