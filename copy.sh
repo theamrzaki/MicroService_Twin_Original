@@ -1,23 +1,31 @@
-sudo scp -r "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/FITS_Legendre-MSDS-Epochs300-Seed1ExpNameRQ1_main" db2003smaller@130.63.253.24:/home/db2003smaller/MicroService_Twin_Original/result/
-
-sudo scp -r "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/FITS_Legendre-MSDS-Epochs300-Seed2ExpNameRQ1_main" db2003smaller@130.63.253.24:/home/db2003smaller/MicroService_Twin_Original/result/
-
-sudo scp -r "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/FITS_Legendre-MSDS-Epochs300-Seed3ExpNameRQ1_main" db2003smaller@130.63.253.24:/home/db2003smaller/MicroService_Twin_Original/result/
 
 
+#!/bin/bash
+MODEL_NAMES=("AnoFusion" "FITS_Legendre" "Eadro" "encoder_decoder")
+DATASET_NAMES=("MSDS" "SN" "TT")
+#IP_ADDRESS="130.63.254.162" db2003smaller
+IP_ADDRESS="130.63.103.80"
+SEEDS=("1")
+DEVICE_NAME="db2003larger"
 
+#This sets up SSH keys so scp never asks for a password again.
+ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
+ssh-copy-id $DEVICE_NAME@$IP_ADDRESS
 
-sudo scp -r "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/FITS_Legendre-SN-Epochs300-Seed1ExpNameRQ1_main" db2003smaller@130.63.253.24:/home/db2003smaller/MicroService_Twin_Original/result/
+# Give your user permission to read the source folder so you don't need sudo inside the loops
+sudo chown -R $(whoami) "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/"
 
-sudo scp -r "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/FITS_Legendre-SN-Epochs300-Seed2ExpNameRQ1_main" db2003smaller@130.63.253.24:/home/db2003smaller/MicroService_Twin_Original/result/
-
-sudo scp -r "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/FITS_Legendre-SN-Epochs300-Seed3ExpNameRQ1_main" db2003smaller@130.63.253.24:/home/db2003smaller/MicroService_Twin_Original/result/
-
-
-
-
-sudo scp -r "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/FITS_Legendre-TT-Epochs50-Seed1ExpNameRQ1_main" db2003smaller@130.63.253.24:/home/db2003smaller/MicroService_Twin_Original/result/
-
-sudo scp -r "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/FITS_Legendre-TT-Epochs50-Seed2ExpNameRQ1_main" db2003smaller@130.63.253.24:/home/db2003smaller/MicroService_Twin_Original/result/
-
-sudo scp -r "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/FITS_Legendre-TT-Epochs50-Seed3ExpNameRQ1_main" db2003smaller@130.63.253.24:/home/db2003smaller/MicroService_Twin_Original/result/
+for seed in "${SEEDS[@]}"; do
+    for model in "${MODEL_NAMES[@]}"; do
+        for dataset in "${DATASET_NAMES[@]}"; do
+            if [ "$dataset" == "TT" ]; then
+                EPOCHS="50"
+            else
+                EPOCHS="300"
+            fi
+            
+            # No sudo needed here anymore
+            scp -r "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/${model}-${dataset}-Epochs${EPOCHS}-Seed${seed}ExpNameRQ1_main-lowshow-simplegraph" $DEVICE_NAME@$IP_ADDRESS:/home/$DEVICE_NAME/MicroService_Twin_Original/result/
+        done
+    done
+done
