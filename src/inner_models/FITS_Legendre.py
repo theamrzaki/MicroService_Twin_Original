@@ -559,7 +559,7 @@ class Model(nn.Module):
                 B, C, D, _ = spec.shape
                 spec = spec.reshape(B, C, 2 * D)                     # [B, C, 2*degree]
 
-            spec = legendre_encode(x, degree=self.degree)
+            #spec = legendre_encode(x, degree=self.degree)
             #spec = spec.transpose(1, 2)
 
         # spec: [B, C, degree]
@@ -629,10 +629,10 @@ class Model(nn.Module):
 
                 # Inverse FFT → time domain
                 low_xy = torch.fft.irfft(full_spec, n=self.seq_len, dim=1)  # [B, L, C]
-            low_xy = legendre_decode(
-                spec_up,
-                seq_len=self.seq_len
-            )#.transpose(1, 2)
+            #low_xy = legendre_decode(
+            #    spec_up,
+            #    seq_len=self.seq_len
+            #)#.transpose(1, 2)
 
         #low_xy.shape
         #torch.Size([1200, 10, 10])

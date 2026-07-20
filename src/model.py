@@ -368,7 +368,7 @@ class MyModel(nn.Module):
 				# Calculate differences (time domain residuals)
 				diff_node_metric = self.dense_node(pred_metric_node) - x['data_node']         # [B, T, N, F]
 				diff_node_log = self.dense_log(pred_log_node) - x['data_log']                 # [B, T, N, F]
-				diff_edge = self.dense_edge(pred_edge_masked) - l_edge                        # [B, T, E, F]
+				diff_edge = self.dense_edge(pred_edge_masked) - x["data_edge"]                        # [B, T, E, F]
 
 				# Time domain losses (MSE)
 				loss_time_node_metric = torch.square(diff_node_metric)
@@ -379,8 +379,6 @@ class MyModel(nn.Module):
 				loss_freq_node_metric = torch.fft.rfft(diff_node_metric, dim=1).abs()  # [B, T', N, F]
 				loss_freq_log = torch.fft.rfft(diff_node_log, dim=1).abs()
 				loss_freq_edge = torch.fft.rfft(diff_edge, dim=1).abs()
-
-				del diff_node_metric, diff_node_log, diff_edge
 
 				# Upsample frequency losses to match time domain shape
 				loss_freq_node_metric = self.upsample_time_dim(loss_freq_node_metric, target_time=diff_node_metric.shape[1])

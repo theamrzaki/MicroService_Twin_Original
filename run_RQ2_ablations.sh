@@ -4,7 +4,7 @@ source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval
 
 FREQ_DOMAIN="FITS_Legendre" 
-DATA_SOURCES=("SN" "TT") # "MSDS")
+DATA_SOURCES=("SN" "TT" "MSDS") # )
 SEEDS=(1)
 ## OrAnomaly / without LPF / without time-freq fredf loss
 #for SEED in "${SEEDS[@]}"; do
@@ -84,7 +84,7 @@ SEEDS=(1)
 FREQ_DOMAIN="FITS_Legendre"
 req_loss_approach="Legendre-style"
 
-basis_type=("chebyshev" "fourier" "hermite" "laguerre" "legendre" )
+basis_type=("fourier") # ("chebyshev" "fourier" "hermite" "laguerre" "legendre" )
 
 
 for SEED in "${SEEDS[@]}"; do
@@ -118,47 +118,48 @@ done
 
 
 
-FREQ_DOMAINS=(
-  "FreTS"
-  "DLinear"
-  "iTransformer"
-  "TimesNet"
-  "FEDformerModel"
-  "FITS_Legendre" 
-)
-ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel")
-
-for SEED in "${SEEDS[@]}"; do
-  for datasource in "${DATA_SOURCES[@]}"; do
-    for FREQ in "${FREQ_DOMAINS[@]}"; do
-
-    if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
-      echo "--------------------------------"
-      echo "1) Running $FREQ with Legendre-style loss and LPF filter, data source: $datasource"
-      echo "--------------------------------"
-      python main.py \
-        --FREQ_DOMAIN="$FREQ" \
-        --req_loss_approach='Legendre-style' \
-        --filter_used="LPF" \
-        --random_seed="$SEED" \
-        --data_source="$datasource" \
-        --evaluate=false \
-        --gpu=true \
-        --experiment_name="RQ2_architecture"
-    else
-      echo "--------------------------------"
-      echo "2) Running $FREQ with Normal-Recreation loss, data source: $datasource"
-      echo "--------------------------------"
-      python main.py \
-        --FREQ_DOMAIN="$FREQ" \
-        --req_loss_approach='Normal-Recreation' \
-        --random_seed="$SEED" \
-        --data_source="$datasource" \
-        --evaluate=false \
-        --gpu=true \
-        --experiment_name="RQ2_architecture"
-    fi
-  done
-  done
-done
-
+#FREQ_DOMAINS=(
+#  "FreTS"
+#  "DLinear"
+#  "iTransformer"
+#  "TimesNet"
+#  "FEDformerModel"
+#  "FITS_Legendre" 
+#)
+#ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel")
+#
+#for SEED in "${SEEDS[@]}"; do
+#  for datasource in "${DATA_SOURCES[@]}"; do
+#    for FREQ in "${FREQ_DOMAINS[@]}"; do
+#
+#    if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
+#      echo "--------------------------------"
+#      echo "1) Running $FREQ with Legendre-style loss and LPF filter, data source: $datasource"
+#      echo "--------------------------------"
+#      python main.py \
+#        --FREQ_DOMAIN="$FREQ" \
+#        --req_loss_approach='Legendre-style' \
+#        --filter_used="LPF" \
+#        --random_seed="$SEED" \
+#        --data_source="$datasource" \
+#        --evaluate=false \
+#        --gpu=true \
+#        --experiment_name="RQ2_architecture"
+#    else
+#      echo "--------------------------------"
+#      echo "2) Running $FREQ with Normal-Recreation loss, data source: $datasource"
+#      echo "--------------------------------"
+#      python main.py \
+#        --FREQ_DOMAIN="$FREQ" \
+#        --req_loss_approach='Normal-Recreation' \
+#        --random_seed="$SEED" \
+#        --data_source="$datasource" \
+#        --evaluate=false \
+#        --gpu=true \
+#        --experiment_name="RQ2_architecture"
+#    fi
+#  done
+#  done
+#done
+#
+#
