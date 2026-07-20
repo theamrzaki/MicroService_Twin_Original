@@ -4,8 +4,8 @@ source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval
 
 FREQ_DOMAIN="FITS_Legendre" 
-DATA_SOURCES=("SN" "TT" "MSDS")
-SEEDS=(2)
+DATA_SOURCES=("MSDS")
+SEEDS=(1)
 # OrAnomaly / without LPF / without time-freq fredf loss
 for SEED in "${SEEDS[@]}"; do
     for data_source in "${DATA_SOURCES[@]}"; do
