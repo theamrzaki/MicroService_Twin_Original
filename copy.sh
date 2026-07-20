@@ -1,12 +1,12 @@
 
 
 #!/bin/bash
-MODEL_NAMES=("AnoFusion" "FITS_Legendre" "Eadro" "encoder_decoder")
+MODEL_NAMES=("encoder_decoder")
 DATASET_NAMES=("MSDS" "SN" "TT")
-#IP_ADDRESS="130.63.254.162" db2003smaller
-IP_ADDRESS="130.63.103.80"
+IP_ADDRESS="130.63.254.162" #db2003smaller
+#IP_ADDRESS="130.63.103.80"
 SEEDS=("1")
-DEVICE_NAME="db2003larger"
+DEVICE_NAME="db2003smaller"
 
 #This sets up SSH keys so scp never asks for a password again.
 ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
