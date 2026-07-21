@@ -1,0 +1,124 @@
+2026-07-21 11:33:24,430 P2659882 INFO ---- Model: ----MSTGAD-feab2129----random_seed : 3----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : AnoFusion----Multi Fits : false----train : True----evaluate : False
+2026-07-21 11:33:24,431 P2659882 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-21 11:33:37,220 P2659882 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-21 11:33:37,380 P2659882 INFO Trainable Parameters Breakdown:
+2026-07-21 11:33:37,380 P2659882 INFO --------------------------------------------------------------------------------
+2026-07-21 11:33:37,380 P2659882 INFO Reconstruction-Specific Parameters:
+2026-07-21 11:33:37,380 P2659882 INFO AnoFusion.metric_proj.weight             | shape: (10, 7)                   | params: 70
+2026-07-21 11:33:37,380 P2659882 INFO AnoFusion.metric_proj.bias               | shape: (10,)                     | params: 10
+2026-07-21 11:33:37,380 P2659882 INFO AnoFusion.log_proj.weight                | shape: (10, 60)                  | params: 600
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.log_proj.bias                  | shape: (10,)                     | params: 10
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.trace_proj.weight              | shape: (10, 2)                   | params: 20
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.trace_proj.bias                | shape: (10,)                     | params: 10
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.anofusion.GTN.weight           | shape: (1, 1)                    | params: 1
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.anofusion.GTN.layers.0.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.anofusion.GTN.layers.0.layer2.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.anofusion.GTN.layers.1.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.anofusion.GTN.layers.2.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.anofusion.GTN.layers.3.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.anofusion.GTN.layers.4.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.anofusion.GAT_GRU.weight       | shape: (1, 1)                    | params: 1
+2026-07-21 11:33:37,381 P2659882 INFO AnoFusion.anofusion.GAT_GRU.soft         | shape: (2,)                      | params: 2
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gru.weight_ih_l0 | shape: (60, 20)                  | params: 1,200
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gru.weight_hh_l0 | shape: (60, 20)                  | params: 1,200
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gru.bias_ih_l0 | shape: (60,)                     | params: 60
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gru.bias_hh_l0 | shape: (60,)                     | params: 60
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.BN.weight    | shape: (10,)                     | params: 10
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.BN.bias      | shape: (10,)                     | params: 10
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.linear.weight | shape: (20, 20)                  | params: 400
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.linear.bias  | shape: (20,)                     | params: 20
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.0.b | shape: (20,)                     | params: 20
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.0.W.weight | shape: (20, 30)                  | params: 600
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.1.b | shape: (20,)                     | params: 20
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.1.W.weight | shape: (20, 30)                  | params: 600
+2026-07-21 11:33:37,382 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.2.b | shape: (20,)                     | params: 20
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.2.W.weight | shape: (20, 30)                  | params: 600
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.3.b | shape: (20,)                     | params: 20
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.3.W.weight | shape: (20, 30)                  | params: 600
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.4.b | shape: (20,)                     | params: 20
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.4.W.weight | shape: (20, 30)                  | params: 600
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.5.b | shape: (20,)                     | params: 20
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.5.W.weight | shape: (20, 30)                  | params: 600
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.out_att.b | shape: (20,)                     | params: 20
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.out_att.W.weight | shape: (20, 120)                 | params: 2,400
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.linT.weight          | shape: (5, 10)                   | params: 50
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.linT.bias            | shape: (5,)                      | params: 5
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.lin1.weight          | shape: (64, 270)                 | params: 17,280
+2026-07-21 11:33:37,383 P2659882 INFO AnoFusion.anofusion.lin1.bias            | shape: (64,)                     | params: 64
+2026-07-21 11:33:37,384 P2659882 INFO AnoFusion.anofusion.lin2.weight          | shape: (2, 64)                   | params: 128
+2026-07-21 11:33:37,384 P2659882 INFO AnoFusion.anofusion.lin2.bias            | shape: (2,)                      | params: 2
+2026-07-21 11:33:37,384 P2659882 INFO AnoFusion.post_proj.weight               | shape: (69, 20)                  | params: 1,380
+2026-07-21 11:33:37,384 P2659882 INFO AnoFusion.post_proj.bias                 | shape: (69,)                     | params: 69
+2026-07-21 11:33:37,384 P2659882 INFO Subtotal: 28,826
+2026-07-21 11:33:37,384 P2659882 INFO --------------------------------------------------------------------------------
+2026-07-21 11:33:37,384 P2659882 INFO Common Parameters:
+2026-07-21 11:33:37,384 P2659882 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-21 11:33:37,384 P2659882 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-21 11:33:37,384 P2659882 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-21 11:33:37,385 P2659882 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-21 11:33:37,385 P2659882 INFO Subtotal: 9,218
+2026-07-21 11:33:37,385 P2659882 INFO --------------------------------------------------------------------------------
+2026-07-21 11:33:37,385 P2659882 INFO Total Trainable Parameters: 38,044
+
+2026-07-21 11:33:37,385 P2659882 INFO Trainable Parameters: 38044, reconstruction: 28826, common: 9218
+2026-07-21 11:33:37,385 P2659882 INFO model : init weight
+2026-07-21 11:33:37,387 P2659882 INFO Using GPU...
+2026-07-21 11:33:37,423 P2659882 INFO optimizer : using AdaBelief
+2026-07-21 11:33:37,424 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:33:37,424 P2659882 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-21 11:34:01,765 P2659882 INFO Epoch 0/50, all_loss:8.19399 cls_loss:8.19399 rec_loss:0.17714 [24.34s]; best loss:8.19399, patience : 0
+2026-07-21 11:34:01,765 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:34:01,765 P2659882 INFO 1/50 starting... lr: 0.001 para:0.5
+2026-07-21 11:34:21,597 P2659882 INFO Epoch 1/50, all_loss:3.99583 cls_loss:3.99583 rec_loss:0.20059 [19.83s]; best loss:3.99583, patience : 0
+2026-07-21 11:34:21,597 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:34:21,597 P2659882 INFO 2/50 starting... lr: 0.001 para:0.3333333432674408
+2026-07-21 11:34:41,053 P2659882 INFO Epoch 2/50, all_loss:3.10243 cls_loss:3.10243 rec_loss:0.21875 [19.45s]; best loss:3.10243, patience : 0
+2026-07-21 11:34:52,343 P2659882 INFO pr:0.9418  rc:0.4219  auc:0.9838 ap:0.8741 f1: 0.5827 pred_right: 1080749 pred_wrong:15451 actu_right: 1061711 actu_wrong: 34489
+2026-07-21 11:34:55,737 P2659882 INFO pr:0.9406  rc:0.4194  auc:0.9834 ap:0.8731 f1: 0.5801 pred_right: 463198 pred_wrong:6602 actu_right: 454992 actu_wrong: 14808
+2026-07-21 11:34:55,741 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:34:55,741 P2659882 INFO 3/50 starting... lr: 0.001 para:0.25
+2026-07-21 11:35:22,140 P2659882 INFO Epoch 3/50, all_loss:2.63876 cls_loss:2.63876 rec_loss:0.22361 [26.39s]; best loss:2.63876, patience : 0
+2026-07-21 11:35:31,712 P2659882 INFO pr:0.8987  rc:0.4866  auc:0.9882 ap:0.8929 f1: 0.6313 pred_right: 1077527 pred_wrong:18673 actu_right: 1061711 actu_wrong: 34489
+2026-07-21 11:35:35,635 P2659882 INFO pr:0.8983  rc:0.4816  auc:0.9876 ap:0.8917 f1: 0.6270 pred_right: 461862 pred_wrong:7938 actu_right: 454992 actu_wrong: 14808
+2026-07-21 11:35:35,640 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:35:35,640 P2659882 INFO 4/50 starting... lr: 0.001 para:0.20000000298023224
+2026-07-21 11:35:55,610 P2659882 INFO Epoch 4/50, all_loss:2.38062 cls_loss:2.38062 rec_loss:0.22323 [19.97s]; best loss:2.38062, patience : 0
+2026-07-21 11:36:05,562 P2659882 INFO pr:0.7489  rc:0.6247  auc:0.9907 ap:0.9085 f1: 0.6812 pred_right: 1067427 pred_wrong:28773 actu_right: 1061708 actu_wrong: 34492
+2026-07-21 11:36:09,635 P2659882 INFO pr:0.7515  rc:0.6225  auc:0.9903 ap:0.9082 f1: 0.6809 pred_right: 457534 pred_wrong:12266 actu_right: 454992 actu_wrong: 14808
+2026-07-21 11:36:09,640 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:36:09,640 P2659882 INFO 5/50 starting... lr: 0.001 para:0.1666666716337204
+2026-07-21 11:36:29,740 P2659882 INFO Epoch 5/50, all_loss:2.16720 cls_loss:2.16720 rec_loss:0.21645 [20.10s]; best loss:2.16720, patience : 0
+2026-07-21 11:36:39,558 P2659882 INFO pr:0.9291  rc:0.4830  auc:0.9926 ap:0.9207 f1: 0.6356 pred_right: 1078272 pred_wrong:17928 actu_right: 1061713 actu_wrong: 34487
+2026-07-21 11:36:48,336 P2659882 INFO pr:0.9307  rc:0.4770  auc:0.9922 ap:0.9191 f1: 0.6307 pred_right: 462211 pred_wrong:7589 actu_right: 454992 actu_wrong: 14808
+2026-07-21 11:36:48,338 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:36:48,341 P2659882 INFO 6/50 starting... lr: 0.001 para:0.1428571492433548
+2026-07-21 11:37:09,923 P2659882 INFO Epoch 6/50, all_loss:2.02461 cls_loss:2.02461 rec_loss:0.21118 [21.58s]; best loss:2.02461, patience : 0
+2026-07-21 11:37:20,214 P2659882 INFO pr:0.8769  rc:0.5882  auc:0.9935 ap:0.9289 f1: 0.7041 pred_right: 1073066 pred_wrong:23134 actu_right: 1061714 actu_wrong: 34486
+2026-07-21 11:37:24,574 P2659882 INFO pr:0.8832  rc:0.5869  auc:0.9932 ap:0.9279 f1: 0.7052 pred_right: 459960 pred_wrong:9840 actu_right: 454992 actu_wrong: 14808
+2026-07-21 11:37:24,579 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:37:24,579 P2659882 INFO 7/50 starting... lr: 0.001 para:0.125
+2026-07-21 11:37:44,436 P2659882 INFO Epoch 7/50, all_loss:1.93254 cls_loss:1.93254 rec_loss:0.20745 [19.85s]; best loss:1.93254, patience : 0
+2026-07-21 11:37:54,570 P2659882 INFO pr:0.8162  rc:0.7032  auc:0.9941 ap:0.9334 f1: 0.7555 pred_right: 1066485 pred_wrong:29715 actu_right: 1061713 actu_wrong: 34487
+2026-07-21 11:38:00,351 P2659882 INFO pr:0.8164  rc:0.6971  auc:0.9937 ap:0.9322 f1: 0.7520 pred_right: 457155 pred_wrong:12645 actu_right: 454992 actu_wrong: 14808
+2026-07-21 11:38:00,356 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:38:00,356 P2659882 INFO 8/50 starting... lr: 0.001 para:0.1111111119389534
+2026-07-21 11:38:26,870 P2659882 INFO Epoch 8/50, all_loss:1.83212 cls_loss:1.83212 rec_loss:0.20121 [26.51s]; best loss:1.83212, patience : 0
+2026-07-21 11:38:37,478 P2659882 INFO pr:0.8376  rc:0.7051  auc:0.9948 ap:0.9384 f1: 0.7656 pred_right: 1067161 pred_wrong:29039 actu_right: 1061706 actu_wrong: 34494
+2026-07-21 11:38:41,987 P2659882 INFO pr:0.8384  rc:0.6973  auc:0.9944 ap:0.9370 f1: 0.7614 pred_right: 457484 pred_wrong:12316 actu_right: 454992 actu_wrong: 14808
+2026-07-21 11:38:41,992 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:38:41,992 P2659882 INFO 9/50 starting... lr: 0.001 para:0.10000000149011612
+2026-07-21 11:39:02,928 P2659882 INFO Epoch 9/50, all_loss:1.73945 cls_loss:1.73945 rec_loss:0.19665 [20.93s]; best loss:1.73945, patience : 0
+2026-07-21 11:39:13,624 P2659882 INFO pr:0.8896  rc:0.6533  auc:0.9950 ap:0.9435 f1: 0.7534 pred_right: 1070869 pred_wrong:25331 actu_right: 1061708 actu_wrong: 34492
+2026-07-21 11:39:18,137 P2659882 INFO pr:0.8897  rc:0.6440  auc:0.9946 ap:0.9416 f1: 0.7472 pred_right: 459082 pred_wrong:10718 actu_right: 454992 actu_wrong: 14808
+2026-07-21 11:39:18,138 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:39:18,139 P2659882 INFO 10/50 starting... lr: 0.001 para:0.09090909361839294
+2026-07-21 11:39:41,217 P2659882 INFO Epoch 10/50, all_loss:1.66104 cls_loss:1.66104 rec_loss:0.18924 [23.07s]; best loss:1.66104, patience : 0
+2026-07-21 11:39:50,425 P2659882 INFO pr:0.8285  rc:0.8038  auc:0.9960 ap:0.9518 f1: 0.8160 pred_right: 1062739 pred_wrong:33461 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 11:39:57,449 P2659882 INFO pr:0.8275  rc:0.7934  auc:0.9957 ap:0.9496 f1: 0.8101 pred_right: 455601 pred_wrong:14199 actu_right: 454992 actu_wrong: 14808
+2026-07-21 11:39:57,459 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:39:57,460 P2659882 INFO 11/50 starting... lr: 0.001 para:0.0833333358168602
+2026-07-21 11:40:22,539 P2659882 INFO Epoch 11/50, all_loss:1.55636 cls_loss:1.55636 rec_loss:0.18289 [25.07s]; best loss:1.55636, patience : 0
+2026-07-21 11:40:32,691 P2659882 INFO pr:0.8919  rc:0.6977  auc:0.9967 ap:0.9560 f1: 0.7829 pred_right: 1069225 pred_wrong:26975 actu_right: 1061713 actu_wrong: 34487
+2026-07-21 11:40:37,456 P2659882 INFO pr:0.8940  rc:0.6848  auc:0.9964 ap:0.9546 f1: 0.7755 pred_right: 458458 pred_wrong:11342 actu_right: 454992 actu_wrong: 14808
+2026-07-21 11:40:37,456 P2659882 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 11:40:37,456 P2659882 INFO 12/50 starting... lr: 0.001 para:0.07692307978868484
