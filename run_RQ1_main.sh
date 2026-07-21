@@ -3,13 +3,13 @@
 
 
 FREQ_DOMAINS=(
-"Eadro"  
+#"Eadro"  
 ##
-"FITS_Legendre" #OrEdge
+#"FITS_Legendre" #OrEdge
 ##
-"AnoFusion"
-"encoder_decoder"
-#"Art"
+#"AnoFusion"
+#"encoder_decoder"
+"Art"
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
 
