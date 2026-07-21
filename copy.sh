@@ -1,16 +1,13 @@
 
 
 #!/bin/bash
-MODEL_NAMES=("encoder_decoder")
+MODEL_NAMES=("Eadro" "AnoFusion" "encoder_decoder" "FITS_Legendre" "Art")
 DATASET_NAMES=("MSDS" "SN" "TT")
-IP_ADDRESS="130.63.254.162" #db2003smaller
+IP_ADDRESS="130.63.254.140" #db2003smaller
 #IP_ADDRESS="130.63.103.80"
 SEEDS=("1")
 DEVICE_NAME="db2003smaller"
-
-#This sets up SSH keys so scp never asks for a password again.
-ssh-keygen -t rsa -N "" -f ~/.ssh/id_rsa
-ssh-copy-id $DEVICE_NAME@$IP_ADDRESS
+#DEVICE_NAME="db2003larger"
 
 # Give your user permission to read the source folder so you don't need sudo inside the loops
 sudo chown -R $(whoami) "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/"
