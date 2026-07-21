@@ -1,10 +1,13 @@
-import dgl
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 from torch_geometric.nn import GCNConv
 import numpy as np
+
+# Added PyG utility for self-loops and replaced DGL's convolution layer
+from torch_geometric.utils import add_self_loops
+from torch_geometric.nn import GraphConv
 
 class ARTWrapper(nn.Module):
     def __init__(self, adj, 
@@ -57,20 +60,20 @@ class ARTWrapper(nn.Module):
         # 2. Extract edge indices (where matrix has 1s)
         src, dst = np.nonzero(adj_np)
 
-        # 3. Create the DGL graph with exactly 12 nodes
+        # 3. Create the PyG edge_index instead of DGL graph
         # Use the shape of the matrix to determine num_nodes dynamically
-        num_nodes = adj_np.shape[0] 
-        g = dgl.graph((src, dst), num_nodes=num_nodes)
+        self.num_nodes = adj_np.shape[0] 
+        edge_index = torch.tensor(np.vstack([src, dst]), dtype=torch.long)
 
-        # 4. Critical: Add self-loops
+        # 4. Critical: Add self-loops via PyG utility
         # GCN/GraphSAGE often fail if nodes have no edges (isolated). 
         # Adding self-loops ensures every node can at least "message" itself.
-        g = dgl.add_self_loop(g)
+        edge_index, _ = add_self_loops(edge_index, num_nodes=self.num_nodes)
         
         # Store as a buffer so it moves with the model to GPU, 
         # but isn't treated as a trainable parameter
         self.register_buffer('adj_matrix_fixed', adj if torch.is_tensor(adj) else torch.tensor(adj))
-        self.g = g
+        self.register_buffer('edge_index', edge_index)
 
         self.out = nn.Linear(gnn_in_dim, raw_metric + raw_logs + raw_traces)
 
@@ -84,7 +87,8 @@ class ARTWrapper(nn.Module):
         t = self.trace_proj(traces).mean(dim=3)
         features = torch.cat([m, L, t], dim=-1)
 
-        rec = self.model(self.g, features)
+        # Pass edge_index and num_nodes through to the internal architecture
+        rec = self.model(self.edge_index, self.num_nodes, features)
         rec = F.relu(self.out(rec))
 
         return rec
@@ -120,26 +124,28 @@ class GraphSAGEEncoder(nn.Module):
         super(GraphSAGEEncoder, self).__init__()
         self.dropout = nn.Dropout(dropout)
         hidden_dim = hidden_dim if num_layers > 1 else out_dim
-        self.input_conv = dgl.nn.GraphConv(in_dim, hidden_dim, norm=norm)
+        # Replaced DGL's GraphConv with PyG's GraphConv
+        self.input_conv = GraphConv(in_dim, hidden_dim)
         self.convs = nn.ModuleList()
         for _ in range(num_layers - 2):
-            self.convs.append(dgl.nn.GraphConv(hidden_dim, hidden_dim, norm=norm))
+            self.convs.append(GraphConv(hidden_dim, hidden_dim))
         if num_layers > 1:
-            self.convs.append(dgl.nn.GraphConv(hidden_dim, out_dim, norm=norm))
+            self.convs.append(GraphConv(hidden_dim, out_dim))
 
-    def forward(self, g, features):
-        h = F.leaky_relu(self.input_conv(g, features))
+    def forward(self, edge_index, features):
+        h = F.leaky_relu(self.input_conv(features, edge_index))
         h = self.dropout(h)
         for conv in self.convs:
-            h = F.leaky_relu(conv(g, h))
+            h = F.leaky_relu(conv(h, edge_index))
             h = self.dropout(h)
         return h
     
-    def transform(self, g, features):
-        h = F.leaky_relu(self.input_conv(g, features))
+    def transform(self, edge_index, features):
+        h = F.leaky_relu(self.input_conv(features, edge_index))
         for conv in self.convs:
-            h = F.leaky_relu(conv(g, h))
+            h = F.leaky_relu(conv(h, edge_index))
         return h
+        
 class Extractor(nn.Module):
     def __init__(self, tf_in_dim, num_heads, gnn_in_dim, gnn_hidden_dim, gnn_out_dim, gru_hidden_dim, dropout=0, tf_layers=1, gnn_layers=2, gru_layers=1):
         super(Extractor, self).__init__()
@@ -147,7 +153,7 @@ class Extractor(nn.Module):
         self.GRUEncoder = nn.GRU(gnn_in_dim, gru_hidden_dim, gru_layers, bias=False, batch_first=True)
         self.GraphEncoder = GraphSAGEEncoder(gru_hidden_dim, gnn_hidden_dim, gnn_out_dim, gnn_layers, dropout, norm='none')
         
-    def forward(self, g, features):
+    def forward(self, edge_index, num_nodes, features):
         bacth_size, series_len, instance_num, channel_dim = features.shape # 2,5,46,130
         h = features.permute(0,1,3,2)
         h = h.view(-1, channel_dim, instance_num)
@@ -155,9 +161,12 @@ class Extractor(nn.Module):
         h = h.permute(0,2,1).view(bacth_size, series_len, instance_num, channel_dim).permute(0,2,1,3).reshape(-1, series_len, channel_dim) # 92,5,130
         output, h_n = self.GRUEncoder(h)
         h = F.leaky_relu(h_n[-1]) # 92,32
-        g_batches = dgl.batch([g] * bacth_size) #as the graph is static, same graph for each instance
-        g_batches = g_batches.to(h.device)
-        h = self.GraphEncoder(g_batches, h) # 92, 32
+        
+        # PyG Graph Batching: Offsetting indices per batch element to simulate batched disjoint graphs
+        edge_indices = [edge_index + i * num_nodes for i in range(bacth_size)]
+        batched_edge_index = torch.cat(edge_indices, dim=1).to(h.device)
+        
+        h = self.GraphEncoder(batched_edge_index, h) # 92, 32
         h = h.view(bacth_size, instance_num, -1) # 2,46,32
         return h
     
@@ -176,10 +185,9 @@ class AutoRegressor(nn.Module):
         self.extractor = Extractor(tf_in_dim, num_heads, gnn_in_dim, gnn_hidden_dim, gnn_out_dim, gru_hidden_dim, dropout, tf_layers, gnn_layers, gru_layers)
         self.regressor = Regressor(gru_hidden_dim, gnn_in_dim)
         
-    def forward(self, g, features):
-        z = self.extractor(g, features)
+    def forward(self, edge_index, num_nodes, features):
+        z = self.extractor(edge_index, num_nodes, features)
         h = self.regressor(z)
         #return z, h
         return h #reconstructed features
 # end Neural Network Architecture -----------------------------------------
-
