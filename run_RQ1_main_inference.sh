@@ -78,13 +78,13 @@ FREQ_DOMAINS=(
 
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
-DATA_SOURCES=("SN" "MSDS" "TT") # ) MSDS 
+DATA_SOURCES=("TT") # ) MSDS 
 DEVICE_NAME="Raspberry Pi Smaller"
 # as miniforge is installed on Raspberry Pi
 source ~/miniforge3/etc/profile.d/conda.sh
 conda activate RCAEval
 
-SEEDS=(1 2 3)
+SEEDS=(3)
 
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
