@@ -10,8 +10,6 @@ from src.inner_models.layers.muad.layers import LinearLayer
 Uncertainty-Aware Multimodal Anomaly Detection
 for Microservice Systems With Active Learning
 
-
-
 """
 class UncertainBlock(nn.Module):
     def __init__(self, in_dim=64, out_dim=128):
@@ -45,16 +43,16 @@ class UncertainBlock(nn.Module):
 
 
 class MainModel(nn.Module):
-    def __init__(self, device, num_class=2, hidden_dim=[64], aloss=0.4, b_loss=0.01, **kwargs):
+    def __init__(self,  raw_metric, raw_logs, raw_traces,  device, num_class=2, hidden_dim=[64], aloss=0.4, b_loss=0.01, **kwargs):
         super().__init__()
         self.device = device
         self.metric_encoder = MetricEncoder(device, **kwargs)
         self.trace_encoder = TraceEncoder(device, **kwargs)
         self.log_encoder = LogEncoder(device, **kwargs)
 
-        self.metric_uncertain_block = UncertainBlock()
-        self.log_uncertain_block = UncertainBlock()
-        self.trace_uncertain_block = UncertainBlock()
+        self.metric_uncertain_block = UncertainBlock(raw_metric)
+        self.log_uncertain_block = UncertainBlock(raw_logs)
+        self.trace_uncertain_block = UncertainBlock(raw_traces)
 
 
         self.TCPClassifierLayer_trace = LinearLayer(hidden_dim[0], num_class)
@@ -77,7 +75,7 @@ class MainModel(nn.Module):
         self.k1 = aloss
         self.k2 = b_loss
 
-    def forward(self, graph, fault_indexs):
+    def forward(self, graph, data_node, data_log, data_edge):#, #fault_indexs):
         batch_size = graph.batch_size
         metric = self.metric_encoder(graph)
         trace = self.trace_encoder(graph)

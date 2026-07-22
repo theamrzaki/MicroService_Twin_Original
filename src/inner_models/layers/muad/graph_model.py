@@ -1,34 +1,56 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from dgl.nn.pytorch import GATv2Conv, GlobalAttentionPooling
 import math
 
+# Replaced DGL imports with PyG equivalents
+from torch_geometric.nn import GATv2Conv, GlobalAttention
 
 class GraphModel1(nn.Module):
     def __init__(self, in_dim, graph_hiddens=[64], device='cpu',
                  attn_head=4, activation=0.2, **kwargs):
         super().__init__()
-        layers = []
+        
+        # PyG GATv2Conv layers stored in a ModuleList
+        self.convs = nn.ModuleList()
         for i, hidden in enumerate(graph_hiddens):
             in_feats = graph_hiddens[i - 1] if i > 0 else in_dim
             dropout = kwargs.get("attn_drop", 0)
-            layers.append(GATv2Conv(
-                in_feats, out_feats=hidden, num_heads=attn_head,
-                attn_drop=dropout, negative_slope=activation,
-                allow_zero_in_degree=True
+            self.convs.append(GATv2Conv(
+                in_channels=in_feats, 
+                out_channels=hidden, 
+                heads=attn_head,
+                dropout=dropout, 
+                negative_slope=activation,
+                add_self_loops=True
             ))
-        self.net = nn.Sequential(*layers).to(device)
+            
         self.out_dim = graph_hiddens[-1]
-        self.pooling = GlobalAttentionPooling(nn.Linear(self.out_dim, 1))
+        
+        # PyG Global Attention Pooling equivalent
+        gate_nn = nn.Linear(self.out_dim, 1)
+        self.pooling = GlobalAttention(gate_nn=gate_nn)
+        
         self.maxpool = nn.MaxPool1d(attn_head)
+        self.to(device)
 
-    def forward(self, graph, x):
+    def forward(self, edge_index, x, batch=None):
+        """
+        edge_index: Graph connectivity tensor [2, num_edges]
+        x: Node feature matrix [num_nodes, in_dim]
+        batch: Graph assignment vector for batched graphs [num_nodes]. 
+               If single graph, batch will default to zeros.
+        """
         out = x
-        for layer in self.net:
-            out = layer(graph, out)
+        for conv in self.convs:
+            # PyG GATv2Conv takes (x, edge_index) and outputs [num_nodes, num_heads, out_channels]
+            out = conv(out, edge_index)
             out = self.maxpool(out.permute(0, 2, 1)).permute(0, 2, 1).squeeze()
-        return self.pooling(graph, out)
+            
+        if batch is None:
+            batch = torch.zeros(out.size(0), dtype=torch.long, device=out.device)
+            
+        return self.pooling(out, batch)
 
 
 class SimpleAttention(nn.Module):
