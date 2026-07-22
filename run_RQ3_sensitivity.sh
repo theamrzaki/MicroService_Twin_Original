@@ -11,8 +11,8 @@ DATA_SOURCES=("SN" "MSDS" "TT") # "MSDS" "TT"
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval
 
-SEEDS=(1)
-auxi_lambdas=(0.0 0.2 1.0) #0.01 0.5
+SEEDS=(3)
+auxi_lambdas=(0.0 0.2 1.0 0.01 0.5) #0.01 0.5
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
       for a in "${auxi_lambdas[@]}"; do
@@ -37,7 +37,7 @@ done
 
 
 
-linear_attn_dim=(5 10 20)
+linear_attn_dim=(5 10 20 7 15)
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
       for dim in "${linear_attn_dim[@]}"; do
