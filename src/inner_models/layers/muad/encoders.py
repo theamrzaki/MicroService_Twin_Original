@@ -3,7 +3,7 @@ from .graph_model import GraphModel1
 from .layers import GRUEncoder
 
 
-class MetricEncoder(nn.Module):
+class  MetricEncoder(nn.Module):
     def __init__(self, device, out_dim=64, **kwargs):
         super().__init__()
         self.metric_model = GRUEncoder(in_size=7, out_dim=64).to(device)

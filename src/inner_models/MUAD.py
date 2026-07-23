@@ -77,9 +77,9 @@ class MainModel(nn.Module):
 
     def forward(self, graph, data_node, data_log, data_edge):#, #fault_indexs):
         batch_size = graph.batch_size
-        metric = self.metric_encoder(graph)
-        trace = self.trace_encoder(graph)
-        log = self.log_encoder(graph)
+        metric = self.metric_encoder(data_node)
+        trace = self.trace_encoder(data_log)
+        log = self.log_encoder(data_edge)
 
         new_metric, m_kl_loss = self.metric_uncertain_block(metric["metric_embedding1"])
         new_trace, t_kl_loss = self.trace_uncertain_block(trace["trace_embedding1"])
