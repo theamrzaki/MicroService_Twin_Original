@@ -4,8 +4,54 @@ source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval
 
 FREQ_DOMAIN="FITS_Legendre" 
-DATA_SOURCES=("SN" "TT" "MSDS") # )
+
+
+# the remaining exp from seed 2
+DATA_SOURCES=("TT") # )
 SEEDS=(2)
+FREQ_DOMAINS=(
+  "FEDformerModel"
+)
+ORANOMALY_MODELS=( "DLinear" "iTransformer" "FEDformerModel") # "FITS_Legendre"
+
+for SEED in "${SEEDS[@]}"; do
+  for datasource in "${DATA_SOURCES[@]}"; do
+    for FREQ in "${FREQ_DOMAINS[@]}"; do
+
+    if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
+      echo "--------------------------------"
+      echo "1) Running $FREQ with Legendre-style loss and LPF filter, data source: $datasource"
+      echo "--------------------------------"
+      python main.py \
+        --FREQ_DOMAIN="$FREQ" \
+        --req_loss_approach='Legendre-style' \
+        --filter_used="LPF" \
+        --random_seed="$SEED" \
+        --data_source="$datasource" \
+        --evaluate=false \
+        --gpu=true \
+        --experiment_name="RQ2_architecture"
+    else
+      echo "--------------------------------"
+      echo "2) Running $FREQ with Normal-Recreation loss, data source: $datasource"
+      echo "--------------------------------"
+      python main.py \
+        --FREQ_DOMAIN="$FREQ" \
+        --req_loss_approach='Normal-Recreation' \
+        --random_seed="$SEED" \
+        --data_source="$datasource" \
+        --evaluate=false \
+        --gpu=true \
+        --experiment_name="RQ2_architecture"
+    fi
+  done
+  done
+done
+
+
+DATA_SOURCES=("SN" "TT" "MSDS") # )
+SEEDS=(3)
+
 ## OrAnomaly / without LPF / without time-freq fredf loss
 for SEED in "${SEEDS[@]}"; do
     for data_source in "${DATA_SOURCES[@]}"; do
