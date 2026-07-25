@@ -131,7 +131,11 @@ if __name__ == '__main__':
     #if args.get("case_study", False):
     exp_name = ""
     if args["experiment_name"]=="RQ1_main":
-        exp_name = "RQ1_benchmark_MemOptimised_lowshow_simplegraph"
+        #for Eadro, AnoFusion --> they share the same feature dimension
+        if args['FREQ_DOMAIN'] == 'Eadro' or args['FREQ_DOMAIN'] == 'AnoFusion':
+            exp_name = "RQ1_main_Eadro_AnoFusion_featuredim_lowshow_simplegraph"
+        else:
+            exp_name = "RQ1_benchmark_MemOptimised_lowshow_simplegraph"
     elif args["experiment_name"] == "RQ1_main_Edge":
         if not util.is_raspberry_pi():
             raise RuntimeError(

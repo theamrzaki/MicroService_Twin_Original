@@ -1,0 +1,65 @@
+2026-07-25 14:49:32,822 P1856930 INFO ---- Model: ----MSTGAD-18f5f774----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : Art----Multi Fits : false----train : True----evaluate : False
+2026-07-25 14:49:32,824 P1856930 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-25 14:49:34,627 P1856930 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-25 14:49:34,900 P1856930 INFO Trainable Parameters Breakdown:
+2026-07-25 14:49:34,900 P1856930 INFO --------------------------------------------------------------------------------
+2026-07-25 14:49:34,900 P1856930 INFO Reconstruction-Specific Parameters:
+2026-07-25 14:49:34,900 P1856930 INFO Art_Model.metric_proj.weight             | shape: (8, 7)                    | params: 56
+2026-07-25 14:49:34,900 P1856930 INFO Art_Model.metric_proj.bias               | shape: (8,)                      | params: 8
+2026-07-25 14:49:34,900 P1856930 INFO Art_Model.log_proj.weight                | shape: (32, 7)                   | params: 224
+2026-07-25 14:49:34,900 P1856930 INFO Art_Model.log_proj.bias                  | shape: (32,)                     | params: 32
+2026-07-25 14:49:34,900 P1856930 INFO Art_Model.trace_proj.weight              | shape: (8, 2)                    | params: 16
+2026-07-25 14:49:34,900 P1856930 INFO Art_Model.trace_proj.bias                | shape: (8,)                      | params: 8
+2026-07-25 14:49:34,900 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.self_attn.in_proj_weight | shape: (36, 12)                  | params: 432
+2026-07-25 14:49:34,900 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.self_attn.in_proj_bias | shape: (36,)                     | params: 36
+2026-07-25 14:49:34,900 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.self_attn.out_proj.weight | shape: (12, 12)                  | params: 144
+2026-07-25 14:49:34,900 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.self_attn.out_proj.bias | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,900 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.linear1.weight | shape: (24, 12)                  | params: 288
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.linear1.bias | shape: (24,)                     | params: 24
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.linear2.weight | shape: (12, 24)                  | params: 288
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.linear2.bias | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.norm1.weight | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.norm1.bias | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.norm2.weight | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder_layer.norm2.bias | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.self_attn.in_proj_weight | shape: (36, 12)                  | params: 432
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.self_attn.in_proj_bias | shape: (36,)                     | params: 36
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.self_attn.out_proj.weight | shape: (12, 12)                  | params: 144
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.self_attn.out_proj.bias | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.linear1.weight | shape: (24, 12)                  | params: 288
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.linear1.bias | shape: (24,)                     | params: 24
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.linear2.weight | shape: (12, 24)                  | params: 288
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.linear2.bias | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.norm1.weight | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.norm1.bias | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,901 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.norm2.weight | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.model.extractor.TFEncoder.transformer_encoder.layers.0.norm2.bias | shape: (12,)                     | params: 12
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.model.extractor.GRUEncoder.weight_ih_l0 | shape: (96, 48)                  | params: 4,608
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.model.extractor.GRUEncoder.weight_hh_l0 | shape: (96, 32)                  | params: 3,072
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.model.extractor.GraphEncoder.input_conv.lin_rel.weight | shape: (64, 32)                  | params: 2,048
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.model.extractor.GraphEncoder.input_conv.lin_rel.bias | shape: (64,)                     | params: 64
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.model.extractor.GraphEncoder.input_conv.lin_root.weight | shape: (64, 32)                  | params: 2,048
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.model.extractor.GraphEncoder.convs.0.lin_rel.weight | shape: (32, 64)                  | params: 2,048
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.model.extractor.GraphEncoder.convs.0.lin_rel.bias | shape: (32,)                     | params: 32
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.model.extractor.GraphEncoder.convs.0.lin_root.weight | shape: (32, 64)                  | params: 2,048
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.model.regressor.mlp.weight     | shape: (48, 32)                  | params: 1,536
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.model.regressor.mlp.bias       | shape: (48,)                     | params: 48
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.out.weight                     | shape: (16, 48)                  | params: 768
+2026-07-25 14:49:34,902 P1856930 INFO Art_Model.out.bias                       | shape: (16,)                     | params: 16
+2026-07-25 14:49:34,902 P1856930 INFO Subtotal: 21,248
+2026-07-25 14:49:34,902 P1856930 INFO --------------------------------------------------------------------------------
+2026-07-25 14:49:34,902 P1856930 INFO Common Parameters:
+2026-07-25 14:49:34,902 P1856930 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-07-25 14:49:34,902 P1856930 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-25 14:49:34,902 P1856930 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-25 14:49:34,903 P1856930 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-25 14:49:34,903 P1856930 INFO Subtotal: 2,434
+2026-07-25 14:49:34,903 P1856930 INFO --------------------------------------------------------------------------------
+2026-07-25 14:49:34,903 P1856930 INFO Total Trainable Parameters: 23,682
+
+2026-07-25 14:49:34,903 P1856930 INFO Trainable Parameters: 23682, reconstruction: 21248, common: 2434
+2026-07-25 14:49:34,903 P1856930 INFO model : init weight
+2026-07-25 14:49:34,904 P1856930 INFO Using GPU...
+2026-07-25 14:49:34,932 P1856930 INFO optimizer : using AdaBelief
+2026-07-25 14:49:34,932 P1856930 INFO ----------------------------------------------------------------------------------------------------
+2026-07-25 14:49:34,932 P1856930 INFO 0/5 starting... lr: 0.001 para:1.0

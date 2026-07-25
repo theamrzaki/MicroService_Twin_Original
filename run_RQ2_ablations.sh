@@ -5,119 +5,76 @@ conda activate RCAEval
 
 FREQ_DOMAIN="FITS_Legendre" 
 
-
-# the remaining exp from seed 2
-DATA_SOURCES=("TT") # )
-SEEDS=(2)
-FREQ_DOMAINS=(
-  "FEDformerModel"
-)
-ORANOMALY_MODELS=( "DLinear" "iTransformer" "FEDformerModel") # "FITS_Legendre"
-
-for SEED in "${SEEDS[@]}"; do
-  for datasource in "${DATA_SOURCES[@]}"; do
-    for FREQ in "${FREQ_DOMAINS[@]}"; do
-
-    if [[ " ${ORANOMALY_MODELS[@]} " =~ " ${FREQ} " ]]; then
-      echo "--------------------------------"
-      echo "1) Running $FREQ with Legendre-style loss and LPF filter, data source: $datasource"
-      echo "--------------------------------"
-      python main.py \
-        --FREQ_DOMAIN="$FREQ" \
-        --req_loss_approach='Legendre-style' \
-        --filter_used="LPF" \
-        --random_seed="$SEED" \
-        --data_source="$datasource" \
-        --evaluate=false \
-        --gpu=true \
-        --experiment_name="RQ2_architecture"
-    else
-      echo "--------------------------------"
-      echo "2) Running $FREQ with Normal-Recreation loss, data source: $datasource"
-      echo "--------------------------------"
-      python main.py \
-        --FREQ_DOMAIN="$FREQ" \
-        --req_loss_approach='Normal-Recreation' \
-        --random_seed="$SEED" \
-        --data_source="$datasource" \
-        --evaluate=false \
-        --gpu=true \
-        --experiment_name="RQ2_architecture"
-    fi
-  done
-  done
-done
-
-
 DATA_SOURCES=("SN" "TT" "MSDS") # )
 SEEDS=(3)
 
 ## OrAnomaly / without LPF / without time-freq fredf loss
-for SEED in "${SEEDS[@]}"; do
-    for data_source in "${DATA_SOURCES[@]}"; do
-
-      # OrAnomaly (ours)
-      echo "================================================================="
-      echo "Running ablation: without LPF (with linear attention, with FreDF loss), data source: $data_source"  
-      echo "================================================================="
-      python main.py \
-        --FREQ_DOMAIN="$FREQ_DOMAIN" \
-        --req_loss_approach='Legendre-style' \
-        --random_seed="$SEED" \
-        --data_source="$data_source" \
-        --filter_used="LPF" \
-        --gpu=true \
-        --experiment_name="RQ2_ablations_components" 
-            #
-      #
-      # Ablation: LPF + no linear attention
-      echo "================================================================="
-      echo "Running ablation: no linear attention (with LPF, with FreDF loss), data source: $data_source"
-      echo "================================================================="
-      python main.py \
-        --FREQ_DOMAIN="$FREQ_DOMAIN" \
-        --random_seed="$SEED" \
-        --data_source="$data_source" \
-        --modules_attn="no_attn" \
-        --filter_used="LPF" \
-        --gpu=true \
-        --experiment_name="RQ2_ablations_components" 
-
-      #
-      # Ablation: without time-freq (remove time dimension lambda) fredf loss
-      echo "================================================================="
-      echo "Running ablation: without FreDF [remove time dimension lambda] (with linear attention and LPF), data source: $data_source"
-      echo "================================================================="
-      python main.py \
-        --FREQ_DOMAIN="$FREQ_DOMAIN" \
-        --random_seed="$SEED" \
-        --data_source="$data_source" \
-        --experiment_name="RQ2_ablations_components" \
-        --filter_used="LPF" \
-        --gpu=true \
-        --rec_lambda=1.0 --auxi_lambda=0.0
-
-      ##echo "================================================================="
-      ##echo "Running ablation: No normlin applied (with linear attention, with FreDF loss, with LPF), data source: $data_source"
-      ##echo "================================================================="
-      ##python main.py \
-      ##  --FREQ_DOMAIN="$FREQ_DOMAIN" \
-      ##  --random_seed="$SEED" \
-      ##  --data_source="$data_source" \
-      ##  --experiment_name="RQ2_ablations_components" \
-      ##  --filter_used="LPF" \
-      ##  --gpu=true \
-      ##  --use_normlin=False 
-    done
-done
+#for SEED in "${SEEDS[@]}"; do
+#    for data_source in "${DATA_SOURCES[@]}"; do
+#
+#      # OrAnomaly (ours)
+#      echo "================================================================="
+#      echo "Running ablation: without LPF (with linear attention, with FreDF loss), data source: $data_source"  
+#      echo "================================================================="
+#      python main.py \
+#        --FREQ_DOMAIN="$FREQ_DOMAIN" \
+#        --req_loss_approach='Legendre-style' \
+#        --random_seed="$SEED" \
+#        --data_source="$data_source" \
+#        --filter_used="LPF" \
+#        --gpu=true \
+#        --experiment_name="RQ2_ablations_components" 
+#            #
+#      #
+#      # Ablation: LPF + no linear attention
+#      echo "================================================================="
+#      echo "Running ablation: no linear attention (with LPF, with FreDF loss), data source: $data_source"
+#      echo "================================================================="
+#      python main.py \
+#        --FREQ_DOMAIN="$FREQ_DOMAIN" \
+#        --random_seed="$SEED" \
+#        --data_source="$data_source" \
+#        --modules_attn="no_attn" \
+#        --filter_used="LPF" \
+#        --gpu=true \
+#        --experiment_name="RQ2_ablations_components" 
+#
+#      #
+#      # Ablation: without time-freq (remove time dimension lambda) fredf loss
+#      echo "================================================================="
+#      echo "Running ablation: without FreDF [remove time dimension lambda] (with linear attention and LPF), data source: $data_source"
+#      echo "================================================================="
+#      python main.py \
+#        --FREQ_DOMAIN="$FREQ_DOMAIN" \
+#        --random_seed="$SEED" \
+#        --data_source="$data_source" \
+#        --experiment_name="RQ2_ablations_components" \
+#        --filter_used="LPF" \
+#        --gpu=true \
+#        --rec_lambda=1.0 --auxi_lambda=0.0
+#
+#      ##echo "================================================================="
+#      ##echo "Running ablation: No normlin applied (with linear attention, with FreDF loss, with LPF), data source: $data_source"
+#      ##echo "================================================================="
+#      ##python main.py \
+#      ##  --FREQ_DOMAIN="$FREQ_DOMAIN" \
+#      ##  --random_seed="$SEED" \
+#      ##  --data_source="$data_source" \
+#      ##  --experiment_name="RQ2_ablations_components" \
+#      ##  --filter_used="LPF" \
+#      ##  --gpu=true \
+#      ##  --use_normlin=False 
+#    done
+#done
 
 
 
 
 FREQ_DOMAIN="FITS_Legendre"
 req_loss_approach="Legendre-style"
+DATA_SOURCES=("MSDS") # )"SN" "TT" 
 
-basis_type=("chebyshev" "fourier" "hermite" "laguerre") # "legendre" )
+basis_type=("fourier" "hermite" "laguerre") # "legendre" )"chebyshev" 
 
 
 for SEED in "${SEEDS[@]}"; do
@@ -158,7 +115,7 @@ FREQ_DOMAINS=(
   #"FITS_Legendre" 
 )
 ORANOMALY_MODELS=( "DLinear" "iTransformer" "FEDformerModel") # "FITS_Legendre"
-
+DATA_SOURCES=("SN" "TT" "MSDS") # )
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
     for FREQ in "${FREQ_DOMAINS[@]}"; do

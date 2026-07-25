@@ -109,3 +109,104 @@
 {'GPU': {'inference_time_per_sample_ms': 0.08825626475288269, 'throughput_samples_per_sec': 11330.640411759974, 'peak_memory_mb': 59.0732421875, 'energy_per_sample_joules': 0.005044419196348139}, 'CPU': {'inference_time_per_sample_ms': 0.27559870279621523, 'throughput_samples_per_sec': 3628.4641032560507, 'peak_memory_mb': 1885.42578125, 'energy_per_sample_joules': 0.017913915681753993}}
 2026-07-17 21:56:29,858 P3794215 INFO Starting clean-room hardware benchmarking...
 2026-07-17 21:56:30,431 P3794215 INFO Performance with f1: pr:1.0000  rc:0.3100  auc:0.9013 ap:0.8030 f1: 0.4732 pred_right: 18789 pred_wrong:411 actu_right: 17874 actu_wrong: 1326
+2026-07-25 19:07:22,487 P2005585 INFO ---- Model: ----MSTGAD-2e9c09e0----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : Eadro----Multi Fits : false----train : True----evaluate : False
+2026-07-25 19:07:22,495 P2005585 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-25 19:07:23,341 P2005585 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-25 19:07:23,589 P2005585 INFO Trainable Parameters Breakdown:
+2026-07-25 19:07:23,589 P2005585 INFO --------------------------------------------------------------------------------
+2026-07-25 19:07:23,589 P2005585 INFO Reconstruction-Specific Parameters:
+2026-07-25 19:07:23,589 P2005585 INFO Eadro_Model.encoder.trace_model.net.network.0.weight | shape: (20, 2, 3)                | params: 120
+2026-07-25 19:07:23,589 P2005585 INFO Eadro_Model.encoder.trace_model.net.network.0.bias | shape: (20,)                     | params: 20
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.trace_model.net.network.1.weight | shape: (20,)                     | params: 20
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.trace_model.net.network.1.bias | shape: (20,)                     | params: 20
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.trace_model.net.network.4.weight | shape: (8, 20, 3)                | params: 480
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.trace_model.net.network.4.bias | shape: (8,)                      | params: 8
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.trace_model.net.network.5.weight | shape: (8,)                      | params: 8
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.trace_model.net.network.5.bias | shape: (8,)                      | params: 8
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.log_model.embedder.weight | shape: (32, 7)                   | params: 224
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.log_model.embedder.bias | shape: (32,)                     | params: 32
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.metric_model.net.network.0.weight | shape: (64, 7, 3)                | params: 1,344
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.metric_model.net.network.0.bias | shape: (64,)                     | params: 64
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.metric_model.net.network.1.weight | shape: (64,)                     | params: 64
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.metric_model.net.network.1.bias | shape: (64,)                     | params: 64
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.metric_model.net.network.4.weight | shape: (8, 64, 3)                | params: 1,536
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.metric_model.net.network.4.bias | shape: (8,)                      | params: 8
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.metric_model.net.network.5.weight | shape: (8,)                      | params: 8
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.metric_model.net.network.5.bias | shape: (8,)                      | params: 8
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.fuse.weight          | shape: (64, 48)                  | params: 3,072
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.fuse.bias            | shape: (64,)                     | params: 64
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.status_model.layers.0.att | shape: (1, 4, 64)                | params: 256
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.status_model.layers.0.bias | shape: (64,)                     | params: 64
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.status_model.layers.0.lin_l.weight | shape: (256, 32)                 | params: 8,192
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.status_model.layers.0.lin_l.bias | shape: (256,)                    | params: 256
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.status_model.layers.0.lin_r.weight | shape: (256, 32)                 | params: 8,192
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.status_model.layers.0.lin_r.bias | shape: (256,)                    | params: 256
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.status_model.layers.1.att | shape: (1, 4, 128)               | params: 512
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.status_model.layers.1.bias | shape: (128,)                    | params: 128
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.status_model.layers.1.lin_l.weight | shape: (512, 64)                 | params: 32,768
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.status_model.layers.1.lin_l.bias | shape: (512,)                    | params: 512
+2026-07-25 19:07:23,590 P2005585 INFO Eadro_Model.encoder.status_model.layers.1.lin_r.weight | shape: (512, 64)                 | params: 32,768
+2026-07-25 19:07:23,591 P2005585 INFO Eadro_Model.encoder.status_model.layers.1.lin_r.bias | shape: (512,)                    | params: 512
+2026-07-25 19:07:23,591 P2005585 INFO Eadro_Model.reconstructor.0.weight       | shape: (128, 128)                | params: 16,384
+2026-07-25 19:07:23,591 P2005585 INFO Eadro_Model.reconstructor.0.bias         | shape: (128,)                    | params: 128
+2026-07-25 19:07:23,591 P2005585 INFO Eadro_Model.reconstructor.1.weight       | shape: (128,)                    | params: 128
+2026-07-25 19:07:23,591 P2005585 INFO Eadro_Model.reconstructor.1.bias         | shape: (128,)                    | params: 128
+2026-07-25 19:07:23,591 P2005585 INFO Eadro_Model.reconstructor.2.weight       | shape: (16, 128)                 | params: 2,048
+2026-07-25 19:07:23,591 P2005585 INFO Eadro_Model.reconstructor.2.bias         | shape: (16,)                     | params: 16
+2026-07-25 19:07:23,591 P2005585 INFO Subtotal: 110,420
+2026-07-25 19:07:23,591 P2005585 INFO --------------------------------------------------------------------------------
+2026-07-25 19:07:23,591 P2005585 INFO Common Parameters:
+2026-07-25 19:07:23,591 P2005585 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-07-25 19:07:23,591 P2005585 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-25 19:07:23,591 P2005585 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-25 19:07:23,591 P2005585 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-25 19:07:23,591 P2005585 INFO Subtotal: 2,434
+2026-07-25 19:07:23,591 P2005585 INFO --------------------------------------------------------------------------------
+2026-07-25 19:07:23,591 P2005585 INFO Total Trainable Parameters: 112,854
+
+2026-07-25 19:07:23,591 P2005585 INFO Trainable Parameters: 112854, reconstruction: 110420, common: 2434
+2026-07-25 19:07:23,591 P2005585 INFO model : init weight
+2026-07-25 19:07:23,592 P2005585 INFO Using GPU...
+2026-07-25 19:07:23,596 P2005585 INFO optimizer : using AdaBelief
+2026-07-25 19:07:23,596 P2005585 INFO ----------------------------------------------------------------------------------------------------
+2026-07-25 19:07:23,596 P2005585 INFO 0/5 starting... lr: 0.001 para:1.0
+2026-07-25 19:07:25,658 P2005585 INFO Epoch 0/5, all_loss:0.26554 cls_loss:23.13235 rec_loss:0.26554 [2.06s]; best loss:0.26554, patience : 0
+2026-07-25 19:07:25,658 P2005585 INFO ----------------------------------------------------------------------------------------------------
+2026-07-25 19:07:25,658 P2005585 INFO 1/5 starting... lr: 0.001 para:0.5
+2026-07-25 19:07:26,931 P2005585 INFO Epoch 1/5, all_loss:9.39555 cls_loss:18.52655 rec_loss:0.26455 [1.27s]; best loss:9.39555, patience : 0
+2026-07-25 19:07:26,931 P2005585 INFO ----------------------------------------------------------------------------------------------------
+2026-07-25 19:07:26,931 P2005585 INFO 2/5 starting... lr: 0.001 para:0.3333333432674408
+2026-07-25 19:07:28,287 P2005585 INFO Epoch 2/5, all_loss:8.27501 cls_loss:12.22695 rec_loss:0.37113 [1.35s]; best loss:8.27501, patience : 0
+2026-07-25 19:07:28,938 P2005585 INFO pr:0.0000  rc:0.0000  auc:0.7372 ap:0.5792 f1: 0.0000 pred_right: 46800 pred_wrong: 0  actu_right: 43558 actu_wrong: 3242
+2026-07-25 19:07:29,163 P2005585 INFO pr:0.0000  rc:0.0000  auc:0.7336 ap:0.5785 f1: 0.0000 pred_right: 19200 pred_wrong: 0  actu_right: 17874 actu_wrong: 1326
+2026-07-25 19:07:29,169 P2005585 INFO ----------------------------------------------------------------------------------------------------
+2026-07-25 19:07:29,169 P2005585 INFO 3/5 starting... lr: 0.001 para:0.25
+2026-07-25 19:07:30,610 P2005585 INFO Epoch 3/5, all_loss:8.01274 cls_loss:10.54460 rec_loss:0.41716 [1.43s]; best loss:8.01274, patience : 0
+2026-07-25 19:07:31,087 P2005585 INFO pr:0.0000  rc:0.0000  auc:0.8173 ap:0.6530 f1: 0.0000 pred_right: 46800 pred_wrong: 0  actu_right: 43560 actu_wrong: 3240
+2026-07-25 19:07:31,287 P2005585 INFO pr:0.0000  rc:0.0000  auc:0.8147 ap:0.6504 f1: 0.0000 pred_right: 19200 pred_wrong: 0  actu_right: 17874 actu_wrong: 1326
+2026-07-25 19:07:31,293 P2005585 INFO ----------------------------------------------------------------------------------------------------
+2026-07-25 19:07:31,293 P2005585 INFO 4/5 starting... lr: 0.001 para:0.20000000298023224
+2026-07-25 19:07:32,600 P2005585 INFO Epoch 4/5, all_loss:7.59965 cls_loss:9.38953 rec_loss:0.44010 [1.30s]; best loss:7.59965, patience : 0
+2026-07-25 19:07:33,132 P2005585 INFO pr:0.9205  rc:0.2144  auc:0.8513 ap:0.7431 f1: 0.3478 pred_right: 46045 pred_wrong:755 actu_right: 43558 actu_wrong: 3242
+2026-07-25 19:07:33,343 P2005585 INFO pr:0.9155  rc:0.2044  auc:0.8431 ap:0.7351 f1: 0.3342 pred_right: 18904 pred_wrong:296 actu_right: 17874 actu_wrong: 1326
+2026-07-25 19:07:33,348 P2005585 INFO saving model...
+2026-07-25 19:07:33,348 P2005585 INFO Eadro - loss  best score:7.599648475646973 at epoch 4
+2026-07-25 19:07:33,357 P2005585 INFO Eadro - f1  best score:0.3477608206154616 at epoch 4
+2026-07-25 19:07:33,363 P2005585 INFO Average training time per epoch: 1.48 seconds
+2026-07-25 19:07:33,364 P2005585 INFO calculate scores...
+2026-07-25 19:07:33,364 P2005585 INFO calculate label with loss...
+2026-07-25 19:07:33,364 P2005585 INFO Eadro on ./result/Eadro-SN-Epochs5-Seed46ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-25 19:07:33,589 P2005585 INFO pr:0.9155  rc:0.2044  auc:0.8431 ap:0.7351 f1: 0.3342 pred_right: 18904 pred_wrong:296 actu_right: 17874 actu_wrong: 1326
+2026-07-25 19:07:34,086 P2005585 INFO pr:0.9155  rc:0.2044  auc:0.8431 ap:0.7351 f1: 0.3342 pred_right: 18904 pred_wrong:296 actu_right: 17874 actu_wrong: 1326
+2026-07-25 19:07:34,086 P2005585 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.098745725725778, 'throughput_samples_per_sec': 10127.020614310455, 'peak_memory_mb': 50.4130859375, 'energy_per_sample_joules': 0.0056180393194424135}, 'CPU': {'inference_time_per_sample_ms': 0.27026070488823783, 'throughput_samples_per_sec': 3700.1309547147616, 'peak_memory_mb': 1869.11328125, 'energy_per_sample_joules': 0.01756694581773546}}
+2026-07-25 19:07:34,086 P2005585 INFO Starting clean-room hardware benchmarking...
+2026-07-25 19:07:34,658 P2005585 INFO Performance with loss: pr:0.9155  rc:0.2044  auc:0.8431 ap:0.7351 f1: 0.3342 pred_right: 18904 pred_wrong:296 actu_right: 17874 actu_wrong: 1326
+2026-07-25 19:07:34,658 P2005585 INFO calculate label with f1...
+2026-07-25 19:07:34,658 P2005585 INFO Eadro on ./result/Eadro-SN-Epochs5-Seed46ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-25 19:07:34,878 P2005585 INFO pr:0.9155  rc:0.2044  auc:0.8431 ap:0.7351 f1: 0.3342 pred_right: 18904 pred_wrong:296 actu_right: 17874 actu_wrong: 1326
+2026-07-25 19:07:35,335 P2005585 INFO pr:0.9155  rc:0.2044  auc:0.8431 ap:0.7351 f1: 0.3342 pred_right: 18904 pred_wrong:296 actu_right: 17874 actu_wrong: 1326
+2026-07-25 19:07:35,336 P2005585 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.09510057962726995, 'throughput_samples_per_sec': 10515.183019065971, 'peak_memory_mb': 49.5263671875, 'energy_per_sample_joules': 0.0050695741484806925}, 'CPU': {'inference_time_per_sample_ms': 0.23999443666182738, 'throughput_samples_per_sec': 4166.763254637795, 'peak_memory_mb': 1876.77734375, 'energy_per_sample_joules': 0.015599638383018779}}
+2026-07-25 19:07:35,336 P2005585 INFO Starting clean-room hardware benchmarking...
+2026-07-25 19:07:35,974 P2005585 INFO Performance with f1: pr:0.9155  rc:0.2044  auc:0.8431 ap:0.7351 f1: 0.3342 pred_right: 18904 pred_wrong:296 actu_right: 17874 actu_wrong: 1326
