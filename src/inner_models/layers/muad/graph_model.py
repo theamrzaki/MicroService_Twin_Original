@@ -11,7 +11,7 @@ class GraphModel1(nn.Module):
                  attn_head=4, activation=0.2, **kwargs):
         super().__init__()
         
-        # PyG GATv2Conv layers stored in a ModuleList
+        graph_hiddens = [in_dim]
         self.convs = nn.ModuleList()
         for i, hidden in enumerate(graph_hiddens):
             in_feats = graph_hiddens[i - 1] if i > 0 else in_dim
@@ -21,36 +21,45 @@ class GraphModel1(nn.Module):
                 out_channels=hidden, 
                 heads=attn_head,
                 dropout=dropout, 
+                concat=True,
                 negative_slope=activation,
                 add_self_loops=True
             ))
             
         self.out_dim = graph_hiddens[-1]
-        
-        # PyG Global Attention Pooling equivalent
-        gate_nn = nn.Linear(self.out_dim, 1)
-        self.pooling = GlobalAttention(gate_nn=gate_nn)
-        
+        self.attn_head = attn_head
         self.maxpool = nn.MaxPool1d(attn_head)
+        
+        # REMOVED: GlobalAttention pooling (was collapsing nodes into 1 vector per graph) --> as we need to build node-level embeddings for reconstruction, we will not use global pooling here
         self.to(device)
 
     def forward(self, edge_index, x, batch=None):
         """
         edge_index: Graph connectivity tensor [2, num_edges]
-        x: Node feature matrix [num_nodes, in_dim]
-        batch: Graph assignment vector for batched graphs [num_nodes]. 
-               If single graph, batch will default to zeros.
+        x: Node feature matrix [num_nodes, in_dim] (e.g., [1200, 64])
+        
+        Returns:
+            out: Node-level embeddings [num_nodes, out_dim] (e.g., [1200, 64])
         """
         out = x
+        
+        # Guard: Collapse 3D sequence inputs (e.g., [1200, 10, 64] -> [1200, 64]) if passed directly
+        if out.dim() == 3:
+            out = out.mean(dim=1)
+
         for conv in self.convs:
-            # PyG GATv2Conv takes (x, edge_index) and outputs [num_nodes, num_heads, out_channels]
+            # 1. GATv2Conv with concat=True -> [1200, 256]
             out = conv(out, edge_index)
-            out = self.maxpool(out.permute(0, 2, 1)).permute(0, 2, 1).squeeze()
             
-        if batch is None:
-            batch = torch.zeros(out.size(0), dtype=torch.long, device=out.device)
+            # 2. Reshape to 3D for MaxPool -> [1200, 4, 64]
+            out = out.view(-1, self.attn_head, conv.out_channels)
             
-        return self.pooling(out, batch)
+            # 3. FIXED 2: Specify .squeeze(-1) to safely collapse ONLY the pooled head dimension
+            # [1200, 4, 64] -> permute -> [1200, 64, 4] -> MaxPool1d -> [1200, 64, 1] -> squeeze(-1) -> [1200, 64]
+            out = self.maxpool(out.permute(0, 2, 1)).permute(0, 2, 1).squeeze(-1)
+            
+        # FIXED 3: Directly return node embeddings [1200, 64] (no global pooling)
+        return out
 
 
 class SimpleAttention(nn.Module):

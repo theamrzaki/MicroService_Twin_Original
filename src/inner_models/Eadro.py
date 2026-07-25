@@ -107,11 +107,12 @@ class SelfAttention(nn.Module):
             tensor.data.uniform_(-stdv, stdv)
 
 class TraceModel(nn.Module):
-    def __init__(self, node_num, trace_hiddens=[20, 50], trace_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
+    def __init__(self, node_num, out_dim, trace_hiddens=[20, 50], trace_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
         super(TraceModel, self).__init__()
         #if kwargs.get("trace_hiddens") is not None:
         #    trace_hiddens = kwargs.get("trace_hiddens")
         #    print("Using smaller trace_hiddens for raspberry pi model:", trace_hiddens)
+        trace_hiddens[-1] = out_dim
         self.out_dim = trace_hiddens[-1]
         assert len(trace_hiddens) == len(trace_kernel_sizes)
         self.net = ConvNet(node_num, num_channels=trace_hiddens, kernel_sizes=trace_kernel_sizes, **kwargs)
@@ -128,9 +129,10 @@ class TraceModel(nn.Module):
         return hidden_states[:,-1,:] #[bz, out_dim]
 
 class MetricModel(nn.Module):
-    def __init__(self, metric_num, metric_hiddens=[64, 128], metric_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
+    def __init__(self, metric_num, out_dim, metric_hiddens=[64, 128], metric_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
         super(MetricModel, self).__init__()
         self.metric_num = metric_num
+        metric_hiddens[-1] = out_dim
         #if kwargs.get("metric_hiddens") is not None:
         #    metric_hiddens = kwargs.get("metric_hiddens")
         #    print("Using smaller metric_hiddens for raspberry pi model:", metric_hiddens)
@@ -165,17 +167,19 @@ class LogModel(nn.Module):
         return self.embedder(paras)
 
 class MultiSourceEncoder(nn.Module):
-    def __init__(self, event_num, metric_num, node_num, log_dim=64, fuse_dim=64, alpha=0.5, **kwargs):
+    def __init__(self, event_num, metric_num, node_num,
+                 feature_metric, feature_log, feature_edge,
+                  fuse_dim=64, alpha=0.5, **kwargs):
         super(MultiSourceEncoder, self).__init__()
         self.node_num = node_num
         self.alpha = alpha
 
-        self.trace_model = TraceModel(node_num,**kwargs)
+        self.trace_model = TraceModel(node_num,feature_edge,**kwargs)
         trace_dim = self.trace_model.out_dim
-        self.log_model = LogModel(event_num, log_dim) 
-        self.metric_model = MetricModel(metric_num, **kwargs)
+        self.log_model = LogModel(event_num, feature_log) 
+        self.metric_model = MetricModel(metric_num, feature_metric, **kwargs)
         metric_dim = self.metric_model.out_dim
-        fuse_in = trace_dim+log_dim+metric_dim
+        fuse_in = trace_dim+feature_log+metric_dim
 
         if not fuse_dim % 2 == 0: fuse_dim += 1
         self.fuse = nn.Linear(fuse_in, fuse_dim)
@@ -247,7 +251,7 @@ import numpy as np
 
 
 class MainModel(nn.Module):
-    def __init__(self, event_num, metric_num, node_num, debug=False, **kwargs):
+    def __init__(self, event_num, metric_num, node_num, feature_node, feature_log, feature_edge, debug=False, **kwargs):
         super(MainModel, self).__init__()
 
         self.node_num = node_num
@@ -255,6 +259,7 @@ class MainModel(nn.Module):
         # Encoder stays exactly as-is as the original Eadro model
         self.encoder = MultiSourceEncoder(
             event_num, metric_num, node_num,
+            feature_node, feature_log, feature_edge,
             debug=debug, **kwargs
         )
 

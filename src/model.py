@@ -23,7 +23,8 @@ import src.inner_models.FITS_hermite as FITS_hermite_operations
 from src.inner_models.Eadro import MainModel 	
 from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
 from src.inner_models.Art import ARTWrapper as Art_Model
-from src.inner_models.Hades import HadesWrapper as Hades_Model
+#from src.inner_models.MUAD import MainModel as MUAD_Model
+from src.inner_models.Medicine import AdaFusion as Medicine
 from util.util import is_raspberry_pi
 import numpy as np
 import argparse
@@ -191,7 +192,8 @@ class MyModel(nn.Module):
 			#	'trace_hiddens': trace_hiddens,
 			#	'metric_hiddens': metric_hiddens
 			#}
-			self.Eadro_Model = MainModel(event_num, metric_num, node_num)#, **kwargs)
+			self.Eadro_Model = MainModel(event_num, metric_num, node_num,
+								args['feature_node'], args['feature_log'], args['feature_edge'])#, **kwargs)
 		
 		elif self.FREQ_DOMAIN == "AnoFusion":
 			self.AnoFusion = AnoFusion(
@@ -201,6 +203,10 @@ class MyModel(nn.Module):
 				metric_dim=args['raw_node'],
 				log_dim=args['log_len'],
 				trace_dim=args['raw_edge'],
+
+				feature_metric=args['feature_node'],
+				feature_log=args['feature_log'],
+				feature_trace=args['feature_edge'],
 				out_dim=args['raw_node'] + args['raw_edge'] + args['log_len']
 			)
 			
@@ -215,18 +221,41 @@ class MyModel(nn.Module):
 				feature_traces=args['feature_edge']
 			)
 		
-		elif self.FREQ_DOMAIN == "Hades":
-			event_num = args['log_len']
-			metric_num = args['raw_node']
-			self.Hades_model = Hades_Model(
-				raw_metric=args['raw_node'],
-				raw_logs=args['log_len'],
-				feature_metric=args['feature_node'],
-				feature_logs=args['feature_log'],
-				device = 'cuda',
-				#TODO to be in the forward only
-			)
+		#MUAD is built as a supervised model, where the labels are an essential part of the model
+		#elif self.FREQ_DOMAIN == "MUAD":
+		#	if args["gpu"] == 'true':
+		#		device = 'cuda'
+		#	else:
+		#		device = 'cpu'
+		#	self.MUAD_model = MUAD_Model(
+		#		raw_metric=args['raw_node'],
+		#		raw_logs=args['log_len'],
+		#		raw_traces=args['raw_edge'],
+		#		feature_metric=args['feature_node'],
+		#		feature_logs=args['feature_log'],
+		#		feature_traces=args['feature_edge'],
+		#		device=device
+		#	)
+
+		elif self.FREQ_DOMAIN == "Medicine":
+			if args["gpu"] == True:
+				device = 'cuda'
+			else:
+				device = 'cpu'
 			
+			
+			num_nodes = self.graph.shape[0]
+			self.Medicine_model = Medicine(
+				kpi_num = args['raw_node'],
+				invoke_num =args['raw_edge'],
+				num_log_templates = args['log_len'],
+				instance_num = num_nodes,
+				feature_metric=args['feature_node'],
+				feature_log=args['feature_log'],
+				feature_trace=args['feature_edge'],
+				max_len = args["window"],
+				device=device
+			)
 
 		self.show = nn.Sequential(nn.Linear(args['raw_node'] + args['raw_edge'] + args['log_len'], 128),
 							nn.LeakyReLU(inplace=True),
@@ -513,8 +542,14 @@ class MyModel(nn.Module):
 			device = x['data_edge'].device
 			self.graph = self.graph.to(device)
 			rec = self.Art_Model(x['data_node'], x['data_log'], x['data_edge'])
+		#elif self.FREQ_DOMAIN in ["MUAD"]:
+		#	device = x['data_edge'].device
+		#	self.graph = self.graph.to(device)
+		#	rec = self.MUAD_model(self.graph, x['data_node'], x['data_log'], x['data_edge'])
 
-
+		elif self.FREQ_DOMAIN in ["Medicine"]:
+			device = x['data_edge'].device
+			rec = self.Medicine_model(x['data_node'], x['data_log'], x['data_edge'])
 		if evaluate:
 			if rec.dim() == 4:	 
 				rec = rec[:, -1].squeeze()

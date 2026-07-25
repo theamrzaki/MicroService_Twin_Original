@@ -93,7 +93,20 @@ class ARTWrapper(nn.Module):
 
         return rec
 
+"""
+rec.shape
+torch.Size([100, 12, 16])
 
+
+metrics.shape
+torch.Size([100, 10, 12, 7])
+logs.shape
+torch.Size([100, 10, 12, 7])
+traces.shape
+torch.Size([100, 10, 12, 12, 2])
+
+
+"""
 
 
 
