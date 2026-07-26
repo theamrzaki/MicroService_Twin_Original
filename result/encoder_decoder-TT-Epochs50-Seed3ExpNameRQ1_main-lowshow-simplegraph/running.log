@@ -1,0 +1,608 @@
+2026-07-21 12:06:24,511 P2678923 INFO ---- Model: ----MSTGAD-1d3e18e6----random_seed : 3----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : encoder_decoder----Multi Fits : false----train : True----evaluate : False
+2026-07-21 12:06:24,511 P2678923 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-21 12:06:35,753 P2678923 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-21 12:07:00,047 P2678923 INFO Trainable Parameters Breakdown:
+2026-07-21 12:07:00,047 P2678923 INFO --------------------------------------------------------------------------------
+2026-07-21 12:07:00,047 P2678923 INFO Reconstruction-Specific Parameters:
+2026-07-21 12:07:00,047 P2678923 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-21 12:07:00,047 P2678923 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,047 P2678923 INFO log_emb.linear.weight                    | shape: (32, 60)                  | params: 1,920
+2026-07-21 12:07:00,047 P2678923 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,047 P2678923 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-21 12:07:00,047 P2678923 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,047 P2678923 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-21 12:07:00,048 P2678923 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-21 12:07:00,048 P2678923 INFO dense_log.weight                         | shape: (60, 32)                  | params: 1,920
+2026-07-21 12:07:00,048 P2678923 INFO dense_log.bias                           | shape: (60,)                     | params: 60
+2026-07-21 12:07:00,048 P2678923 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-21 12:07:00,048 P2678923 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.node2node.att | shape: (1, 4, 10)                | params: 40
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.node2node.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.node2node.lin_l.weight | shape: (40, 40)                  | params: 1,600
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.node2node.lin_l.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.node2node.lin_r.weight | shape: (40, 40)                  | params: 1,600
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.node2node.lin_r.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.node2node.lin_edge.weight | shape: (40, 8)                   | params: 320
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.egde2node.att | shape: (1, 2, 4)                 | params: 8
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.egde2node.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.egde2node.lin_l.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.egde2node.lin_l.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.egde2node.lin_r.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.egde2node.lin_r.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.0.egde2node.lin_edge.weight | shape: (8, 40)                   | params: 320
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.1.node2node.att | shape: (1, 4, 10)                | params: 40
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.1.node2node.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.1.node2node.lin_l.weight | shape: (40, 40)                  | params: 1,600
+2026-07-21 12:07:00,048 P2678923 INFO encoder.spatial_attention.1.node2node.lin_l.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,049 P2678923 INFO encoder.spatial_attention.1.node2node.lin_r.weight | shape: (40, 40)                  | params: 1,600
+2026-07-21 12:07:00,049 P2678923 INFO encoder.spatial_attention.1.node2node.lin_r.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,049 P2678923 INFO encoder.spatial_attention.1.node2node.lin_edge.weight | shape: (40, 8)                   | params: 320
+2026-07-21 12:07:00,049 P2678923 INFO encoder.spatial_attention.1.egde2node.att | shape: (1, 2, 4)                 | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.spatial_attention.1.egde2node.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.spatial_attention.1.egde2node.lin_l.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,049 P2678923 INFO encoder.spatial_attention.1.egde2node.lin_l.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.spatial_attention.1.egde2node.lin_r.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,049 P2678923 INFO encoder.spatial_attention.1.egde2node.lin_r.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.spatial_attention.1.egde2node.lin_edge.weight | shape: (8, 40)                   | params: 320
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.0.addnorm_node.ln.weight  | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.0.addnorm_node.ln.bias    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.0.addnorm_trace.ln.weight | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.0.addnorm_trace.ln.bias   | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.0.addnorm_log.ln.weight   | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.0.addnorm_log.ln.bias     | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.1.addnorm_node.ln.weight  | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.1.addnorm_node.ln.bias    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.1.addnorm_trace.ln.weight | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.1.addnorm_trace.ln.bias   | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.1.addnorm_log.ln.weight   | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,049 P2678923 INFO encoder.sa_add.1.addnorm_log.ln.bias     | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,049 P2678923 INFO encoder.temporal_attention.0.attention_node.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,049 P2678923 INFO encoder.temporal_attention.0.attention_node.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,049 P2678923 INFO encoder.temporal_attention.0.attention_node.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,049 P2678923 INFO encoder.temporal_attention.0.attention_node.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.attention_trace.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.attention_trace.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.attention_trace.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.attention_trace.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.attention_log.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.attention_log.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.attention_log.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.attention_log.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.vff_node.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.vff_node.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.vff_trace.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.vff_trace.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.vff_log.weight | shape: (32, 32)                  | params: 1,024
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.vff_log.bias | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.headff_node.weight | shape: (10, 10)                  | params: 100
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.headff_node.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.headff_trace.weight | shape: (10, 40)                  | params: 400
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.headff_trace.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.headff_log.weight | shape: (10, 10)                  | params: 100
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.0.headff_log.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.1.attention_node.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.1.attention_node.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.1.attention_node.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.1.attention_node.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.1.attention_trace.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,050 P2678923 INFO encoder.temporal_attention.1.attention_trace.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.attention_trace.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.attention_trace.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.attention_log.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.attention_log.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.attention_log.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.attention_log.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.vff_node.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.vff_node.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.vff_trace.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.vff_trace.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.vff_log.weight | shape: (32, 32)                  | params: 1,024
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.vff_log.bias | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.headff_node.weight | shape: (10, 10)                  | params: 100
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.headff_node.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.headff_trace.weight | shape: (10, 40)                  | params: 400
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.headff_trace.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.headff_log.weight | shape: (10, 10)                  | params: 100
+2026-07-21 12:07:00,051 P2678923 INFO encoder.temporal_attention.1.headff_log.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,051 P2678923 INFO encoder.ta_add.0.addnorm_node.ln.weight  | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,051 P2678923 INFO encoder.ta_add.0.addnorm_node.ln.bias    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,051 P2678923 INFO encoder.ta_add.0.addnorm_trace.ln.weight | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,051 P2678923 INFO encoder.ta_add.0.addnorm_trace.ln.bias   | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,051 P2678923 INFO encoder.ta_add.0.addnorm_log.ln.weight   | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,051 P2678923 INFO encoder.ta_add.0.addnorm_log.ln.bias     | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,051 P2678923 INFO encoder.ta_add.1.addnorm_node.ln.weight  | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,051 P2678923 INFO encoder.ta_add.1.addnorm_node.ln.bias    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ta_add.1.addnorm_trace.ln.weight | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ta_add.1.addnorm_trace.ln.bias   | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ta_add.1.addnorm_log.ln.weight   | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ta_add.1.addnorm_log.ln.bias     | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_node.ff.0.weight        | shape: (32, 8)                   | params: 256
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_node.ff.0.bias          | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_node.ff.3.weight        | shape: (8, 32)                   | params: 256
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_node.ff.3.bias          | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.addnorm_node.ln.weight     | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.addnorm_node.ln.bias       | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_trace.ff.0.weight       | shape: (32, 8)                   | params: 256
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_trace.ff.0.bias         | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_trace.ff.3.weight       | shape: (8, 32)                   | params: 256
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_trace.ff.3.bias         | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.addnorm_trace.ln.weight    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.addnorm_trace.ln.bias      | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_log.ff.0.weight         | shape: (128, 32)                 | params: 4,096
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_log.ff.0.bias           | shape: (128,)                    | params: 128
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_log.ff.3.weight         | shape: (32, 128)                 | params: 4,096
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.ff_log.ff.3.bias           | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.addnorm_log.ln.weight      | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.0.addnorm_log.ln.bias        | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,052 P2678923 INFO encoder.ffn.1.ff_node.ff.0.weight        | shape: (32, 8)                   | params: 256
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.ff_node.ff.0.bias          | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.ff_node.ff.3.weight        | shape: (8, 32)                   | params: 256
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.ff_node.ff.3.bias          | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.addnorm_node.ln.weight     | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.addnorm_node.ln.bias       | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.ff_trace.ff.0.weight       | shape: (32, 8)                   | params: 256
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.ff_trace.ff.0.bias         | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.ff_trace.ff.3.weight       | shape: (8, 32)                   | params: 256
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.ff_trace.ff.3.bias         | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.addnorm_trace.ln.weight    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.addnorm_trace.ln.bias      | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.ff_log.ff.0.weight         | shape: (128, 32)                 | params: 4,096
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.ff_log.ff.0.bias           | shape: (128,)                    | params: 128
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.ff_log.ff.3.weight         | shape: (32, 128)                 | params: 4,096
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.ff_log.ff.3.bias           | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.addnorm_log.ln.weight      | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,053 P2678923 INFO encoder.ffn.1.addnorm_log.ln.bias        | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,053 P2678923 INFO decoder.spatial_attention.0.node2node.att | shape: (1, 4, 10)                | params: 40
+2026-07-21 12:07:00,053 P2678923 INFO decoder.spatial_attention.0.node2node.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,053 P2678923 INFO decoder.spatial_attention.0.node2node.lin_l.weight | shape: (40, 40)                  | params: 1,600
+2026-07-21 12:07:00,053 P2678923 INFO decoder.spatial_attention.0.node2node.lin_l.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,053 P2678923 INFO decoder.spatial_attention.0.node2node.lin_r.weight | shape: (40, 40)                  | params: 1,600
+2026-07-21 12:07:00,053 P2678923 INFO decoder.spatial_attention.0.node2node.lin_r.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,053 P2678923 INFO decoder.spatial_attention.0.node2node.lin_edge.weight | shape: (40, 8)                   | params: 320
+2026-07-21 12:07:00,053 P2678923 INFO decoder.spatial_attention.0.egde2node.att | shape: (1, 2, 4)                 | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.0.egde2node.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.0.egde2node.lin_l.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.0.egde2node.lin_l.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.0.egde2node.lin_r.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.0.egde2node.lin_r.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.0.egde2node.lin_edge.weight | shape: (8, 40)                   | params: 320
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.node2node.att | shape: (1, 4, 10)                | params: 40
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.node2node.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.node2node.lin_l.weight | shape: (40, 40)                  | params: 1,600
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.node2node.lin_l.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.node2node.lin_r.weight | shape: (40, 40)                  | params: 1,600
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.node2node.lin_r.bias | shape: (40,)                     | params: 40
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.node2node.lin_edge.weight | shape: (40, 8)                   | params: 320
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.egde2node.att | shape: (1, 2, 4)                 | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.egde2node.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.egde2node.lin_l.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.egde2node.lin_l.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.egde2node.lin_r.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.egde2node.lin_r.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.spatial_attention.1.egde2node.lin_edge.weight | shape: (8, 40)                   | params: 320
+2026-07-21 12:07:00,054 P2678923 INFO decoder.sa_add.0.addnorm_node.ln.weight  | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.sa_add.0.addnorm_node.ln.bias    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.sa_add.0.addnorm_trace.ln.weight | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.sa_add.0.addnorm_trace.ln.bias   | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,054 P2678923 INFO decoder.sa_add.0.addnorm_log.ln.weight   | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,054 P2678923 INFO decoder.sa_add.0.addnorm_log.ln.bias     | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,055 P2678923 INFO decoder.sa_add.1.addnorm_node.ln.weight  | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,055 P2678923 INFO decoder.sa_add.1.addnorm_node.ln.bias    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,055 P2678923 INFO decoder.sa_add.1.addnorm_trace.ln.weight | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,055 P2678923 INFO decoder.sa_add.1.addnorm_trace.ln.bias   | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,055 P2678923 INFO decoder.sa_add.1.addnorm_log.ln.weight   | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,055 P2678923 INFO decoder.sa_add.1.addnorm_log.ln.bias     | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_node.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_node.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_node.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_node.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_trace.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_trace.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_trace.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_trace.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_log.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_log.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_log.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.attention_log.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.vff_node.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.vff_node.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.vff_trace.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.vff_trace.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.vff_log.weight | shape: (32, 32)                  | params: 1,024
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.vff_log.bias | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,055 P2678923 INFO decoder.temporal_attention.0.headff_node.weight | shape: (10, 10)                  | params: 100
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.0.headff_node.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.0.headff_trace.weight | shape: (10, 40)                  | params: 400
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.0.headff_trace.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.0.headff_log.weight | shape: (10, 10)                  | params: 100
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.0.headff_log.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_node.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_node.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_node.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_node.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_trace.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_trace.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_trace.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_trace.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_log.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_log.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_log.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.attention_log.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.vff_node.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.vff_node.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.vff_trace.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.vff_trace.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.vff_log.weight | shape: (32, 32)                  | params: 1,024
+2026-07-21 12:07:00,056 P2678923 INFO decoder.temporal_attention.1.vff_log.bias | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,057 P2678923 INFO decoder.temporal_attention.1.headff_node.weight | shape: (10, 10)                  | params: 100
+2026-07-21 12:07:00,057 P2678923 INFO decoder.temporal_attention.1.headff_node.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,057 P2678923 INFO decoder.temporal_attention.1.headff_trace.weight | shape: (10, 40)                  | params: 400
+2026-07-21 12:07:00,057 P2678923 INFO decoder.temporal_attention.1.headff_trace.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,057 P2678923 INFO decoder.temporal_attention.1.headff_log.weight | shape: (10, 10)                  | params: 100
+2026-07-21 12:07:00,057 P2678923 INFO decoder.temporal_attention.1.headff_log.bias | shape: (10,)                     | params: 10
+2026-07-21 12:07:00,057 P2678923 INFO decoder.ta_add.0.addnorm_node.ln.weight  | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,057 P2678923 INFO decoder.ta_add.0.addnorm_node.ln.bias    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,057 P2678923 INFO decoder.ta_add.0.addnorm_trace.ln.weight | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,057 P2678923 INFO decoder.ta_add.0.addnorm_trace.ln.bias   | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,057 P2678923 INFO decoder.ta_add.0.addnorm_log.ln.weight   | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,057 P2678923 INFO decoder.ta_add.0.addnorm_log.ln.bias     | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,057 P2678923 INFO decoder.ta_add.1.addnorm_node.ln.weight  | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,057 P2678923 INFO decoder.ta_add.1.addnorm_node.ln.bias    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,057 P2678923 INFO decoder.ta_add.1.addnorm_trace.ln.weight | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,057 P2678923 INFO decoder.ta_add.1.addnorm_trace.ln.bias   | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,058 P2678923 INFO decoder.ta_add.1.addnorm_log.ln.weight   | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,058 P2678923 INFO decoder.ta_add.1.addnorm_log.ln.bias     | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_node.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_node.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_node.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_node.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_trace.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_trace.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_trace.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_trace.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_log.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_log.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_log.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.0.attention_log.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,058 P2678923 INFO decoder.cross_attention.1.attention_node.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,059 P2678923 INFO decoder.cross_attention.1.attention_node.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,059 P2678923 INFO decoder.cross_attention.1.attention_node.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,059 P2678923 INFO decoder.cross_attention.1.attention_node.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,059 P2678923 INFO decoder.cross_attention.1.attention_trace.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-21 12:07:00,059 P2678923 INFO decoder.cross_attention.1.attention_trace.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-21 12:07:00,059 P2678923 INFO decoder.cross_attention.1.attention_trace.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-21 12:07:00,059 P2678923 INFO decoder.cross_attention.1.attention_trace.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,059 P2678923 INFO decoder.cross_attention.1.attention_log.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-21 12:07:00,059 P2678923 INFO decoder.cross_attention.1.attention_log.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-21 12:07:00,059 P2678923 INFO decoder.cross_attention.1.attention_log.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-21 12:07:00,059 P2678923 INFO decoder.cross_attention.1.attention_log.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.0.addnorm_node.ln.weight  | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.0.addnorm_node.ln.bias    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.0.addnorm_trace.ln.weight | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.0.addnorm_trace.ln.bias   | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.0.addnorm_log.ln.weight   | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.0.addnorm_log.ln.bias     | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.1.addnorm_node.ln.weight  | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.1.addnorm_node.ln.bias    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.1.addnorm_trace.ln.weight | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.1.addnorm_trace.ln.bias   | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.1.addnorm_log.ln.weight   | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,059 P2678923 INFO decoder.ca_add.1.addnorm_log.ln.bias     | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_node.ff.0.weight        | shape: (32, 8)                   | params: 256
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_node.ff.0.bias          | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_node.ff.3.weight        | shape: (8, 32)                   | params: 256
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_node.ff.3.bias          | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.addnorm_node.ln.weight     | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.addnorm_node.ln.bias       | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_trace.ff.0.weight       | shape: (32, 8)                   | params: 256
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_trace.ff.0.bias         | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_trace.ff.3.weight       | shape: (8, 32)                   | params: 256
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_trace.ff.3.bias         | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.addnorm_trace.ln.weight    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.addnorm_trace.ln.bias      | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_log.ff.0.weight         | shape: (128, 32)                 | params: 4,096
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_log.ff.0.bias           | shape: (128,)                    | params: 128
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_log.ff.3.weight         | shape: (32, 128)                 | params: 4,096
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.ff_log.ff.3.bias           | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.addnorm_log.ln.weight      | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.0.addnorm_log.ln.bias        | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.1.ff_node.ff.0.weight        | shape: (32, 8)                   | params: 256
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.1.ff_node.ff.0.bias          | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.1.ff_node.ff.3.weight        | shape: (8, 32)                   | params: 256
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.1.ff_node.ff.3.bias          | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.1.addnorm_node.ln.weight     | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.1.addnorm_node.ln.bias       | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,060 P2678923 INFO decoder.ffn.1.ff_trace.ff.0.weight       | shape: (32, 8)                   | params: 256
+2026-07-21 12:07:00,061 P2678923 INFO decoder.ffn.1.ff_trace.ff.0.bias         | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,061 P2678923 INFO decoder.ffn.1.ff_trace.ff.3.weight       | shape: (8, 32)                   | params: 256
+2026-07-21 12:07:00,061 P2678923 INFO decoder.ffn.1.ff_trace.ff.3.bias         | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,061 P2678923 INFO decoder.ffn.1.addnorm_trace.ln.weight    | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,061 P2678923 INFO decoder.ffn.1.addnorm_trace.ln.bias      | shape: (8,)                      | params: 8
+2026-07-21 12:07:00,061 P2678923 INFO decoder.ffn.1.ff_log.ff.0.weight         | shape: (128, 32)                 | params: 4,096
+2026-07-21 12:07:00,061 P2678923 INFO decoder.ffn.1.ff_log.ff.0.bias           | shape: (128,)                    | params: 128
+2026-07-21 12:07:00,061 P2678923 INFO decoder.ffn.1.ff_log.ff.3.weight         | shape: (32, 128)                 | params: 4,096
+2026-07-21 12:07:00,061 P2678923 INFO decoder.ffn.1.ff_log.ff.3.bias           | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,061 P2678923 INFO decoder.ffn.1.addnorm_log.ln.weight      | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,061 P2678923 INFO decoder.ffn.1.addnorm_log.ln.bias        | shape: (32,)                     | params: 32
+2026-07-21 12:07:00,061 P2678923 INFO Subtotal: 96,029
+2026-07-21 12:07:00,061 P2678923 INFO --------------------------------------------------------------------------------
+2026-07-21 12:07:00,061 P2678923 INFO Common Parameters:
+2026-07-21 12:07:00,061 P2678923 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-21 12:07:00,061 P2678923 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-21 12:07:00,061 P2678923 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-21 12:07:00,061 P2678923 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-21 12:07:00,061 P2678923 INFO Subtotal: 9,218
+2026-07-21 12:07:00,061 P2678923 INFO --------------------------------------------------------------------------------
+2026-07-21 12:07:00,061 P2678923 INFO Total Trainable Parameters: 105,247
+
+2026-07-21 12:07:00,061 P2678923 INFO Trainable Parameters: 105247, reconstruction: 96029, common: 9218
+2026-07-21 12:07:00,062 P2678923 INFO model : init weight
+2026-07-21 12:07:00,064 P2678923 INFO Using GPU...
+2026-07-21 12:07:00,082 P2678923 INFO optimizer : using AdaBelief
+2026-07-21 12:07:00,083 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:07:00,083 P2678923 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-21 12:08:31,133 P2678923 INFO Epoch 0/50, all_loss:0.10306 cls_loss:28.24911 rec_loss:0.10306 [91.02s]; best loss:0.10306, patience : 0
+2026-07-21 12:08:31,133 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:08:31,133 P2678923 INFO 1/50 starting... lr: 0.001 para:0.5
+2026-07-21 12:10:00,585 P2678923 INFO Epoch 1/50, all_loss:2.32423 cls_loss:4.42396 rec_loss:0.22450 [89.42s]; best loss:2.32423, patience : 0
+2026-07-21 12:10:00,585 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:10:00,593 P2678923 INFO 2/50 starting... lr: 0.001 para:0.3333333432674408
+2026-07-21 12:11:28,617 P2678923 INFO Epoch 2/50, all_loss:1.51623 cls_loss:2.17012 rec_loss:0.20846 [88.00s]; best loss:1.51623, patience : 0
+2026-07-21 12:11:53,000 P2678923 INFO pr:0.8571  rc:0.5140  auc:0.9867 ap:0.8975 f1: 0.6427 pred_right: 1075514 pred_wrong:20686 actu_right: 1061709 actu_wrong: 34491
+2026-07-21 12:12:03,323 P2678923 INFO pr:0.8625  rc:0.5126  auc:0.9862 ap:0.8979 f1: 0.6430 pred_right: 461000 pred_wrong:8800 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:12:03,352 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:12:03,352 P2678923 INFO 3/50 starting... lr: 0.001 para:0.25
+2026-07-21 12:13:31,897 P2678923 INFO Epoch 3/50, all_loss:1.59453 cls_loss:2.05897 rec_loss:0.20119 [88.54s]; best loss:1.51623, patience : 1
+2026-07-21 12:13:56,800 P2678923 INFO pr:0.8357  rc:0.6228  auc:0.9886 ap:0.9112 f1: 0.7137 pred_right: 1070498 pred_wrong:25702 actu_right: 1061712 actu_wrong: 34488
+2026-07-21 12:14:10,762 P2678923 INFO pr:0.8374  rc:0.6192  auc:0.9881 ap:0.9111 f1: 0.7120 pred_right: 458851 pred_wrong:10949 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:14:10,820 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:14:10,821 P2678923 INFO 4/50 starting... lr: 0.001 para:0.20000000298023224
+2026-07-21 12:15:39,736 P2678923 INFO Epoch 4/50, all_loss:1.54213 cls_loss:1.87698 rec_loss:0.20272 [88.91s]; best loss:1.51623, patience : 1
+2026-07-21 12:16:05,243 P2678923 INFO pr:0.8419  rc:0.6627  auc:0.9921 ap:0.9343 f1: 0.7416 pred_right: 1069053 pred_wrong:27147 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 12:16:15,609 P2678923 INFO pr:0.8498  rc:0.6582  auc:0.9916 ap:0.9346 f1: 0.7418 pred_right: 458330 pred_wrong:11470 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:16:15,635 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:16:15,636 P2678923 INFO 5/50 starting... lr: 0.001 para:0.1666666716337204
+2026-07-21 12:17:44,860 P2678923 INFO Epoch 5/50, all_loss:1.46697 cls_loss:1.71766 rec_loss:0.21351 [89.20s]; best loss:1.46697, patience : 0
+2026-07-21 12:18:09,374 P2678923 INFO pr:0.8580  rc:0.6701  auc:0.9942 ap:0.9440 f1: 0.7525 pred_right: 1069262 pred_wrong:26938 actu_right: 1061709 actu_wrong: 34491
+2026-07-21 12:18:20,865 P2678923 INFO pr:0.8675  rc:0.6721  auc:0.9943 ap:0.9449 f1: 0.7574 pred_right: 458327 pred_wrong:11473 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:18:20,888 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:18:20,888 P2678923 INFO 6/50 starting... lr: 0.001 para:0.1428571492433548
+2026-07-21 12:19:49,760 P2678923 INFO Epoch 6/50, all_loss:1.32049 cls_loss:1.50348 rec_loss:0.22255 [88.85s]; best loss:1.32049, patience : 0
+2026-07-21 12:20:19,716 P2678923 INFO pr:0.8686  rc:0.7603  auc:0.9959 ap:0.9597 f1: 0.8109 pred_right: 1066015 pred_wrong:30185 actu_right: 1061713 actu_wrong: 34487
+2026-07-21 12:20:30,210 P2678923 INFO pr:0.8774  rc:0.7615  auc:0.9956 ap:0.9611 f1: 0.8154 pred_right: 456947 pred_wrong:12853 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:20:30,237 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:20:30,238 P2678923 INFO 7/50 starting... lr: 0.001 para:0.125
+2026-07-21 12:22:00,053 P2678923 INFO Epoch 7/50, all_loss:1.22756 cls_loss:1.36944 rec_loss:0.23442 [89.78s]; best loss:1.22756, patience : 0
+2026-07-21 12:22:24,779 P2678923 INFO pr:0.8553  rc:0.8493  auc:0.9968 ap:0.9667 f1: 0.8523 pred_right: 1061953 pred_wrong:34247 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 12:22:35,441 P2678923 INFO pr:0.8621  rc:0.8510  auc:0.9965 ap:0.9677 f1: 0.8565 pred_right: 455183 pred_wrong:14617 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:22:35,471 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:22:35,472 P2678923 INFO 8/50 starting... lr: 0.001 para:0.1111111119389534
+2026-07-21 12:24:05,654 P2678923 INFO Epoch 8/50, all_loss:1.14754 cls_loss:1.26082 rec_loss:0.24126 [90.15s]; best loss:1.14754, patience : 0
+2026-07-21 12:24:30,823 P2678923 INFO pr:0.8775  rc:0.8555  auc:0.9973 ap:0.9711 f1: 0.8663 pred_right: 1062576 pred_wrong:33624 actu_right: 1061712 actu_wrong: 34488
+2026-07-21 12:24:46,901 P2678923 INFO pr:0.8841  rc:0.8586  auc:0.9971 ap:0.9715 f1: 0.8712 pred_right: 455420 pred_wrong:14380 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:24:46,938 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:24:46,938 P2678923 INFO 9/50 starting... lr: 0.001 para:0.10000000149011612
+2026-07-21 12:26:15,549 P2678923 INFO Epoch 9/50, all_loss:1.11748 cls_loss:1.21389 rec_loss:0.24979 [88.56s]; best loss:1.11748, patience : 0
+2026-07-21 12:26:41,272 P2678923 INFO pr:0.8589  rc:0.8664  auc:0.9957 ap:0.9678 f1: 0.8626 pred_right: 1061412 pred_wrong:34788 actu_right: 1061713 actu_wrong: 34487
+2026-07-21 12:26:51,679 P2678923 INFO pr:0.8630  rc:0.8684  auc:0.9951 ap:0.9681 f1: 0.8657 pred_right: 454899 pred_wrong:14901 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:26:51,680 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:26:51,680 P2678923 INFO 10/50 starting... lr: 0.001 para:0.09090909361839294
+2026-07-21 12:28:22,258 P2678923 INFO Epoch 10/50, all_loss:1.03420 cls_loss:1.11243 rec_loss:0.25192 [90.55s]; best loss:1.03420, patience : 0
+2026-07-21 12:28:47,009 P2678923 INFO pr:0.8504  rc:0.9188  auc:0.9976 ap:0.9752 f1: 0.8833 pred_right: 1058933 pred_wrong:37267 actu_right: 1061711 actu_wrong: 34489
+2026-07-21 12:28:58,601 P2678923 INFO pr:0.8543  rc:0.9221  auc:0.9972 ap:0.9745 f1: 0.8869 pred_right: 453817 pred_wrong:15983 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:28:58,624 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:28:58,624 P2678923 INFO 11/50 starting... lr: 0.001 para:0.0833333358168602
+2026-07-21 12:30:28,971 P2678923 INFO Epoch 11/50, all_loss:0.97723 cls_loss:1.04304 rec_loss:0.25327 [90.32s]; best loss:0.97723, patience : 0
+2026-07-21 12:30:59,043 P2678923 INFO pr:0.8693  rc:0.9214  auc:0.9976 ap:0.9747 f1: 0.8946 pred_right: 1059647 pred_wrong:36553 actu_right: 1061713 actu_wrong: 34487
+2026-07-21 12:31:09,620 P2678923 INFO pr:0.8711  rc:0.9217  auc:0.9973 ap:0.9746 f1: 0.8957 pred_right: 454131 pred_wrong:15669 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:31:09,648 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:31:09,649 P2678923 INFO 12/50 starting... lr: 0.001 para:0.07692307978868484
+2026-07-21 12:32:39,811 P2678923 INFO Epoch 12/50, all_loss:0.97611 cls_loss:1.03574 rec_loss:0.26062 [90.13s]; best loss:0.97611, patience : 0
+2026-07-21 12:33:04,387 P2678923 INFO pr:0.8597  rc:0.9193  auc:0.9979 ap:0.9759 f1: 0.8885 pred_right: 1059320 pred_wrong:36880 actu_right: 1061709 actu_wrong: 34491
+2026-07-21 12:33:14,936 P2678923 INFO pr:0.8618  rc:0.9187  auc:0.9977 ap:0.9756 f1: 0.8893 pred_right: 454014 pred_wrong:15786 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:33:14,937 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:33:14,937 P2678923 INFO 13/50 starting... lr: 0.001 para:0.0714285746216774
+2026-07-21 12:34:45,709 P2678923 INFO Epoch 13/50, all_loss:0.90340 cls_loss:0.95265 rec_loss:0.26313 [90.74s]; best loss:0.90340, patience : 0
+2026-07-21 12:35:11,280 P2678923 INFO pr:0.8977  rc:0.8898  auc:0.9984 ap:0.9812 f1: 0.8937 pred_right: 1062019 pred_wrong:34181 actu_right: 1061714 actu_wrong: 34486
+2026-07-21 12:35:26,392 P2678923 INFO pr:0.8987  rc:0.8888  auc:0.9983 ap:0.9805 f1: 0.8937 pred_right: 455154 pred_wrong:14646 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:35:26,393 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:35:26,394 P2678923 INFO 14/50 starting... lr: 0.001 para:0.06666667014360428
+2026-07-21 12:36:56,339 P2678923 INFO Epoch 14/50, all_loss:0.88173 cls_loss:0.92555 rec_loss:0.26828 [89.89s]; best loss:0.88173, patience : 0
+2026-07-21 12:37:22,384 P2678923 INFO pr:0.8377  rc:0.9559  auc:0.9980 ap:0.9783 f1: 0.8929 pred_right: 1056843 pred_wrong:39357 actu_right: 1061708 actu_wrong: 34492
+2026-07-21 12:37:33,126 P2678923 INFO pr:0.8415  rc:0.9562  auc:0.9978 ap:0.9774 f1: 0.8952 pred_right: 452975 pred_wrong:16825 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:37:33,127 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:37:33,127 P2678923 INFO 15/50 starting... lr: 0.001 para:0.0625
+2026-07-21 12:39:03,703 P2678923 INFO Epoch 15/50, all_loss:0.89667 cls_loss:0.93829 rec_loss:0.27224 [90.57s]; best loss:0.88173, patience : 1
+2026-07-21 12:39:28,867 P2678923 INFO pr:0.8646  rc:0.9718  auc:0.9981 ap:0.9826 f1: 0.9151 pred_right: 1057437 pred_wrong:38763 actu_right: 1061713 actu_wrong: 34487
+2026-07-21 12:39:40,881 P2678923 INFO pr:0.8682  rc:0.9702  auc:0.9980 ap:0.9825 f1: 0.9163 pred_right: 453253 pred_wrong:16547 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:39:40,906 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:39:40,906 P2678923 INFO 16/50 starting... lr: 0.001 para:0.05882352963089943
+2026-07-21 12:41:11,142 P2678923 INFO Epoch 16/50, all_loss:0.83048 cls_loss:0.86496 rec_loss:0.27877 [90.22s]; best loss:0.83048, patience : 0
+2026-07-21 12:41:41,880 P2678923 INFO pr:0.8925  rc:0.9099  auc:0.9984 ap:0.9806 f1: 0.9011 pred_right: 1061044 pred_wrong:35156 actu_right: 1061716 actu_wrong: 34484
+2026-07-21 12:41:52,663 P2678923 INFO pr:0.8940  rc:0.9090  auc:0.9981 ap:0.9785 f1: 0.9015 pred_right: 454743 pred_wrong:15057 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:41:52,664 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:41:52,671 P2678923 INFO 17/50 starting... lr: 0.001 para:0.0555555559694767
+2026-07-21 12:43:23,465 P2678923 INFO Epoch 17/50, all_loss:0.82997 cls_loss:0.86216 rec_loss:0.28264 [90.76s]; best loss:0.82997, patience : 0
+2026-07-21 12:43:48,330 P2678923 INFO pr:0.8856  rc:0.9367  auc:0.9985 ap:0.9854 f1: 0.9104 pred_right: 1059722 pred_wrong:36478 actu_right: 1061712 actu_wrong: 34488
+2026-07-21 12:43:58,984 P2678923 INFO pr:0.8900  rc:0.9342  auc:0.9981 ap:0.9847 f1: 0.9116 pred_right: 454258 pred_wrong:15542 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:43:58,985 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:43:58,985 P2678923 INFO 18/50 starting... lr: 0.001 para:0.05263157933950424
+2026-07-21 12:45:30,390 P2678923 INFO Epoch 18/50, all_loss:0.76993 cls_loss:0.79675 rec_loss:0.28719 [91.37s]; best loss:0.76993, patience : 0
+2026-07-21 12:45:56,081 P2678923 INFO pr:0.8714  rc:0.9662  auc:0.9987 ap:0.9829 f1: 0.9164 pred_right: 1057961 pred_wrong:38239 actu_right: 1061711 actu_wrong: 34489
+2026-07-21 12:46:08,451 P2678923 INFO pr:0.8710  rc:0.9672  auc:0.9984 ap:0.9815 f1: 0.9165 pred_right: 453356 pred_wrong:16444 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:46:08,512 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:46:08,513 P2678923 INFO 19/50 starting... lr: 0.001 para:0.05000000074505806
+2026-07-21 12:47:38,998 P2678923 INFO Epoch 19/50, all_loss:0.77302 cls_loss:0.79837 rec_loss:0.29130 [90.48s]; best loss:0.76993, patience : 1
+2026-07-21 12:48:08,248 P2678923 INFO pr:0.8639  rc:0.9720  auc:0.9979 ap:0.9840 f1: 0.9147 pred_right: 1057395 pred_wrong:38805 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 12:48:18,886 P2678923 INFO pr:0.8648  rc:0.9708  auc:0.9975 ap:0.9835 f1: 0.9148 pred_right: 453177 pred_wrong:16623 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:48:18,887 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:48:18,887 P2678923 INFO 20/50 starting... lr: 0.001 para:0.0476190485060215
+2026-07-21 12:49:49,451 P2678923 INFO Epoch 20/50, all_loss:0.76610 cls_loss:0.78957 rec_loss:0.29671 [90.54s]; best loss:0.76610, patience : 0
+2026-07-21 12:50:14,456 P2678923 INFO pr:0.8970  rc:0.9608  auc:0.9983 ap:0.9875 f1: 0.9278 pred_right: 1059260 pred_wrong:36940 actu_right: 1061714 actu_wrong: 34486
+2026-07-21 12:50:25,113 P2678923 INFO pr:0.8995  rc:0.9604  auc:0.9977 ap:0.9868 f1: 0.9289 pred_right: 453990 pred_wrong:15810 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:50:25,143 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:50:25,143 P2678923 INFO 21/50 starting... lr: 0.001 para:0.04545454680919647
+2026-07-21 12:51:56,460 P2678923 INFO Epoch 21/50, all_loss:0.73556 cls_loss:0.75645 rec_loss:0.29672 [91.29s]; best loss:0.73556, patience : 0
+2026-07-21 12:52:27,391 P2678923 INFO pr:0.8973  rc:0.9465  auc:0.9983 ap:0.9860 f1: 0.9213 pred_right: 1059819 pred_wrong:36381 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 12:52:38,731 P2678923 INFO pr:0.8954  rc:0.9437  auc:0.9976 ap:0.9849 f1: 0.9189 pred_right: 454192 pred_wrong:15608 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:52:38,732 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:52:38,739 P2678923 INFO 22/50 starting... lr: 0.001 para:0.043478261679410934
+2026-07-21 12:54:09,923 P2678923 INFO Epoch 22/50, all_loss:0.72597 cls_loss:0.74505 rec_loss:0.30613 [91.15s]; best loss:0.72597, patience : 0
+2026-07-21 12:54:35,026 P2678923 INFO pr:0.9218  rc:0.9300  auc:0.9988 ap:0.9892 f1: 0.9259 pred_right: 1061398 pred_wrong:34802 actu_right: 1061706 actu_wrong: 34494
+2026-07-21 12:54:45,700 P2678923 INFO pr:0.9228  rc:0.9290  auc:0.9983 ap:0.9884 f1: 0.9259 pred_right: 454893 pred_wrong:14907 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:54:45,701 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:54:45,701 P2678923 INFO 23/50 starting... lr: 0.001 para:0.0416666679084301
+2026-07-21 12:56:16,997 P2678923 INFO Epoch 23/50, all_loss:0.73454 cls_loss:0.75324 rec_loss:0.30428 [91.29s]; best loss:0.72597, patience : 1
+2026-07-21 12:56:42,787 P2678923 INFO pr:0.9078  rc:0.9493  auc:0.9991 ap:0.9886 f1: 0.9281 pred_right: 1060139 pred_wrong:36061 actu_right: 1061714 actu_wrong: 34486
+2026-07-21 12:56:52,827 P2678923 INFO pr:0.9096  rc:0.9508  auc:0.9989 ap:0.9878 f1: 0.9297 pred_right: 454322 pred_wrong:15478 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:56:52,851 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:56:52,851 P2678923 INFO 24/50 starting... lr: 0.001 para:0.03999999910593033
+2026-07-21 12:58:23,058 P2678923 INFO Epoch 24/50, all_loss:0.69419 cls_loss:0.71030 rec_loss:0.30745 [90.15s]; best loss:0.69419, patience : 0
+2026-07-21 12:58:52,998 P2678923 INFO pr:0.8780  rc:0.9770  auc:0.9986 ap:0.9882 f1: 0.9249 pred_right: 1057824 pred_wrong:38376 actu_right: 1061712 actu_wrong: 34488
+2026-07-21 12:59:03,476 P2678923 INFO pr:0.8788  rc:0.9752  auc:0.9981 ap:0.9873 f1: 0.9245 pred_right: 453367 pred_wrong:16433 actu_right: 454992 actu_wrong: 14808
+2026-07-21 12:59:03,476 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 12:59:03,477 P2678923 INFO 25/50 starting... lr: 0.001 para:0.03846153989434242
+2026-07-21 13:00:33,947 P2678923 INFO Epoch 25/50, all_loss:0.67588 cls_loss:0.69064 rec_loss:0.30686 [90.44s]; best loss:0.67588, patience : 0
+2026-07-21 13:00:58,861 P2678923 INFO pr:0.8981  rc:0.9695  auc:0.9991 ap:0.9888 f1: 0.9324 pred_right: 1058969 pred_wrong:37231 actu_right: 1061711 actu_wrong: 34489
+2026-07-21 13:01:09,436 P2678923 INFO pr:0.8983  rc:0.9676  auc:0.9989 ap:0.9873 f1: 0.9316 pred_right: 453849 pred_wrong:15951 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:01:09,466 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:01:09,466 P2678923 INFO 26/50 starting... lr: 0.001 para:0.03703703731298447
+2026-07-21 13:02:40,862 P2678923 INFO Epoch 26/50, all_loss:0.66833 cls_loss:0.68202 rec_loss:0.31250 [91.37s]; best loss:0.66833, patience : 0
+2026-07-21 13:03:11,082 P2678923 INFO pr:0.9073  rc:0.9671  auc:0.9989 ap:0.9901 f1: 0.9363 pred_right: 1059438 pred_wrong:36762 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 13:03:22,755 P2678923 INFO pr:0.9073  rc:0.9665  auc:0.9984 ap:0.9891 f1: 0.9359 pred_right: 454025 pred_wrong:15775 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:03:22,783 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:03:22,783 P2678923 INFO 27/50 starting... lr: 0.001 para:0.0357142873108387
+2026-07-21 13:04:54,606 P2678923 INFO Epoch 27/50, all_loss:0.68366 cls_loss:0.69739 rec_loss:0.31301 [91.82s]; best loss:0.66833, patience : 1
+2026-07-21 13:05:19,446 P2678923 INFO pr:0.8716  rc:0.9775  auc:0.9975 ap:0.9873 f1: 0.9215 pred_right: 1057518 pred_wrong:38682 actu_right: 1061708 actu_wrong: 34492
+2026-07-21 13:05:30,080 P2678923 INFO pr:0.8730  rc:0.9759  auc:0.9966 ap:0.9861 f1: 0.9216 pred_right: 453247 pred_wrong:16553 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:05:30,081 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:05:30,081 P2678923 INFO 28/50 starting... lr: 0.001 para:0.03448275849223137
+2026-07-21 13:07:01,413 P2678923 INFO Epoch 28/50, all_loss:0.69069 cls_loss:0.70389 rec_loss:0.32115 [91.33s]; best loss:0.66833, patience : 2
+2026-07-21 13:07:27,142 P2678923 INFO pr:0.8861  rc:0.9743  auc:0.9989 ap:0.9881 f1: 0.9281 pred_right: 1058273 pred_wrong:37927 actu_right: 1061707 actu_wrong: 34493
+2026-07-21 13:07:37,054 P2678923 INFO pr:0.8852  rc:0.9730  auc:0.9985 ap:0.9865 f1: 0.9270 pred_right: 453524 pred_wrong:16276 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:07:37,055 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:07:37,055 P2678923 INFO 29/50 starting... lr: 0.001 para:0.03333333507180214
+2026-07-21 13:09:07,764 P2678923 INFO Epoch 29/50, all_loss:0.64799 cls_loss:0.65923 rec_loss:0.32215 [90.68s]; best loss:0.64799, patience : 0
+2026-07-21 13:09:37,994 P2678923 INFO pr:0.9324  rc:0.9053  auc:0.9988 ap:0.9883 f1: 0.9187 pred_right: 1062715 pred_wrong:33485 actu_right: 1061713 actu_wrong: 34487
+2026-07-21 13:09:48,570 P2678923 INFO pr:0.9325  rc:0.9044  auc:0.9984 ap:0.9873 f1: 0.9182 pred_right: 455437 pred_wrong:14363 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:09:48,571 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:09:48,571 P2678923 INFO 30/50 starting... lr: 0.001 para:0.032258063554763794
+2026-07-21 13:11:19,064 P2678923 INFO Epoch 30/50, all_loss:0.66317 cls_loss:0.67427 rec_loss:0.33028 [90.49s]; best loss:0.64799, patience : 1
+2026-07-21 13:11:43,843 P2678923 INFO pr:0.9075  rc:0.9667  auc:0.9988 ap:0.9909 f1: 0.9362 pred_right: 1059458 pred_wrong:36742 actu_right: 1061709 actu_wrong: 34491
+2026-07-21 13:11:54,385 P2678923 INFO pr:0.9071  rc:0.9667  auc:0.9983 ap:0.9899 f1: 0.9360 pred_right: 454019 pred_wrong:15781 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:11:54,386 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:11:54,386 P2678923 INFO 31/50 starting... lr: 0.001 para:0.03125
+2026-07-21 13:13:25,714 P2678923 INFO Epoch 31/50, all_loss:0.65585 cls_loss:0.66646 rec_loss:0.32687 [91.33s]; best loss:0.64799, patience : 1
+2026-07-21 13:13:55,252 P2678923 INFO pr:0.8880  rc:0.9831  auc:0.9991 ap:0.9907 f1: 0.9331 pred_right: 1058017 pred_wrong:38183 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 13:14:07,433 P2678923 INFO pr:0.8906  rc:0.9816  auc:0.9988 ap:0.9896 f1: 0.9339 pred_right: 453478 pred_wrong:16322 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:14:07,434 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:14:07,434 P2678923 INFO 32/50 starting... lr: 0.001 para:0.03030303120613098
+2026-07-21 13:15:37,550 P2678923 INFO Epoch 32/50, all_loss:0.62777 cls_loss:0.63716 rec_loss:0.32727 [90.09s]; best loss:0.62777, patience : 0
+2026-07-21 13:16:02,285 P2678923 INFO pr:0.9197  rc:0.9524  auc:0.9988 ap:0.9900 f1: 0.9358 pred_right: 1060483 pred_wrong:35717 actu_right: 1061712 actu_wrong: 34488
+2026-07-21 13:16:12,867 P2678923 INFO pr:0.9209  rc:0.9503  auc:0.9983 ap:0.9893 f1: 0.9354 pred_right: 454520 pred_wrong:15280 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:16:12,868 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:16:12,868 P2678923 INFO 33/50 starting... lr: 0.001 para:0.029411764815449715
+2026-07-21 13:17:42,474 P2678923 INFO Epoch 33/50, all_loss:0.66315 cls_loss:0.67325 rec_loss:0.32991 [89.61s]; best loss:0.62777, patience : 1
+2026-07-21 13:18:08,305 P2678923 INFO pr:0.9102  rc:0.9709  auc:0.9987 ap:0.9914 f1: 0.9396 pred_right: 1059410 pred_wrong:36790 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 13:18:18,266 P2678923 INFO pr:0.9117  rc:0.9685  auc:0.9982 ap:0.9903 f1: 0.9393 pred_right: 454069 pred_wrong:15731 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:18:18,290 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:18:18,290 P2678923 INFO 34/50 starting... lr: 0.001 para:0.02857142873108387
+2026-07-21 13:19:47,809 P2678923 INFO Epoch 34/50, all_loss:0.57542 cls_loss:0.58253 rec_loss:0.33386 [89.49s]; best loss:0.57542, patience : 0
+2026-07-21 13:20:18,279 P2678923 INFO pr:0.9202  rc:0.9560  auc:0.9990 ap:0.9914 f1: 0.9378 pred_right: 1060373 pred_wrong:35827 actu_right: 1061713 actu_wrong: 34487
+2026-07-21 13:20:28,830 P2678923 INFO pr:0.9175  rc:0.9550  auc:0.9988 ap:0.9901 f1: 0.9359 pred_right: 454387 pred_wrong:15413 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:20:28,831 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:20:28,838 P2678923 INFO 35/50 starting... lr: 0.001 para:0.02777777798473835
+2026-07-21 13:21:59,636 P2678923 INFO Epoch 35/50, all_loss:0.57895 cls_loss:0.58579 rec_loss:0.33958 [90.80s]; best loss:0.57542, patience : 1
+2026-07-21 13:22:24,880 P2678923 INFO pr:0.9015  rc:0.9731  auc:0.9984 ap:0.9890 f1: 0.9360 pred_right: 1058976 pred_wrong:37224 actu_right: 1061713 actu_wrong: 34487
+2026-07-21 13:22:35,558 P2678923 INFO pr:0.9012  rc:0.9710  auc:0.9976 ap:0.9880 f1: 0.9348 pred_right: 453846 pred_wrong:15954 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:22:35,559 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:22:35,559 P2678923 INFO 36/50 starting... lr: 0.001 para:0.027027027681469917
+2026-07-21 13:24:05,976 P2678923 INFO Epoch 36/50, all_loss:0.61474 cls_loss:0.62237 rec_loss:0.34012 [90.41s]; best loss:0.57542, patience : 2
+2026-07-21 13:24:36,773 P2678923 INFO pr:0.9087  rc:0.9712  auc:0.9990 ap:0.9918 f1: 0.9389 pred_right: 1059337 pred_wrong:36863 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 13:24:47,742 P2678923 INFO pr:0.9091  rc:0.9709  auc:0.9984 ap:0.9909 f1: 0.9390 pred_right: 453985 pred_wrong:15815 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:24:47,743 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:24:47,743 P2678923 INFO 37/50 starting... lr: 0.001 para:0.02631578966975212
+2026-07-21 13:26:17,661 P2678923 INFO Epoch 37/50, all_loss:0.58587 cls_loss:0.59247 rec_loss:0.34137 [89.92s]; best loss:0.57542, patience : 2
+2026-07-21 13:26:42,487 P2678923 INFO pr:0.9075  rc:0.9773  auc:0.9993 ap:0.9923 f1: 0.9411 pred_right: 1059062 pred_wrong:37138 actu_right: 1061717 actu_wrong: 34483
+2026-07-21 13:26:53,112 P2678923 INFO pr:0.9073  rc:0.9748  auc:0.9990 ap:0.9908 f1: 0.9398 pred_right: 453890 pred_wrong:15910 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:26:53,142 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:26:53,143 P2678923 INFO 38/50 starting... lr: 0.001 para:0.025641025975346565
+2026-07-21 13:28:23,444 P2678923 INFO Epoch 38/50, all_loss:0.55766 cls_loss:0.56325 rec_loss:0.34534 [90.27s]; best loss:0.55766, patience : 0
+2026-07-21 13:28:49,330 P2678923 INFO pr:0.9069  rc:0.9758  auc:0.9989 ap:0.9909 f1: 0.9401 pred_right: 1059094 pred_wrong:37106 actu_right: 1061715 actu_wrong: 34485
+2026-07-21 13:29:00,431 P2678923 INFO pr:0.9081  rc:0.9740  auc:0.9988 ap:0.9901 f1: 0.9399 pred_right: 453918 pred_wrong:15882 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:29:00,433 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:29:00,433 P2678923 INFO 39/50 starting... lr: 0.001 para:0.02500000037252903
+2026-07-21 13:30:30,209 P2678923 INFO Epoch 39/50, all_loss:0.61289 cls_loss:0.61967 rec_loss:0.34857 [89.77s]; best loss:0.55766, patience : 1
+2026-07-21 13:30:59,290 P2678923 INFO pr:0.9151  rc:0.9757  auc:0.9992 ap:0.9928 f1: 0.9445 pred_right: 1059424 pred_wrong:36776 actu_right: 1061708 actu_wrong: 34492
+2026-07-21 13:31:09,748 P2678923 INFO pr:0.9151  rc:0.9747  auc:0.9987 ap:0.9915 f1: 0.9440 pred_right: 454026 pred_wrong:15774 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:31:09,778 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:31:09,778 P2678923 INFO 40/50 starting... lr: 0.001 para:0.024390242993831635
+2026-07-21 13:32:39,254 P2678923 INFO Epoch 40/50, all_loss:0.56937 cls_loss:0.57490 rec_loss:0.34810 [89.47s]; best loss:0.55766, patience : 1
+2026-07-21 13:33:03,786 P2678923 INFO pr:0.9132  rc:0.9667  auc:0.9992 ap:0.9897 f1: 0.9392 pred_right: 1059685 pred_wrong:36515 actu_right: 1061707 actu_wrong: 34493
+2026-07-21 13:33:14,230 P2678923 INFO pr:0.9135  rc:0.9659  auc:0.9991 ap:0.9882 f1: 0.9390 pred_right: 454143 pred_wrong:15657 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:33:14,230 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:33:14,231 P2678923 INFO 41/50 starting... lr: 0.001 para:0.02380952425301075
+2026-07-21 13:34:45,326 P2678923 INFO Epoch 41/50, all_loss:0.57428 cls_loss:0.57979 rec_loss:0.34856 [91.09s]; best loss:0.55766, patience : 2
+2026-07-21 13:35:16,773 P2678923 INFO pr:0.9235  rc:0.9700  auc:0.9994 ap:0.9927 f1: 0.9462 pred_right: 1059972 pred_wrong:36228 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 13:35:27,693 P2678923 INFO pr:0.9219  rc:0.9691  auc:0.9992 ap:0.9913 f1: 0.9449 pred_right: 454235 pred_wrong:15565 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:35:27,721 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:35:27,721 P2678923 INFO 42/50 starting... lr: 0.001 para:0.023255813866853714
+2026-07-21 13:36:57,679 P2678923 INFO Epoch 42/50, all_loss:0.52116 cls_loss:0.52530 rec_loss:0.34747 [89.93s]; best loss:0.52116, patience : 0
+2026-07-21 13:37:22,872 P2678923 INFO pr:0.9251  rc:0.9647  auc:0.9994 ap:0.9914 f1: 0.9445 pred_right: 1060234 pred_wrong:35966 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 13:37:33,467 P2678923 INFO pr:0.9230  rc:0.9628  auc:0.9992 ap:0.9893 f1: 0.9425 pred_right: 454354 pred_wrong:15446 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:37:33,468 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:37:33,468 P2678923 INFO 43/50 starting... lr: 0.001 para:0.022727273404598236
+2026-07-21 13:39:04,720 P2678923 INFO Epoch 43/50, all_loss:0.52904 cls_loss:0.53329 rec_loss:0.34619 [91.25s]; best loss:0.52116, patience : 1
+2026-07-21 13:39:30,613 P2678923 INFO pr:0.9152  rc:0.9766  auc:0.9992 ap:0.9934 f1: 0.9449 pred_right: 1059389 pred_wrong:36811 actu_right: 1061706 actu_wrong: 34494
+2026-07-21 13:39:44,968 P2678923 INFO pr:0.9155  rc:0.9731  auc:0.9988 ap:0.9921 f1: 0.9434 pred_right: 454061 pred_wrong:15739 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:39:44,970 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:39:44,971 P2678923 INFO 44/50 starting... lr: 0.001 para:0.02222222276031971
+2026-07-21 13:41:15,911 P2678923 INFO Epoch 44/50, all_loss:0.52854 cls_loss:0.53264 rec_loss:0.34803 [90.94s]; best loss:0.52116, patience : 1
+2026-07-21 13:41:43,406 P2678923 INFO pr:0.9147  rc:0.9764  auc:0.9990 ap:0.9931 f1: 0.9446 pred_right: 1059385 pred_wrong:36815 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 13:41:53,883 P2678923 INFO pr:0.9134  rc:0.9718  auc:0.9989 ap:0.9918 f1: 0.9417 pred_right: 454044 pred_wrong:15756 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:41:53,884 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:41:53,884 P2678923 INFO 45/50 starting... lr: 0.001 para:0.021739130839705467
+2026-07-21 13:43:24,301 P2678923 INFO Epoch 45/50, all_loss:0.60789 cls_loss:0.61364 rec_loss:0.34903 [90.42s]; best loss:0.52116, patience : 2
+2026-07-21 13:43:48,922 P2678923 INFO pr:0.9186  rc:0.9788  auc:0.9995 ap:0.9938 f1: 0.9478 pred_right: 1059452 pred_wrong:36748 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 13:43:59,656 P2678923 INFO pr:0.9177  rc:0.9750  auc:0.9993 ap:0.9925 f1: 0.9455 pred_right: 454068 pred_wrong:15732 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:43:59,710 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:43:59,711 P2678923 INFO 46/50 starting... lr: 0.001 para:0.021276595070958138
+2026-07-21 13:45:28,461 P2678923 INFO Epoch 46/50, all_loss:0.57413 cls_loss:0.57890 rec_loss:0.35479 [88.75s]; best loss:0.52116, patience : 2
+2026-07-21 13:46:00,751 P2678923 INFO pr:0.9231  rc:0.9617  auc:0.9993 ap:0.9928 f1: 0.9420 pred_right: 1060268 pred_wrong:35932 actu_right: 1061709 actu_wrong: 34491
+2026-07-21 13:46:11,237 P2678923 INFO pr:0.9225  rc:0.9594  auc:0.9990 ap:0.9916 f1: 0.9406 pred_right: 454400 pred_wrong:15400 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:46:11,238 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:46:11,238 P2678923 INFO 47/50 starting... lr: 0.001 para:0.02083333395421505
+2026-07-21 13:47:41,387 P2678923 INFO Epoch 47/50, all_loss:0.52604 cls_loss:0.52958 rec_loss:0.35992 [90.15s]; best loss:0.52116, patience : 2
+2026-07-21 13:48:06,249 P2678923 INFO pr:0.9213  rc:0.9732  auc:0.9993 ap:0.9939 f1: 0.9465 pred_right: 1059769 pred_wrong:36431 actu_right: 1061711 actu_wrong: 34489
+2026-07-21 13:48:16,710 P2678923 INFO pr:0.9191  rc:0.9710  auc:0.9991 ap:0.9929 f1: 0.9444 pred_right: 454156 pred_wrong:15644 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:48:16,712 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:48:16,712 P2678923 INFO 48/50 starting... lr: 0.001 para:0.020408162847161293
+2026-07-21 13:49:47,055 P2678923 INFO Epoch 48/50, all_loss:0.51522 cls_loss:0.51845 rec_loss:0.36017 [90.31s]; best loss:0.51522, patience : 0
+2026-07-21 13:50:12,510 P2678923 INFO pr:0.9399  rc:0.9443  auc:0.9994 ap:0.9927 f1: 0.9421 pred_right: 1061544 pred_wrong:34656 actu_right: 1061708 actu_wrong: 34492
+2026-07-21 13:50:27,851 P2678923 INFO pr:0.9395  rc:0.9398  auc:0.9992 ap:0.9912 f1: 0.9397 pred_right: 454987 pred_wrong:14813 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:50:27,853 P2678923 INFO ----------------------------------------------------------------------------------------------------
+2026-07-21 13:50:27,854 P2678923 INFO 49/50 starting... lr: 0.001 para:0.019999999552965164
+2026-07-21 13:51:57,648 P2678923 INFO Epoch 49/50, all_loss:0.53269 cls_loss:0.53604 rec_loss:0.36850 [89.79s]; best loss:0.51522, patience : 1
+2026-07-21 13:52:22,675 P2678923 INFO pr:0.9227  rc:0.9669  auc:0.9994 ap:0.9920 f1: 0.9443 pred_right: 1060060 pred_wrong:36140 actu_right: 1061710 actu_wrong: 34490
+2026-07-21 13:52:33,173 P2678923 INFO pr:0.9181  rc:0.9656  auc:0.9993 ap:0.9899 f1: 0.9412 pred_right: 454227 pred_wrong:15573 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:52:33,174 P2678923 INFO saving model...
+2026-07-21 13:52:33,174 P2678923 INFO encoder_decoder - loss  best score:0.5152202844619751 at epoch 48
+2026-07-21 13:52:33,206 P2678923 INFO encoder_decoder - f1  best score:0.9477526039473315 at epoch 45
+2026-07-21 13:52:33,235 P2678923 INFO Average training time per epoch: 90.24 seconds
+2026-07-21 13:52:33,238 P2678923 INFO calculate scores...
+2026-07-21 13:52:33,238 P2678923 INFO calculate label with loss...
+2026-07-21 13:52:33,238 P2678923 INFO encoder_decoder on ./result/encoder_decoder-TT-Epochs50-Seed3ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-21 13:52:43,843 P2678923 INFO pr:0.9395  rc:0.9398  auc:0.9992 ap:0.9912 f1: 0.9397 pred_right: 454987 pred_wrong:14813 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:55:10,727 P2678923 INFO pr:0.9395  rc:0.9398  auc:0.9992 ap:0.9912 f1: 0.9397 pred_right: 454987 pred_wrong:14813 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:55:10,733 P2678923 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.5722039591704937, 'throughput_samples_per_sec': 1747.628592870397, 'peak_memory_mb': 706.48828125, 'energy_per_sample_joules': 0.07577210657929553}, 'CPU': {'inference_time_per_sample_ms': 8.393526638416418, 'throughput_samples_per_sec': 119.13943245537457, 'peak_memory_mb': 6323.51171875, 'energy_per_sample_joules': 0.5455792314970671}}
+2026-07-21 13:55:10,733 P2678923 INFO Starting clean-room hardware benchmarking...
+2026-07-21 13:55:14,409 P2678923 INFO Performance with loss: pr:0.9395  rc:0.9398  auc:0.9992 ap:0.9912 f1: 0.9397 pred_right: 454987 pred_wrong:14813 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:55:14,410 P2678923 INFO calculate label with f1...
+2026-07-21 13:55:14,410 P2678923 INFO encoder_decoder on ./result/encoder_decoder-TT-Epochs50-Seed3ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-21 13:55:25,205 P2678923 INFO pr:0.9177  rc:0.9750  auc:0.9993 ap:0.9925 f1: 0.9455 pred_right: 454068 pred_wrong:15732 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:58:02,644 P2678923 INFO pr:0.9177  rc:0.9750  auc:0.9993 ap:0.9925 f1: 0.9455 pred_right: 454068 pred_wrong:15732 actu_right: 454992 actu_wrong: 14808
+2026-07-21 13:58:02,678 P2678923 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.5834168811890069, 'throughput_samples_per_sec': 1714.0402210542732, 'peak_memory_mb': 704.6728515625, 'energy_per_sample_joules': 0.09604704602482443}, 'CPU': {'inference_time_per_sample_ms': 9.006732914395776, 'throughput_samples_per_sec': 111.02805084867845, 'peak_memory_mb': 6523.13671875, 'energy_per_sample_joules': 0.5854376394357255}}
+2026-07-21 13:58:02,678 P2678923 INFO Starting clean-room hardware benchmarking...
+2026-07-21 13:58:05,733 P2678923 INFO Performance with f1: pr:0.9177  rc:0.9750  auc:0.9993 ap:0.9925 f1: 0.9455 pred_right: 454068 pred_wrong:15732 actu_right: 454992 actu_wrong: 14808

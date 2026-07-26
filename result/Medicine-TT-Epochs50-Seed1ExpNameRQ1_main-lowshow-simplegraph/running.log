@@ -1,0 +1,1407 @@
+2026-07-25 22:21:53,962 P2152127 INFO ---- Model: ----MSTGAD-03050e8e----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Medicine----Multi Fits : false----train : True----evaluate : False
+2026-07-25 22:21:53,962 P2152127 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-25 22:22:06,359 P2152127 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-25 22:22:06,475 P2152127 INFO Trainable Parameters Breakdown:
+2026-07-25 22:22:06,475 P2152127 INFO --------------------------------------------------------------------------------
+2026-07-25 22:22:06,475 P2152127 INFO Reconstruction-Specific Parameters:
+2026-07-25 22:22:06,475 P2152127 INFO Medicine_model.log_feature_encoder.weight | shape: (32, 60)                  | params: 1,920
+2026-07-25 22:22:06,475 P2152127 INFO Medicine_model.log_feature_encoder.bias  | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,475 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.weight | shape: (256, 32)                 | params: 8,192
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.bias | shape: (256,)                    | params: 256
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.weight | shape: (32, 256)                 | params: 8,192
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.bias | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.weight | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.bias | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.weight | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.bias | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,476 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.weight | shape: (256, 32)                 | params: 8,192
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.bias | shape: (256,)                    | params: 256
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.weight | shape: (32, 256)                 | params: 8,192
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.bias | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.weight | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.bias | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.weight | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.bias | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.log_encoder.layernorm.weight | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.log_encoder.layernorm.bias | shape: (32,)                     | params: 32
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.metric_encoder.expand.0.weight | shape: (8, 27)                   | params: 216
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.metric_encoder.expand.0.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.metric_encoder.expand.2.weight | shape: (27, 8)                   | params: 216
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.metric_encoder.expand.2.bias | shape: (27,)                     | params: 27
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.metric_encoder.layernorm1.weight | shape: (7,)                      | params: 7
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.metric_encoder.layernorm1.bias | shape: (7,)                      | params: 7
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.metric_encoder.proj.0.weight | shape: (8, 7)                    | params: 56
+2026-07-25 22:22:06,477 P2152127 INFO Medicine_model.metric_encoder.proj.0.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.proj.2.weight | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.proj.2.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.weight | shape: (256, 8)                  | params: 2,048
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.bias | shape: (256,)                    | params: 256
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.weight | shape: (8, 256)                  | params: 2,048
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.weight | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.weight | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-25 22:22:06,478 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.weight | shape: (256, 8)                  | params: 2,048
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.bias | shape: (256,)                    | params: 256
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.weight | shape: (8, 256)                  | params: 2,048
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.weight | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.weight | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.metric_encoder.layernorm2.weight | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.metric_encoder.layernorm2.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.trace_encoder.project.weight | shape: (8, 2)                    | params: 16
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.trace_encoder.project.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.trace_encoder.layernorm.weight | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.trace_encoder.layernorm.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-25 22:22:06,479 P2152127 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.trace_encoder.encoder.linear1.weight | shape: (256, 8)                  | params: 2,048
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.trace_encoder.encoder.linear1.bias | shape: (256,)                    | params: 256
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.trace_encoder.encoder.linear2.weight | shape: (8, 256)                  | params: 2,048
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.trace_encoder.encoder.linear2.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.trace_encoder.encoder.norm1.weight | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.trace_encoder.encoder.norm1.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.trace_encoder.encoder.norm2.weight | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.trace_encoder.encoder.norm2.bias | shape: (8,)                      | params: 8
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.concat_fusion.proj_x.weight | shape: (768, 8)                  | params: 6,144
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.concat_fusion.proj_x.bias | shape: (768,)                    | params: 768
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.concat_fusion.proj_y.weight | shape: (768, 32)                 | params: 24,576
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.concat_fusion.proj_y.bias | shape: (768,)                    | params: 768
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.concat_fusion.proj_z.weight | shape: (768, 8)                  | params: 6,144
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.concat_fusion.proj_z.bias | shape: (768,)                    | params: 768
+2026-07-25 22:22:06,480 P2152127 INFO Medicine_model.concat_fusion.fc_fused.weight | shape: (768, 48)                 | params: 36,864
+2026-07-25 22:22:06,481 P2152127 INFO Medicine_model.concat_fusion.fc_fused.bias | shape: (768,)                    | params: 768
+2026-07-25 22:22:06,481 P2152127 INFO Medicine_model.concat_fusion.rec_metric.weight | shape: (7, 768)                  | params: 5,376
+2026-07-25 22:22:06,481 P2152127 INFO Medicine_model.concat_fusion.rec_metric.bias | shape: (7,)                      | params: 7
+2026-07-25 22:22:06,481 P2152127 INFO Medicine_model.concat_fusion.rec_log.weight | shape: (60, 768)                 | params: 46,080
+2026-07-25 22:22:06,481 P2152127 INFO Medicine_model.concat_fusion.rec_log.bias | shape: (60,)                     | params: 60
+2026-07-25 22:22:06,481 P2152127 INFO Medicine_model.concat_fusion.rec_trace.weight | shape: (2, 768)                  | params: 1,536
+2026-07-25 22:22:06,481 P2152127 INFO Medicine_model.concat_fusion.rec_trace.bias | shape: (2,)                      | params: 2
+2026-07-25 22:22:06,481 P2152127 INFO Subtotal: 188,582
+2026-07-25 22:22:06,481 P2152127 INFO --------------------------------------------------------------------------------
+2026-07-25 22:22:06,481 P2152127 INFO Common Parameters:
+2026-07-25 22:22:06,481 P2152127 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-25 22:22:06,481 P2152127 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-25 22:22:06,481 P2152127 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-25 22:22:06,481 P2152127 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-25 22:22:06,481 P2152127 INFO Subtotal: 9,218
+2026-07-25 22:22:06,481 P2152127 INFO --------------------------------------------------------------------------------
+2026-07-25 22:22:06,481 P2152127 INFO Total Trainable Parameters: 197,800
+
+2026-07-25 22:22:06,482 P2152127 INFO Trainable Parameters: 197800, reconstruction: 188582, common: 9218
+2026-07-25 22:22:06,482 P2152127 INFO model : init weight
+2026-07-25 22:22:06,485 P2152127 INFO Using GPU...
+2026-07-25 22:22:06,494 P2152127 INFO optimizer : using AdaBelief
+2026-07-25 22:22:06,494 P2152127 INFO ----------------------------------------------------------------------------------------------------
+2026-07-25 22:22:06,494 P2152127 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-26 14:03:32,178 P2571920 INFO ---- Model: ----MSTGAD-03050e8e----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Medicine----Multi Fits : false----train : True----evaluate : False
+2026-07-26 14:03:32,179 P2571920 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-26 14:03:50,300 P2571920 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-26 14:03:50,399 P2571920 INFO Trainable Parameters Breakdown:
+2026-07-26 14:03:50,399 P2571920 INFO --------------------------------------------------------------------------------
+2026-07-26 14:03:50,399 P2571920 INFO Reconstruction-Specific Parameters:
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_feature_encoder.weight | shape: (32, 60)                  | params: 1,920
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_feature_encoder.bias  | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.weight | shape: (256, 32)                 | params: 8,192
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.bias | shape: (256,)                    | params: 256
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.weight | shape: (32, 256)                 | params: 8,192
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,399 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.weight | shape: (256, 32)                 | params: 8,192
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.bias | shape: (256,)                    | params: 256
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.weight | shape: (32, 256)                 | params: 8,192
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.layernorm.weight | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.log_encoder.layernorm.bias | shape: (32,)                     | params: 32
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.metric_encoder.expand.0.weight | shape: (8, 27)                   | params: 216
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.metric_encoder.expand.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.metric_encoder.expand.2.weight | shape: (27, 8)                   | params: 216
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.metric_encoder.expand.2.bias | shape: (27,)                     | params: 27
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.metric_encoder.layernorm1.weight | shape: (7,)                      | params: 7
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.metric_encoder.layernorm1.bias | shape: (7,)                      | params: 7
+2026-07-26 14:03:50,400 P2571920 INFO Medicine_model.metric_encoder.proj.0.weight | shape: (8, 7)                    | params: 56
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.proj.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.proj.2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.proj.2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.weight | shape: (256, 8)                  | params: 2,048
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.bias | shape: (256,)                    | params: 256
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.weight | shape: (8, 256)                  | params: 2,048
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.weight | shape: (256, 8)                  | params: 2,048
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.bias | shape: (256,)                    | params: 256
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.weight | shape: (8, 256)                  | params: 2,048
+2026-07-26 14:03:50,401 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.metric_encoder.layernorm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.metric_encoder.layernorm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.project.weight | shape: (8, 2)                    | params: 16
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.project.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.layernorm.weight | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.layernorm.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.linear1.weight | shape: (256, 8)                  | params: 2,048
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.linear1.bias | shape: (256,)                    | params: 256
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.linear2.weight | shape: (8, 256)                  | params: 2,048
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,402 P2571920 INFO Medicine_model.trace_encoder.encoder.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.proj_x.weight | shape: (768, 8)                  | params: 6,144
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.proj_x.bias | shape: (768,)                    | params: 768
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.proj_y.weight | shape: (768, 32)                 | params: 24,576
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.proj_y.bias | shape: (768,)                    | params: 768
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.proj_z.weight | shape: (768, 8)                  | params: 6,144
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.proj_z.bias | shape: (768,)                    | params: 768
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.fc_fused.weight | shape: (768, 48)                 | params: 36,864
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.fc_fused.bias | shape: (768,)                    | params: 768
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.rec_metric.weight | shape: (7, 768)                  | params: 5,376
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.rec_metric.bias | shape: (7,)                      | params: 7
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.rec_log.weight | shape: (60, 768)                 | params: 46,080
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.rec_log.bias | shape: (60,)                     | params: 60
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.rec_trace.weight | shape: (2, 768)                  | params: 1,536
+2026-07-26 14:03:50,403 P2571920 INFO Medicine_model.concat_fusion.rec_trace.bias | shape: (2,)                      | params: 2
+2026-07-26 14:03:50,403 P2571920 INFO Subtotal: 188,582
+2026-07-26 14:03:50,403 P2571920 INFO --------------------------------------------------------------------------------
+2026-07-26 14:03:50,403 P2571920 INFO Common Parameters:
+2026-07-26 14:03:50,403 P2571920 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-26 14:03:50,403 P2571920 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-26 14:03:50,403 P2571920 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-26 14:03:50,403 P2571920 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-26 14:03:50,403 P2571920 INFO Subtotal: 9,218
+2026-07-26 14:03:50,403 P2571920 INFO --------------------------------------------------------------------------------
+2026-07-26 14:03:50,404 P2571920 INFO Total Trainable Parameters: 197,800
+
+2026-07-26 14:03:50,404 P2571920 INFO Trainable Parameters: 197800, reconstruction: 188582, common: 9218
+2026-07-26 14:03:50,404 P2571920 INFO model : init weight
+2026-07-26 14:03:50,406 P2571920 INFO Using GPU...
+2026-07-26 14:03:50,413 P2571920 INFO optimizer : using AdaBelief
+2026-07-26 14:03:50,414 P2571920 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 14:03:50,414 P2571920 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-26 14:05:29,336 P2573023 INFO ---- Model: ----MSTGAD-03050e8e----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Medicine----Multi Fits : false----train : True----evaluate : False
+2026-07-26 14:05:29,336 P2573023 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-26 14:05:41,476 P2573023 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-26 14:05:41,564 P2573023 INFO Trainable Parameters Breakdown:
+2026-07-26 14:05:41,564 P2573023 INFO --------------------------------------------------------------------------------
+2026-07-26 14:05:41,564 P2573023 INFO Reconstruction-Specific Parameters:
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_feature_encoder.weight | shape: (32, 60)                  | params: 1,920
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_feature_encoder.bias  | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.weight | shape: (256, 32)                 | params: 8,192
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.bias | shape: (256,)                    | params: 256
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.weight | shape: (32, 256)                 | params: 8,192
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,564 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.weight | shape: (256, 32)                 | params: 8,192
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.bias | shape: (256,)                    | params: 256
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.weight | shape: (32, 256)                 | params: 8,192
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.layernorm.weight | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.log_encoder.layernorm.bias | shape: (32,)                     | params: 32
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.expand.0.weight | shape: (8, 27)                   | params: 216
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.expand.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.expand.2.weight | shape: (27, 8)                   | params: 216
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.expand.2.bias | shape: (27,)                     | params: 27
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.layernorm1.weight | shape: (7,)                      | params: 7
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.layernorm1.bias | shape: (7,)                      | params: 7
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.proj.0.weight | shape: (8, 7)                    | params: 56
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.proj.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.proj.2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.proj.2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:05:41,565 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.weight | shape: (256, 8)                  | params: 2,048
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.bias | shape: (256,)                    | params: 256
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.weight | shape: (8, 256)                  | params: 2,048
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.weight | shape: (256, 8)                  | params: 2,048
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.bias | shape: (256,)                    | params: 256
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.weight | shape: (8, 256)                  | params: 2,048
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.layernorm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.metric_encoder.layernorm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.trace_encoder.project.weight | shape: (8, 2)                    | params: 16
+2026-07-26 14:05:41,566 P2573023 INFO Medicine_model.trace_encoder.project.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.layernorm.weight | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.layernorm.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.linear1.weight | shape: (256, 8)                  | params: 2,048
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.linear1.bias | shape: (256,)                    | params: 256
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.linear2.weight | shape: (8, 256)                  | params: 2,048
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.trace_encoder.encoder.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.proj_x.weight | shape: (128, 8)                  | params: 1,024
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.proj_x.bias | shape: (128,)                    | params: 128
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.proj_y.weight | shape: (128, 32)                 | params: 4,096
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.proj_y.bias | shape: (128,)                    | params: 128
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.proj_z.weight | shape: (128, 8)                  | params: 1,024
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.proj_z.bias | shape: (128,)                    | params: 128
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.fc_fused.weight | shape: (128, 48)                 | params: 6,144
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.fc_fused.bias | shape: (128,)                    | params: 128
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.rec_metric.weight | shape: (7, 128)                  | params: 896
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.rec_metric.bias | shape: (7,)                      | params: 7
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.rec_log.weight | shape: (60, 128)                 | params: 7,680
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.rec_log.bias | shape: (60,)                     | params: 60
+2026-07-26 14:05:41,567 P2573023 INFO Medicine_model.concat_fusion.rec_trace.weight | shape: (2, 128)                  | params: 256
+2026-07-26 14:05:41,568 P2573023 INFO Medicine_model.concat_fusion.rec_trace.bias | shape: (2,)                      | params: 2
+2026-07-26 14:05:41,568 P2573023 INFO Subtotal: 80,422
+2026-07-26 14:05:41,568 P2573023 INFO --------------------------------------------------------------------------------
+2026-07-26 14:05:41,568 P2573023 INFO Common Parameters:
+2026-07-26 14:05:41,568 P2573023 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-26 14:05:41,568 P2573023 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-26 14:05:41,568 P2573023 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-26 14:05:41,568 P2573023 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-26 14:05:41,568 P2573023 INFO Subtotal: 9,218
+2026-07-26 14:05:41,568 P2573023 INFO --------------------------------------------------------------------------------
+2026-07-26 14:05:41,568 P2573023 INFO Total Trainable Parameters: 89,640
+
+2026-07-26 14:05:41,568 P2573023 INFO Trainable Parameters: 89640, reconstruction: 80422, common: 9218
+2026-07-26 14:05:41,568 P2573023 INFO model : init weight
+2026-07-26 14:05:41,569 P2573023 INFO Using GPU...
+2026-07-26 14:05:41,575 P2573023 INFO optimizer : using AdaBelief
+2026-07-26 14:05:41,575 P2573023 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 14:05:41,575 P2573023 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-26 14:06:15,752 P2573535 INFO ---- Model: ----MSTGAD-03050e8e----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Medicine----Multi Fits : false----train : True----evaluate : False
+2026-07-26 14:06:15,752 P2573535 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-26 14:06:26,107 P2573535 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-26 14:06:26,195 P2573535 INFO Trainable Parameters Breakdown:
+2026-07-26 14:06:26,195 P2573535 INFO --------------------------------------------------------------------------------
+2026-07-26 14:06:26,195 P2573535 INFO Reconstruction-Specific Parameters:
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_feature_encoder.weight | shape: (32, 60)                  | params: 1,920
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_feature_encoder.bias  | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.weight | shape: (64, 32)                  | params: 2,048
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.bias | shape: (64,)                     | params: 64
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.weight | shape: (32, 64)                  | params: 2,048
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,195 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.weight | shape: (64, 32)                  | params: 2,048
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.bias | shape: (64,)                     | params: 64
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.weight | shape: (32, 64)                  | params: 2,048
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.log_encoder.layernorm.weight | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.log_encoder.layernorm.bias | shape: (32,)                     | params: 32
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.expand.0.weight | shape: (8, 27)                   | params: 216
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.expand.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.expand.2.weight | shape: (27, 8)                   | params: 216
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.expand.2.bias | shape: (27,)                     | params: 27
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.layernorm1.weight | shape: (7,)                      | params: 7
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.layernorm1.bias | shape: (7,)                      | params: 7
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.proj.0.weight | shape: (8, 7)                    | params: 56
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.proj.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.proj.2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.proj.2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.weight | shape: (64, 8)                   | params: 512
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.bias | shape: (64,)                     | params: 64
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.weight | shape: (8, 64)                   | params: 512
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,196 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.weight | shape: (64, 8)                   | params: 512
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.bias | shape: (64,)                     | params: 64
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.weight | shape: (8, 64)                   | params: 512
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.layernorm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.metric_encoder.layernorm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.project.weight | shape: (8, 2)                    | params: 16
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.project.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.layernorm.weight | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.layernorm.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.encoder.linear1.weight | shape: (64, 8)                   | params: 512
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.encoder.linear1.bias | shape: (64,)                     | params: 64
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.encoder.linear2.weight | shape: (8, 64)                   | params: 512
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.encoder.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.encoder.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,197 P2573535 INFO Medicine_model.trace_encoder.encoder.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.trace_encoder.encoder.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.trace_encoder.encoder.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.proj_x.weight | shape: (64, 8)                   | params: 512
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.proj_x.bias | shape: (64,)                     | params: 64
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.proj_y.weight | shape: (64, 32)                  | params: 2,048
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.proj_y.bias | shape: (64,)                     | params: 64
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.proj_z.weight | shape: (64, 8)                   | params: 512
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.proj_z.bias | shape: (64,)                     | params: 64
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.fc_fused.weight | shape: (64, 48)                  | params: 3,072
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.fc_fused.bias | shape: (64,)                     | params: 64
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.rec_metric.weight | shape: (7, 64)                   | params: 448
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.rec_metric.bias | shape: (7,)                      | params: 7
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.rec_log.weight | shape: (60, 64)                  | params: 3,840
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.rec_log.bias | shape: (60,)                     | params: 60
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.rec_trace.weight | shape: (2, 64)                   | params: 128
+2026-07-26 14:06:26,198 P2573535 INFO Medicine_model.concat_fusion.rec_trace.bias | shape: (2,)                      | params: 2
+2026-07-26 14:06:26,198 P2573535 INFO Subtotal: 34,854
+2026-07-26 14:06:26,198 P2573535 INFO --------------------------------------------------------------------------------
+2026-07-26 14:06:26,198 P2573535 INFO Common Parameters:
+2026-07-26 14:06:26,198 P2573535 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-26 14:06:26,198 P2573535 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-26 14:06:26,198 P2573535 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-26 14:06:26,198 P2573535 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-26 14:06:26,198 P2573535 INFO Subtotal: 9,218
+2026-07-26 14:06:26,198 P2573535 INFO --------------------------------------------------------------------------------
+2026-07-26 14:06:26,198 P2573535 INFO Total Trainable Parameters: 44,072
+
+2026-07-26 14:06:26,198 P2573535 INFO Trainable Parameters: 44072, reconstruction: 34854, common: 9218
+2026-07-26 14:06:26,199 P2573535 INFO model : init weight
+2026-07-26 14:06:26,199 P2573535 INFO Using GPU...
+2026-07-26 14:06:26,204 P2573535 INFO optimizer : using AdaBelief
+2026-07-26 14:06:26,205 P2573535 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 14:06:26,205 P2573535 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-26 14:06:55,310 P2574245 INFO ---- Model: ----MSTGAD-03050e8e----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Medicine----Multi Fits : false----train : True----evaluate : False
+2026-07-26 14:06:55,310 P2574245 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-26 14:07:08,001 P2574245 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-26 14:07:08,092 P2574245 INFO Trainable Parameters Breakdown:
+2026-07-26 14:07:08,092 P2574245 INFO --------------------------------------------------------------------------------
+2026-07-26 14:07:08,092 P2574245 INFO Reconstruction-Specific Parameters:
+2026-07-26 14:07:08,092 P2574245 INFO Medicine_model.log_feature_encoder.weight | shape: (32, 60)                  | params: 1,920
+2026-07-26 14:07:08,092 P2574245 INFO Medicine_model.log_feature_encoder.bias  | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,092 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:07:08,092 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:07:08,092 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:07:08,092 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,092 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:07:08,092 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,092 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:07:08,092 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,092 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.layernorm.weight | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.log_encoder.layernorm.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.metric_encoder.expand.0.weight | shape: (8, 27)                   | params: 216
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.metric_encoder.expand.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.metric_encoder.expand.2.weight | shape: (27, 8)                   | params: 216
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.metric_encoder.expand.2.bias | shape: (27,)                     | params: 27
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.metric_encoder.layernorm1.weight | shape: (7,)                      | params: 7
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.metric_encoder.layernorm1.bias | shape: (7,)                      | params: 7
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.metric_encoder.proj.0.weight | shape: (8, 7)                    | params: 56
+2026-07-26 14:07:08,093 P2574245 INFO Medicine_model.metric_encoder.proj.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.proj.2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.proj.2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.weight | shape: (32, 8)                   | params: 256
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.weight | shape: (8, 32)                   | params: 256
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.weight | shape: (32, 8)                   | params: 256
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.weight | shape: (8, 32)                   | params: 256
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,094 P2574245 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.metric_encoder.layernorm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.metric_encoder.layernorm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.project.weight | shape: (8, 2)                    | params: 16
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.project.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.layernorm.weight | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.layernorm.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.linear1.weight | shape: (32, 8)                   | params: 256
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.linear1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.linear2.weight | shape: (8, 32)                   | params: 256
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.trace_encoder.encoder.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.concat_fusion.proj_x.weight | shape: (32, 8)                   | params: 256
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.concat_fusion.proj_x.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.concat_fusion.proj_y.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.concat_fusion.proj_y.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.concat_fusion.proj_z.weight | shape: (32, 8)                   | params: 256
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.concat_fusion.proj_z.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.concat_fusion.fc_fused.weight | shape: (32, 48)                  | params: 1,536
+2026-07-26 14:07:08,095 P2574245 INFO Medicine_model.concat_fusion.fc_fused.bias | shape: (32,)                     | params: 32
+2026-07-26 14:07:08,096 P2574245 INFO Medicine_model.concat_fusion.rec_metric.weight | shape: (7, 32)                   | params: 224
+2026-07-26 14:07:08,096 P2574245 INFO Medicine_model.concat_fusion.rec_metric.bias | shape: (7,)                      | params: 7
+2026-07-26 14:07:08,096 P2574245 INFO Medicine_model.concat_fusion.rec_log.weight | shape: (60, 32)                  | params: 1,920
+2026-07-26 14:07:08,096 P2574245 INFO Medicine_model.concat_fusion.rec_log.bias | shape: (60,)                     | params: 60
+2026-07-26 14:07:08,096 P2574245 INFO Medicine_model.concat_fusion.rec_trace.weight | shape: (2, 32)                   | params: 64
+2026-07-26 14:07:08,096 P2574245 INFO Medicine_model.concat_fusion.rec_trace.bias | shape: (2,)                      | params: 2
+2026-07-26 14:07:08,096 P2574245 INFO Subtotal: 23,654
+2026-07-26 14:07:08,096 P2574245 INFO --------------------------------------------------------------------------------
+2026-07-26 14:07:08,096 P2574245 INFO Common Parameters:
+2026-07-26 14:07:08,096 P2574245 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-26 14:07:08,096 P2574245 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-26 14:07:08,096 P2574245 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-26 14:07:08,096 P2574245 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-26 14:07:08,096 P2574245 INFO Subtotal: 9,218
+2026-07-26 14:07:08,096 P2574245 INFO --------------------------------------------------------------------------------
+2026-07-26 14:07:08,096 P2574245 INFO Total Trainable Parameters: 32,872
+
+2026-07-26 14:07:08,096 P2574245 INFO Trainable Parameters: 32872, reconstruction: 23654, common: 9218
+2026-07-26 14:07:08,096 P2574245 INFO model : init weight
+2026-07-26 14:07:08,097 P2574245 INFO Using GPU...
+2026-07-26 14:07:08,103 P2574245 INFO optimizer : using AdaBelief
+2026-07-26 14:07:08,103 P2574245 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 14:07:08,103 P2574245 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-26 14:08:46,933 P2574979 INFO ---- Model: ----MSTGAD-03050e8e----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Medicine----Multi Fits : false----train : True----evaluate : False
+2026-07-26 14:08:46,933 P2574979 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-26 14:08:59,476 P2574979 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-26 14:08:59,570 P2574979 INFO Trainable Parameters Breakdown:
+2026-07-26 14:08:59,570 P2574979 INFO --------------------------------------------------------------------------------
+2026-07-26 14:08:59,570 P2574979 INFO Reconstruction-Specific Parameters:
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_feature_encoder.weight | shape: (32, 60)                  | params: 1,920
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_feature_encoder.bias  | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.weight | shape: (16, 32)                  | params: 512
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.weight | shape: (32, 16)                  | params: 512
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.weight | shape: (16, 32)                  | params: 512
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.weight | shape: (32, 16)                  | params: 512
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,571 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.log_encoder.layernorm.weight | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.log_encoder.layernorm.bias | shape: (32,)                     | params: 32
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.expand.0.weight | shape: (8, 27)                   | params: 216
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.expand.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.expand.2.weight | shape: (27, 8)                   | params: 216
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.expand.2.bias | shape: (27,)                     | params: 27
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.layernorm1.weight | shape: (7,)                      | params: 7
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.layernorm1.bias | shape: (7,)                      | params: 7
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.proj.0.weight | shape: (8, 7)                    | params: 56
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.proj.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.proj.2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.proj.2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,572 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.layernorm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.metric_encoder.layernorm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.trace_encoder.project.weight | shape: (8, 2)                    | params: 16
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.trace_encoder.project.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.trace_encoder.layernorm.weight | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.trace_encoder.layernorm.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.trace_encoder.encoder.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:08:59,573 P2574979 INFO Medicine_model.trace_encoder.encoder.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.trace_encoder.encoder.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.trace_encoder.encoder.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.trace_encoder.encoder.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.trace_encoder.encoder.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.trace_encoder.encoder.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.trace_encoder.encoder.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.proj_x.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.proj_x.bias | shape: (16,)                     | params: 16
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.proj_y.weight | shape: (16, 32)                  | params: 512
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.proj_y.bias | shape: (16,)                     | params: 16
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.proj_z.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.proj_z.bias | shape: (16,)                     | params: 16
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.fc_fused.weight | shape: (16, 48)                  | params: 768
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.fc_fused.bias | shape: (16,)                     | params: 16
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.rec_metric.weight | shape: (7, 16)                   | params: 112
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.rec_metric.bias | shape: (7,)                      | params: 7
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.rec_log.weight | shape: (60, 16)                  | params: 960
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.rec_log.bias | shape: (60,)                     | params: 60
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.rec_trace.weight | shape: (2, 16)                   | params: 32
+2026-07-26 14:08:59,574 P2574979 INFO Medicine_model.concat_fusion.rec_trace.bias | shape: (2,)                      | params: 2
+2026-07-26 14:08:59,574 P2574979 INFO Subtotal: 18,054
+2026-07-26 14:08:59,574 P2574979 INFO --------------------------------------------------------------------------------
+2026-07-26 14:08:59,574 P2574979 INFO Common Parameters:
+2026-07-26 14:08:59,574 P2574979 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-26 14:08:59,575 P2574979 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-26 14:08:59,575 P2574979 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-26 14:08:59,575 P2574979 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-26 14:08:59,575 P2574979 INFO Subtotal: 9,218
+2026-07-26 14:08:59,575 P2574979 INFO --------------------------------------------------------------------------------
+2026-07-26 14:08:59,575 P2574979 INFO Total Trainable Parameters: 27,272
+
+2026-07-26 14:08:59,575 P2574979 INFO Trainable Parameters: 27272, reconstruction: 18054, common: 9218
+2026-07-26 14:08:59,575 P2574979 INFO model : init weight
+2026-07-26 14:08:59,576 P2574979 INFO Using GPU...
+2026-07-26 14:08:59,581 P2574979 INFO optimizer : using AdaBelief
+2026-07-26 14:08:59,582 P2574979 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 14:08:59,582 P2574979 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-26 14:10:56,772 P2575953 INFO ---- Model: ----MSTGAD-03050e8e----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Medicine----Multi Fits : false----train : True----evaluate : False
+2026-07-26 14:10:56,773 P2575953 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-26 14:11:11,417 P2575953 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-26 14:11:11,505 P2575953 INFO Trainable Parameters Breakdown:
+2026-07-26 14:11:11,505 P2575953 INFO --------------------------------------------------------------------------------
+2026-07-26 14:11:11,505 P2575953 INFO Reconstruction-Specific Parameters:
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_feature_encoder.weight | shape: (32, 60)                  | params: 1,920
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_feature_encoder.bias  | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.weight | shape: (16, 32)                  | params: 512
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.weight | shape: (32, 16)                  | params: 512
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,506 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.weight | shape: (16, 32)                  | params: 512
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.weight | shape: (32, 16)                  | params: 512
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.layernorm.weight | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.log_encoder.layernorm.bias | shape: (32,)                     | params: 32
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.metric_encoder.expand.0.weight | shape: (8, 27)                   | params: 216
+2026-07-26 14:11:11,507 P2575953 INFO Medicine_model.metric_encoder.expand.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.expand.2.weight | shape: (27, 8)                   | params: 216
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.expand.2.bias | shape: (27,)                     | params: 27
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.layernorm1.weight | shape: (7,)                      | params: 7
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.layernorm1.bias | shape: (7,)                      | params: 7
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.proj.0.weight | shape: (8, 7)                    | params: 56
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.proj.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.proj.2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.proj.2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:11:11,508 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,509 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.metric_encoder.layernorm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.metric_encoder.layernorm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.trace_encoder.project.weight | shape: (8, 2)                    | params: 16
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.trace_encoder.project.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.trace_encoder.layernorm.weight | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.trace_encoder.layernorm.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.trace_encoder.encoder.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.trace_encoder.encoder.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:11:11,510 P2575953 INFO Medicine_model.trace_encoder.encoder.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:11:11,511 P2575953 INFO Medicine_model.trace_encoder.encoder.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,511 P2575953 INFO Medicine_model.trace_encoder.encoder.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,511 P2575953 INFO Medicine_model.trace_encoder.encoder.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,511 P2575953 INFO Medicine_model.trace_encoder.encoder.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,511 P2575953 INFO Medicine_model.trace_encoder.encoder.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:11:11,511 P2575953 INFO Subtotal: 15,281
+2026-07-26 14:11:11,511 P2575953 INFO --------------------------------------------------------------------------------
+2026-07-26 14:11:11,511 P2575953 INFO Common Parameters:
+2026-07-26 14:11:11,511 P2575953 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-26 14:11:11,511 P2575953 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-26 14:11:11,511 P2575953 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-26 14:11:11,511 P2575953 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-26 14:11:11,511 P2575953 INFO Subtotal: 9,218
+2026-07-26 14:11:11,511 P2575953 INFO --------------------------------------------------------------------------------
+2026-07-26 14:11:11,511 P2575953 INFO Total Trainable Parameters: 24,499
+
+2026-07-26 14:11:11,512 P2575953 INFO Trainable Parameters: 24499, reconstruction: 15281, common: 9218
+2026-07-26 14:11:11,512 P2575953 INFO model : init weight
+2026-07-26 14:11:11,513 P2575953 INFO Using GPU...
+2026-07-26 14:11:11,518 P2575953 INFO optimizer : using AdaBelief
+2026-07-26 14:11:11,518 P2575953 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 14:11:11,518 P2575953 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-26 14:12:41,336 P2576869 INFO ---- Model: ----MSTGAD-03050e8e----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Medicine----Multi Fits : false----train : True----evaluate : False
+2026-07-26 14:12:41,337 P2576869 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-26 14:12:53,677 P2576869 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-26 14:12:53,768 P2576869 INFO Trainable Parameters Breakdown:
+2026-07-26 14:12:53,768 P2576869 INFO --------------------------------------------------------------------------------
+2026-07-26 14:12:53,768 P2576869 INFO Reconstruction-Specific Parameters:
+2026-07-26 14:12:53,768 P2576869 INFO Medicine_model.log_feature_encoder.weight | shape: (32, 60)                  | params: 1,920
+2026-07-26 14:12:53,768 P2576869 INFO Medicine_model.log_feature_encoder.bias  | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,768 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:12:53,768 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:12:53,768 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:12:53,768 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,768 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.weight | shape: (16, 32)                  | params: 512
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.weight | shape: (32, 16)                  | params: 512
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.weight | shape: (16, 32)                  | params: 512
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.weight | shape: (32, 16)                  | params: 512
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.layernorm.weight | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.log_encoder.layernorm.bias | shape: (32,)                     | params: 32
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.metric_encoder.expand.0.weight | shape: (8, 27)                   | params: 216
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.metric_encoder.expand.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,769 P2576869 INFO Medicine_model.metric_encoder.expand.2.weight | shape: (27, 8)                   | params: 216
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.expand.2.bias | shape: (27,)                     | params: 27
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.layernorm1.weight | shape: (7,)                      | params: 7
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.layernorm1.bias | shape: (7,)                      | params: 7
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.proj.0.weight | shape: (8, 7)                    | params: 56
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.proj.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.proj.2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.proj.2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:12:53,770 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.metric_encoder.layernorm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.metric_encoder.layernorm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.project.weight | shape: (8, 2)                    | params: 16
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.project.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.layernorm.weight | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.layernorm.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.trace_encoder.encoder.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.concat_fusion.proj_x.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.concat_fusion.proj_x.bias | shape: (16,)                     | params: 16
+2026-07-26 14:12:53,771 P2576869 INFO Medicine_model.concat_fusion.proj_y.weight | shape: (16, 32)                  | params: 512
+2026-07-26 14:12:53,772 P2576869 INFO Medicine_model.concat_fusion.proj_y.bias | shape: (16,)                     | params: 16
+2026-07-26 14:12:53,772 P2576869 INFO Medicine_model.concat_fusion.proj_z.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:12:53,772 P2576869 INFO Medicine_model.concat_fusion.proj_z.bias | shape: (16,)                     | params: 16
+2026-07-26 14:12:53,772 P2576869 INFO Medicine_model.concat_fusion.fc_fused.weight | shape: (16, 48)                  | params: 768
+2026-07-26 14:12:53,772 P2576869 INFO Medicine_model.concat_fusion.fc_fused.bias | shape: (16,)                     | params: 16
+2026-07-26 14:12:53,772 P2576869 INFO Medicine_model.concat_fusion.rec_metric.weight | shape: (7, 16)                   | params: 112
+2026-07-26 14:12:53,772 P2576869 INFO Medicine_model.concat_fusion.rec_metric.bias | shape: (7,)                      | params: 7
+2026-07-26 14:12:53,772 P2576869 INFO Medicine_model.concat_fusion.rec_log.weight | shape: (60, 16)                  | params: 960
+2026-07-26 14:12:53,772 P2576869 INFO Medicine_model.concat_fusion.rec_log.bias | shape: (60,)                     | params: 60
+2026-07-26 14:12:53,772 P2576869 INFO Medicine_model.concat_fusion.rec_trace.weight | shape: (2, 16)                   | params: 32
+2026-07-26 14:12:53,772 P2576869 INFO Medicine_model.concat_fusion.rec_trace.bias | shape: (2,)                      | params: 2
+2026-07-26 14:12:53,772 P2576869 INFO Subtotal: 18,054
+2026-07-26 14:12:53,772 P2576869 INFO --------------------------------------------------------------------------------
+2026-07-26 14:12:53,772 P2576869 INFO Common Parameters:
+2026-07-26 14:12:53,772 P2576869 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-26 14:12:53,772 P2576869 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-26 14:12:53,772 P2576869 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-26 14:12:53,772 P2576869 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-26 14:12:53,772 P2576869 INFO Subtotal: 9,218
+2026-07-26 14:12:53,772 P2576869 INFO --------------------------------------------------------------------------------
+2026-07-26 14:12:53,772 P2576869 INFO Total Trainable Parameters: 27,272
+
+2026-07-26 14:12:53,772 P2576869 INFO Trainable Parameters: 27272, reconstruction: 18054, common: 9218
+2026-07-26 14:12:53,772 P2576869 INFO model : init weight
+2026-07-26 14:12:53,773 P2576869 INFO Using GPU...
+2026-07-26 14:12:53,779 P2576869 INFO optimizer : using AdaBelief
+2026-07-26 14:12:53,779 P2576869 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 14:12:53,779 P2576869 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-26 14:19:55,075 P2579267 INFO ---- Model: ----MSTGAD-03050e8e----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Medicine----Multi Fits : false----train : True----evaluate : False
+2026-07-26 14:19:55,075 P2579267 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-26 14:20:07,252 P2579267 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-26 14:20:07,340 P2579267 INFO Trainable Parameters Breakdown:
+2026-07-26 14:20:07,340 P2579267 INFO --------------------------------------------------------------------------------
+2026-07-26 14:20:07,340 P2579267 INFO Reconstruction-Specific Parameters:
+2026-07-26 14:20:07,340 P2579267 INFO Medicine_model.log_feature_encoder.weight | shape: (32, 60)                  | params: 1,920
+2026-07-26 14:20:07,340 P2579267 INFO Medicine_model.log_feature_encoder.bias  | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,340 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:20:07,340 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.weight | shape: (16, 32)                  | params: 512
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.weight | shape: (32, 16)                  | params: 512
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.weight | shape: (16, 32)                  | params: 512
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.weight | shape: (32, 16)                  | params: 512
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.layernorm.weight | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.log_encoder.layernorm.bias | shape: (32,)                     | params: 32
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.metric_encoder.expand.0.weight | shape: (8, 27)                   | params: 216
+2026-07-26 14:20:07,341 P2579267 INFO Medicine_model.metric_encoder.expand.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.expand.2.weight | shape: (27, 8)                   | params: 216
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.expand.2.bias | shape: (27,)                     | params: 27
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.layernorm1.weight | shape: (7,)                      | params: 7
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.layernorm1.bias | shape: (7,)                      | params: 7
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.proj.0.weight | shape: (8, 7)                    | params: 56
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.proj.0.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.proj.2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.proj.2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:20:07,342 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.metric_encoder.layernorm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.metric_encoder.layernorm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.project.weight | shape: (8, 2)                    | params: 16
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.project.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.layernorm.weight | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.layernorm.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.linear1.weight | shape: (16, 8)                   | params: 128
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.linear1.bias | shape: (16,)                     | params: 16
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.linear2.weight | shape: (8, 16)                   | params: 128
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Medicine_model.trace_encoder.encoder.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 14:20:07,343 P2579267 INFO Subtotal: 15,281
+2026-07-26 14:20:07,343 P2579267 INFO --------------------------------------------------------------------------------
+2026-07-26 14:20:07,343 P2579267 INFO Common Parameters:
+2026-07-26 14:20:07,343 P2579267 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-26 14:20:07,344 P2579267 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-26 14:20:07,344 P2579267 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-26 14:20:07,344 P2579267 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-26 14:20:07,344 P2579267 INFO Subtotal: 9,218
+2026-07-26 14:20:07,344 P2579267 INFO --------------------------------------------------------------------------------
+2026-07-26 14:20:07,344 P2579267 INFO Total Trainable Parameters: 24,499
+
+2026-07-26 14:20:07,344 P2579267 INFO Trainable Parameters: 24499, reconstruction: 15281, common: 9218
+2026-07-26 14:20:07,344 P2579267 INFO model : init weight
+2026-07-26 14:20:07,345 P2579267 INFO Using GPU...
+2026-07-26 14:20:07,349 P2579267 INFO optimizer : using AdaBelief
+2026-07-26 14:20:07,350 P2579267 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 14:20:07,350 P2579267 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-26 15:12:58,302 P2607702 INFO ---- Model: ----MSTGAD-03050e8e----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Medicine----Multi Fits : false----train : True----evaluate : False
+2026-07-26 15:12:58,302 P2607702 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-26 15:13:10,450 P2607702 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-26 15:13:10,539 P2607702 INFO Trainable Parameters Breakdown:
+2026-07-26 15:13:10,539 P2607702 INFO --------------------------------------------------------------------------------
+2026-07-26 15:13:10,539 P2607702 INFO Reconstruction-Specific Parameters:
+2026-07-26 15:13:10,539 P2607702 INFO Medicine_model.log_feature_encoder.weight | shape: (32, 60)                  | params: 1,920
+2026-07-26 15:13:10,539 P2607702 INFO Medicine_model.log_feature_encoder.bias  | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,539 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 15:13:10,539 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 15:13:10,539 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 15:13:10,539 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,539 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.weight | shape: (64, 32)                  | params: 2,048
+2026-07-26 15:13:10,539 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.bias | shape: (64,)                     | params: 64
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.weight | shape: (32, 64)                  | params: 2,048
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.weight | shape: (64, 32)                  | params: 2,048
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.bias | shape: (64,)                     | params: 64
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.weight | shape: (32, 64)                  | params: 2,048
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.bias | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.weight | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.bias | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.weight | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.bias | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.layernorm.weight | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.log_encoder.layernorm.bias | shape: (32,)                     | params: 32
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.metric_encoder.expand.0.weight | shape: (8, 27)                   | params: 216
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.metric_encoder.expand.0.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.metric_encoder.expand.2.weight | shape: (27, 8)                   | params: 216
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.metric_encoder.expand.2.bias | shape: (27,)                     | params: 27
+2026-07-26 15:13:10,540 P2607702 INFO Medicine_model.metric_encoder.layernorm1.weight | shape: (7,)                      | params: 7
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.layernorm1.bias | shape: (7,)                      | params: 7
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.proj.0.weight | shape: (8, 7)                    | params: 56
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.proj.0.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.proj.2.weight | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.proj.2.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.weight | shape: (64, 8)                   | params: 512
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.bias | shape: (64,)                     | params: 64
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.weight | shape: (8, 64)                   | params: 512
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.weight | shape: (64, 8)                   | params: 512
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.bias | shape: (64,)                     | params: 64
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.weight | shape: (8, 64)                   | params: 512
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,541 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.metric_encoder.layernorm2.weight | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.metric_encoder.layernorm2.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.project.weight | shape: (8, 2)                    | params: 16
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.project.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.layernorm.weight | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.layernorm.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.linear1.weight | shape: (64, 8)                   | params: 512
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.linear1.bias | shape: (64,)                     | params: 64
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.linear2.weight | shape: (8, 64)                   | params: 512
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.linear2.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.norm1.weight | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.norm1.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.norm2.weight | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.trace_encoder.encoder.norm2.bias | shape: (8,)                      | params: 8
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.concat_fusion.proj_x.weight | shape: (64, 8)                   | params: 512
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.concat_fusion.proj_x.bias | shape: (64,)                     | params: 64
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.concat_fusion.proj_y.weight | shape: (64, 32)                  | params: 2,048
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.concat_fusion.proj_y.bias | shape: (64,)                     | params: 64
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.concat_fusion.proj_z.weight | shape: (64, 8)                   | params: 512
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.concat_fusion.proj_z.bias | shape: (64,)                     | params: 64
+2026-07-26 15:13:10,542 P2607702 INFO Medicine_model.concat_fusion.fc_fused.weight | shape: (64, 48)                  | params: 3,072
+2026-07-26 15:13:10,543 P2607702 INFO Medicine_model.concat_fusion.fc_fused.bias | shape: (64,)                     | params: 64
+2026-07-26 15:13:10,543 P2607702 INFO Medicine_model.concat_fusion.rec_metric.weight | shape: (7, 64)                   | params: 448
+2026-07-26 15:13:10,543 P2607702 INFO Medicine_model.concat_fusion.rec_metric.bias | shape: (7,)                      | params: 7
+2026-07-26 15:13:10,543 P2607702 INFO Medicine_model.concat_fusion.rec_log.weight | shape: (60, 64)                  | params: 3,840
+2026-07-26 15:13:10,543 P2607702 INFO Medicine_model.concat_fusion.rec_log.bias | shape: (60,)                     | params: 60
+2026-07-26 15:13:10,543 P2607702 INFO Medicine_model.concat_fusion.rec_trace.weight | shape: (2, 64)                   | params: 128
+2026-07-26 15:13:10,543 P2607702 INFO Medicine_model.concat_fusion.rec_trace.bias | shape: (2,)                      | params: 2
+2026-07-26 15:13:10,543 P2607702 INFO Subtotal: 34,854
+2026-07-26 15:13:10,543 P2607702 INFO --------------------------------------------------------------------------------
+2026-07-26 15:13:10,543 P2607702 INFO Common Parameters:
+2026-07-26 15:13:10,543 P2607702 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-26 15:13:10,543 P2607702 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-26 15:13:10,543 P2607702 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-26 15:13:10,543 P2607702 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-26 15:13:10,543 P2607702 INFO Subtotal: 9,218
+2026-07-26 15:13:10,543 P2607702 INFO --------------------------------------------------------------------------------
+2026-07-26 15:13:10,543 P2607702 INFO Total Trainable Parameters: 44,072
+
+2026-07-26 15:13:10,543 P2607702 INFO Trainable Parameters: 44072, reconstruction: 34854, common: 9218
+2026-07-26 15:13:10,543 P2607702 INFO model : init weight
+2026-07-26 15:13:10,544 P2607702 INFO Using GPU...
+2026-07-26 15:13:10,550 P2607702 INFO optimizer : using AdaBelief
+2026-07-26 15:13:10,550 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:13:10,550 P2607702 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-26 15:13:54,380 P2607702 INFO Epoch 0/50, all_loss:-419.48477 cls_loss:186.14397 rec_loss:-419.48477 [43.80s]; best loss:-419.48477, patience : 0
+2026-07-26 15:13:54,380 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:13:54,380 P2607702 INFO 1/50 starting... lr: 0.001 para:0.5
+2026-07-26 15:14:39,491 P2607702 INFO Epoch 1/50, all_loss:5369.68848 cls_loss:13608.59375 rec_loss:-2869.21680 [45.10s]; best loss:5369.68848, patience : 0
+2026-07-26 15:14:39,491 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:14:39,491 P2607702 INFO 2/50 starting... lr: 0.001 para:0.3333333432674408
+2026-07-26 15:15:19,635 P2607702 INFO Epoch 2/50, all_loss:2143.14014 cls_loss:4654.63379 rec_loss:-2879.84668 [40.14s]; best loss:2143.14014, patience : 0
+2026-07-26 15:15:35,907 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 15:15:46,852 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:15:46,863 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:15:46,863 P2607702 INFO 3/50 starting... lr: 0.001 para:0.25
+2026-07-26 15:16:27,463 P2607702 INFO Epoch 3/50, all_loss:2894.50244 cls_loss:4820.26270 rec_loss:-2882.77905 [40.60s]; best loss:2143.14014, patience : 1
+2026-07-26 15:16:41,042 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5537 ap:0.5059 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061714 actu_wrong: 34486
+2026-07-26 15:16:46,728 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5515 ap:0.5054 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:16:46,737 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:16:46,737 P2607702 INFO 4/50 starting... lr: 0.001 para:0.20000000298023224
+2026-07-26 15:17:34,404 P2607702 INFO Epoch 4/50, all_loss:4517.06055 cls_loss:6366.85889 rec_loss:-2882.13306 [47.67s]; best loss:2143.14014, patience : 2
+2026-07-26 15:17:47,985 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061713 actu_wrong: 34487
+2026-07-26 15:17:53,619 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:17:53,630 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:17:53,630 P2607702 INFO 5/50 starting... lr: 0.001 para:0.1666666716337204
+2026-07-26 15:18:34,852 P2607702 INFO Epoch 5/50, all_loss:3141.86060 cls_loss:4346.46045 rec_loss:-2881.13940 [41.22s]; best loss:2143.14014, patience : 2
+2026-07-26 15:18:49,985 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 15:18:54,472 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:18:54,480 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:18:54,481 P2607702 INFO 6/50 starting... lr: 0.001 para:0.1428571492433548
+2026-07-26 15:19:44,454 P2607702 INFO Epoch 6/50, all_loss:2746.84790 cls_loss:3684.76929 rec_loss:-2880.68115 [49.97s]; best loss:2143.14014, patience : 2
+2026-07-26 15:19:58,403 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 15:20:04,407 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:20:04,416 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:20:04,417 P2607702 INFO 7/50 starting... lr: 0.001 para:0.125
+2026-07-26 15:20:45,372 P2607702 INFO Epoch 7/50, all_loss:3086.74878 cls_loss:3939.04492 rec_loss:-2879.32446 [40.95s]; best loss:2143.14014, patience : 3
+2026-07-26 15:21:07,212 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-07-26 15:21:13,487 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:21:13,497 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:21:13,497 P2607702 INFO 8/50 starting... lr: 0.001 para:0.1111111119389534
+2026-07-26 15:21:54,961 P2607702 INFO Epoch 8/50, all_loss:3926.35693 cls_loss:4773.53760 rec_loss:-2851.08398 [41.46s]; best loss:2143.14014, patience : 4
+2026-07-26 15:22:08,773 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 15:22:14,719 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:22:14,728 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:22:14,728 P2607702 INFO 9/50 starting... lr: 0.001 para:0.10000000149011612
+2026-07-26 15:23:04,572 P2607702 INFO Epoch 9/50, all_loss:559.05377 cls_loss:688.29297 rec_loss:-604.09869 [49.83s]; best loss:559.05377, patience : 0
+2026-07-26 15:23:18,862 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.2236 ap:0.4751 f1: 0.0610 pred_right: 0 pred_wrong:1096200 actu_right: 1061714 actu_wrong: 34486
+2026-07-26 15:23:24,568 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.2247 ap:0.4751 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:23:24,578 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:23:24,578 P2607702 INFO 10/50 starting... lr: 0.001 para:0.09090909361839294
+2026-07-26 15:24:06,496 P2607702 INFO Epoch 10/50, all_loss:255.10822 cls_loss:313.67554 rec_loss:-330.56506 [41.91s]; best loss:255.10822, patience : 0
+2026-07-26 15:24:20,429 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.4816 ap:0.5014 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061709 actu_wrong: 34491
+2026-07-26 15:24:25,654 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.4804 ap:0.5015 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:24:25,655 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:24:25,655 P2607702 INFO 11/50 starting... lr: 0.001 para:0.0833333358168602
+2026-07-26 15:25:15,656 P2607702 INFO Epoch 11/50, all_loss:269.00143 cls_loss:331.61450 rec_loss:-419.74203 [50.00s]; best loss:255.10822, patience : 1
+2026-07-26 15:25:29,919 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5289 ap:0.5061 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061714 actu_wrong: 34486
+2026-07-26 15:25:35,838 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5272 ap:0.5062 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:25:35,838 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:25:35,839 P2607702 INFO 12/50 starting... lr: 0.001 para:0.07692307978868484
+2026-07-26 15:26:15,848 P2607702 INFO Epoch 12/50, all_loss:323.07773 cls_loss:388.97198 rec_loss:-467.65332 [40.01s]; best loss:255.10822, patience : 2
+2026-07-26 15:26:39,440 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5570 ap:0.5106 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-07-26 15:26:45,607 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5574 ap:0.5108 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:26:45,608 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:26:45,608 P2607702 INFO 13/50 starting... lr: 0.001 para:0.0714285746216774
+2026-07-26 15:27:27,326 P2607702 INFO Epoch 13/50, all_loss:175.42734 cls_loss:218.58803 rec_loss:-385.66171 [41.71s]; best loss:175.42734, patience : 0
+2026-07-26 15:27:41,821 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5710 ap:0.5115 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061708 actu_wrong: 34492
+2026-07-26 15:27:48,018 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5712 ap:0.5118 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:27:48,019 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:27:48,020 P2607702 INFO 14/50 starting... lr: 0.001 para:0.06666667014360428
+2026-07-26 15:28:38,217 P2607702 INFO Epoch 14/50, all_loss:221.10748 cls_loss:264.39236 rec_loss:-384.88132 [50.20s]; best loss:175.42734, patience : 1
+2026-07-26 15:28:52,295 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5002 ap:0.5040 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061707 actu_wrong: 34493
+2026-07-26 15:28:58,286 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.4990 ap:0.5042 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:28:58,287 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:28:58,287 P2607702 INFO 15/50 starting... lr: 0.001 para:0.0625
+2026-07-26 15:29:40,975 P2607702 INFO Epoch 15/50, all_loss:167.18335 cls_loss:207.36392 rec_loss:-435.52530 [42.68s]; best loss:167.18335, patience : 0
+2026-07-26 15:29:54,679 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5364 ap:0.5100 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-07-26 15:30:06,838 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5347 ap:0.5102 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:30:06,841 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:30:06,841 P2607702 INFO 16/50 starting... lr: 0.001 para:0.05882352963089943
+2026-07-26 15:30:49,975 P2607702 INFO Epoch 16/50, all_loss:405.88077 cls_loss:485.22357 rec_loss:-863.60400 [43.13s]; best loss:167.18335, patience : 1
+2026-07-26 15:31:03,664 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.5000 ap:0.5000 f1: 0.0610 pred_right: 0 pred_wrong:1096200 actu_right: 1061712 actu_wrong: 34488
+2026-07-26 15:31:09,611 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.5000 ap:0.5000 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:31:09,620 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:31:09,621 P2607702 INFO 17/50 starting... lr: 0.001 para:0.0555555559694767
+2026-07-26 15:32:00,701 P2607702 INFO Epoch 17/50, all_loss:1297.43030 cls_loss:1539.54077 rec_loss:-2818.44849 [51.08s]; best loss:167.18335, patience : 2
+2026-07-26 15:32:16,074 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 15:32:22,347 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:32:22,348 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:32:22,348 P2607702 INFO 18/50 starting... lr: 0.001 para:0.05263157933950424
+2026-07-26 15:33:06,790 P2607702 INFO Epoch 18/50, all_loss:862.74982 cls_loss:1069.66553 rec_loss:-2861.73389 [44.44s]; best loss:167.18335, patience : 2
+2026-07-26 15:33:22,441 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-07-26 15:33:27,168 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:33:27,168 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:33:27,169 P2607702 INFO 19/50 starting... lr: 0.001 para:0.05000000074505806
+2026-07-26 15:34:17,764 P2607702 INFO Epoch 19/50, all_loss:1089.37488 cls_loss:1297.58411 rec_loss:-2866.59888 [50.59s]; best loss:167.18335, patience : 3
+2026-07-26 15:34:32,529 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061711 actu_wrong: 34489
+2026-07-26 15:34:38,435 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:34:38,436 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:34:38,436 P2607702 INFO 20/50 starting... lr: 0.001 para:0.0476190485060215
+2026-07-26 15:35:20,635 P2607702 INFO Epoch 20/50, all_loss:694.24292 cls_loss:873.76147 rec_loss:-2896.12769 [42.20s]; best loss:167.18335, patience : 3
+2026-07-26 15:35:44,707 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5517 ap:0.5072 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061713 actu_wrong: 34487
+2026-07-26 15:35:50,990 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5513 ap:0.5074 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:35:50,991 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:35:50,991 P2607702 INFO 21/50 starting... lr: 0.001 para:0.04545454680919647
+2026-07-26 15:36:34,343 P2607702 INFO Epoch 21/50, all_loss:653.99438 cls_loss:824.42303 rec_loss:-2925.00830 [43.35s]; best loss:167.18335, patience : 3
+2026-07-26 15:36:48,483 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061711 actu_wrong: 34489
+2026-07-26 15:36:54,425 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:36:54,426 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:36:54,426 P2607702 INFO 22/50 starting... lr: 0.001 para:0.043478261679410934
+2026-07-26 15:37:45,059 P2607702 INFO Epoch 22/50, all_loss:283.44086 cls_loss:431.16953 rec_loss:-2966.58765 [50.63s]; best loss:167.18335, patience : 3
+2026-07-26 15:37:59,475 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5622 ap:0.5108 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061711 actu_wrong: 34489
+2026-07-26 15:38:05,455 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5610 ap:0.5110 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:38:05,455 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:38:05,456 P2607702 INFO 23/50 starting... lr: 0.001 para:0.0416666679084301
+2026-07-26 15:38:50,883 P2607702 INFO Epoch 23/50, all_loss:310.78946 cls_loss:457.84714 rec_loss:-3071.53760 [45.43s]; best loss:167.18335, patience : 4
+2026-07-26 15:39:02,980 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.6281 ap:0.5172 f1: 0.0610 pred_right: 0 pred_wrong:1096200 actu_right: 1061710 actu_wrong: 34490
+2026-07-26 15:39:14,972 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.6263 ap:0.5177 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:39:14,997 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:39:14,997 P2607702 INFO 24/50 starting... lr: 0.001 para:0.03999999910593033
+2026-07-26 15:40:01,741 P2607702 INFO Epoch 24/50, all_loss:258.98425 cls_loss:402.74042 rec_loss:-3191.16431 [46.74s]; best loss:167.18335, patience : 4
+2026-07-26 15:40:16,377 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061707 actu_wrong: 34493
+2026-07-26 15:40:22,489 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:40:22,490 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:40:22,490 P2607702 INFO 25/50 starting... lr: 0.001 para:0.03846153989434242
+2026-07-26 15:41:13,882 P2607702 INFO Epoch 25/50, all_loss:204.42683 cls_loss:345.43848 rec_loss:-3320.86328 [51.39s]; best loss:167.18335, patience : 4
+2026-07-26 15:41:28,627 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061711 actu_wrong: 34489
+2026-07-26 15:41:34,584 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:41:34,585 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:41:34,585 P2607702 INFO 26/50 starting... lr: 0.001 para:0.03703703731298447
+2026-07-26 15:42:17,163 P2607702 INFO Epoch 26/50, all_loss:399.16504 cls_loss:550.53784 rec_loss:-3536.52954 [42.58s]; best loss:167.18335, patience : 5
+2026-07-26 15:42:34,284 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061716 actu_wrong: 34484
+2026-07-26 15:42:39,076 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:42:39,077 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:42:39,077 P2607702 INFO 27/50 starting... lr: 0.001 para:0.0357142873108387
+2026-07-26 15:43:31,615 P2607702 INFO Epoch 27/50, all_loss:218.97145 cls_loss:366.27768 rec_loss:-3758.29639 [52.54s]; best loss:167.18335, patience : 5
+2026-07-26 15:43:45,905 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6228 ap:0.5304 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 15:43:52,189 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6217 ap:0.5308 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:43:52,190 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:43:52,190 P2607702 INFO 28/50 starting... lr: 0.001 para:0.03448275849223137
+2026-07-26 15:44:34,626 P2607702 INFO Epoch 28/50, all_loss:174.78699 cls_loss:325.08105 rec_loss:-4033.44653 [42.44s]; best loss:167.18335, patience : 5
+2026-07-26 15:44:59,095 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 15:45:05,290 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:45:05,291 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:45:05,291 P2607702 INFO 29/50 starting... lr: 0.001 para:0.03333333507180214
+2026-07-26 15:45:48,257 P2607702 INFO Epoch 29/50, all_loss:174.59650 cls_loss:328.74896 rec_loss:-4295.82422 [42.96s]; best loss:167.18335, patience : 5
+2026-07-26 15:46:03,369 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6567 ap:0.5487 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061707 actu_wrong: 34493
+2026-07-26 15:46:09,444 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6554 ap:0.5490 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:46:09,446 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:46:09,446 P2607702 INFO 30/50 starting... lr: 0.001 para:0.032258063554763794
+2026-07-26 15:47:01,097 P2607702 INFO Epoch 30/50, all_loss:137.02585 cls_loss:291.70200 rec_loss:-4503.25977 [51.64s]; best loss:137.02585, patience : 0
+2026-07-26 15:47:15,097 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-07-26 15:47:21,129 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:47:21,130 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:47:21,130 P2607702 INFO 31/50 starting... lr: 0.001 para:0.03125
+2026-07-26 15:48:04,712 P2607702 INFO Epoch 31/50, all_loss:341.57623 cls_loss:507.76370 rec_loss:-4810.23535 [43.58s]; best loss:137.02585, patience : 1
+2026-07-26 15:48:19,496 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6911 ap:0.5767 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-07-26 15:48:27,082 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6905 ap:0.5760 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:48:27,084 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:48:27,084 P2607702 INFO 32/50 starting... lr: 0.001 para:0.03030303120613098
+2026-07-26 15:49:17,912 P2607702 INFO Epoch 32/50, all_loss:276.79108 cls_loss:444.81393 rec_loss:-5099.94189 [50.83s]; best loss:137.02585, patience : 1
+2026-07-26 15:49:32,185 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-07-26 15:49:38,294 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:49:38,295 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:49:38,295 P2607702 INFO 33/50 starting... lr: 0.001 para:0.029411764815449715
+2026-07-26 15:50:29,170 P2607702 INFO Epoch 33/50, all_loss:192.38905 cls_loss:366.48157 rec_loss:-5552.66455 [50.87s]; best loss:137.02585, patience : 1
+2026-07-26 15:50:44,492 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6877 ap:0.5751 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-07-26 15:50:50,627 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6879 ap:0.5763 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:50:50,628 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:50:50,628 P2607702 INFO 34/50 starting... lr: 0.001 para:0.02857142873108387
+2026-07-26 15:51:33,030 P2607702 INFO Epoch 34/50, all_loss:170.46303 cls_loss:347.62955 rec_loss:-5853.19824 [42.40s]; best loss:137.02585, patience : 1
+2026-07-26 15:51:49,317 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-07-26 15:51:54,472 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:51:54,472 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:51:54,472 P2607702 INFO 35/50 starting... lr: 0.001 para:0.02777777798473835
+2026-07-26 15:52:45,601 P2607702 INFO Epoch 35/50, all_loss:59.63839 cls_loss:245.15536 rec_loss:-6433.45557 [51.12s]; best loss:59.63839, patience : 0
+2026-07-26 15:52:59,466 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.4074 ap:0.4838 f1: 0.0610 pred_right: 0 pred_wrong:1096200 actu_right: 1061711 actu_wrong: 34489
+2026-07-26 15:53:05,578 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.4067 ap:0.4836 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:53:05,579 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:53:05,579 P2607702 INFO 36/50 starting... lr: 0.001 para:0.027027027681469917
+2026-07-26 15:53:48,314 P2607702 INFO Epoch 36/50, all_loss:87.74885 cls_loss:280.77731 rec_loss:-6861.27686 [42.73s]; best loss:59.63839, patience : 1
+2026-07-26 15:54:12,057 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5803 ap:0.5853 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 15:54:18,589 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5800 ap:0.5842 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:54:18,590 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:54:18,590 P2607702 INFO 37/50 starting... lr: 0.001 para:0.02631578966975212
+2026-07-26 15:55:01,657 P2607702 INFO Epoch 37/50, all_loss:-61.52594 cls_loss:137.46179 rec_loss:-7424.07227 [43.06s]; best loss:-61.52594, patience : 0
+2026-07-26 15:55:16,176 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6075 ap:0.6015 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061707 actu_wrong: 34493
+2026-07-26 15:55:22,088 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6091 ap:0.6017 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:55:22,089 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:55:22,089 P2607702 INFO 38/50 starting... lr: 0.001 para:0.025641025975346565
+2026-07-26 15:56:14,006 P2607702 INFO Epoch 38/50, all_loss:46.96253 cls_loss:272.66483 rec_loss:-8529.72461 [51.92s]; best loss:-61.52594, patience : 1
+2026-07-26 15:56:28,060 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5862 ap:0.5650 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 15:56:33,999 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5866 ap:0.5660 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:56:34,000 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:56:34,000 P2607702 INFO 39/50 starting... lr: 0.001 para:0.02500000037252903
+2026-07-26 15:57:17,765 P2607702 INFO Epoch 39/50, all_loss:-206.96118 cls_loss:57.90780 rec_loss:-10536.85059 [43.75s]; best loss:-206.96118, patience : 0
+2026-07-26 15:57:32,249 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5927 ap:0.5908 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061706 actu_wrong: 34494
+2026-07-26 15:57:39,769 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5930 ap:0.5935 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:57:39,771 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:57:39,771 P2607702 INFO 40/50 starting... lr: 0.001 para:0.024390242993831635
+2026-07-26 15:58:29,911 P2607702 INFO Epoch 40/50, all_loss:-211.38054 cls_loss:97.70268 rec_loss:-12574.71094 [50.13s]; best loss:-211.38054, patience : 0
+2026-07-26 15:58:44,365 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061709 actu_wrong: 34491
+2026-07-26 15:58:50,272 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 15:58:50,273 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 15:58:50,273 P2607702 INFO 41/50 starting... lr: 0.001 para:0.02380952425301075
+2026-07-26 15:59:42,809 P2607702 INFO Epoch 41/50, all_loss:-284.21725 cls_loss:64.25955 rec_loss:-14571.76562 [52.52s]; best loss:-284.21725, patience : 0
+2026-07-26 15:59:58,165 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6850 ap:0.6189 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-07-26 16:00:04,211 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6902 ap:0.6218 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:00:04,212 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 16:00:04,213 P2607702 INFO 42/50 starting... lr: 0.001 para:0.023255813866853714
+2026-07-26 16:00:47,014 P2607702 INFO Epoch 42/50, all_loss:-321.80441 cls_loss:53.06698 rec_loss:-16066.40137 [42.79s]; best loss:-321.80441, patience : 0
+2026-07-26 16:01:03,291 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.4710 ap:0.5780 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061709 actu_wrong: 34491
+2026-07-26 16:01:08,067 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.4735 ap:0.5792 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:01:08,068 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 16:01:08,068 P2607702 INFO 43/50 starting... lr: 0.001 para:0.022727273404598236
+2026-07-26 16:01:59,481 P2607702 INFO Epoch 43/50, all_loss:-310.52570 cls_loss:97.68031 rec_loss:-17863.38477 [51.41s]; best loss:-321.80441, patience : 1
+2026-07-26 16:02:13,866 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.4877 ap:0.6065 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 16:02:20,075 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.4911 ap:0.6092 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:02:20,076 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 16:02:20,083 P2607702 INFO 44/50 starting... lr: 0.001 para:0.02222222276031971
+2026-07-26 16:03:02,437 P2607702 INFO Epoch 44/50, all_loss:-306.65811 cls_loss:140.17218 rec_loss:-19967.18750 [42.35s]; best loss:-321.80441, patience : 2
+2026-07-26 16:03:26,880 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6060 ap:0.5828 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 16:03:33,241 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.6037 ap:0.5858 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:03:33,242 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 16:03:33,242 P2607702 INFO 45/50 starting... lr: 0.001 para:0.021739130839705467
+2026-07-26 16:04:16,029 P2607702 INFO Epoch 45/50, all_loss:-376.64886 cls_loss:107.08460 rec_loss:-22144.65430 [42.77s]; best loss:-376.64886, patience : 0
+2026-07-26 16:04:31,030 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.4841 ap:0.5671 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061711 actu_wrong: 34489
+2026-07-26 16:04:37,493 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.4865 ap:0.5698 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:04:37,494 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 16:04:37,494 P2607702 INFO 46/50 starting... lr: 0.001 para:0.021276595070958138
+2026-07-26 16:05:29,719 P2607702 INFO Epoch 46/50, all_loss:-347.74377 cls_loss:176.44420 rec_loss:-24460.38867 [52.22s]; best loss:-376.64886, patience : 1
+2026-07-26 16:05:43,991 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 16:05:50,080 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:05:50,081 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 16:05:50,081 P2607702 INFO 47/50 starting... lr: 0.001 para:0.02083333395421505
+2026-07-26 16:06:34,180 P2607702 INFO Epoch 47/50, all_loss:-431.24753 cls_loss:138.10390 rec_loss:-27190.76367 [44.09s]; best loss:-431.24753, patience : 0
+2026-07-26 16:06:51,273 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.4791 ap:0.4924 f1: 0.0610 pred_right: 0 pred_wrong:1096200 actu_right: 1061711 actu_wrong: 34489
+2026-07-26 16:07:03,826 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.4772 ap:0.4919 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:07:03,827 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 16:07:03,827 P2607702 INFO 48/50 starting... lr: 0.001 para:0.020408162847161293
+2026-07-26 16:07:46,172 P2607702 INFO Epoch 48/50, all_loss:-537.35297 cls_loss:87.70061 rec_loss:-30539.92578 [42.34s]; best loss:-537.35297, patience : 0
+2026-07-26 16:08:00,916 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-07-26 16:08:06,979 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:08:06,980 P2607702 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 16:08:06,981 P2607702 INFO 49/50 starting... lr: 0.001 para:0.019999999552965164
+2026-07-26 16:08:59,404 P2607702 INFO Epoch 49/50, all_loss:-475.70795 cls_loss:209.39259 rec_loss:-34045.63281 [52.42s]; best loss:-537.35297, patience : 1
+2026-07-26 16:09:13,591 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5375 ap:0.5660 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061709 actu_wrong: 34491
+2026-07-26 16:09:19,795 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5386 ap:0.5680 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:09:19,796 P2607702 INFO saving model...
+2026-07-26 16:09:19,796 P2607702 INFO Medicine - loss  best score:-537.3529663085938 at epoch 48
+2026-07-26 16:09:19,808 P2607702 INFO Medicine - f1  best score:0.06100699572827212 at epoch 23
+2026-07-26 16:09:19,825 P2607702 INFO Average training time per epoch: 46.03 seconds
+2026-07-26 16:09:19,827 P2607702 INFO calculate scores...
+2026-07-26 16:09:19,827 P2607702 INFO calculate label with loss...
+2026-07-26 16:09:19,827 P2607702 INFO Medicine on ./result/Medicine-TT-Epochs50-Seed1ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-26 16:09:25,917 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:09:38,804 P2607702 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:09:38,804 P2607702 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.3206817101392078, 'throughput_samples_per_sec': 3118.356826667478, 'peak_memory_mb': 53.4638671875, 'energy_per_sample_joules': 0.01929157031855446}, 'CPU': {'inference_time_per_sample_ms': 0.7110047559376836, 'throughput_samples_per_sec': 1406.460352970755, 'peak_memory_mb': 5251.92578125, 'energy_per_sample_joules': 0.046215309135949435}}
+2026-07-26 16:09:38,811 P2607702 INFO Starting clean-room hardware benchmarking...
+2026-07-26 16:09:40,567 P2607702 INFO Performance with loss: pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:09:40,567 P2607702 INFO calculate label with f1...
+2026-07-26 16:09:40,567 P2607702 INFO Medicine on ./result/Medicine-TT-Epochs50-Seed1ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-07-26 16:09:46,491 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.6263 ap:0.5177 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:09:59,090 P2607702 INFO pr:0.0315  rc:1.0000  auc:0.5995 ap:0.5151 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-07-26 16:09:59,098 P2607702 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.30429460457627727, 'throughput_samples_per_sec': 3286.288961292874, 'peak_memory_mb': 53.0732421875, 'energy_per_sample_joules': 0.0217561513433901}, 'CPU': {'inference_time_per_sample_ms': 0.6820078421679211, 'throughput_samples_per_sec': 1466.2587996367704, 'peak_memory_mb': 5766.0625, 'energy_per_sample_joules': 0.04433050974091487}}
+2026-07-26 16:09:59,098 P2607702 INFO Starting clean-room hardware benchmarking...
+2026-07-26 16:10:00,989 P2607702 INFO Performance with f1: pr:0.0315  rc:1.0000  auc:0.6263 ap:0.5177 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808

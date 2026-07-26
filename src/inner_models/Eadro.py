@@ -2,79 +2,28 @@ import torch
 from torch import dropout, dropout, nn
 #from dgl.nn.pytorch import GATv2Conv
 #from dgl.nn import GlobalAttentionPooling
-#from torch_geometric.nn import GATv2Conv, GlobalAttention
+from torch_geometric.nn import GATv2Conv, GlobalAttention
 import torch.nn.functional as F
 
-class NativeGATv2Conv(nn.Module):
-    def __init__(self, in_channels, out_channels, heads=4, negative_slope=0.2):
-        super().__init__()
-        self.in_channels = in_channels
-        self.out_channels = out_channels
-        self.heads = heads
-        self.negative_slope = negative_slope
-
-        # Flip bias=True to match the saved checkpoint layout exactly
-        self.lin_l = nn.Linear(in_channels, heads * out_channels, bias=True)
-        self.lin_r = nn.Linear(in_channels, heads * out_channels, bias=True)
-
-        self.att = nn.Parameter(torch.Tensor(1, heads, out_channels))
-        self.bias = nn.Parameter(torch.Tensor(out_channels))
-        
-        self.reset_parameters()
-
-    def reset_parameters(self):
-        nn.init.xavier_uniform_(self.lin_l.weight)
-        nn.init.xavier_uniform_(self.lin_r.weight)
-        nn.init.zeros_(self.lin_l.bias)
-        nn.init.zeros_(self.lin_r.bias)
-        nn.init.xavier_uniform_(self.att)
-        nn.init.zeros_(self.bias)
-
-    def forward(self, x, edge_index):
-        num_nodes = x.size(0)
-        src_idx, dst_idx = edge_index[0], edge_index[1]
-
-        h_src = self.lin_l(x).view(num_nodes, self.heads, self.out_channels)
-        h_dst = self.lin_r(x).view(num_nodes, self.heads, self.out_channels)
-
-        h_src_edges = h_src[src_idx]  
-        h_dst_edges = h_dst[dst_idx]  
-
-        edge_attn_input = F.leaky_relu(h_src_edges + h_dst_edges, self.negative_slope)
-        alpha = (edge_attn_input * self.att).sum(dim=-1)  
-
-        alpha = torch.exp(alpha - alpha.max()) 
-        sum_denom = torch.zeros(num_nodes, self.heads, device=x.device)
-        sum_denom.scatter_add_(0, dst_idx.unsqueeze(-1).expand(-1, self.heads), alpha)
-        alpha = alpha / (sum_denom[dst_idx] + 1e-16) 
-
-        weighted_messages = h_src_edges * alpha.unsqueeze(-1) 
-        
-        out = torch.zeros(num_nodes, self.heads, self.out_channels, device=x.device)
-        out.scatter_add_(0, dst_idx.unsqueeze(-1).unsqueeze(-1).expand(-1, self.heads, self.out_channels), weighted_messages)
-
-        out = out.mean(dim=1) + self.bias
-        return out
 
 class GraphModel(nn.Module):
     def __init__(self, in_dim, graph_hiddens=[64, 128], attn_head=4, activation=0.2, **kwargs):
         super().__init__()
         self.layers = nn.ModuleList()
 
+        ##just for the case of smaller raspberry pi model
+        #if kwargs.get("graph_hiddens") is not None:
+        #    graph_hiddens = kwargs.get("graph_hiddens")
+        #    print("Using smaller graph_hiddens for raspberry pi model:", graph_hiddens)
+#
         for i, hidden in enumerate(graph_hiddens):
             in_feats = in_dim if i == 0 else graph_hiddens[i-1]
             self.layers.append(
-                #GATv2Conv(
-                #    in_channels=in_feats,
-                #    out_channels=hidden,
-                #    heads=attn_head,
-                #    concat=False,          # key line
-                #    negative_slope=activation
-                #)
-                NativeGATv2Conv(
+                GATv2Conv(
                     in_channels=in_feats,
                     out_channels=hidden,
                     heads=attn_head,
+                    concat=False,          # key line
                     negative_slope=activation
                 )
             )
@@ -158,9 +107,12 @@ class SelfAttention(nn.Module):
             tensor.data.uniform_(-stdv, stdv)
 
 class TraceModel(nn.Module):
-    def __init__(self, node_num, trace_hiddens=[20, 50], trace_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
+    def __init__(self, node_num, out_dim, trace_hiddens=[20, 50], trace_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
         super(TraceModel, self).__init__()
-
+        #if kwargs.get("trace_hiddens") is not None:
+        #    trace_hiddens = kwargs.get("trace_hiddens")
+        #    print("Using smaller trace_hiddens for raspberry pi model:", trace_hiddens)
+        trace_hiddens[-1] = out_dim
         self.out_dim = trace_hiddens[-1]
         assert len(trace_hiddens) == len(trace_kernel_sizes)
         self.net = ConvNet(node_num, num_channels=trace_hiddens, kernel_sizes=trace_kernel_sizes, **kwargs)
@@ -177,9 +129,13 @@ class TraceModel(nn.Module):
         return hidden_states[:,-1,:] #[bz, out_dim]
 
 class MetricModel(nn.Module):
-    def __init__(self, metric_num, metric_hiddens=[64, 128], metric_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
+    def __init__(self, metric_num, out_dim, metric_hiddens=[64, 128], metric_kernel_sizes=[3, 3], self_attn=False, chunk_lenth=None, **kwargs):
         super(MetricModel, self).__init__()
         self.metric_num = metric_num
+        metric_hiddens[-1] = out_dim
+        #if kwargs.get("metric_hiddens") is not None:
+        #    metric_hiddens = kwargs.get("metric_hiddens")
+        #    print("Using smaller metric_hiddens for raspberry pi model:", metric_hiddens)
         self.out_dim = metric_hiddens[-1]
         in_dim = metric_num
 
@@ -211,17 +167,19 @@ class LogModel(nn.Module):
         return self.embedder(paras)
 
 class MultiSourceEncoder(nn.Module):
-    def __init__(self, event_num, metric_num, node_num, log_dim=64, fuse_dim=64, alpha=0.5, **kwargs):
+    def __init__(self, event_num, metric_num, node_num,
+                 feature_metric, feature_log, feature_edge,
+                  fuse_dim=64, alpha=0.5, **kwargs):
         super(MultiSourceEncoder, self).__init__()
         self.node_num = node_num
         self.alpha = alpha
 
-        self.trace_model = TraceModel(node_num,**kwargs)
+        self.trace_model = TraceModel(node_num,feature_edge,**kwargs)
         trace_dim = self.trace_model.out_dim
-        self.log_model = LogModel(event_num, log_dim) 
-        self.metric_model = MetricModel(metric_num, **kwargs)
+        self.log_model = LogModel(event_num, feature_log) 
+        self.metric_model = MetricModel(metric_num, feature_metric, **kwargs)
         metric_dim = self.metric_model.out_dim
-        fuse_in = trace_dim+log_dim+metric_dim
+        fuse_in = trace_dim+feature_log+metric_dim
 
         if not fuse_dim % 2 == 0: fuse_dim += 1
         self.fuse = nn.Linear(fuse_in, fuse_dim)
@@ -293,7 +251,7 @@ import numpy as np
 
 
 class MainModel(nn.Module):
-    def __init__(self, event_num, metric_num, node_num, debug=False, **kwargs):
+    def __init__(self, event_num, metric_num, node_num, feature_node, feature_log, feature_edge, debug=False, **kwargs):
         super(MainModel, self).__init__()
 
         self.node_num = node_num
@@ -301,6 +259,7 @@ class MainModel(nn.Module):
         # Encoder stays exactly as-is as the original Eadro model
         self.encoder = MultiSourceEncoder(
             event_num, metric_num, node_num,
+            feature_node, feature_log, feature_edge,
             debug=debug, **kwargs
         )
 

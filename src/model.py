@@ -212,7 +212,8 @@ class MyModel(nn.Module):
 			#	'trace_hiddens': trace_hiddens,
 			#	'metric_hiddens': metric_hiddens
 			#}
-			self.Eadro_Model = MainModel(event_num, metric_num, node_num)#, **kwargs)
+			self.Eadro_Model = MainModel(event_num, metric_num, node_num,
+								args['feature_node'], args['feature_log'], args['feature_edge'])#, **kwargs)
 		
 		elif self.FREQ_DOMAIN == "AnoFusion":
 			self.AnoFusion = AnoFusion(
@@ -222,6 +223,10 @@ class MyModel(nn.Module):
 				metric_dim=args['raw_node'],
 				log_dim=args['log_len'],
 				trace_dim=args['raw_edge'],
+
+				feature_metric=args['feature_node'],
+				feature_log=args['feature_log'],
+				feature_trace=args['feature_edge'],
 				out_dim=args['raw_node'] + args['raw_edge'] + args['log_len']
 			)
 			
