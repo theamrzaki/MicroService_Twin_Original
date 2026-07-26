@@ -3,18 +3,18 @@
 
 
 FREQ_DOMAINS=(
-"Eadro"  
+#"Eadro"  
 ###
 #"FITS_Legendre" #OrEdge
 ###
-"AnoFusion"
+#"AnoFusion"
 #"encoder_decoder"
 #"Art"
 "Medicine"
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
 
-DATA_SOURCES=("SN" "MSDS" "TT")
+DATA_SOURCES=( "TT" "MSDS" "SN") #"SN" "MSDS"
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval

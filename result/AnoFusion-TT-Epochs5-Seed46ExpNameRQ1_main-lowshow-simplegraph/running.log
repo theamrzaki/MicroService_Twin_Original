@@ -1,0 +1,68 @@
+2026-07-26 14:21:03,712 P2580385 INFO ---- Model: ----MSTGAD-726372d4----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : AnoFusion----Multi Fits : false----train : True----evaluate : False
+2026-07-26 14:21:03,713 P2580385 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-26 14:21:15,686 P2580385 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-26 14:21:15,822 P2580385 INFO Trainable Parameters Breakdown:
+2026-07-26 14:21:15,822 P2580385 INFO --------------------------------------------------------------------------------
+2026-07-26 14:21:15,822 P2580385 INFO Reconstruction-Specific Parameters:
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.metric_proj.weight             | shape: (8, 7)                    | params: 56
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.metric_proj.bias               | shape: (8,)                      | params: 8
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.log_proj.weight                | shape: (32, 60)                  | params: 1,920
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.log_proj.bias                  | shape: (32,)                     | params: 32
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.trace_proj.weight              | shape: (8, 2)                    | params: 16
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.trace_proj.bias                | shape: (8,)                      | params: 8
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.anofusion.GTN.weight           | shape: (1, 1)                    | params: 1
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.anofusion.GTN.layers.0.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.anofusion.GTN.layers.0.layer2.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.anofusion.GTN.layers.1.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.anofusion.GTN.layers.2.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.anofusion.GTN.layers.3.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.anofusion.GTN.layers.4.layer1.weight | shape: (1, 2, 2, 1, 1)           | params: 4
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.anofusion.GAT_GRU.weight       | shape: (1, 1)                    | params: 1
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.anofusion.GAT_GRU.soft         | shape: (2,)                      | params: 2
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gru.weight_ih_l0 | shape: (60, 20)                  | params: 1,200
+2026-07-26 14:21:15,822 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gru.weight_hh_l0 | shape: (60, 20)                  | params: 1,200
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gru.bias_ih_l0 | shape: (60,)                     | params: 60
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gru.bias_hh_l0 | shape: (60,)                     | params: 60
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.BN.weight    | shape: (10,)                     | params: 10
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.BN.bias      | shape: (10,)                     | params: 10
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.linear.weight | shape: (20, 20)                  | params: 400
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.linear.bias  | shape: (20,)                     | params: 20
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.0.b | shape: (20,)                     | params: 20
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.0.W.weight | shape: (20, 48)                  | params: 960
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.1.b | shape: (20,)                     | params: 20
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.1.W.weight | shape: (20, 48)                  | params: 960
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.2.b | shape: (20,)                     | params: 20
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.2.W.weight | shape: (20, 48)                  | params: 960
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.3.b | shape: (20,)                     | params: 20
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.3.W.weight | shape: (20, 48)                  | params: 960
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.4.b | shape: (20,)                     | params: 20
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.4.W.weight | shape: (20, 48)                  | params: 960
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.5.b | shape: (20,)                     | params: 20
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.attention_module.5.W.weight | shape: (20, 48)                  | params: 960
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.out_att.b | shape: (20,)                     | params: 20
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.GAT_GRU.gat_layer.subnet.out_att.W.weight | shape: (20, 120)                 | params: 2,400
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.linT.weight          | shape: (5, 10)                   | params: 50
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.linT.bias            | shape: (5,)                      | params: 5
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.lin1.weight          | shape: (64, 270)                 | params: 17,280
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.lin1.bias            | shape: (64,)                     | params: 64
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.lin2.weight          | shape: (2, 64)                   | params: 128
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.anofusion.lin2.bias            | shape: (2,)                      | params: 2
+2026-07-26 14:21:15,823 P2580385 INFO AnoFusion.post_proj.weight               | shape: (69, 20)                  | params: 1,380
+2026-07-26 14:21:15,824 P2580385 INFO AnoFusion.post_proj.bias                 | shape: (69,)                     | params: 69
+2026-07-26 14:21:15,824 P2580385 INFO Subtotal: 32,306
+2026-07-26 14:21:15,824 P2580385 INFO --------------------------------------------------------------------------------
+2026-07-26 14:21:15,824 P2580385 INFO Common Parameters:
+2026-07-26 14:21:15,824 P2580385 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-26 14:21:15,824 P2580385 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-26 14:21:15,824 P2580385 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-26 14:21:15,824 P2580385 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-26 14:21:15,824 P2580385 INFO Subtotal: 9,218
+2026-07-26 14:21:15,824 P2580385 INFO --------------------------------------------------------------------------------
+2026-07-26 14:21:15,824 P2580385 INFO Total Trainable Parameters: 41,524
+
+2026-07-26 14:21:15,824 P2580385 INFO Trainable Parameters: 41524, reconstruction: 32306, common: 9218
+2026-07-26 14:21:15,824 P2580385 INFO model : init weight
+2026-07-26 14:21:15,825 P2580385 INFO Using GPU...
+2026-07-26 14:21:15,851 P2580385 INFO optimizer : using AdaBelief
+2026-07-26 14:21:15,851 P2580385 INFO ----------------------------------------------------------------------------------------------------
+2026-07-26 14:21:15,851 P2580385 INFO 0/5 starting... lr: 0.001 para:1.0

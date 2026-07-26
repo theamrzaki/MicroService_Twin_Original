@@ -1,13 +1,13 @@
 
 
 #!/bin/bash
-MODEL_NAMES=("Art") #"Eadro" "AnoFusion" "encoder_decoder" "FITS_Legendre" 
+MODEL_NAMES=("AnoFusion" "Eadro") #"Eadro" "AnoFusion" "encoder_decoder" "FITS_Legendre" 
 DATASET_NAMES=("TT" "MSDS" "SN" ) #
-IP_ADDRESS="130.63.252.147" #db2003smaller
-#IP_ADDRESS="130.63.103.80"
+#IP_ADDRESS="130.63.255.87" #db2003smaller
+IP_ADDRESS="130.63.100.216"
 SEEDS=(1 2 3)
-DEVICE_NAME="db2003smaller"
-#DEVICE_NAME="db2003larger"
+#DEVICE_NAME="db2003smaller"
+DEVICE_NAME="db2003larger"
 
 # Give your user permission to read the source folder so you don't need sudo inside the loops
 sudo chown -R $(whoami) "/home/db2003/Desktop/Amr/(Journal) MicroService_Twin_Original/result/"

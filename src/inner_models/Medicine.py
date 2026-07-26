@@ -143,9 +143,9 @@ class AdaFusion(nn.Module):
         feature_log: int = 1,
         feature_trace: int = 1,
         max_len: int = 512,
-        d_model: int = 768,
+        d_model: int = 64,#768,
         nhead: int = 8,
-        d_ff: int = 256,
+        d_ff: int = 64,#256,
         layer_num: int = 2,
         dropout: float = 0.1,
         num_class: int = 4,
@@ -156,18 +156,21 @@ class AdaFusion(nn.Module):
         self.log_encoder = LogEncoder(
             max_len, feature_log, 1, d_ff, layer_num, dropout, device
         )
+        
         self.metric_encoder = MetricEncoder(
             kpi_num,
             instance_num,
             max_len,
             feature_metric,
-            nhead,
+            nhead if kpi_num % nhead == 0 else 1,
             d_ff,
             layer_num,
             dropout,
             device,
         )
-        self.trace_encoder = TraceEncoder(invoke_num, feature_trace, nhead, d_ff, dropout)
+        self.trace_encoder = TraceEncoder(invoke_num, feature_trace, 
+                                          nhead if invoke_num % nhead == 0 else 1
+                                          , d_ff, dropout)
 
         #self.clf = nn.Sequential(
         #    nn.Linear(d_model, num_class),
@@ -187,25 +190,38 @@ class AdaFusion(nn.Module):
             d_model=d_model,                  # Shared fusion size (e.g. 64 or 128)
         )
 
-    def forward(self, data_node, data_log, data_edge):#x_list):
-        #make sure both are on the same device
+    def _forward_in_chunks(self, module, tensor, chunk_size=500):
+        if tensor.size(0) <= chunk_size:
+            return module(tensor)
+        
+        # .clone() turns each view into a standalone tensor to allow safe downstream operations
+        chunks = [c.clone() for c in tensor.split(chunk_size, dim=0)]
+        outputs = [module(chunk) for chunk in chunks]
+        return torch.cat(outputs, dim=0)
+
+
+    def forward(self, data_node, data_log, data_edge):
+        # 1. Metric Encoder
         x_metric = self.metric_encoder(data_node.permute(0, 2, 1, 3))
+        
+        # 2. Log Encoder (Chunked to prevent OOM)
         B, T, N, F = data_log.shape
         data_log = data_log.permute(0, 2, 1, 3).reshape(B * N, T, F)
         data_log = self.log_feature_encoder(data_log)
-        x_log = self.log_encoder(data_log)
+        x_log = self._forward_in_chunks(self.log_encoder, data_log, chunk_size=500)
         
-        data_edge = data_edge.mean(dim=3)                    # Collapse destination nodes
+        # 3. Trace Encoder (Chunked to prevent OOM)
+        data_edge = data_edge.mean(dim=3) # Collapse destination nodes
         B_e, T_e, N_e, F_e = data_edge.shape
         data_edge = data_edge.permute(0, 2, 1, 3).reshape(B_e * N_e, T_e, F_e)
-        x_trace = self.trace_encoder(data_edge)
+        x_trace = self._forward_in_chunks(self.trace_encoder, data_edge, chunk_size=500)
         x_trace = x_trace.mean(dim=1)
 
+        # 4. Fusion & Reconstruction
         rec_metric, rec_log, rec_trace, _ = self.concat_fusion(x_metric, x_log, x_trace)
-        #concatinate all recs 
         rec = torch.cat([rec_metric, rec_log, rec_trace], dim=-1)
-        # instead of B*T, F --> B,T,F
         rec = rec.reshape(B, N, -1)
+        
         return rec
 
 
