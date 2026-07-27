@@ -13,17 +13,19 @@ class permute(nn.Module):
 
 class AnoFusionWrapper(nn.Module):
     def __init__(self, num_services, window_size,
-                 metric_dim, log_dim,trace_dim, out_dim):
+                 metric_dim, log_dim,trace_dim,
+                  feature_metric, feature_log, feature_trace,                  
+                   out_dim):
         super().__init__()
 
-        #TODO: they need to be the required features, not all 10
-        self.metric_proj = nn.Linear(metric_dim, 10)
-        self.log_proj    = nn.Linear(log_dim, 10)
-        self.trace_proj  = nn.Linear(trace_dim, 10)
-
+        self.metric_proj = nn.Linear(metric_dim, feature_metric)
+        self.log_proj    = nn.Linear(log_dim, feature_log)
+        self.trace_proj  = nn.Linear(trace_dim, feature_trace)
+        self.total_feature_dim = feature_metric + feature_log + feature_trace
         #self.linear_x = nn.Linear(30, 20)
 
         self.anofusion = Net(
+            in_features=self.total_feature_dim,
             node_num=num_services,
             edge_types=2,
             window_samples_num=window_size,
@@ -49,7 +51,7 @@ class AnoFusionWrapper(nn.Module):
 
         A = graph.unsqueeze(0).unsqueeze(0).repeat(B, θ, 1, 1, 1)
 
-        Xw = Xw.view(B*θ, N, 30)
+        Xw = Xw.view(B*θ, N, self.total_feature_dim)  # [Bθ,N,F]
         A  = A.view(B*θ, N, N, 1)
 
         X_pred = self.anofusion(Xw, A, device)       # [Bθ,N,F]
@@ -59,7 +61,7 @@ class AnoFusionWrapper(nn.Module):
         return X_pred.view(B, θ, N, self.out_dim)
 
 class Net(nn.Module):
-    def __init__(self, node_num, edge_types, window_samples_num, dropout):
+    def __init__(self, in_features,node_num, edge_types, window_samples_num, dropout):
         super(Net, self).__init__()
         self.edge_types = edge_types
         self.num_channels = edge_types
@@ -67,7 +69,7 @@ class Net(nn.Module):
         self.window_samples_num = window_samples_num
         self.dropout = dropout
         self.GTN = GTN(edge_types=self.edge_types, num_channels=self.num_channels, num_layers=5, norm=False)
-        self.GAT_GRU = GAT_GRU(self.window_samples_num, self.node_num, self.num_channels)
+        self.GAT_GRU = GAT_GRU(in_features,self.window_samples_num, self.node_num, self.num_channels)
         self.flatten = nn.Flatten()
         self.linT = nn.Linear(self.window_samples_num, self.window_samples_num // 2)
     
