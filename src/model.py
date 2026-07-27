@@ -31,6 +31,8 @@ from src.inner_models.Eadro import MainModel
 from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
 from src.inner_models.Art import ARTWrapper as Art_Model
 #from src.inner_models.Hades import HadesWrapper as Hades_Model
+from src.inner_models.Medicine import AdaFusion as Medicine
+
 from util.util import is_raspberry_pi
 import numpy as np
 import argparse
@@ -252,6 +254,21 @@ class MyModel(nn.Module):
 				#TODO to be in the forward only
 			)
 			
+		elif self.FREQ_DOMAIN == "Medicine":
+			device = 'cpu'
+			
+			num_nodes = self.graph.shape[0]
+			self.Medicine_model = Medicine(
+				kpi_num = args['raw_node'],
+				invoke_num =args['raw_edge'],
+				num_log_templates = args['log_len'],
+				instance_num = num_nodes,
+				feature_metric=args['feature_node'],
+				feature_log=args['feature_log'],
+				feature_trace=args['feature_edge'],
+				max_len = args["window"],
+				device=device
+			)
 
 		self.show = nn.Sequential(nn.Linear(args['raw_node'] + args['raw_edge'] + args['log_len'], 128),
 							nn.LeakyReLU(inplace=True),
@@ -541,7 +558,10 @@ class MyModel(nn.Module):
 			self.graph = self.graph.to(device)
 			rec = self.Art_Model(x['data_node'], x['data_log'], x['data_edge'])
 
-
+		elif self.FREQ_DOMAIN in ["Medicine"]:
+			device = x['data_edge'].device
+			rec = self.Medicine_model(x['data_node'], x['data_log'], x['data_edge'])
+		
 		if evaluate:
 			if rec.dim() == 4:	 
 				rec = rec[:, -1].squeeze()
