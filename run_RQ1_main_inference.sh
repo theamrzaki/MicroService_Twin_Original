@@ -17,7 +17,7 @@ DEVICE_NAME="Raspberry Pi Smaller"
 source ~/miniforge3/etc/profile.d/conda.sh
 conda activate RCAEval
 
-SEEDS=(1 2 3)
+SEEDS=(3)
 
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
