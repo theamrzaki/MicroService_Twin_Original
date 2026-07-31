@@ -60,22 +60,27 @@ class Process:
 
         metirc = pd.read_csv(os.path.join(self.rawdata_path, 'metric.csv'), sep=',')
         timestart, timeend = metirc['now'].min(), metirc['now'].max()
-        time_list = [item for item in range(int(timestart), int(timeend)+1, 1)]
-        time_lack = list(set(time_list).difference(set(metirc['now'].values.tolist())))
-        for stamp in time_lack:
-            metirc = metirc.append([{'now':stamp}])
+        time_list = set(range(int(timestart), int(timeend) + 1))
+        existing_times = set(metirc['now'].values.tolist())
+        time_lack = sorted(time_list - existing_times)
+        if time_lack:
+            missing_df = pd.DataFrame({'now': time_lack})
+            metirc = pd.concat([metirc, missing_df], ignore_index=True)
         metirc = metirc.sort_values(by='now', ascending=True)
-        metirc.fillna(method='ffill', inplace=True)
-        name_list = list(filter(lambda x: 'mem' in x, list(metirc.columns)))
-        after_name = list(map(lambda x: f'{x.split("_")[0]}_a{x.split("_")[-1]}',name_list))
-        name_dict = {name_list[idx]: after_name[idx] for idx, _ in enumerate(name_list)}
-        metirc.rename(columns = name_dict,  inplace=True)
-
+        # Forward fill missing values
+        metirc.ffill(inplace=True)
+        name_list = [x for x in metirc.columns if 'mem' in x]
+        after_name = [
+            f'{x.split("_")[0]}_a{x.split("_")[-1]}'
+            for x in name_list
+        ]
+        name_dict = dict(zip(name_list, after_name))
+        metirc.rename(columns=name_dict, inplace=True)
+        
         log = pd.read_csv(os.path.join(self.rawdata_path, 'log.csv'), sep=',')
         log = log.sort_values(by='@timestamp', ascending=True)
         log_record = {}
         log_real = {}     # ✅ real logs
-
         # ✅ Template mapping
         if 'Payload' in log.columns:
             self.template_map = (
@@ -109,7 +114,7 @@ class Process:
             top_k = 5
             entries = sorted(entries, key=lambda x: x["count"], reverse=True)[:top_k]
             log_record[timestamp] = new
-            log_real[timestamp] = entries
+            log_real[int(timestamp[0])] = entries
             new = new.max(axis=0)
             max_record = np.where(new > max_record, new, max_record)
             min_record = np.where(new < min_record, new, min_record)
@@ -222,7 +227,7 @@ class Process:
             # data_real_list: Here you'd ideally grab the actual log strings or templates
             # If log[time] is just indices, real_record should store the mapping
             real_record['logs'] = [
-                                        log_real[t]
+                                        log_real[int(t)]
                                         for t in range(int(starttime),
                                                     int(starttime + self.window),
                                                     self.step)

@@ -1,37 +1,43 @@
 #!/bin/bash
 
 FREQ_DOMAINS=(
-  #"Eadro"
-  "FITS_Legendre"  
+  "encoder_decoder"
+  "FITS_Legendre"  #OrEdge
 )
 
 SEEDS=(1)
+datasource="MSDS"
+EPOCHS=300
+SEED=1
+source ~/miniconda3/etc/profile.d/conda.sh
+conda activate RCAEval
 
-for SEED in "${SEEDS[@]}"; do
-    for FREQ in "${FREQ_DOMAINS[@]}"; do
+for FREQ in "${FREQ_DOMAINS[@]}"; do
   
     if [ "$FREQ" = "FITS_Legendre" ]; then
-      /bin/python3 main.py \
+      python main.py \
         --FREQ_DOMAIN="$FREQ" \
         --req_loss_approach='Legendre-style' \
         --filter_used="LPF" \
         --random_seed="$SEED" \
         --case_study=True \
-        --epochs=300 \
+        --evaluate=true \
+        --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main-lowshow-simplegraph" \
         --experiment_name="RQ3_case_study" \
-        --data_source=MSDS
+        --data_source=$datasource
     else
-      /bin/python3 main.py \
+      python main.py \
         --FREQ_DOMAIN="$FREQ" \
         --random_seed="$SEED" \
         --req_loss_approach='Normal-Recreation' \
         --case_study=True \
-        --epochs=300 \
         --experiment_name="RQ3_case_study" \
-        --data_source=MSDS
+        --evaluate=true \
+        --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main-lowshow-simplegraph" \
+        --experiment_name="RQ3_case_study" \
+        --data_source=$datasource
     fi
 
-  done
 done
 
 #chmod +x run_RQ2_ablations.sh

@@ -764,3 +764,291 @@ class MY(Base):
                 json.dump(save_obj, f, indent=2)
 
         return output
+    
+
+
+
+    def collect_comparative_case_study(
+        models,
+        test_loader,
+        thresholds,
+        dataset_path,
+        use_gpu=True,
+        reference_model="OrEdge",
+        top_k=5,
+        output_json="comparative_cases.json"
+    ):
+        """
+        Comparative case study collection.
+
+        Selects cases where the reference model (OrEdge)
+        detects anomalies missed by baseline models.
+
+        Stores:
+            - anomaly scores per model
+            - prediction per model
+            - modality reconstruction errors
+            - temporal error curve
+            - raw multimodal signals
+        """
+
+        device = torch.device(
+            "cuda" if use_gpu and torch.cuda.is_available()
+            else "cpu"
+        )
+
+
+        # -------------------------------------------------------
+        # Model preparation
+        # -------------------------------------------------------
+        for name, model in models.items():
+            model.eval()
+            model.to(device)
+
+
+        # -------------------------------------------------------
+        # Helper for loading original data
+        # -------------------------------------------------------
+        def get_real_record(sample_id):
+            file_path = os.path.join(
+                dataset_path + "_real",
+                f"{sample_id.split('.')[0]}_real_real.pkl"
+            )
+
+            with open(file_path, "rb") as f:
+                return pickle.load(f)
+
+
+        cases = []
+
+
+        # -------------------------------------------------------
+        # Forward pass
+        # -------------------------------------------------------
+
+        with torch.no_grad():
+
+            global_idx = 0
+
+            for batch_input in test_loader:
+
+
+                gt = batch_input["groundtruth_real"]
+                # sample-level label
+                labels = (
+                    gt.sum(dim=(1,2)) > 0
+                ).int()
+                if "filename" in batch_input:
+                    batch_ids = batch_input["filename"]
+                else:
+                    B = gt.size(0)
+
+                    batch_ids = list(
+                        range(
+                            global_idx,
+                            global_idx+B
+                        )
+                    )
+
+
+                # move batch
+                batch_gpu = {}
+
+                for k,v in batch_input.items():
+                    if torch.is_tensor(v):
+                        batch_gpu[k]=v.to(device)
+                    else:
+                        batch_gpu[k]=v
+
+
+
+                # ---------------------------------------------
+                # Run every model
+                # ---------------------------------------------
+
+                model_results = {}
+                for name, model in models.items():
+                    pred,_ = model(
+                        batch_gpu,
+                        evaluate=True
+                    )
+                    target = gt.to(pred.device)
+
+                    # global error
+                    total_error = (
+                        torch.abs(pred-target)
+                        .mean(dim=(1,2))
+                    )
+
+                    # temporal error
+                    if pred.dim() == 4:
+                        temporal_error = (
+                            torch.abs(pred-target)
+                            .mean(dim=(2,3))
+                        )
+                    else:
+                        temporal_error = (
+                            torch.abs(pred-target)
+                        )
+
+                    model_results[name]={
+                        "score":
+                            total_error.cpu(),
+                        "temporal_error":
+                            temporal_error.cpu()
+                    }
+
+
+
+                # ---------------------------------------------
+                # Create records
+                # ---------------------------------------------
+
+                for i,sample_id in enumerate(batch_ids):
+
+
+                    label=int(labels[i])
+                    if label != 1:
+                        continue
+                    scores={}
+                    predictions={}
+
+                    for name in models:
+                        score=float(
+                            model_results[name]["score"][i]
+                        )
+
+                        scores[name]=score
+                        predictions[name]=int(
+                            score >
+                            thresholds[name]
+                        )
+
+
+                    # OrEdge must detect
+                    if predictions[reference_model] != 1:
+                        continue
+
+
+                    # baselines missing detection
+
+                    missed = 0
+                    for name in models:
+                        if name == reference_model:
+                            continue
+                        if predictions[name]==0:
+                            missed+=1
+
+
+                    if missed == 0:
+                        continue
+
+
+                    # -----------------------------------------
+                    # Advantage score
+                    # -----------------------------------------
+
+                    baseline_scores=[]
+
+                    for name,score in scores.items():
+                        if name != reference_model:
+                            baseline_scores.append(score)
+
+
+                    advantage = (
+                        scores[reference_model]
+                        -
+                        np.mean(baseline_scores)
+                    )
+
+
+                    real=get_real_record(sample_id)
+
+
+                    # -----------------------------------------
+                    # modality reconstruction error
+                    # -----------------------------------------
+
+                    # optional:
+                    # depends on your output structure
+                    modality_errors={}
+
+
+                    record={
+
+                        "id":sample_id,
+                        "label":label,
+                        "scores":scores,
+                        "predictions":predictions,
+                        "advantage":
+                            float(advantage),
+                        "temporal_error":
+                            model_results[
+                                reference_model
+                            ][
+                                "temporal_error"
+                            ][i].tolist(),
+                        "metric":
+                            real["metric_raw"],
+                        "log":
+                            real["logs"],
+                        "trace":
+                            real["trace_raw"],
+                        "modality_errors":
+                            modality_errors
+                    }
+                    cases.append(record)
+                global_idx += len(batch_ids)
+
+
+
+        # -------------------------------------------------------
+        # Select strongest cases
+        # -------------------------------------------------------
+        cases = sorted(
+            cases,
+            key=lambda x:x["advantage"],
+            reverse=True
+        )
+
+
+        selected = cases[:top_k]
+
+
+        output={
+            "reference_model":
+                reference_model,
+            "num_cases":
+                len(selected),
+            "cases":
+                selected
+        }
+        print("--------------------------------------------------------")
+        print("--------------------------------------------------------")
+        print("--------------------------------------------------------")
+        print("--------------------------------------------------------")
+        print(f"Saving comparative case study to {output_json}...")
+        print("--------------------------------------------------------")
+        print("--------------------------------------------------------")
+        print("--------------------------------------------------------")
+        print("--------------------------------------------------------")
+        with open(output_json,"w") as f:
+
+            json.dump(
+                output,
+                f,
+                indent=2
+            )
+
+
+        return output
+    
+
+
+
+
+
+
+
+
+    

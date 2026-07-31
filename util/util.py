@@ -96,6 +96,9 @@ def dump_params(args):
 
     #if args["raspberry_pi_smaller_model"] == 'true':
     #    save_path = save_path + '-RaspberryPiSmallerModel'
+
+    elif args['experiment_name'] == "RQ3_case_study":
+        save_path = os.path.join(args['result_dir']+"/server_only_exps/CaseStudy", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])  + '-Degree' + str(args["degree"]) + '-lowshow-simplegraph'
     os.makedirs(save_path, exist_ok=True)
 
     log_file = os.path.join(save_path, "running.log")

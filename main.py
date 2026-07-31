@@ -170,14 +170,14 @@ if __name__ == '__main__':
     #logging.info("^^^^^^ Current Model: ----" + args['main_model'] + "-" * 4 + args['hash_id'] + " ^^^^^")
 
     # For case study
-    if args.get("case_study", False):
+    if True:
         logging.info("Collecting case-study samples...")
         case_path = os.path.join( "case_ids.json")
         #include num of epochs in the titl
         case_output = os.path.join(f"case_output_{args['FREQ_DOMAIN']}_{args['epochs']}.json")
-
+    
         #if model = encoder-decoder type, primary = True
-        if args['FREQ_DOMAIN'] in ['encoder-decoder','Eadro','Art']:
+        if args['FREQ_DOMAIN'] in ['encoder_decoder','Eadro','Art','AnoFusion','Medicine']:
             primary = True
             print("####---> Primary case study collection for encoder-decoder model.")
             case_data = sys.collect_case_study(
@@ -197,3 +197,43 @@ if __name__ == '__main__':
                 dataset_path=args['dataset_path']
             )
         util.json_pretty_dump(case_data, case_output)
+
+
+## ------------------------------------------------------------
+## Case study collection
+## ------------------------------------------------------------
+#if True:  # Set to True to enable case study collection
+#
+#    logging.info("Collecting case-study samples...")
+#
+#    case_path = "case_ids.json"
+#
+#    case_output = (
+#        f"case_output_{args['FREQ_DOMAIN']}_{args['epochs']}.json"
+#    )
+#
+#    # OrEdge (FITS_Legendre) defines the reference cases
+#    if args["FREQ_DOMAIN"] == "FITS_Legendre":
+#
+#        print("####---> Primary case study collection (OrEdge).")
+#
+#        case_data = sys.collect_comparative_case_study(
+#            test_dl,
+#            primary=True,
+#            case_json=case_path,
+#            top_k=10,
+#            dataset_path=args["dataset_path"]
+#        )
+#
+#    else:
+#
+#        print("@@@@---> Evaluating predefined OrEdge cases.")
+#
+#        case_data = sys.collect_comparative_case_study(
+#            test_dl,
+#            primary=False,
+#            case_json=case_path,
+#            dataset_path=args["dataset_path"]
+#        )
+#
+#    util.json_pretty_dump(case_data, case_output)
