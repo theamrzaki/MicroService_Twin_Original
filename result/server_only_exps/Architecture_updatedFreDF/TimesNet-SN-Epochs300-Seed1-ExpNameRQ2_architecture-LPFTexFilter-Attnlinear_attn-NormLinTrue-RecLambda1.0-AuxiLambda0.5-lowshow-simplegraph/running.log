@@ -1,0 +1,84 @@
+2026-07-20 09:26:24,043 P1650657 INFO ---- Model: ----MSTGAD-52a7ac6c----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : TimesNet----Multi Fits : false----train : True----evaluate : False
+2026-07-20 09:26:24,043 P1650657 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-20 09:26:25,016 P1650657 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-20 09:26:25,123 P1650657 INFO Trainable Parameters Breakdown:
+2026-07-20 09:26:25,123 P1650657 INFO --------------------------------------------------------------------------------
+2026-07-20 09:26:25,123 P1650657 INFO Reconstruction-Specific Parameters:
+2026-07-20 09:26:25,123 P1650657 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-20 09:26:25,123 P1650657 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,123 P1650657 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-07-20 09:26:25,123 P1650657 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-20 09:26:25,123 P1650657 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-20 09:26:25,123 P1650657 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,123 P1650657 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-20 09:26:25,123 P1650657 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-20 09:26:25,123 P1650657 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-07-20 09:26:25,123 P1650657 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-07-20 09:26:25,123 P1650657 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-20 09:26:25,123 P1650657 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-20 09:26:25,123 P1650657 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-07-20 09:26:25,124 P1650657 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-07-20 09:26:25,124 P1650657 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-07-20 09:26:25,124 P1650657 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-07-20 09:26:25,124 P1650657 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-07-20 09:26:25,124 P1650657 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-07-20 09:26:25,124 P1650657 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.0.weight | shape: (3, 8, 1, 1)              | params: 24
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.0.bias | shape: (3,)                      | params: 3
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.1.weight | shape: (3, 8, 3, 3)              | params: 216
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.1.bias | shape: (3,)                      | params: 3
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.2.weight | shape: (3, 8, 5, 5)              | params: 600
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.2.bias | shape: (3,)                      | params: 3
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.3.weight | shape: (3, 8, 7, 7)              | params: 1,176
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.3.bias | shape: (3,)                      | params: 3
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.4.weight | shape: (3, 8, 9, 9)              | params: 1,944
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.4.bias | shape: (3,)                      | params: 3
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.5.weight | shape: (3, 8, 11, 11)            | params: 2,904
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.0.kernels.5.bias | shape: (3,)                      | params: 3
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.2.kernels.0.weight | shape: (8, 3, 1, 1)              | params: 24
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.2.kernels.0.bias | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.2.kernels.1.weight | shape: (8, 3, 3, 3)              | params: 216
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.2.kernels.1.bias | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.2.kernels.2.weight | shape: (8, 3, 5, 5)              | params: 600
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.2.kernels.2.bias | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.2.kernels.3.weight | shape: (8, 3, 7, 7)              | params: 1,176
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.2.kernels.3.bias | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,124 P1650657 INFO shared_fits.model.0.conv.2.kernels.4.weight | shape: (8, 3, 9, 9)              | params: 1,944
+2026-07-20 09:26:25,125 P1650657 INFO shared_fits.model.0.conv.2.kernels.4.bias | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,125 P1650657 INFO shared_fits.model.0.conv.2.kernels.5.weight | shape: (8, 3, 11, 11)            | params: 2,904
+2026-07-20 09:26:25,125 P1650657 INFO shared_fits.model.0.conv.2.kernels.5.bias | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,125 P1650657 INFO shared_fits.enc_embedding.value_embedding.tokenConv.weight | shape: (8, 55, 3)                | params: 1,320
+2026-07-20 09:26:25,125 P1650657 INFO shared_fits.enc_embedding.temporal_embedding.embed.weight | shape: (8, 4)                    | params: 32
+2026-07-20 09:26:25,125 P1650657 INFO shared_fits.layer_norm.weight            | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,125 P1650657 INFO shared_fits.layer_norm.bias              | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,125 P1650657 INFO shared_fits.projection.weight            | shape: (55, 8)                   | params: 440
+2026-07-20 09:26:25,125 P1650657 INFO shared_fits.projection.bias              | shape: (55,)                     | params: 55
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj.node.weight                | shape: (55, 8)                   | params: 440
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj.node.bias                  | shape: (55,)                     | params: 55
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj.log.weight                 | shape: (55, 32)                  | params: 1,760
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj.log.bias                   | shape: (55,)                     | params: 55
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj.edge.weight                | shape: (55, 8)                   | params: 440
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj.edge.bias                  | shape: (55,)                     | params: 55
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj_out.node.weight            | shape: (8, 55)                   | params: 440
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj_out.node.bias              | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj_out.log.weight             | shape: (32, 55)                  | params: 1,760
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj_out.log.bias               | shape: (32,)                     | params: 32
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj_out.edge.weight            | shape: (8, 55)                   | params: 440
+2026-07-20 09:26:25,125 P1650657 INFO modality_proj_out.edge.bias              | shape: (8,)                      | params: 8
+2026-07-20 09:26:25,125 P1650657 INFO Subtotal: 22,236
+2026-07-20 09:26:25,125 P1650657 INFO --------------------------------------------------------------------------------
+2026-07-20 09:26:25,125 P1650657 INFO Common Parameters:
+2026-07-20 09:26:25,125 P1650657 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-07-20 09:26:25,125 P1650657 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-20 09:26:25,125 P1650657 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-20 09:26:25,125 P1650657 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-20 09:26:25,126 P1650657 INFO Subtotal: 2,434
+2026-07-20 09:26:25,126 P1650657 INFO --------------------------------------------------------------------------------
+2026-07-20 09:26:25,126 P1650657 INFO Total Trainable Parameters: 24,670
+
+2026-07-20 09:26:25,126 P1650657 INFO Trainable Parameters: 24670, reconstruction: 22236, common: 2434
+2026-07-20 09:26:25,126 P1650657 INFO model : init weight
+2026-07-20 09:26:25,126 P1650657 INFO Using GPU...
+2026-07-20 09:26:25,132 P1650657 INFO optimizer : using AdaBelief
+2026-07-20 09:26:25,132 P1650657 INFO ----------------------------------------------------------------------------------------------------
+2026-07-20 09:26:25,132 P1650657 INFO 0/300 starting... lr: 0.001 para:1.0

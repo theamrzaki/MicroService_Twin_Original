@@ -1,0 +1,143 @@
+2026-07-10 11:20:46,915 P2013349 INFO ---- Model: ----MSTGAD-01e8d2b0----random_seed : 3----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.0----Freq Domain : FITS_Legendre----Multi Fits : false----train : True----evaluate : False
+2026-07-10 11:20:46,916 P2013349 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-07-10 11:20:58,780 P2013349 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-10 11:21:07,429 P2013349 INFO Trainable Parameters Breakdown:
+2026-07-10 11:21:07,429 P2013349 INFO --------------------------------------------------------------------------------
+2026-07-10 11:21:07,429 P2013349 INFO Reconstruction-Specific Parameters:
+2026-07-10 11:21:07,429 P2013349 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-07-10 11:21:07,429 P2013349 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-07-10 11:21:07,429 P2013349 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-07-10 11:21:07,429 P2013349 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-07-10 11:21:07,429 P2013349 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-07-10 11:21:07,429 P2013349 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-07-10 11:21:07,429 P2013349 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-07-10 11:21:07,429 P2013349 INFO shared_fits.normlin_W                    | shape: (5, 5)                    | params: 25
+2026-07-10 11:21:07,429 P2013349 INFO shared_fits.freq_upsampler.weight        | shape: (5, 5)                    | params: 25
+2026-07-10 11:21:07,429 P2013349 INFO shared_fits.freq_upsampler.bias          | shape: (5,)                      | params: 5
+2026-07-10 11:21:07,429 P2013349 INFO modality_proj.node.weight                | shape: (10, 8)                   | params: 80
+2026-07-10 11:21:07,429 P2013349 INFO modality_proj.node.bias                  | shape: (10,)                     | params: 10
+2026-07-10 11:21:07,429 P2013349 INFO modality_proj.log.weight                 | shape: (10, 32)                  | params: 320
+2026-07-10 11:21:07,429 P2013349 INFO modality_proj.log.bias                   | shape: (10,)                     | params: 10
+2026-07-10 11:21:07,429 P2013349 INFO modality_proj.edge.weight                | shape: (10, 8)                   | params: 80
+2026-07-10 11:21:07,429 P2013349 INFO modality_proj.edge.bias                  | shape: (10,)                     | params: 10
+2026-07-10 11:21:07,429 P2013349 INFO modality_proj_out.node.weight            | shape: (8, 10)                   | params: 80
+2026-07-10 11:21:07,430 P2013349 INFO modality_proj_out.node.bias              | shape: (8,)                      | params: 8
+2026-07-10 11:21:07,430 P2013349 INFO modality_proj_out.log.weight             | shape: (32, 10)                  | params: 320
+2026-07-10 11:21:07,430 P2013349 INFO modality_proj_out.log.bias               | shape: (32,)                     | params: 32
+2026-07-10 11:21:07,430 P2013349 INFO modality_proj_out.edge.weight            | shape: (8, 10)                   | params: 80
+2026-07-10 11:21:07,430 P2013349 INFO modality_proj_out.edge.bias              | shape: (8,)                      | params: 8
+2026-07-10 11:21:07,430 P2013349 INFO Subtotal: 1,523
+2026-07-10 11:21:07,430 P2013349 INFO --------------------------------------------------------------------------------
+2026-07-10 11:21:07,430 P2013349 INFO Common Parameters:
+2026-07-10 11:21:07,430 P2013349 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-10 11:21:07,430 P2013349 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 11:21:07,430 P2013349 INFO log_emb.linear.weight                    | shape: (32, 60)                  | params: 1,920
+2026-07-10 11:21:07,430 P2013349 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-10 11:21:07,430 P2013349 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-10 11:21:07,430 P2013349 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 11:21:07,430 P2013349 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-10 11:21:07,430 P2013349 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-10 11:21:07,430 P2013349 INFO dense_log.weight                         | shape: (60, 32)                  | params: 1,920
+2026-07-10 11:21:07,430 P2013349 INFO dense_log.bias                           | shape: (60,)                     | params: 60
+2026-07-10 11:21:07,430 P2013349 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-10 11:21:07,430 P2013349 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-10 11:21:07,430 P2013349 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-07-10 11:21:07,430 P2013349 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-10 11:21:07,430 P2013349 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-10 11:21:07,430 P2013349 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-10 11:21:07,430 P2013349 INFO Subtotal: 13,319
+2026-07-10 11:21:07,430 P2013349 INFO --------------------------------------------------------------------------------
+2026-07-10 11:21:07,430 P2013349 INFO Total Trainable Parameters: 14,842
+
+2026-07-10 11:21:07,430 P2013349 INFO Trainable Parameters: 14842, reconstruction: 1523, common: 13319
+2026-07-10 11:21:07,430 P2013349 INFO model : init weight
+2026-07-10 11:21:07,431 P2013349 INFO Using GPU...
+2026-07-10 11:21:07,434 P2013349 INFO optimizer : using AdaBelief
+2026-07-10 11:21:07,434 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:21:07,434 P2013349 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-07-10 11:21:34,965 P2013349 INFO Epoch 0/50, all_loss:0.07877 cls_loss:30.34141 rec_loss:0.07877 [27.53s]; best loss:0.07877, patience : 0
+2026-07-10 11:21:34,966 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:21:34,966 P2013349 INFO 1/50 starting... lr: 0.001 para:0.5
+2026-07-10 11:21:55,701 P2013349 INFO Epoch 1/50, all_loss:1.93253 cls_loss:3.64070 rec_loss:0.22435 [20.73s]; best loss:1.93253, patience : 0
+2026-07-10 11:21:55,701 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:21:55,701 P2013349 INFO 2/50 starting... lr: 0.001 para:0.3333333432674408
+2026-07-10 11:22:16,308 P2013349 INFO Epoch 2/50, all_loss:1.51579 cls_loss:2.16788 rec_loss:0.21163 [20.60s]; best loss:1.51579, patience : 0
+2026-07-10 11:22:26,947 P2013349 INFO pr:0.9368  rc:0.4408  auc:0.9887 ap:0.8946 f1: 0.5996 pred_right: 1079971 pred_wrong:16229 actu_right: 1061711 actu_wrong: 34489
+2026-07-10 11:22:31,550 P2013349 INFO pr:0.9327  rc:0.4398  auc:0.9888 ap:0.8944 f1: 0.5977 pred_right: 462818 pred_wrong:6982 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:22:31,555 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:22:31,555 P2013349 INFO 3/50 starting... lr: 0.001 para:0.25
+2026-07-10 11:22:56,884 P2013349 INFO Epoch 3/50, all_loss:1.51735 cls_loss:1.95533 rec_loss:0.20338 [25.33s]; best loss:1.51579, patience : 1
+2026-07-10 11:23:09,753 P2013349 INFO pr:0.9351  rc:0.4957  auc:0.9902 ap:0.9081 f1: 0.6479 pred_right: 1077915 pred_wrong:18285 actu_right: 1061706 actu_wrong: 34494
+2026-07-10 11:23:14,263 P2013349 INFO pr:0.9299  rc:0.4898  auc:0.9903 ap:0.9081 f1: 0.6416 pred_right: 462000 pred_wrong:7800 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:23:14,267 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:23:14,267 P2013349 INFO 4/50 starting... lr: 0.001 para:0.20000000298023224
+2026-07-10 11:23:35,084 P2013349 INFO Epoch 4/50, all_loss:1.52654 cls_loss:1.85793 rec_loss:0.20097 [20.82s]; best loss:1.51579, patience : 2
+2026-07-10 11:23:45,735 P2013349 INFO pr:0.9141  rc:0.5619  auc:0.9915 ap:0.9207 f1: 0.6960 pred_right: 1074997 pred_wrong:21203 actu_right: 1061709 actu_wrong: 34491
+2026-07-10 11:23:50,031 P2013349 INFO pr:0.9155  rc:0.5616  auc:0.9915 ap:0.9207 f1: 0.6961 pred_right: 460716 pred_wrong:9084 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:23:50,036 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:23:50,036 P2013349 INFO 5/50 starting... lr: 0.001 para:0.1666666716337204
+2026-07-10 11:24:10,952 P2013349 INFO Epoch 5/50, all_loss:1.52524 cls_loss:1.78983 rec_loss:0.20232 [20.92s]; best loss:1.51579, patience : 2
+2026-07-10 11:24:20,898 P2013349 INFO pr:0.8712  rc:0.6557  auc:0.9924 ap:0.9280 f1: 0.7483 pred_right: 1070242 pred_wrong:25958 actu_right: 1061713 actu_wrong: 34487
+2026-07-10 11:24:31,025 P2013349 INFO pr:0.8743  rc:0.6544  auc:0.9924 ap:0.9280 f1: 0.7485 pred_right: 458717 pred_wrong:11083 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:24:31,035 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:24:31,035 P2013349 INFO 6/50 starting... lr: 0.001 para:0.1428571492433548
+2026-07-10 11:24:53,844 P2013349 INFO Epoch 6/50, all_loss:1.51642 cls_loss:1.73534 rec_loss:0.20288 [22.81s]; best loss:1.51579, patience : 2
+2026-07-10 11:25:04,533 P2013349 INFO pr:0.9234  rc:0.5620  auc:0.9923 ap:0.9265 f1: 0.6988 pred_right: 1075210 pred_wrong:20990 actu_right: 1061711 actu_wrong: 34489
+2026-07-10 11:25:09,267 P2013349 INFO pr:0.9252  rc:0.5620  auc:0.9922 ap:0.9265 f1: 0.6992 pred_right: 460805 pred_wrong:8995 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:25:09,268 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:25:09,275 P2013349 INFO 7/50 starting... lr: 0.001 para:0.125
+2026-07-10 11:25:30,016 P2013349 INFO Epoch 7/50, all_loss:1.50379 cls_loss:1.68947 rec_loss:0.20400 [20.74s]; best loss:1.50379, patience : 0
+2026-07-10 11:25:41,039 P2013349 INFO pr:0.9080  rc:0.6292  auc:0.9925 ap:0.9300 f1: 0.7433 pred_right: 1072299 pred_wrong:23901 actu_right: 1061710 actu_wrong: 34490
+2026-07-10 11:25:45,226 P2013349 INFO pr:0.9124  rc:0.6329  auc:0.9925 ap:0.9310 f1: 0.7474 pred_right: 459528 pred_wrong:10272 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:25:45,227 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:25:45,227 P2013349 INFO 8/50 starting... lr: 0.001 para:0.1111111119389534
+2026-07-10 11:26:11,967 P2013349 INFO Epoch 8/50, all_loss:1.46780 cls_loss:1.62544 rec_loss:0.20669 [26.73s]; best loss:1.46780, patience : 0
+2026-07-10 11:26:22,814 P2013349 INFO pr:0.8684  rc:0.6897  auc:0.9934 ap:0.9366 f1: 0.7688 pred_right: 1068807 pred_wrong:27393 actu_right: 1061710 actu_wrong: 34490
+2026-07-10 11:26:27,303 P2013349 INFO pr:0.8712  rc:0.6908  auc:0.9933 ap:0.9367 f1: 0.7706 pred_right: 458058 pred_wrong:11742 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:26:27,307 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:26:27,308 P2013349 INFO 9/50 starting... lr: 0.001 para:0.10000000149011612
+2026-07-10 11:26:49,373 P2013349 INFO Epoch 9/50, all_loss:1.46388 cls_loss:1.60395 rec_loss:0.20328 [22.06s]; best loss:1.46388, patience : 0
+2026-07-10 11:27:00,821 P2013349 INFO pr:0.9164  rc:0.6620  auc:0.9929 ap:0.9389 f1: 0.7687 pred_right: 1071280 pred_wrong:24920 actu_right: 1061703 actu_wrong: 34497
+2026-07-10 11:27:05,843 P2013349 INFO pr:0.9218  rc:0.6634  auc:0.9930 ap:0.9391 f1: 0.7715 pred_right: 459144 pred_wrong:10656 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:27:05,844 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:27:05,844 P2013349 INFO 10/50 starting... lr: 0.001 para:0.09090909361839294
+2026-07-10 11:27:26,402 P2013349 INFO Epoch 10/50, all_loss:1.42935 cls_loss:1.55232 rec_loss:0.19964 [20.55s]; best loss:1.42935, patience : 0
+2026-07-10 11:27:46,500 P2013349 INFO pr:0.9154  rc:0.6517  auc:0.9937 ap:0.9393 f1: 0.7614 pred_right: 1071642 pred_wrong:24558 actu_right: 1061704 actu_wrong: 34496
+2026-07-10 11:27:51,686 P2013349 INFO pr:0.9189  rc:0.6537  auc:0.9935 ap:0.9388 f1: 0.7639 pred_right: 459266 pred_wrong:10534 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:27:51,687 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:27:51,687 P2013349 INFO 11/50 starting... lr: 0.001 para:0.0833333358168602
+2026-07-10 11:28:14,171 P2013349 INFO Epoch 11/50, all_loss:1.42595 cls_loss:1.53767 rec_loss:0.19702 [22.48s]; best loss:1.42595, patience : 0
+2026-07-10 11:28:26,178 P2013349 INFO pr:0.9191  rc:0.6627  auc:0.9939 ap:0.9440 f1: 0.7701 pred_right: 1071336 pred_wrong:24864 actu_right: 1061713 actu_wrong: 34487
+2026-07-10 11:28:31,192 P2013349 INFO pr:0.9236  rc:0.6625  auc:0.9939 ap:0.9438 f1: 0.7716 pred_right: 459179 pred_wrong:10621 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:28:31,198 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:28:31,198 P2013349 INFO 12/50 starting... lr: 0.001 para:0.07692307978868484
+2026-07-10 11:28:54,878 P2013349 INFO Epoch 12/50, all_loss:1.40464 cls_loss:1.50478 rec_loss:0.20297 [23.68s]; best loss:1.40464, patience : 0
+2026-07-10 11:29:04,379 P2013349 INFO pr:0.8858  rc:0.7090  auc:0.9933 ap:0.9402 f1: 0.7876 pred_right: 1068594 pred_wrong:27606 actu_right: 1061711 actu_wrong: 34489
+2026-07-10 11:29:10,014 P2013349 INFO pr:0.8861  rc:0.7073  auc:0.9935 ap:0.9404 f1: 0.7867 pred_right: 457980 pred_wrong:11820 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:29:10,024 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:29:10,024 P2013349 INFO 13/50 starting... lr: 0.001 para:0.0714285746216774
+2026-07-10 11:29:38,258 P2013349 INFO Epoch 13/50, all_loss:1.40227 cls_loss:1.49446 rec_loss:0.20374 [28.23s]; best loss:1.40227, patience : 0
+2026-07-10 11:29:49,106 P2013349 INFO pr:0.9189  rc:0.6847  auc:0.9941 ap:0.9448 f1: 0.7847 pred_right: 1070504 pred_wrong:25696 actu_right: 1061716 actu_wrong: 34484
+2026-07-10 11:29:53,688 P2013349 INFO pr:0.9214  rc:0.6850  auc:0.9942 ap:0.9449 f1: 0.7858 pred_right: 458791 pred_wrong:11009 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:29:53,689 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:29:53,689 P2013349 INFO 14/50 starting... lr: 0.001 para:0.06666667014360428
+2026-07-10 11:30:15,454 P2013349 INFO Epoch 14/50, all_loss:1.38258 cls_loss:1.46638 rec_loss:0.20943 [21.76s]; best loss:1.38258, patience : 0
+2026-07-10 11:30:26,737 P2013349 INFO pr:0.8730  rc:0.7502  auc:0.9946 ap:0.9475 f1: 0.8070 pred_right: 1066563 pred_wrong:29637 actu_right: 1061711 actu_wrong: 34489
+2026-07-10 11:30:32,384 P2013349 INFO pr:0.8772  rc:0.7516  auc:0.9945 ap:0.9474 f1: 0.8096 pred_right: 457112 pred_wrong:12688 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:30:32,388 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:30:32,388 P2013349 INFO 15/50 starting... lr: 0.001 para:0.0625
+2026-07-10 11:30:59,947 P2013349 INFO Epoch 15/50, all_loss:1.37175 cls_loss:1.44856 rec_loss:0.21964 [27.55s]; best loss:1.37175, patience : 0
+2026-07-10 11:31:11,348 P2013349 INFO pr:0.8848  rc:0.7210  auc:0.9947 ap:0.9475 f1: 0.7945 pred_right: 1068097 pred_wrong:28103 actu_right: 1061713 actu_wrong: 34487
+2026-07-10 11:31:16,083 P2013349 INFO pr:0.8858  rc:0.7250  auc:0.9946 ap:0.9471 f1: 0.7974 pred_right: 457680 pred_wrong:12120 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:31:16,084 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:31:16,084 P2013349 INFO 16/50 starting... lr: 0.001 para:0.05882352963089943
+2026-07-10 11:31:38,094 P2013349 INFO Epoch 16/50, all_loss:1.34000 cls_loss:1.40968 rec_loss:0.22511 [22.00s]; best loss:1.34000, patience : 0
+2026-07-10 11:31:49,219 P2013349 INFO pr:0.8455  rc:0.7439  auc:0.9944 ap:0.9462 f1: 0.7915 pred_right: 1065855 pred_wrong:30345 actu_right: 1061709 actu_wrong: 34491
+2026-07-10 11:31:54,078 P2013349 INFO pr:0.8492  rc:0.7482  auc:0.9945 ap:0.9465 f1: 0.7955 pred_right: 456752 pred_wrong:13048 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:31:54,079 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:31:54,086 P2013349 INFO 17/50 starting... lr: 0.001 para:0.0555555559694767
+2026-07-10 11:32:15,471 P2013349 INFO Epoch 17/50, all_loss:1.33632 cls_loss:1.40127 rec_loss:0.23227 [21.38s]; best loss:1.33632, patience : 0
+2026-07-10 11:32:32,257 P2013349 INFO pr:0.9199  rc:0.6958  auc:0.9946 ap:0.9479 f1: 0.7923 pred_right: 1070115 pred_wrong:26085 actu_right: 1061715 actu_wrong: 34485
+2026-07-10 11:32:39,180 P2013349 INFO pr:0.9229  rc:0.6977  auc:0.9946 ap:0.9484 f1: 0.7947 pred_right: 458605 pred_wrong:11195 actu_right: 454992 actu_wrong: 14808
+2026-07-10 11:32:39,181 P2013349 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 11:32:39,181 P2013349 INFO 18/50 starting... lr: 0.001 para:0.05263157933950424

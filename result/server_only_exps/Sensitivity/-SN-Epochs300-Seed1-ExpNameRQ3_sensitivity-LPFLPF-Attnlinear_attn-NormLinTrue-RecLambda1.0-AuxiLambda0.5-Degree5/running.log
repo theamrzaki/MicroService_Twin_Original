@@ -1,0 +1,175 @@
+2026-07-10 12:05:29,498 P2035904 INFO ---- Model: ----MSTGAD-180c7a19----random_seed : 1----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : ----Multi Fits : false----train : True----evaluate : False
+2026-07-10 12:05:29,503 P2035904 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-10 12:05:30,422 P2035904 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-10 12:05:30,625 P2035904 INFO Trainable Parameters Breakdown:
+2026-07-10 12:05:30,625 P2035904 INFO --------------------------------------------------------------------------------
+2026-07-10 12:05:30,625 P2035904 INFO Reconstruction-Specific Parameters:
+2026-07-10 12:05:30,625 P2035904 INFO Subtotal: 0
+2026-07-10 12:05:30,625 P2035904 INFO --------------------------------------------------------------------------------
+2026-07-10 12:05:30,625 P2035904 INFO Common Parameters:
+2026-07-10 12:05:30,626 P2035904 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-10 12:05:30,626 P2035904 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 12:05:30,626 P2035904 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-07-10 12:05:30,626 P2035904 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-10 12:05:30,626 P2035904 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-10 12:05:30,626 P2035904 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 12:05:30,626 P2035904 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-10 12:05:30,626 P2035904 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-10 12:05:30,626 P2035904 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-07-10 12:05:30,626 P2035904 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-07-10 12:05:30,626 P2035904 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-10 12:05:30,626 P2035904 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-10 12:05:30,626 P2035904 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-07-10 12:05:30,626 P2035904 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-10 12:05:30,626 P2035904 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-10 12:05:30,626 P2035904 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-10 12:05:30,626 P2035904 INFO Subtotal: 3,090
+2026-07-10 12:05:30,626 P2035904 INFO --------------------------------------------------------------------------------
+2026-07-10 12:05:30,626 P2035904 INFO Total Trainable Parameters: 3,090
+
+2026-07-10 12:05:30,626 P2035904 INFO Trainable Parameters: 3090, reconstruction: 0, common: 3090
+2026-07-10 12:05:30,626 P2035904 INFO model : init weight
+2026-07-10 12:05:30,627 P2035904 INFO Using GPU...
+2026-07-10 12:05:30,629 P2035904 INFO optimizer : using AdaBelief
+2026-07-10 12:05:30,630 P2035904 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 12:05:30,630 P2035904 INFO 0/300 starting... lr: 0.001 para:1.0
+2026-07-10 12:08:33,805 P2038278 INFO ---- Model: ----MSTGAD-180c7a19----random_seed : 1----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : ----Multi Fits : false----train : True----evaluate : False
+2026-07-10 12:08:33,805 P2038278 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-10 12:08:34,831 P2038278 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-10 12:08:35,021 P2038278 INFO Trainable Parameters Breakdown:
+2026-07-10 12:08:35,021 P2038278 INFO --------------------------------------------------------------------------------
+2026-07-10 12:08:35,021 P2038278 INFO Reconstruction-Specific Parameters:
+2026-07-10 12:08:35,021 P2038278 INFO Subtotal: 0
+2026-07-10 12:08:35,021 P2038278 INFO --------------------------------------------------------------------------------
+2026-07-10 12:08:35,021 P2038278 INFO Common Parameters:
+2026-07-10 12:08:35,021 P2038278 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-10 12:08:35,021 P2038278 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 12:08:35,021 P2038278 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-07-10 12:08:35,021 P2038278 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-10 12:08:35,021 P2038278 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-10 12:08:35,021 P2038278 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 12:08:35,021 P2038278 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-10 12:08:35,021 P2038278 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-10 12:08:35,021 P2038278 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-07-10 12:08:35,021 P2038278 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-07-10 12:08:35,021 P2038278 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-10 12:08:35,021 P2038278 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-10 12:08:35,022 P2038278 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-07-10 12:08:35,022 P2038278 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-10 12:08:35,022 P2038278 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-10 12:08:35,022 P2038278 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-10 12:08:35,022 P2038278 INFO Subtotal: 3,090
+2026-07-10 12:08:35,022 P2038278 INFO --------------------------------------------------------------------------------
+2026-07-10 12:08:35,022 P2038278 INFO Total Trainable Parameters: 3,090
+
+2026-07-10 12:08:35,022 P2038278 INFO Trainable Parameters: 3090, reconstruction: 0, common: 3090
+2026-07-10 12:08:35,022 P2038278 INFO model : init weight
+2026-07-10 12:08:35,022 P2038278 INFO Using GPU...
+2026-07-10 12:08:35,025 P2038278 INFO optimizer : using AdaBelief
+2026-07-10 12:08:35,025 P2038278 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 12:08:35,025 P2038278 INFO 0/300 starting... lr: 0.001 para:1.0
+2026-07-10 12:09:00,362 P2038623 INFO ---- Model: ----MSTGAD-844591de----random_seed : 1----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : ----Multi Fits : false----train : True----evaluate : False
+2026-07-10 12:09:00,362 P2038623 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-10 12:09:01,242 P2038623 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-10 12:09:01,424 P2038623 INFO Trainable Parameters Breakdown:
+2026-07-10 12:09:01,424 P2038623 INFO --------------------------------------------------------------------------------
+2026-07-10 12:09:01,424 P2038623 INFO Reconstruction-Specific Parameters:
+2026-07-10 12:09:01,424 P2038623 INFO Subtotal: 0
+2026-07-10 12:09:01,424 P2038623 INFO --------------------------------------------------------------------------------
+2026-07-10 12:09:01,424 P2038623 INFO Common Parameters:
+2026-07-10 12:09:01,424 P2038623 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-10 12:09:01,424 P2038623 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 12:09:01,424 P2038623 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-07-10 12:09:01,424 P2038623 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-10 12:09:01,425 P2038623 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-10 12:09:01,425 P2038623 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 12:09:01,425 P2038623 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-10 12:09:01,425 P2038623 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-10 12:09:01,425 P2038623 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-07-10 12:09:01,425 P2038623 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-07-10 12:09:01,425 P2038623 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-10 12:09:01,425 P2038623 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-10 12:09:01,425 P2038623 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-07-10 12:09:01,425 P2038623 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-10 12:09:01,425 P2038623 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-10 12:09:01,425 P2038623 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-10 12:09:01,425 P2038623 INFO Subtotal: 3,090
+2026-07-10 12:09:01,425 P2038623 INFO --------------------------------------------------------------------------------
+2026-07-10 12:09:01,425 P2038623 INFO Total Trainable Parameters: 3,090
+
+2026-07-10 12:09:01,425 P2038623 INFO Trainable Parameters: 3090, reconstruction: 0, common: 3090
+2026-07-10 12:09:01,425 P2038623 INFO model : init weight
+2026-07-10 12:09:01,426 P2038623 INFO Using GPU...
+2026-07-10 12:09:01,429 P2038623 INFO optimizer : using AdaBelief
+2026-07-10 12:09:01,429 P2038623 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 12:09:01,429 P2038623 INFO 0/300 starting... lr: 0.001 para:1.0
+2026-07-10 12:09:07,496 P2038713 INFO ---- Model: ----MSTGAD-7dbe013b----random_seed : 1----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : ----Multi Fits : false----train : True----evaluate : False
+2026-07-10 12:09:07,497 P2038713 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-10 12:09:08,393 P2038713 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-10 12:09:08,565 P2038713 INFO Trainable Parameters Breakdown:
+2026-07-10 12:09:08,565 P2038713 INFO --------------------------------------------------------------------------------
+2026-07-10 12:09:08,565 P2038713 INFO Reconstruction-Specific Parameters:
+2026-07-10 12:09:08,566 P2038713 INFO Subtotal: 0
+2026-07-10 12:09:08,566 P2038713 INFO --------------------------------------------------------------------------------
+2026-07-10 12:09:08,566 P2038713 INFO Common Parameters:
+2026-07-10 12:09:08,566 P2038713 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-10 12:09:08,566 P2038713 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 12:09:08,566 P2038713 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-07-10 12:09:08,566 P2038713 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-10 12:09:08,566 P2038713 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-10 12:09:08,566 P2038713 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 12:09:08,566 P2038713 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-10 12:09:08,566 P2038713 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-10 12:09:08,566 P2038713 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-07-10 12:09:08,566 P2038713 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-07-10 12:09:08,566 P2038713 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-10 12:09:08,566 P2038713 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-10 12:09:08,566 P2038713 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-07-10 12:09:08,566 P2038713 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-10 12:09:08,566 P2038713 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-10 12:09:08,566 P2038713 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-10 12:09:08,566 P2038713 INFO Subtotal: 3,090
+2026-07-10 12:09:08,566 P2038713 INFO --------------------------------------------------------------------------------
+2026-07-10 12:09:08,566 P2038713 INFO Total Trainable Parameters: 3,090
+
+2026-07-10 12:09:08,567 P2038713 INFO Trainable Parameters: 3090, reconstruction: 0, common: 3090
+2026-07-10 12:09:08,567 P2038713 INFO model : init weight
+2026-07-10 12:09:08,567 P2038713 INFO Using GPU...
+2026-07-10 12:09:08,570 P2038713 INFO optimizer : using AdaBelief
+2026-07-10 12:09:08,570 P2038713 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 12:09:08,570 P2038713 INFO 0/300 starting... lr: 0.001 para:1.0
+2026-07-10 12:09:27,765 P2039054 INFO ---- Model: ----MSTGAD-844591de----random_seed : 1----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : ----Multi Fits : false----train : True----evaluate : False
+2026-07-10 12:09:27,765 P2039054 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-07-10 12:09:28,505 P2039054 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-07-10 12:09:28,659 P2039054 INFO Trainable Parameters Breakdown:
+2026-07-10 12:09:28,659 P2039054 INFO --------------------------------------------------------------------------------
+2026-07-10 12:09:28,659 P2039054 INFO Reconstruction-Specific Parameters:
+2026-07-10 12:09:28,659 P2039054 INFO Subtotal: 0
+2026-07-10 12:09:28,659 P2039054 INFO --------------------------------------------------------------------------------
+2026-07-10 12:09:28,659 P2039054 INFO Common Parameters:
+2026-07-10 12:09:28,659 P2039054 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-07-10 12:09:28,659 P2039054 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 12:09:28,659 P2039054 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-07-10 12:09:28,659 P2039054 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-07-10 12:09:28,659 P2039054 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-07-10 12:09:28,659 P2039054 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-07-10 12:09:28,659 P2039054 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-07-10 12:09:28,659 P2039054 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-07-10 12:09:28,659 P2039054 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-07-10 12:09:28,659 P2039054 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-07-10 12:09:28,659 P2039054 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-07-10 12:09:28,659 P2039054 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-07-10 12:09:28,659 P2039054 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-07-10 12:09:28,659 P2039054 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-07-10 12:09:28,659 P2039054 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-07-10 12:09:28,659 P2039054 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-07-10 12:09:28,659 P2039054 INFO Subtotal: 3,090
+2026-07-10 12:09:28,659 P2039054 INFO --------------------------------------------------------------------------------
+2026-07-10 12:09:28,659 P2039054 INFO Total Trainable Parameters: 3,090
+
+2026-07-10 12:09:28,659 P2039054 INFO Trainable Parameters: 3090, reconstruction: 0, common: 3090
+2026-07-10 12:09:28,660 P2039054 INFO model : init weight
+2026-07-10 12:09:28,660 P2039054 INFO Using GPU...
+2026-07-10 12:09:28,662 P2039054 INFO optimizer : using AdaBelief
+2026-07-10 12:09:28,662 P2039054 INFO ----------------------------------------------------------------------------------------------------
+2026-07-10 12:09:28,662 P2039054 INFO 0/300 starting... lr: 0.001 para:1.0
