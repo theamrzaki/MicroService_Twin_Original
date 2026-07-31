@@ -46,10 +46,15 @@ This implementation builds upon the excellent open-source implementations of **E
 
 Experiments were conducted using
 
-- Ubuntu 18.04
-- Python 3.8
-- PyTorch 1.12.0
-- PyTorch Geometric 2.2.0
+- Ubuntu 22.04.2 LTS
+- Python 3.10.12
+- PyTorch 2.7.1+cu126
+- PyTorch Geometric 2.6.1
+
+And inference experiments were conducted on two Raspberry Pi devices:
+- Raspberry Pi 5 with ARM Cortex-A76 processor and 16 GB RAM
+- Raspberry Pi 3 with ARM Cortex-A53 processor and 1 GB RAM
+
 
 Install all dependencies using
 
