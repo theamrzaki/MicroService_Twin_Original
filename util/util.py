@@ -84,8 +84,13 @@ def dump_params(args):
     elif args['experiment_name'] == "RQ2_ablations_components":
         save_path = os.path.join(args['result_dir']+"/server_only_exps/Ablations_updatedFreDF", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])   + '-lowshow-simplegraph'
     
+    
     elif args['experiment_name'] == "RQ2_architecture":
         save_path = os.path.join(args['result_dir']+"/server_only_exps/Architecture_updatedFreDF", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])+ '-lowshow-simplegraph'
+
+    elif args['experiment_name'] == "RQ2z5_basis_degree_comparison":
+        #same as RQ2_ablations_components (except adding degree and basis type)
+        save_path = os.path.join(args['result_dir']+"/server_only_exps/Ablations_updatedFreDF", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])   + '-lowshow-simplegraph' + '-Degree' + str(args["degree"]) + '-BasisType' + str(args["basis_type"])
 
     elif args['experiment_name'] == "RQ3_sensitivity":
         save_path = os.path.join(args['result_dir']+"/server_only_exps/Sensitivity", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])  + '-Degree' + str(args["degree"]) + '-lowshow-simplegraph'

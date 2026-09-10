@@ -148,6 +148,8 @@ if __name__ == '__main__':
         exp_name = "RQ2_ablations_withNorm_accMem_updatedFreDF_lowshow_simplegraph"
     elif args["experiment_name"]=="RQ2_basis_comparison":
         exp_name = "RQ2_basis_withNorm_accMem_updatedFreDF_lowshow_simplegraph"
+    elif args["experiment_name"]=="RQ2z5_basis_degree_comparison":
+        exp_name = "RQ2z5_basis_degree_comparison"
     elif args["experiment_name"]=="RQ2_architecture":
         exp_name = "RQ2_architecture_updatedFreDF_lowshow_simplegraph"
     elif args["experiment_name"]=="RQ3_case_study":
