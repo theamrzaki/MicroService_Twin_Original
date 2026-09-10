@@ -1,0 +1,58 @@
+2026-09-10 00:25:50,042 P2253940 INFO ---- Model: ----MSTGAD-6ca5f4aa----random_seed : 1----req_loss_approach : FreDF-style----rec_lambda : 1.0----auxi_lambda : 0.0----Freq Domain : FITS_Legendre----Multi Fits : false----train : True----evaluate : False
+2026-09-10 00:25:50,042 P2253940 INFO read Tranform data
+2026-09-10 00:25:51,524 P2253940 INFO read Graph edge data
+2026-09-10 00:25:51,524 P2253940 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-09-10 00:25:51,632 P2253940 INFO Trainable Parameters Breakdown:
+2026-09-10 00:25:51,632 P2253940 INFO --------------------------------------------------------------------------------
+2026-09-10 00:25:51,632 P2253940 INFO Reconstruction-Specific Parameters:
+2026-09-10 00:25:51,632 P2253940 INFO node_emb.linear.weight                   | shape: (4, 3)                    | params: 12
+2026-09-10 00:25:51,632 P2253940 INFO node_emb.linear.bias                     | shape: (4,)                      | params: 4
+2026-09-10 00:25:51,632 P2253940 INFO log_emb.linear.weight                    | shape: (16, 256)                 | params: 4,096
+2026-09-10 00:25:51,632 P2253940 INFO log_emb.linear.bias                      | shape: (16,)                     | params: 16
+2026-09-10 00:25:51,632 P2253940 INFO egde_emb.linear.weight                   | shape: (4, 7)                    | params: 28
+2026-09-10 00:25:51,632 P2253940 INFO egde_emb.linear.bias                     | shape: (4,)                      | params: 4
+2026-09-10 00:25:51,632 P2253940 INFO dense_node.weight                        | shape: (3, 4)                    | params: 12
+2026-09-10 00:25:51,632 P2253940 INFO dense_node.bias                          | shape: (3,)                      | params: 3
+2026-09-10 00:25:51,632 P2253940 INFO dense_log.weight                         | shape: (256, 16)                 | params: 4,096
+2026-09-10 00:25:51,633 P2253940 INFO dense_log.bias                           | shape: (256,)                    | params: 256
+2026-09-10 00:25:51,633 P2253940 INFO dense_edge.weight                        | shape: (7, 4)                    | params: 28
+2026-09-10 00:25:51,633 P2253940 INFO dense_edge.bias                          | shape: (7,)                      | params: 7
+2026-09-10 00:25:51,633 P2253940 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-09-10 00:25:51,633 P2253940 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-09-10 00:25:51,633 P2253940 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-09-10 00:25:51,633 P2253940 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-09-10 00:25:51,633 P2253940 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-09-10 00:25:51,633 P2253940 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-09-10 00:25:51,633 P2253940 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-09-10 00:25:51,633 P2253940 INFO shared_fits.normlin_W                    | shape: (14, 14)                  | params: 196
+2026-09-10 00:25:51,633 P2253940 INFO shared_fits.freq_upsampler.weight        | shape: (14, 14)                  | params: 196
+2026-09-10 00:25:51,633 P2253940 INFO shared_fits.freq_upsampler.bias          | shape: (14,)                     | params: 14
+2026-09-10 00:25:51,633 P2253940 INFO modality_proj.node.weight                | shape: (10, 4)                   | params: 40
+2026-09-10 00:25:51,633 P2253940 INFO modality_proj.node.bias                  | shape: (10,)                     | params: 10
+2026-09-10 00:25:51,633 P2253940 INFO modality_proj.log.weight                 | shape: (10, 16)                  | params: 160
+2026-09-10 00:25:51,633 P2253940 INFO modality_proj.log.bias                   | shape: (10,)                     | params: 10
+2026-09-10 00:25:51,634 P2253940 INFO modality_proj.edge.weight                | shape: (10, 4)                   | params: 40
+2026-09-10 00:25:51,634 P2253940 INFO modality_proj.edge.bias                  | shape: (10,)                     | params: 10
+2026-09-10 00:25:51,634 P2253940 INFO modality_proj_out.node.weight            | shape: (4, 10)                   | params: 40
+2026-09-10 00:25:51,634 P2253940 INFO modality_proj_out.node.bias              | shape: (4,)                      | params: 4
+2026-09-10 00:25:51,634 P2253940 INFO modality_proj_out.log.weight             | shape: (16, 10)                  | params: 160
+2026-09-10 00:25:51,634 P2253940 INFO modality_proj_out.log.bias               | shape: (16,)                     | params: 16
+2026-09-10 00:25:51,634 P2253940 INFO modality_proj_out.edge.weight            | shape: (4, 10)                   | params: 40
+2026-09-10 00:25:51,634 P2253940 INFO modality_proj_out.edge.bias              | shape: (4,)                      | params: 4
+2026-09-10 00:25:51,634 P2253940 INFO Subtotal: 9,932
+2026-09-10 00:25:51,634 P2253940 INFO --------------------------------------------------------------------------------
+2026-09-10 00:25:51,634 P2253940 INFO Common Parameters:
+2026-09-10 00:25:51,634 P2253940 INFO show.0.weight                            | shape: (128, 266)                | params: 34,048
+2026-09-10 00:25:51,634 P2253940 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-09-10 00:25:51,634 P2253940 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-09-10 00:25:51,634 P2253940 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-09-10 00:25:51,634 P2253940 INFO Subtotal: 34,434
+2026-09-10 00:25:51,634 P2253940 INFO --------------------------------------------------------------------------------
+2026-09-10 00:25:51,635 P2253940 INFO Total Trainable Parameters: 44,366
+
+2026-09-10 00:25:51,635 P2253940 INFO Trainable Parameters: 44366, reconstruction: 9932, common: 34434
+2026-09-10 00:25:51,635 P2253940 INFO model : init weight
+2026-09-10 00:25:51,636 P2253940 INFO Using GPU...
+2026-09-10 00:25:51,640 P2253940 INFO optimizer : using AdaBelief
+2026-09-10 00:25:51,641 P2253940 INFO ----------------------------------------------------------------------------------------------------
+2026-09-10 00:25:51,641 P2253940 INFO 0/300 starting... lr: 0.001 para:1.0

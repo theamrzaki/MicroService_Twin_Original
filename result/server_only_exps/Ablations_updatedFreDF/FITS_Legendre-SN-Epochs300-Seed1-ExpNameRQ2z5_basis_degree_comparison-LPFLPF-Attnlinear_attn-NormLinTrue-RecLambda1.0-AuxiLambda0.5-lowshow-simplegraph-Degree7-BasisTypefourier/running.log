@@ -1,0 +1,57 @@
+2026-09-09 13:27:05,101 P1784407 INFO ---- Model: ----MSTGAD-2a4d8074----random_seed : 1----req_loss_approach : FreDF-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : FITS_Legendre----Multi Fits : false----train : True----evaluate : False
+2026-09-09 13:27:05,102 P1784407 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-09-09 13:27:08,390 P1784407 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-09-09 13:27:08,693 P1784407 INFO Trainable Parameters Breakdown:
+2026-09-09 13:27:08,693 P1784407 INFO --------------------------------------------------------------------------------
+2026-09-09 13:27:08,694 P1784407 INFO Reconstruction-Specific Parameters:
+2026-09-09 13:27:08,694 P1784407 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-09-09 13:27:08,694 P1784407 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-09-09 13:27:08,694 P1784407 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-09-09 13:27:08,694 P1784407 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-09-09 13:27:08,694 P1784407 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-09-09 13:27:08,694 P1784407 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-09-09 13:27:08,694 P1784407 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-09-09 13:27:08,695 P1784407 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-09-09 13:27:08,695 P1784407 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-09-09 13:27:08,695 P1784407 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-09-09 13:27:08,695 P1784407 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-09-09 13:27:08,695 P1784407 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-09-09 13:27:08,695 P1784407 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-09-09 13:27:08,700 P1784407 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-09-09 13:27:08,701 P1784407 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-09-09 13:27:08,701 P1784407 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-09-09 13:27:08,701 P1784407 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-09-09 13:27:08,701 P1784407 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-09-09 13:27:08,701 P1784407 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-09-09 13:27:08,701 P1784407 INFO shared_fits.normlin_W                    | shape: (14, 14)                  | params: 196
+2026-09-09 13:27:08,701 P1784407 INFO shared_fits.freq_upsampler.weight        | shape: (14, 14)                  | params: 196
+2026-09-09 13:27:08,701 P1784407 INFO shared_fits.freq_upsampler.bias          | shape: (14,)                     | params: 14
+2026-09-09 13:27:08,702 P1784407 INFO modality_proj.node.weight                | shape: (10, 8)                   | params: 80
+2026-09-09 13:27:08,702 P1784407 INFO modality_proj.node.bias                  | shape: (10,)                     | params: 10
+2026-09-09 13:27:08,702 P1784407 INFO modality_proj.log.weight                 | shape: (10, 32)                  | params: 320
+2026-09-09 13:27:08,702 P1784407 INFO modality_proj.log.bias                   | shape: (10,)                     | params: 10
+2026-09-09 13:27:08,702 P1784407 INFO modality_proj.edge.weight                | shape: (10, 8)                   | params: 80
+2026-09-09 13:27:08,702 P1784407 INFO modality_proj.edge.bias                  | shape: (10,)                     | params: 10
+2026-09-09 13:27:08,702 P1784407 INFO modality_proj_out.node.weight            | shape: (8, 10)                   | params: 80
+2026-09-09 13:27:08,702 P1784407 INFO modality_proj_out.node.bias              | shape: (8,)                      | params: 8
+2026-09-09 13:27:08,703 P1784407 INFO modality_proj_out.log.weight             | shape: (32, 10)                  | params: 320
+2026-09-09 13:27:08,703 P1784407 INFO modality_proj_out.log.bias               | shape: (32,)                     | params: 32
+2026-09-09 13:27:08,703 P1784407 INFO modality_proj_out.edge.weight            | shape: (8, 10)                   | params: 80
+2026-09-09 13:27:08,703 P1784407 INFO modality_proj_out.edge.bias              | shape: (8,)                      | params: 8
+2026-09-09 13:27:08,703 P1784407 INFO Subtotal: 2,530
+2026-09-09 13:27:08,703 P1784407 INFO --------------------------------------------------------------------------------
+2026-09-09 13:27:08,707 P1784407 INFO Common Parameters:
+2026-09-09 13:27:08,708 P1784407 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-09-09 13:27:08,708 P1784407 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-09-09 13:27:08,708 P1784407 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-09-09 13:27:08,708 P1784407 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-09-09 13:27:08,708 P1784407 INFO Subtotal: 2,434
+2026-09-09 13:27:08,708 P1784407 INFO --------------------------------------------------------------------------------
+2026-09-09 13:27:08,708 P1784407 INFO Total Trainable Parameters: 4,964
+
+2026-09-09 13:27:08,709 P1784407 INFO Trainable Parameters: 4964, reconstruction: 2530, common: 2434
+2026-09-09 13:27:08,709 P1784407 INFO model : init weight
+2026-09-09 13:27:08,710 P1784407 INFO Using GPU...
+2026-09-09 13:27:08,732 P1784407 INFO optimizer : using AdaBelief
+2026-09-09 13:27:08,737 P1784407 INFO ----------------------------------------------------------------------------------------------------
+2026-09-09 13:27:08,737 P1784407 INFO 0/300 starting... lr: 0.001 para:1.0
