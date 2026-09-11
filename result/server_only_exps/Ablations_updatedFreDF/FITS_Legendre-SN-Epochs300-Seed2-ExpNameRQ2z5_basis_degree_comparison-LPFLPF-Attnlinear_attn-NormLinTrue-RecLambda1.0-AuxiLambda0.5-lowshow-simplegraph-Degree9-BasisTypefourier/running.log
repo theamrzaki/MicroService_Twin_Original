@@ -1,0 +1,57 @@
+2026-09-10 16:38:10,998 P2981876 INFO ---- Model: ----MSTGAD-5be4dab9----random_seed : 2----req_loss_approach : FreDF-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : FITS_Legendre----Multi Fits : false----train : True----evaluate : False
+2026-09-10 16:38:10,999 P2981876 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-09-10 16:38:12,491 P2981876 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-09-10 16:38:12,623 P2981876 INFO Trainable Parameters Breakdown:
+2026-09-10 16:38:12,623 P2981876 INFO --------------------------------------------------------------------------------
+2026-09-10 16:38:12,624 P2981876 INFO Reconstruction-Specific Parameters:
+2026-09-10 16:38:12,624 P2981876 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-09-10 16:38:12,624 P2981876 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-09-10 16:38:12,624 P2981876 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-09-10 16:38:12,624 P2981876 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-09-10 16:38:12,624 P2981876 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-09-10 16:38:12,624 P2981876 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-09-10 16:38:12,624 P2981876 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-09-10 16:38:12,624 P2981876 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-09-10 16:38:12,624 P2981876 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-09-10 16:38:12,624 P2981876 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-09-10 16:38:12,624 P2981876 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-09-10 16:38:12,624 P2981876 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-09-10 16:38:12,624 P2981876 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-09-10 16:38:12,625 P2981876 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-09-10 16:38:12,625 P2981876 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-09-10 16:38:12,625 P2981876 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-09-10 16:38:12,625 P2981876 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-09-10 16:38:12,625 P2981876 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-09-10 16:38:12,625 P2981876 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-09-10 16:38:12,625 P2981876 INFO shared_fits.normlin_W                    | shape: (18, 18)                  | params: 324
+2026-09-10 16:38:12,625 P2981876 INFO shared_fits.freq_upsampler.weight        | shape: (18, 18)                  | params: 324
+2026-09-10 16:38:12,625 P2981876 INFO shared_fits.freq_upsampler.bias          | shape: (18,)                     | params: 18
+2026-09-10 16:38:12,625 P2981876 INFO modality_proj.node.weight                | shape: (10, 8)                   | params: 80
+2026-09-10 16:38:12,625 P2981876 INFO modality_proj.node.bias                  | shape: (10,)                     | params: 10
+2026-09-10 16:38:12,625 P2981876 INFO modality_proj.log.weight                 | shape: (10, 32)                  | params: 320
+2026-09-10 16:38:12,625 P2981876 INFO modality_proj.log.bias                   | shape: (10,)                     | params: 10
+2026-09-10 16:38:12,625 P2981876 INFO modality_proj.edge.weight                | shape: (10, 8)                   | params: 80
+2026-09-10 16:38:12,625 P2981876 INFO modality_proj.edge.bias                  | shape: (10,)                     | params: 10
+2026-09-10 16:38:12,626 P2981876 INFO modality_proj_out.node.weight            | shape: (8, 10)                   | params: 80
+2026-09-10 16:38:12,626 P2981876 INFO modality_proj_out.node.bias              | shape: (8,)                      | params: 8
+2026-09-10 16:38:12,626 P2981876 INFO modality_proj_out.log.weight             | shape: (32, 10)                  | params: 320
+2026-09-10 16:38:12,626 P2981876 INFO modality_proj_out.log.bias               | shape: (32,)                     | params: 32
+2026-09-10 16:38:12,626 P2981876 INFO modality_proj_out.edge.weight            | shape: (8, 10)                   | params: 80
+2026-09-10 16:38:12,626 P2981876 INFO modality_proj_out.edge.bias              | shape: (8,)                      | params: 8
+2026-09-10 16:38:12,626 P2981876 INFO Subtotal: 2,790
+2026-09-10 16:38:12,626 P2981876 INFO --------------------------------------------------------------------------------
+2026-09-10 16:38:12,626 P2981876 INFO Common Parameters:
+2026-09-10 16:38:12,626 P2981876 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-09-10 16:38:12,626 P2981876 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-09-10 16:38:12,626 P2981876 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-09-10 16:38:12,626 P2981876 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-09-10 16:38:12,626 P2981876 INFO Subtotal: 2,434
+2026-09-10 16:38:12,626 P2981876 INFO --------------------------------------------------------------------------------
+2026-09-10 16:38:12,626 P2981876 INFO Total Trainable Parameters: 5,224
+
+2026-09-10 16:38:12,627 P2981876 INFO Trainable Parameters: 5224, reconstruction: 2790, common: 2434
+2026-09-10 16:38:12,627 P2981876 INFO model : init weight
+2026-09-10 16:38:12,627 P2981876 INFO Using GPU...
+2026-09-10 16:38:12,633 P2981876 INFO optimizer : using AdaBelief
+2026-09-10 16:38:12,633 P2981876 INFO ----------------------------------------------------------------------------------------------------
+2026-09-10 16:38:12,633 P2981876 INFO 0/300 starting... lr: 0.001 para:1.0
