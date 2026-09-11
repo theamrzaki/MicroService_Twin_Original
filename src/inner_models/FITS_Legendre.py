@@ -549,6 +549,11 @@ class Model(nn.Module):
                 # Truncate low frequencies
                 spec = spec[:, :self.degree, :]                      # [B, degree, C]
 
+                if spec.shape[1] < self.degree:
+                    # Pad with zeros if necessary
+                    pad_size = self.degree - spec.shape[1]
+                    spec = F.pad(spec, (0, 0, 0, pad_size), "constant", 0)
+                    
                 # Move to [B, C, degree]
                 spec = spec.permute(0, 2, 1)
 
@@ -625,7 +630,12 @@ class Model(nn.Module):
                 )
 
                 # Place learned low frequencies
-                full_spec[:, :D, :] = spec_up_complex.permute(0, 2, 1)  # [B, degree, C]
+                # Compute maximum available capacity
+                max_bins = self.seq_len // 2 + 1  # 6
+                valid_bins = min(self.degree, max_bins)  # min(7, 6) = 6
+
+                # Slice both full_spec AND spec_up_complex
+                full_spec[:, :valid_bins, :] = spec_up_complex.permute(0, 2, 1)[:, :valid_bins, :]
 
                 # Inverse FFT → time domain
                 low_xy = torch.fft.irfft(full_spec, n=self.seq_len, dim=1)  # [B, L, C]
