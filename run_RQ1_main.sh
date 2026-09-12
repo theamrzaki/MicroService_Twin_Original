@@ -10,11 +10,12 @@ FREQ_DOMAINS=(
 #"AnoFusion"
 #"encoder_decoder"
 #"Art"
-"Medicine"
+#"Medicine"
+"DeepHunt"
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
 
-DATA_SOURCES=( "TT" "MSDS" "SN") #"SN" "MSDS"
+DATA_SOURCES=("SN" "TT" "MSDS") #"SN" "MSDS"
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval

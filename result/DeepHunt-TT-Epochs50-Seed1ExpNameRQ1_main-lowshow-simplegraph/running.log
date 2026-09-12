@@ -1,0 +1,60 @@
+2026-09-12 19:13:13,766 P926164 INFO ---- Model: ----MSTGAD-91c0194c----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : DeepHunt----Multi Fits : false----train : True----evaluate : False
+2026-09-12 19:13:13,766 P926164 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-09-12 19:13:30,370 P926164 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-09-12 19:13:30,547 P926164 INFO Trainable Parameters Breakdown:
+2026-09-12 19:13:30,547 P926164 INFO --------------------------------------------------------------------------------
+2026-09-12 19:13:30,547 P926164 INFO Reconstruction-Specific Parameters:
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.metric_proj.weight             | shape: (8, 7)                    | params: 56
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.metric_proj.bias               | shape: (8,)                      | params: 8
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.log_proj.weight                | shape: (32, 60)                  | params: 1,920
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.log_proj.bias                  | shape: (32,)                     | params: 32
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.trace_proj.weight              | shape: (8, 2)                    | params: 16
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.trace_proj.bias                | shape: (8,)                      | params: 8
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.model.encoder.input_conv.lin_rel.weight | shape: (64, 48)                  | params: 3,072
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.model.encoder.input_conv.lin_rel.bias | shape: (64,)                     | params: 64
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.model.encoder.input_conv.lin_root.weight | shape: (64, 48)                  | params: 3,072
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.model.encoder.convs.0.lin_rel.weight | shape: (32, 64)                  | params: 2,048
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.model.encoder.convs.0.lin_rel.bias | shape: (32,)                     | params: 32
+2026-09-12 19:13:30,548 P926164 INFO deep_hunt.model.encoder.convs.0.lin_root.weight | shape: (32, 64)                  | params: 2,048
+2026-09-12 19:13:30,549 P926164 INFO deep_hunt.model.decoder.input_conv.lin_rel.weight | shape: (64, 32)                  | params: 2,048
+2026-09-12 19:13:30,549 P926164 INFO deep_hunt.model.decoder.input_conv.lin_rel.bias | shape: (64,)                     | params: 64
+2026-09-12 19:13:30,549 P926164 INFO deep_hunt.model.decoder.input_conv.lin_root.weight | shape: (64, 32)                  | params: 2,048
+2026-09-12 19:13:30,549 P926164 INFO deep_hunt.model.decoder.convs.0.lin_rel.weight | shape: (48, 64)                  | params: 3,072
+2026-09-12 19:13:30,549 P926164 INFO deep_hunt.model.decoder.convs.0.lin_rel.bias | shape: (48,)                     | params: 48
+2026-09-12 19:13:30,549 P926164 INFO deep_hunt.model.decoder.convs.0.lin_root.weight | shape: (48, 64)                  | params: 3,072
+2026-09-12 19:13:30,549 P926164 INFO deep_hunt.out.weight                     | shape: (69, 48)                  | params: 3,312
+2026-09-12 19:13:30,549 P926164 INFO deep_hunt.out.bias                       | shape: (69,)                     | params: 69
+2026-09-12 19:13:30,549 P926164 INFO Subtotal: 26,109
+2026-09-12 19:13:30,549 P926164 INFO --------------------------------------------------------------------------------
+2026-09-12 19:13:30,550 P926164 INFO Common Parameters:
+2026-09-12 19:13:30,550 P926164 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-09-12 19:13:30,550 P926164 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-09-12 19:13:30,550 P926164 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-09-12 19:13:30,550 P926164 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-09-12 19:13:30,550 P926164 INFO Subtotal: 9,218
+2026-09-12 19:13:30,550 P926164 INFO --------------------------------------------------------------------------------
+2026-09-12 19:13:30,550 P926164 INFO Total Trainable Parameters: 35,327
+
+2026-09-12 19:13:30,550 P926164 INFO Trainable Parameters: 35327, reconstruction: 26109, common: 9218
+2026-09-12 19:13:30,551 P926164 INFO model : init weight
+2026-09-12 19:13:30,551 P926164 INFO Using GPU...
+2026-09-12 19:13:30,556 P926164 INFO optimizer : using AdaBelief
+2026-09-12 19:13:30,556 P926164 INFO ----------------------------------------------------------------------------------------------------
+2026-09-12 19:13:30,556 P926164 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-09-12 19:13:57,612 P926164 INFO Epoch 0/50, all_loss:0.12985 cls_loss:30.25922 rec_loss:0.12985 [27.05s]; best loss:0.12985, patience : 0
+2026-09-12 19:13:57,613 P926164 INFO ----------------------------------------------------------------------------------------------------
+2026-09-12 19:13:57,613 P926164 INFO 1/50 starting... lr: 0.001 para:0.5
+2026-09-12 19:14:24,649 P926164 INFO Epoch 1/50, all_loss:3.74775 cls_loss:7.44427 rec_loss:0.05123 [27.03s]; best loss:3.74775, patience : 0
+2026-09-12 19:14:24,649 P926164 INFO ----------------------------------------------------------------------------------------------------
+2026-09-12 19:14:24,650 P926164 INFO 2/50 starting... lr: 0.001 para:0.3333333432674408
+2026-09-12 19:15:03,921 P926164 INFO Epoch 2/50, all_loss:3.43349 cls_loss:5.12793 rec_loss:0.04459 [39.27s]; best loss:3.43349, patience : 0
+2026-09-12 19:15:22,755 P926164 INFO pr:0.9855  rc:0.3163  auc:0.9131 ap:0.7423 f1: 0.4789 pred_right: 1085131 pred_wrong:11069 actu_right: 1061708 actu_wrong: 34492
+2026-09-12 19:15:30,776 P926164 INFO pr:0.9859  rc:0.3117  auc:0.9123 ap:0.7398 f1: 0.4737 pred_right: 465118 pred_wrong:4682 actu_right: 454992 actu_wrong: 14808
+2026-09-12 19:15:30,780 P926164 INFO ----------------------------------------------------------------------------------------------------
+2026-09-12 19:15:30,780 P926164 INFO 3/50 starting... lr: 0.001 para:0.25
+2026-09-12 19:16:03,027 P926164 INFO Epoch 3/50, all_loss:3.13287 cls_loss:4.15631 rec_loss:0.06253 [32.24s]; best loss:3.13287, patience : 0
+2026-09-12 19:16:28,410 P926164 INFO pr:0.9938  rc:0.3186  auc:0.9679 ap:0.8235 f1: 0.4825 pred_right: 1085143 pred_wrong:11057 actu_right: 1061709 actu_wrong: 34491
+2026-09-12 19:16:34,985 P926164 INFO pr:0.9936  rc:0.3143  auc:0.9671 ap:0.8226 f1: 0.4775 pred_right: 465116 pred_wrong:4684 actu_right: 454992 actu_wrong: 14808
+2026-09-12 19:16:34,989 P926164 INFO ----------------------------------------------------------------------------------------------------
+2026-09-12 19:16:34,989 P926164 INFO 4/50 starting... lr: 0.001 para:0.20000000298023224
+2026-09-12 19:17:19,671 P926164 INFO Epoch 4/50, all_loss:2.75881 cls_loss:3.42783 rec_loss:0.08274 [44.68s]; best loss:2.75881, patience : 0

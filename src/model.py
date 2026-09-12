@@ -23,6 +23,7 @@ import src.inner_models.FITS_hermite as FITS_hermite_operations
 from src.inner_models.Eadro import MainModel 	
 from src.inner_models.Anofusion import AnoFusionWrapper as AnoFusion
 from src.inner_models.Art import ARTWrapper as Art_Model
+from src.inner_models.Deephunt import DeepHuntWrapper as DeepHunt
 #from src.inner_models.MUAD import MainModel as MUAD_Model
 from src.inner_models.Medicine import AdaFusion as Medicine
 from util.util import is_raspberry_pi
@@ -221,6 +222,16 @@ class MyModel(nn.Module):
 				feature_traces=args['feature_edge']
 			)
 		
+		elif self.FREQ_DOMAIN == "DeepHunt":
+			self.deep_hunt = DeepHunt(
+				adj=self.graph,
+				raw_metric=args['raw_node'],
+				raw_logs=args['log_len'],
+				raw_traces=args['raw_edge'],
+				feature_metric=args['feature_node'],
+				feature_logs=args['feature_log'],
+				feature_traces=args['feature_edge']
+			)
 		#MUAD is built as a supervised model, where the labels are an essential part of the model
 		#elif self.FREQ_DOMAIN == "MUAD":
 		#	if args["gpu"] == 'true':
@@ -542,6 +553,11 @@ class MyModel(nn.Module):
 			device = x['data_edge'].device
 			self.graph = self.graph.to(device)
 			rec = self.Art_Model(x['data_node'], x['data_log'], x['data_edge'])
+		
+		elif self.FREQ_DOMAIN in ["DeepHunt"]:
+			device = x['data_edge'].device
+			self.graph = self.graph.to(device)
+			rec = self.deep_hunt(x['data_node'], x['data_log'], x['data_edge'])
 		#elif self.FREQ_DOMAIN in ["MUAD"]:
 		#	device = x['data_edge'].device
 		#	self.graph = self.graph.to(device)
