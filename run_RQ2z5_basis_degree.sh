@@ -1,11 +1,11 @@
 
 FREQ_DOMAIN="FITS_Legendre"
 req_loss_approach="Legendre-style"
-DATA_SOURCES=("SN") # "MSDS" "SN" "TT" 
+DATA_SOURCES=("MSDS") # "MSDS" "SN" "TT" 
 
 basis_type=("fourier") # "hermite" "laguerre" "legendre" "chebyshev") 
 degree=("7" "9")
-SEEDS=(2 3)
+SEEDS=(1 2 3)
 
 for SEED in "${SEEDS[@]}"; do
     for data in "${DATA_SOURCES[@]}"; do
