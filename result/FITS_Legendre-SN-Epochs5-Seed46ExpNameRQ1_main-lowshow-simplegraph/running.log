@@ -190,3 +190,60 @@
 {'GPU': {'inference_time_per_sample_ms': 0.12529245559048666, 'throughput_samples_per_sec': 7981.326531490928, 'peak_memory_mb': 29.291015625, 'energy_per_sample_joules': 0.006308412492753208}, 'CPU': {'inference_time_per_sample_ms': 0.25274154336694726, 'throughput_samples_per_sec': 3956.6111161556546, 'peak_memory_mb': 1869.3046875, 'energy_per_sample_joules': 0.016428200318851574}}
 2026-07-17 21:58:30,156 P3795115 INFO Starting clean-room hardware benchmarking...
 2026-07-17 21:58:30,919 P3795115 INFO Performance with f1: pr:0.9664  rc:0.3039  auc:0.9056 ap:0.8006 f1: 0.4624 pred_right: 18783 pred_wrong:417 actu_right: 17874 actu_wrong: 1326
+2026-09-13 17:18:17,269 P1864301 INFO ---- Model: ----MSTGAD-8f80554e----random_seed : 46----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.5----Freq Domain : FITS_Legendre----Multi Fits : false----train : True----evaluate : False
+2026-09-13 17:18:17,270 P1864301 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/SN
+2026-09-13 17:18:18,310 P1864301 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-09-13 17:18:18,443 P1864301 INFO Trainable Parameters Breakdown:
+2026-09-13 17:18:18,443 P1864301 INFO --------------------------------------------------------------------------------
+2026-09-13 17:18:18,444 P1864301 INFO Reconstruction-Specific Parameters:
+2026-09-13 17:18:18,444 P1864301 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-09-13 17:18:18,444 P1864301 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-09-13 17:18:18,444 P1864301 INFO log_emb.linear.weight                    | shape: (32, 7)                   | params: 224
+2026-09-13 17:18:18,444 P1864301 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-09-13 17:18:18,444 P1864301 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-09-13 17:18:18,444 P1864301 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-09-13 17:18:18,444 P1864301 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-09-13 17:18:18,444 P1864301 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-09-13 17:18:18,444 P1864301 INFO dense_log.weight                         | shape: (7, 32)                   | params: 224
+2026-09-13 17:18:18,444 P1864301 INFO dense_log.bias                           | shape: (7,)                      | params: 7
+2026-09-13 17:18:18,444 P1864301 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-09-13 17:18:18,444 P1864301 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-09-13 17:18:18,444 P1864301 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-09-13 17:18:18,444 P1864301 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-09-13 17:18:18,444 P1864301 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-09-13 17:18:18,444 P1864301 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-09-13 17:18:18,445 P1864301 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-09-13 17:18:18,445 P1864301 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-09-13 17:18:18,445 P1864301 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-09-13 17:18:18,445 P1864301 INFO shared_fits.normlin_W                    | shape: (5, 5)                    | params: 25
+2026-09-13 17:18:18,445 P1864301 INFO shared_fits.freq_upsampler.weight        | shape: (5, 5)                    | params: 25
+2026-09-13 17:18:18,445 P1864301 INFO shared_fits.freq_upsampler.bias          | shape: (5,)                      | params: 5
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj.node.weight                | shape: (10, 8)                   | params: 80
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj.node.bias                  | shape: (10,)                     | params: 10
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj.log.weight                 | shape: (10, 32)                  | params: 320
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj.log.bias                   | shape: (10,)                     | params: 10
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj.edge.weight                | shape: (10, 8)                   | params: 80
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj.edge.bias                  | shape: (10,)                     | params: 10
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj_out.node.weight            | shape: (8, 10)                   | params: 80
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj_out.node.bias              | shape: (8,)                      | params: 8
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj_out.log.weight             | shape: (32, 10)                  | params: 320
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj_out.log.bias               | shape: (32,)                     | params: 32
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj_out.edge.weight            | shape: (8, 10)                   | params: 80
+2026-09-13 17:18:18,445 P1864301 INFO modality_proj_out.edge.bias              | shape: (8,)                      | params: 8
+2026-09-13 17:18:18,445 P1864301 INFO Subtotal: 2,179
+2026-09-13 17:18:18,446 P1864301 INFO --------------------------------------------------------------------------------
+2026-09-13 17:18:18,446 P1864301 INFO Common Parameters:
+2026-09-13 17:18:18,446 P1864301 INFO show.0.weight                            | shape: (128, 16)                 | params: 2,048
+2026-09-13 17:18:18,446 P1864301 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-09-13 17:18:18,446 P1864301 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-09-13 17:18:18,446 P1864301 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-09-13 17:18:18,446 P1864301 INFO Subtotal: 2,434
+2026-09-13 17:18:18,446 P1864301 INFO --------------------------------------------------------------------------------
+2026-09-13 17:18:18,446 P1864301 INFO Total Trainable Parameters: 4,613
+
+2026-09-13 17:18:18,446 P1864301 INFO Trainable Parameters: 4613, reconstruction: 2179, common: 2434
+2026-09-13 17:18:18,446 P1864301 INFO model : init weight
+2026-09-13 17:18:18,447 P1864301 INFO Using GPU...
+2026-09-13 17:18:18,457 P1864301 INFO optimizer : using AdaBelief
+2026-09-13 17:18:18,457 P1864301 INFO ----------------------------------------------------------------------------------------------------
+2026-09-13 17:18:18,458 P1864301 INFO 0/5 starting... lr: 0.001 para:1.0
