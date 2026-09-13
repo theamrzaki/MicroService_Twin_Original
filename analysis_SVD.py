@@ -9,7 +9,7 @@ import util.data_Eadro as data_Eadro
 # ============================================================
 # Load your datasets here
 # ============================================================
-dataset_name = "TT"
+dataset_name = "SN"
 if dataset_name == "MSDS":
     from util.parser_MSDS_MSDS import *
     processed = data_loads.Process(**args)
@@ -31,9 +31,9 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 ENERGY_LEVELS = [0.90, 0.95, 0.99]
 
 MODALITIES = [
-    #"data_node",
+    "data_node",
     "data_log",
-    #"data_edge",
+    "data_edge",
 ]
 
 # Replace these with your actual dataset objects/names
