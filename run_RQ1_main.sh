@@ -3,7 +3,7 @@
 
 
 FREQ_DOMAINS=(
-"Eadro"  
+#"Eadro"  
 ###
 #"FITS_Legendre" #OrEdge
 ###
@@ -11,17 +11,17 @@ FREQ_DOMAINS=(
 #"encoder_decoder"
 #"Art"
 #"Medicine"
-#"DeepHunt"
+"DeepHunt"
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
 
-DATA_SOURCES=("TT") #"SN" "MSDS"  
+DATA_SOURCES=("MSDS") #"SN" "MSDS"  
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval
 
-SEEDS=(1) # 2 3)
-EPOCHS=300
+SEEDS=(1 2 3) # 2 3)
+
 for SEED in "${SEEDS[@]}"; do
   for datasource in "${DATA_SOURCES[@]}"; do
     for FREQ in "${FREQ_DOMAINS[@]}"; do
@@ -36,10 +36,8 @@ for SEED in "${SEEDS[@]}"; do
         --filter_used="LPF" \
         --random_seed="$SEED" \
         --data_source="$datasource" \
-        --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main-lowshow-simplegraph" \
-        --evaluate=true \
         --gpu=true \
-        --experiment_name="RQ1_main_Evaluate"
+        --experiment_name="RQ1_main"
     else
       echo "--------------------------------"
       echo "2) Running $FREQ with Normal-Recreation loss, seed $SEED"
@@ -49,10 +47,8 @@ for SEED in "${SEEDS[@]}"; do
         --req_loss_approach='Normal-Recreation' \
         --random_seed="$SEED" \
         --data_source="$datasource" \
-        --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main-lowshow-simplegraph" \
-        --evaluate=true \
         --gpu=true \
-        --experiment_name="RQ1_main_Evaluate"
+        --experiment_name="RQ1_main"
     fi
   done
   done

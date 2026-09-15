@@ -1,0 +1,63 @@
+2026-09-15 11:26:07,735 P3832143 INFO ---- Model: ----MSTGAD-7ac9ddc8----random_seed : 2----req_loss_approach : Legendre-style----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : FITS_Legendre----Multi Fits : false----train : True----evaluate : False
+2026-09-15 11:26:07,735 P3832143 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-09-15 11:26:29,409 P3832143 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-09-15 11:26:29,556 P3832143 INFO Trainable Parameters Breakdown:
+2026-09-15 11:26:29,556 P3832143 INFO --------------------------------------------------------------------------------
+2026-09-15 11:26:29,556 P3832143 INFO Reconstruction-Specific Parameters:
+2026-09-15 11:26:29,556 P3832143 INFO node_emb.linear.weight                   | shape: (8, 7)                    | params: 56
+2026-09-15 11:26:29,557 P3832143 INFO node_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-09-15 11:26:29,557 P3832143 INFO log_emb.linear.weight                    | shape: (32, 60)                  | params: 1,920
+2026-09-15 11:26:29,557 P3832143 INFO log_emb.linear.bias                      | shape: (32,)                     | params: 32
+2026-09-15 11:26:29,557 P3832143 INFO egde_emb.linear.weight                   | shape: (8, 2)                    | params: 16
+2026-09-15 11:26:29,557 P3832143 INFO egde_emb.linear.bias                     | shape: (8,)                      | params: 8
+2026-09-15 11:26:29,557 P3832143 INFO dense_node.weight                        | shape: (7, 8)                    | params: 56
+2026-09-15 11:26:29,557 P3832143 INFO dense_node.bias                          | shape: (7,)                      | params: 7
+2026-09-15 11:26:29,557 P3832143 INFO dense_log.weight                         | shape: (60, 32)                  | params: 1,920
+2026-09-15 11:26:29,557 P3832143 INFO dense_log.bias                           | shape: (60,)                     | params: 60
+2026-09-15 11:26:29,558 P3832143 INFO dense_edge.weight                        | shape: (2, 8)                    | params: 16
+2026-09-15 11:26:29,558 P3832143 INFO dense_edge.bias                          | shape: (2,)                      | params: 2
+2026-09-15 11:26:29,558 P3832143 INFO linear_attn.Wq.weight                    | shape: (10, 10)                  | params: 100
+2026-09-15 11:26:29,558 P3832143 INFO linear_attn.Wk.weight                    | shape: (10, 10)                  | params: 100
+2026-09-15 11:26:29,558 P3832143 INFO linear_attn.Wv.weight                    | shape: (10, 10)                  | params: 100
+2026-09-15 11:26:29,558 P3832143 INFO linear_attn.out.weight                   | shape: (10, 10)                  | params: 100
+2026-09-15 11:26:29,558 P3832143 INFO linear_attn.out.bias                     | shape: (10,)                     | params: 10
+2026-09-15 11:26:29,558 P3832143 INFO linear_attn.norm.weight                  | shape: (10,)                     | params: 10
+2026-09-15 11:26:29,558 P3832143 INFO linear_attn.norm.bias                    | shape: (10,)                     | params: 10
+2026-09-15 11:26:29,559 P3832143 INFO shared_fits.normlin_W                    | shape: (9, 9)                    | params: 81
+2026-09-15 11:26:29,559 P3832143 INFO shared_fits.freq_upsampler.weight        | shape: (9, 9)                    | params: 81
+2026-09-15 11:26:29,559 P3832143 INFO shared_fits.freq_upsampler.bias          | shape: (9,)                      | params: 9
+2026-09-15 11:26:29,559 P3832143 INFO modality_proj.node.weight                | shape: (10, 8)                   | params: 80
+2026-09-15 11:26:29,559 P3832143 INFO modality_proj.node.bias                  | shape: (10,)                     | params: 10
+2026-09-15 11:26:29,559 P3832143 INFO modality_proj.log.weight                 | shape: (10, 32)                  | params: 320
+2026-09-15 11:26:29,559 P3832143 INFO modality_proj.log.bias                   | shape: (10,)                     | params: 10
+2026-09-15 11:26:29,559 P3832143 INFO modality_proj.edge.weight                | shape: (10, 8)                   | params: 80
+2026-09-15 11:26:29,559 P3832143 INFO modality_proj.edge.bias                  | shape: (10,)                     | params: 10
+2026-09-15 11:26:29,560 P3832143 INFO modality_proj_out.node.weight            | shape: (8, 10)                   | params: 80
+2026-09-15 11:26:29,560 P3832143 INFO modality_proj_out.node.bias              | shape: (8,)                      | params: 8
+2026-09-15 11:26:29,560 P3832143 INFO modality_proj_out.log.weight             | shape: (32, 10)                  | params: 320
+2026-09-15 11:26:29,560 P3832143 INFO modality_proj_out.log.bias               | shape: (32,)                     | params: 32
+2026-09-15 11:26:29,560 P3832143 INFO modality_proj_out.edge.weight            | shape: (8, 10)                   | params: 80
+2026-09-15 11:26:29,560 P3832143 INFO modality_proj_out.edge.bias              | shape: (8,)                      | params: 8
+2026-09-15 11:26:29,560 P3832143 INFO Subtotal: 5,740
+2026-09-15 11:26:29,560 P3832143 INFO --------------------------------------------------------------------------------
+2026-09-15 11:26:29,560 P3832143 INFO Common Parameters:
+2026-09-15 11:26:29,560 P3832143 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-09-15 11:26:29,561 P3832143 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-09-15 11:26:29,561 P3832143 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-09-15 11:26:29,561 P3832143 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-09-15 11:26:29,561 P3832143 INFO Subtotal: 9,218
+2026-09-15 11:26:29,561 P3832143 INFO --------------------------------------------------------------------------------
+2026-09-15 11:26:29,561 P3832143 INFO Total Trainable Parameters: 14,958
+
+2026-09-15 11:26:29,561 P3832143 INFO Trainable Parameters: 14958, reconstruction: 5740, common: 9218
+2026-09-15 11:26:29,562 P3832143 INFO model : init weight
+2026-09-15 11:26:29,563 P3832143 INFO Using GPU...
+2026-09-15 11:26:29,574 P3832143 INFO optimizer : using AdaBelief
+2026-09-15 11:26:29,575 P3832143 INFO ----------------------------------------------------------------------------------------------------
+2026-09-15 11:26:29,575 P3832143 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-09-15 11:27:01,542 P3832143 INFO Epoch 0/50, all_loss:3943218282496.00000 cls_loss:1408113081057280.00000 rec_loss:3943218282496.00000 [31.96s]; best loss:3943218282496.00000, patience : 0
+2026-09-15 11:27:01,542 P3832143 INFO ----------------------------------------------------------------------------------------------------
+2026-09-15 11:27:01,542 P3832143 INFO 1/50 starting... lr: 0.001 para:0.5
+2026-09-15 11:27:29,158 P3832143 INFO Epoch 1/50, all_loss:4965435392.00000 cls_loss:8511607296.00000 rec_loss:1419263104.00000 [27.61s]; best loss:4965435392.00000, patience : 0
+2026-09-15 11:27:29,158 P3832143 INFO ----------------------------------------------------------------------------------------------------
+2026-09-15 11:27:29,158 P3832143 INFO 2/50 starting... lr: 0.001 para:0.3333333432674408
