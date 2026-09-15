@@ -3,13 +3,14 @@
 
 
 FREQ_DOMAINS=(
-"FITS_Legendre" #OrEdge
-
-"AnoFusion"
-"Eadro"  
-"encoder_decoder"
-"Art"
-"Medicine"
+#"FITS_Legendre" #OrEdge
+#
+#"AnoFusion"
+#"Eadro"  
+#"encoder_decoder"
+#"Art"
+#"Medicine"
+"DeepHunt"
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
 DATA_SOURCES=("MSDS" "TT" "SN" ) # )   
@@ -45,7 +46,7 @@ for SEED in "${SEEDS[@]}"; do
         --gpu=false\
         --DEVICE_NAME="$DEVICE_NAME" \
         --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main-lowshow-simplegraph" \
-        --experiment_name="RQ1_main_Edge_priortotraining"
+        --experiment_name="RQ1_main"
     else
       echo "--------------------------------"
       echo "2) Running $FREQ with Normal-Recreation loss, seed $SEED"
@@ -60,7 +61,7 @@ for SEED in "${SEEDS[@]}"; do
         --evaluate=true \
         --DEVICE_NAME="$DEVICE_NAME" \
         --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main-lowshow-simplegraph" \
-        --experiment_name="RQ1_main_Edge_priortotraining"
+        --experiment_name="RQ1_main"
     fi
   done
   done

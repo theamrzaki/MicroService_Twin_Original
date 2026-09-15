@@ -135,17 +135,17 @@ if __name__ == '__main__':
     with open('./result.log', 'a+') as file:
         file.writelines(f"\n {args['main_model']}-{args['hash_id']} --weight_decay:{args['weight_decay']}   --learning_change:{args['learning_change']} \n")
         info_dict = {}
-        #for statue in ['loss', 'f1']:
-       # logging.info(f'calculate label with {statue}...')
-        ###sys.load_model(args['model_path'], name=statue)
-        info, performance,benchmark_result = sys.evaluate(test_dl, isFinall=True)
-        #info_dict[statue] = info
-        #if info is not None:
-        #    logging.info(f"Performance with {statue}: {info}")
-        #    file.writelines(statue + '   ' + info + '\n')
-        #else:
-        #    logging.info(f"Performance with {statue}: No GPU metrics available.")
-        #    file.writelines(statue + '   ' + ",,," + '\n')
+        for statue in ['loss', 'f1']:
+            logging.info(f'calculate label with {statue}...')
+            sys.load_model(args['model_path'], name=statue)
+            info, performance,benchmark_result = sys.evaluate(test_dl, isFinall=True)
+            info_dict[statue] = info
+            if info is not None:
+                logging.info(f"Performance with {statue}: {info}")
+                file.writelines(statue + '   ' + info + '\n')
+            else:
+                logging.info(f"Performance with {statue}: No GPU metrics available.")
+                file.writelines(statue + '   ' + ",,," + '\n')
     #if args.get("case_study", False):
     exp_name = ""
     if args["experiment_name"]=="RQ1_main":

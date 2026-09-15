@@ -199,7 +199,7 @@ def write_results(args, info_dict,total_params,avg_training_time_per_epoch,perfo
         'filter_used': args['filter_used'],
         'modules_attn':  args['modules_attn'],
 
-        'info_dict': None,#info_dict['f1'],
+        'info_dict': info_dict['f1'],
 
         'total_params': total_params['total_params'],
         'reconstruction_params': total_params['reconstruction_params'],
