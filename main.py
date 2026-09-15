@@ -55,7 +55,7 @@ if __name__ == '__main__':
     if args['evaluate']:
         dict_json = util.read_params(args)
         for key in dict_json.keys():
-            args[key] =  args[key] if key in ['model_path','evaluate', 'result_dir', 'data_path', 'dataset_path'] else dict_json[key]
+            args[key] =  args[key] if key in ['model_path','evaluate', 'result_dir', 'data_path', 'dataset_path','experiment_name'] else dict_json[key]
         args['result_dir'] = args['model_path']
     else:
         args['hash_id'], args['result_dir'] = util.dump_params(args)
@@ -135,29 +135,29 @@ if __name__ == '__main__':
     with open('./result.log', 'a+') as file:
         file.writelines(f"\n {args['main_model']}-{args['hash_id']} --weight_decay:{args['weight_decay']}   --learning_change:{args['learning_change']} \n")
         info_dict = {}
-        for statue in ['loss', 'f1']:
-            logging.info(f'calculate label with {statue}...')
-            sys.load_model(args['model_path'], name=statue)
-            info, performance,benchmark_result = sys.evaluate(test_dl, isFinall=True)
-            info_dict[statue] = info
-            if info is not None:
-                logging.info(f"Performance with {statue}: {info}")
-                file.writelines(statue + '   ' + info + '\n')
-            else:
-                logging.info(f"Performance with {statue}: No GPU metrics available.")
-                file.writelines(statue + '   ' + ",,," + '\n')
+        #for statue in ['loss', 'f1']:
+       # logging.info(f'calculate label with {statue}...')
+        ###sys.load_model(args['model_path'], name=statue)
+        info, performance,benchmark_result = sys.evaluate(test_dl, isFinall=True)
+        #info_dict[statue] = info
+        #if info is not None:
+        #    logging.info(f"Performance with {statue}: {info}")
+        #    file.writelines(statue + '   ' + info + '\n')
+        #else:
+        #    logging.info(f"Performance with {statue}: No GPU metrics available.")
+        #    file.writelines(statue + '   ' + ",,," + '\n')
     #if args.get("case_study", False):
     exp_name = ""
     if args["experiment_name"]=="RQ1_main":
         exp_name = "RQ1_benchmark_memOptimized_Larger_Eadro_AnoFusion_Medicine"
-    elif args["experiment_name"] == "RQ1_main_Edge":
+    elif args["experiment_name"] == "RQ1_main_Edge_priortotraining":
         if not util.is_raspberry_pi():
             raise RuntimeError(
                 "RQ1_main_Edge can only be run on a Raspberry Pi."
             )
         else:
             print("Running on Raspberry Pi, proceeding with RQ1_main_Edge experiment.")
-        exp_name = "RQ1_benchmark_memOptimized_simplegraph_LargerRaspberryPi"
+        exp_name = "RQ1_benchmark_priortraining"
     elif args["experiment_name"]=="RQ2_ablations_components":
         exp_name = "RQ2_ablations_withNorm_accMem"
     elif args["experiment_name"]=="RQ2_basis_comparison":

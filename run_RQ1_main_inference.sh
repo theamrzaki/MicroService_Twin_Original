@@ -3,16 +3,16 @@
 
 
 FREQ_DOMAINS=(
-#"FITS_Legendre" #OrEdge
+"FITS_Legendre" #OrEdge
 
-#"AnoFusion"
-#"Eadro"  
-#"encoder_decoder"
-#"Art"
+"AnoFusion"
+"Eadro"  
+"encoder_decoder"
+"Art"
 "Medicine"
 )
 ORANOMALY_MODELS=("FITS_Legendre" "FreTS" "DLinear" "iTransformer" "FEDformerModel" "FITS_LENGDRE_parallel_oth_compoenents")
-DATA_SOURCES=("SN" "MSDS" "TT") # )   
+DATA_SOURCES=("MSDS" "TT" "SN" ) # )   
 DEVICE_NAME="Raspberry Pi Larger"
 # as miniforge is installed on Raspberry Pi
 source ~/miniforge3/etc/profile.d/conda.sh
@@ -45,7 +45,7 @@ for SEED in "${SEEDS[@]}"; do
         --gpu=false\
         --DEVICE_NAME="$DEVICE_NAME" \
         --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main-lowshow-simplegraph" \
-        --experiment_name="RQ1_main_Edge"
+        --experiment_name="RQ1_main_Edge_priortotraining"
     else
       echo "--------------------------------"
       echo "2) Running $FREQ with Normal-Recreation loss, seed $SEED"
@@ -60,7 +60,7 @@ for SEED in "${SEEDS[@]}"; do
         --evaluate=true \
         --DEVICE_NAME="$DEVICE_NAME" \
         --model_path="./result/${FREQ}-${datasource}-Epochs${EPOCHS}-Seed${SEED}ExpNameRQ1_main-lowshow-simplegraph" \
-        --experiment_name="RQ1_main_Edge"
+        --experiment_name="RQ1_main_Edge_priortotraining"
     fi
   done
   done

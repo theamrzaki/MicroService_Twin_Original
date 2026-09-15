@@ -51,7 +51,10 @@ class Base(nn.Module):
         self.True_list = {'normal': 1, 'abnormal': args['abnormal_weight']}
 
         if args['evaluate']:
-            self.load_model(args['model_path'])
+            #self.load_model(args['model_path'])
+            logging.info('model : init weight')
+            self.init_weight()
+            pass
         else:
             logging.info('model : init weight')
             self.init_weight()
