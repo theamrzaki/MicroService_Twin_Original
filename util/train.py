@@ -10,6 +10,7 @@ import torch
 import torch.nn as nn
 from adabelief_pytorch import AdaBelief
 import psutil
+from sklearn.metrics import *
 
 from tqdm import tqdm
 import util.util as util
@@ -560,211 +561,532 @@ class MY(Base):
         return gpu_metrics["result"]
 
 
-
     def collect_case_study(
         self,
         test_loader,
         use_gpu=True,
-        primary=False,
-        case_json: Optional[str] = None,
-        record_json: Optional[str] = None,
-        top_k: int = 5,
         dataset_path: Optional[str] = None,
-        store_pred: bool = True
+        score_output: Optional[str] = None,
     ):
         """
-        Case study collection for anomaly detection.
+        Collect all test samples for case-study analysis.
 
-        Key design:
-        - Primary model:
-            * Computes global threshold
-            * Selects TP / FP / FN cases
-            * Saves threshold + selected IDs
-        - Follower models:
-            * Load threshold + IDs
-            * Evaluate ONLY those samples
+        RQ1 metrics and class counts are computed using the exact same
+        procedure as calc_index():
 
-        Assumptions:
-        - DataLoader must be deterministic (shuffle=False)
-        - Prefer dataset to provide 'sample_id'
+            1. Reshape [B, T, C] -> [B*T, C]
+            2. Compute AP and AUC on the flattened class scores
+            3. Apply argmax over the class dimension
+            4. Compute Precision, Recall, and F1 on the flattened classes
+            5. Compute predicted/actual class counts using np.bincount()
+
+        For case-study analysis, the position-level predictions are reshaped
+        back to [B, T] and aggregated at the sample level using an
+        "any anomalous position" rule.
+
+        All test samples are processed. No threshold is estimated and no
+        samples are filtered or selected.
         """
 
         # ------------------------------------------------------------
-        # Load case definition if follower
-        # ------------------------------------------------------------
-        selected_ids = None
-        threshold = None
-
-        if not primary:
-            if case_json is None:
-                raise ValueError("case_json must be provided for follower models")
-
-            with open(case_json) as f:
-                saved = json.load(f)
-
-            threshold = saved["threshold"]
-            selected_ids = set(sum(saved["ids"].values(), []))
-
-        #------------------------------------------------------------  
         # Dataset real data
-        #------------------------------------------------------------
-        def get_real_record(sample_id): #sample_id is the filename in the dataset
+        # ------------------------------------------------------------
+        def get_real_record(sample_id):
             file_path = os.path.join(
-                dataset_path+"_real",
+                dataset_path + "_real",
                 f"{sample_id.split('.')[0]}_real_real.pkl"
             )
-            with open(file_path, 'rb') as f:
-                return pickle.load(f)
 
+            with open(file_path, "rb") as f:
+                return pickle.load(f)
 
         # ------------------------------------------------------------
         # Model setup
         # ------------------------------------------------------------
         self.model.eval()
-        device = torch.device("cuda" if use_gpu and torch.cuda.is_available() else "cpu")
+
+        device = torch.device(
+            "cuda" if use_gpu and torch.cuda.is_available() else "cpu"
+        )
+
         self.model.to(device)
 
-        cases = {"TP": [], "FP": [], "FN": []}
-        all_errors = []  # only used for primary threshold computation
+        # ------------------------------------------------------------
+        # Case storage
+        # ------------------------------------------------------------
+        cases = {
+            "ALL": [],
+            "TP": [],
+            "FP": [],
+            "FN": [],
+            "TN": []
+        }
+
+        # ------------------------------------------------------------
+        # Store all flattened predictions and labels
+        #
+        # This allows the final RQ1 metrics to be computed over the
+        # COMPLETE test set exactly as calc_index().
+        # ------------------------------------------------------------
+        predict_list = []
+        actual_list = []
 
         global_idx = 0
 
         # ------------------------------------------------------------
-        # Forward pass
+        # Forward pass over COMPLETE test set
         # ------------------------------------------------------------
         with torch.no_grad():
+
             for batch_input in test_loader:
 
-                gt = batch_input["groundtruth_real"]
-                #labels = batch_input.get("groundtruth_cls", None)
-                # FIX: Define labels based on whether any node/pod is anomalous
-                # We sum over the pod dimension and the class dimension.
-                # If the sum of anomaly indicators is > 0, the whole sample is labeled 1.
-                labels = (gt.sum(dim=(1, 2)) > 0).int()
+                # ----------------------------------------------------
+                # Ground truth
+                # ----------------------------------------------------
+                gt = batch_input["groundtruth_real"].to(device)
 
-                # Prefer stable dataset-provided IDs
+                # ----------------------------------------------------
+                # Stable sample IDs
+                # ----------------------------------------------------
                 if "filename" in batch_input:
                     batch_ids = batch_input["filename"]
                 else:
                     batch_size = gt.size(0)
-                    batch_ids = list(range(global_idx, global_idx + batch_size))
+                    batch_ids = list(
+                        range(global_idx, global_idx + batch_size)
+                    )
 
-                batch_input = self.input2device(batch_input, use_gpu)
-                raw_result, _ = self.model(batch_input, evaluate=True)
+                # ----------------------------------------------------
+                # Model prediction
+                # ----------------------------------------------------
+                batch_input = self.input2device(
+                    batch_input,
+                    use_gpu
+                )
 
-                gt = gt.to(raw_result.device)
+                raw_result, _ = self.model(
+                    batch_input,
+                    evaluate=True
+                )
 
-                # ----------------------------------------
-                # Anomaly score
-                # ----------------------------------------
-                error = torch.abs(raw_result - gt).mean(dim=(1, 2))  # [B]
+                # ----------------------------------------------------
+                # Original dimensions
+                #
+                # raw_result: [B, T, C]
+                # gt:         [B, T, C]
+                # ----------------------------------------------------
+                B, T, C = raw_result.shape
 
-                if primary:
-                    all_errors.append(error.detach().cpu())
+                # ----------------------------------------------------
+                # SAME reshaping as calc_index()
+                #
+                # [B, T, C] -> [B*T, C]
+                # ----------------------------------------------------
+                predict = raw_result.reshape(-1, C)
+                actual = gt.reshape(-1, C)
 
-                for i in range(len(error)):
+                # ----------------------------------------------------
+                # Save flattened predictions and labels for the
+                # final complete-test-set RQ1 calculation.
+                # ----------------------------------------------------
+                predict_list.append(
+                    predict.detach().cpu()
+                )
+
+                actual_list.append(
+                    actual.detach().cpu()
+                )
+
+                # ----------------------------------------------------
+                # SAME classification as calc_index()
+                #
+                # For the current model this is [*, 2], so argmax
+                # produces the position-level predicted/actual class.
+                # ----------------------------------------------------
+                if predict.shape[-1] == 2 and actual.shape[-1] == 2:
+
+                    actual_cls = torch.argmax(
+                        actual,
+                        dim=-1
+                    )
+
+                    predict_cls = torch.argmax(
+                        predict,
+                        dim=-1
+                    )
+
+                else:
+
+                    actual_cls = actual
+                    predict_cls = predict
+
+                # ----------------------------------------------------
+                # Restore sample structure
+                #
+                # [B*T] -> [B, T]
+                # ----------------------------------------------------
+                predict_cls_sample = predict_cls.reshape(B, T)
+                actual_cls_sample = actual_cls.reshape(B, T)
+
+                # ----------------------------------------------------
+                # Sample-level aggregation for case study
+                #
+                # A sample is anomalous if ANY of its T positions
+                # is classified as anomalous.
+                # ----------------------------------------------------
+                sample_pred = (
+                    predict_cls_sample == 1
+                ).any(dim=1)
+
+                sample_label = (
+                    actual_cls_sample == 1
+                ).any(dim=1)
+
+                # ----------------------------------------------------
+                # Continuous score for ranking cases only
+                #
+                # This does NOT determine TP/FN.
+                # ----------------------------------------------------
+                sample_score = torch.abs(
+                    raw_result - gt
+                ).mean(dim=(1, 2))
+
+                # ----------------------------------------------------
+                # Store each sample
+                # ----------------------------------------------------
+                for i in range(B):
 
                     sample_id = batch_ids[i]
 
-                    # Filter for follower models
-                    if selected_ids is not None and sample_id not in selected_ids:
-                        continue
+                    label = int(
+                        sample_label[i].item()
+                    )
+
+                    pred = int(
+                        sample_pred[i].item()
+                    )
 
                     record = {
                         "id": sample_id,
-                        "label": int(labels[i]) if labels is not None else -1,
-                        "score": float(error[i].item())
+                        "label": label,
+                        "pred": pred,
+                        "score": float(
+                            sample_score[i].item()
+                        ),
+
+                        # Position-level information
+                        "position_labels": (
+                            actual_cls_sample[i]
+                            .cpu()
+                            .tolist()
+                        ),
+
+                        "position_preds": (
+                            predict_cls_sample[i]
+                            .cpu()
+                            .tolist()
+                        ),
                     }
 
-                    # Store prediction later (after threshold known)
-                    record["_raw_pred_score"] = float(error[i].item())
+                    # ------------------------------------------------
+                    # Store real multimodal data
+                    # ------------------------------------------------
                     record_real = get_real_record(sample_id)
-                    # -----------------------------
-                    # Store modalities
-                    # -----------------------------
+
                     record["metric"] = record_real["metric_raw"]
                     record["log"] = record_real["logs"]
                     record["trace"] = record_real["trace_raw"]
 
-                    # Temporarily store (categorization later if needed)
-                    cases.setdefault("ALL", []).append(record)
+                    # ------------------------------------------------
+                    # Sample-level category
+                    # ------------------------------------------------
+                    if label == 1 and pred == 1:
+                        category = "TP"
 
-                global_idx += len(error)
+                    elif label == 1 and pred == 0:
+                        category = "FN"
 
-        # ------------------------------------------------------------
-        # Compute threshold (PRIMARY ONLY)
-        # ------------------------------------------------------------
-        if primary:
-            all_errors = torch.cat(all_errors)
-            threshold = (all_errors.mean() + 3 * all_errors.std()).item()
+                    elif label == 0 and pred == 1:
+                        category = "FP"
 
-        # ------------------------------------------------------------
-        # Categorize cases
-        # ------------------------------------------------------------
-        categorized = {"TP": [], "FP": [], "FN": []}
+                    else:
+                        category = "TN"
 
-        for record in cases.get("ALL", []):
+                    record["category"] = category
 
-            pred = int(record["_raw_pred_score"] > threshold)
-            label = record["label"]
+                    cases["ALL"].append(record)
+                    cases[category].append(record)
 
-            record["pred"] = pred
-            del record["_raw_pred_score"]
+                global_idx += B
 
-            if label == -1:
-                continue  # skip if no ground truth
-
-            if label == 1 and pred == 1:
-                categorized["TP"].append(record)
-
-            elif label == 1 and pred == 0:
-                categorized["FN"].append(record)
-
-            elif label == 0 and pred == 1:
-                categorized["FP"].append(record)
-            
-            else:
-                record["details"]={"label": label, "pred": pred}
-                categorized.setdefault("TN", []).append(record)  # for completeness, though TNs are not the focus
+        # ============================================================
+        # EXACT RQ1 CALCULATION
+        #
+        # This reproduces calc_index() over the COMPLETE test set.
+        # ============================================================
 
         # ------------------------------------------------------------
-        # Select top-K informative cases dont select, just sort all cases
+        # Concatenate all flattened predictions and labels
         # ------------------------------------------------------------
-        selected_cases = {}
+        predict = torch.cat(
+            predict_list,
+            dim=0
+        )
 
-        for key in categorized:
-            if primary: 
-                selected_cases[key] = sorted(
-                    categorized[key],
-                    key=lambda x: x["score"],
-                    reverse=True
-                )[:top_k]
-            else:
-                selected_cases[key] = categorized[key]  # for followers, keep all cases that meet the threshold criteria
+        actual = torch.cat(
+            actual_list,
+            dim=0
+        )
+
         # ------------------------------------------------------------
-        # Save outputs
+        # Ensure predict and actual are 2D tensors
+        # SAME as calc_index()
+        # ------------------------------------------------------------
+        if predict.dim() != 2:
+            predict = predict.reshape(
+                -1,
+                predict.shape[-1]
+            )
+
+        if actual.dim() != 2:
+            actual = actual.reshape(
+                -1,
+                actual.shape[-1]
+            )
+
+        # ------------------------------------------------------------
+        # Detach and convert to numpy
+        # SAME as calc_index()
+        # ------------------------------------------------------------
+        predict_np = (
+            predict.detach()
+            .cpu()
+            .numpy()
+        )
+
+        actual_np = (
+            actual.detach()
+            .cpu()
+            .numpy()
+        )
+
+        # ------------------------------------------------------------
+        # AP and AUC
+        # SAME as calc_index()
+        # ------------------------------------------------------------
+        ap = average_precision_score(
+            actual_np,
+            predict_np,
+            average="macro"
+        )
+
+        auc = roc_auc_score(
+            actual_np,
+            predict_np,
+            average="macro"
+        )
+
+        # ------------------------------------------------------------
+        # Classification
+        # SAME as calc_index()
+        # ------------------------------------------------------------
+        if predict.shape[-1] == 2 and actual.shape[-1] == 2:
+
+            actual_cls = torch.argmax(
+                actual,
+                dim=-1
+            )
+
+            predict_cls = torch.argmax(
+                predict,
+                dim=-1
+            )
+
+        else:
+
+            actual_cls = actual
+            predict_cls = predict
+
+        # ------------------------------------------------------------
+        # Convert classification tensors to numpy
+        # SAME as calc_index()
+        # ------------------------------------------------------------
+        actual_cls_np = (
+            actual_cls.detach()
+            .cpu()
+            .numpy()
+        )
+
+        predict_cls_np = (
+            predict_cls.detach()
+            .cpu()
+            .numpy()
+        )
+
+        # ------------------------------------------------------------
+        # Precision, Recall, F1
+        # SAME as calc_index()
+        # ------------------------------------------------------------
+        ps = precision_score(
+            actual_cls_np,
+            predict_cls_np,
+            average="binary"
+        )
+
+        rs = recall_score(
+            actual_cls_np,
+            predict_cls_np,
+            average="binary"
+        )
+
+        effection = f1_score(
+            actual_cls_np,
+            predict_cls_np,
+            average="binary",
+            zero_division=1
+        )
+
+        # ------------------------------------------------------------
+        # Predicted and actual class counts
+        # EXACTLY as calc_index()
+        # ------------------------------------------------------------
+        pred = np.bincount(
+            predict_cls_np
+        )
+
+        actu = np.bincount(
+            actual_cls_np
+        )
+
+        # ------------------------------------------------------------
+        # Format RQ1 information
+        # SAME logic as calc_index()
+        # ------------------------------------------------------------
+        if pred.shape[0] == 1:
+
+            information = (
+                f"pr:{ps:.4f}  "
+                f"rc:{rs:.4f}  "
+                f"auc:{auc:.4f} "
+                f"ap:{ap:.4f} "
+                f"f1: {effection:.4f} "
+                f"pred_right: {pred[0]} "
+                f"pred_wrong: 0 "
+                f"actu_right: {actu[0]} "
+                f"actu_wrong: {actu[1]}"
+            )
+
+        else:
+
+            information = (
+                f"pr:{ps:.4f}  "
+                f"rc:{rs:.4f}  "
+                f"auc:{auc:.4f} "
+                f"ap:{ap:.4f} "
+                f"f1: {effection:.4f} "
+                f"pred_right: {pred[0]} "
+                f"pred_wrong:{pred[1]} "
+                f"actu_right: {actu[0]} "
+                f"actu_wrong: {actu[1]}"
+            )
+
+        # ------------------------------------------------------------
+        # Print scores
+        # ------------------------------------------------------------
+        print("\n===== RQ1 Evaluation =====")
+        print(information)
+
+        # ------------------------------------------------------------
+        # Write scores to file
+        # ------------------------------------------------------------
+        if score_output is not None:
+
+            score_dir = os.path.dirname(score_output)
+
+            if score_dir:
+                os.makedirs(
+                    score_dir,
+                    exist_ok=True
+                )
+
+            with open(
+                score_output,
+                "w"
+            ) as f:
+
+                f.write(
+                    information + "\n"
+                )
+
+        # ------------------------------------------------------------
+        # Sort categories by case-study score
+        #
+        # Ranking only. Does not affect TP/FN classification.
+        # ------------------------------------------------------------
+        for key in cases:
+
+            cases[key] = sorted(
+                cases[key],
+                key=lambda x: x["score"],
+                reverse=True
+            )
+
+        # ------------------------------------------------------------
+        # Sanity check
+        #
+        # These are class counts, so they should sum to the complete
+        # number of flattened predictions.
+        # ------------------------------------------------------------
+        total_predictions = len(
+            predict_cls_np
+        )
+
+        total_actual = len(
+            actual_cls_np
+        )
+
+        assert total_predictions == total_actual, (
+            f"Prediction/actual count mismatch: "
+            f"{total_predictions} vs {total_actual}"
+        )
+
+        assert (
+            pred.sum() == total_predictions
+        ), (
+            f"Predicted class counts do not sum correctly: "
+            f"{pred.sum()} vs {total_predictions}"
+        )
+
+        assert (
+            actu.sum() == total_actual
+        ), (
+            f"Actual class counts do not sum correctly: "
+            f"{actu.sum()} vs {total_actual}"
+        )
+
+        # ------------------------------------------------------------
+        # Final output
         # ------------------------------------------------------------
         output = {
-            "threshold": threshold,
-            "cases": selected_cases
+            "pr": float(ps),
+            "rc": float(rs),
+            "auc": float(auc),
+            "ap": float(ap),
+            "f1": float(effection),
+
+            # EXACT calc_index() terminology/semantics
+            "pred_right": int(pred[0]),
+            "pred_wrong": int(
+                pred[1] if pred.shape[0] > 1 else 0
+            ),
+            "actu_right": int(actu[0]),
+            "actu_wrong": int(actu[1]),
+
+            "information": information,
+            "cases": cases
         }
 
-        if record_json is not None:
-            with open(record_json, "w") as f:
-                json.dump(output, f, indent=2)
-
-        # Save IDs for follower models
-        if primary and case_json is not None:
-            ids = {k: [r["id"] for r in selected_cases[k]] for k in selected_cases}
-            save_obj = {
-                "threshold": threshold,
-                "ids": ids
-            }
-            with open(case_json, "w") as f:
-                json.dump(save_obj, f, indent=2)
-
         return output
-    
 
 
 

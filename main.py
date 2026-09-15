@@ -42,7 +42,7 @@ if __name__ == '__main__':
     if args['evaluate']:
         dict_json = util.read_params(args)
         for key in dict_json.keys():
-            args[key] =  args[key] if key in ['model_path','evaluate', 'result_dir', 'data_path', 'dataset_path'] else dict_json[key]
+            args[key] =  args[key] if key in ['model_path','evaluate', 'result_dir', 'data_path', 'dataset_path', 'experiment_name'] else dict_json[key]
         args['result_dir'] = args['model_path']
     else:
         args['hash_id'], args['result_dir'] = util.dump_params(args)
@@ -136,6 +136,10 @@ if __name__ == '__main__':
             exp_name = "RQ1_main_Eadro_AnoFusion_featuredim_lowshow_simplegraph"
         else:
             exp_name = "RQ1_benchmark_MemOptimised_lowshow_simplegraph"
+
+    if args["experiment_name"]=="RQ1_main_Evaluate":
+        exp_name = "RQ1_main_Evaluate"
+
     elif args["experiment_name"] == "RQ1_main_Edge":
         if not util.is_raspberry_pi():
             raise RuntimeError(
@@ -172,33 +176,16 @@ if __name__ == '__main__':
     #logging.info("^^^^^^ Current Model: ----" + args['main_model'] + "-" * 4 + args['hash_id'] + " ^^^^^")
 
     # For case study
-    if True:
+    if False:  # Set to True to enable case study collection
         logging.info("Collecting case-study samples...")
-        case_path = os.path.join( "case_ids.json")
-        #include num of epochs in the titl
-        case_output = os.path.join(f"case_output_{args['FREQ_DOMAIN']}_{args['epochs']}.json")
-    
-        #if model = encoder-decoder type, primary = True
-        if args['FREQ_DOMAIN'] in ['encoder_decoder','Eadro','Art','AnoFusion','Medicine']:
-            primary = True
-            print("####---> Primary case study collection for encoder-decoder model.")
-            case_data = sys.collect_case_study(
-                test_dl,
-                primary=primary,
-                case_json=case_path,
-                top_k=10,
-                dataset_path=args['dataset_path']
-            )
-        else:
-            primary = False
-            print("@@@@---> Secondary case study collection for other model types.")
-            case_data = sys.collect_case_study(
-                test_dl,
-                primary=False,
-                case_json=case_path,
-                dataset_path=args['dataset_path']
-            )
-        util.json_pretty_dump(case_data, case_output)
+        case_output = os.path.join(f"result_journal/casestudies_position_level/case_study_{args['FREQ_DOMAIN']}_{args['data_source']}.pkl")
+
+        case_data = sys.collect_case_study(
+            test_dl,
+            dataset_path=args['dataset_path'],
+            score_output="result_journal/casestudies_position_level/MSDS_OrEdge_RQ1.txt"
+        )
+        util.dump_pickle_highest_protocol(case_data, case_output)
 
 
 ## ------------------------------------------------------------

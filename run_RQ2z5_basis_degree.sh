@@ -3,7 +3,7 @@ FREQ_DOMAIN="FITS_Legendre"
 req_loss_approach="Legendre-style"
 DATA_SOURCES=("TT") # "MSDS" "SN" "TT" 
 
-basis_type=("laguerre" "legendre" "chebyshev" ) # ) #"fourier" "hermite" 
+basis_type=("fourier" "hermite" ) #"laguerre" "legendre" "chebyshev" ) # ) #"fourier" "hermite" 
 degree=("3" "7" "9")
 SEEDS=(1 2 3)
 

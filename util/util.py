@@ -267,6 +267,11 @@ def dump_pickle(obj, file_path):
     with open(file_path, "wb") as fw:
         pickle.dump(obj, fw)
 
+def dump_pickle_highest_protocol(obj, file_path):
+    logging.info("Dumping to {}".format(file_path))
+    with open(file_path, "wb") as fw:
+        pickle.dump(obj, fw, protocol=pickle.HIGHEST_PROTOCOL)
+
 
 def load_pickle(file_path):
     logging.info("Loading from {}".format(file_path))

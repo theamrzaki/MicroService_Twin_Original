@@ -1,7 +1,9 @@
 #!/bin/bash
 
 FREQ_DOMAINS=(
-  "encoder_decoder"
+  #"Eadro"
+  #"AnoFusion"
+  #"encoder_decoder"
   "FITS_Legendre"  #OrEdge
 )
 
