@@ -1,10 +1,10 @@
 
 
 #!/bin/bash
-MODEL_NAMES=("Medicine") #"Eadro" "AnoFusion" "encoder_decoder" "FITS_Legendre" 
+MODEL_NAMES=("DeepHunt") #"Eadro" "AnoFusion" "encoder_decoder" "FITS_Legendre" "Medicine"
 DATASET_NAMES=("TT" "MSDS" "SN" ) #
-IP_ADDRESS="130.63.255.87" #db2003smaller
-#IP_ADDRESS="130.63.100.216"
+IP_ADDRESS="130.63.252.204" #db2003smaller
+#IP_ADDRESS="130.63.101.54"
 SEEDS=(1 2 3)
 DEVICE_NAME="db2003smaller"
 #DEVICE_NAME="db2003larger"
