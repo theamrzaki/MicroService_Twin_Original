@@ -88,7 +88,7 @@ def dump_params(args):
     elif args['experiment_name'] == "RQ2_architecture":
         save_path = os.path.join(args['result_dir']+"/server_only_exps/Architecture_updatedFreDF", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])+ '-lowshow-simplegraph'
 
-    elif args['experiment_name'] == "RQ2z5_basis_degree_comparison":
+    elif args['experiment_name'] in ["RQ2z5_basis_degree_comparison", "RQ2z5_basis_degree_comparison_2"]:
         #same as RQ2_ablations_components (except adding degree and basis type)
         save_path = os.path.join(args['result_dir']+"/server_only_exps/Ablations_updatedFreDF", args['FREQ_DOMAIN'] + '-' +args['data_source'] + '-Epochs' + str(args['epochs']) + '-Seed' + str(args['random_seed']) + '-ExpName' + str(args["experiment_name"]))  + '-LPF' + str(args["filter_used"]) + '-Attn' + str(args["modules_attn"]) + '-NormLin' + str(args["use_normlin"]) + '-RecLambda' + str(args["rec_lambda"]) + '-AuxiLambda' + str(args["auxi_lambda"])   + '-lowshow-simplegraph' + '-Degree' + str(args["degree"]) + '-BasisType' + str(args["basis_type"])
 
