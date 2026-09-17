@@ -4,8 +4,8 @@ req_loss_approach="Legendre-style"
 DATA_SOURCES=("MSDS") # "MSDS" "SN" "TT" 
 
 basis_type=("fourier" "hermite" "laguerre" "legendre" "chebyshev") #"laguerre" "legendre" "chebyshev" ) # ) #"fourier" "hermite" 
-degree=("3" "7")
-SEEDS=(1 2)
+degree=("7")
+SEEDS=(2)
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval
