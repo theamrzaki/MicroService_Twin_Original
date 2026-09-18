@@ -1,11 +1,12 @@
 
 FREQ_DOMAIN="FITS_Legendre"
 req_loss_approach="Legendre-style"
-DATA_SOURCES=("MSDS") # "MSDS" "SN" "TT" 
+DATA_SOURCES=("TT") # "MSDS" "SN" "TT" 
 
-basis_type=("laguerre" "legendre" "chebyshev") #"laguerre" "legendre" "chebyshev" ) # ) #"fourier" "hermite" 
-degree=("3")
+basis_type=("fourier" "hermite" "laguerre" "legendre" "chebyshev") #"laguerre" "legendre" "chebyshev" ) # ) #"fourier" "hermite" 
+degree=("7")
 SEEDS=(3)
+
 
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate RCAEval
