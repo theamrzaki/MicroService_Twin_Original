@@ -36,7 +36,7 @@ df = df[~((df['FREQ_DOMAIN'] == 'Medicine') & (df['datasource'] == 'SN') & (df['
 
 # 2. Define our target datasets (columns) and model variants (rows)
 datasets = ['SN', 'TT', 'MSDS']
-variants = ['Eadro', 'AnoFusion', 'MSTGAD', 'Art', 'Medicine', 'OrEdge']
+variants = ['Eadro', 'AnoFusion', 'MSTGAD', 'Art', 'Medicine','DeepHunt', 'OrEdge']
 
 # 3. Define mapping for Server (GPU/CPU) and Raspberry Pi metrics
 server_metrics = [
@@ -45,7 +45,7 @@ server_metrics = [
     #("Peak Mem (GPU) [MB]", "(benchmark_result) inference_memory_mb", 1),
     #("Energy Usage (GPU) [J]", "energy_per_sample_joules (GPU)", 3),
     ("FLOPs [M]", "(benchmark_result) flops_million", 1),
-    ("Reconstuction Params", "reconstruction_params", 1),
+    ("Total Params", "total_params", 1),
 ]
 
 raspberry_metrics = [
@@ -160,4 +160,7 @@ latex_table.append("\\bottomrule")
 latex_table.append("\\end{tabular}")
 latex_table.append("\\end{table*}")
 
-print("\n".join(latex_table))
+
+with open('sections/Results/RQ2_efficiency.tex', 'w') as f:
+    f.write("\n".join(latex_table))
+print("LaTeX table saved to sections/Results/RQ2_efficiency.tex !!")

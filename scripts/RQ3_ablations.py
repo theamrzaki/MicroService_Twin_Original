@@ -74,7 +74,7 @@ for aux in dataset_auxi_lambda.values():
     config_to_name[(1.0, aux, "LPF", "no_attn", True)] = "without linear-attn"
     config_to_name[(1.0, aux, "LPF", "linear_attn", False)] = "without NormLin"
     config_to_name[(1.0, aux, "nofilter", "linear_attn", True)] = "without low-pass filter"
-    config_to_name[(1.0, aux, "LPF", "linear_attn", True)] = "OrEdge (linear attn, norm, FreDF)"
+    config_to_name[(1.0, aux, "LPF", "linear_attn", True)] = "OrEdge (linear attn, FreDF)"
 
 # Dataset-dependent auxi_lambda for matching
 sub_ablation['auxi_lambda_key'] = sub_ablation['datasource'].map(dataset_auxi_lambda)
@@ -129,9 +129,9 @@ metrics = [("PR", "pr"), ("RC", "rc"), ("F1", "f1"), ("AUC", "auc"), ("AP", "ap"
 ablation_order = [
     'without FreDF loss', 
     'without linear-attn', 
-    'without NormLin', 
+    #'without NormLin', 
     #'without low-pass filter',
-    'OrEdge (linear attn, norm, FreDF)'
+    'OrEdge (linear attn, FreDF)'
 ]
 basis_order = [
     'Hermite Basis', 
@@ -190,13 +190,17 @@ def generate_local_block_rows(order_list, source_df):
 
 # 5. Generate Latex Frame
 latex_table = []
-latex_table.append("\\begin{table*}[t]\n\\centering\n\\caption{Ablation Analysis of Architectural Components and Orthogonal Transformation Bases (Mean $\\pm$ SD)}\n\\label{tab:comprehensive_rq2}\n\\scriptsize\n\\setlength{\\tabcolsep}{3pt}")
+latex_table.append("\\begin{table*}[t]\n\\centering\n\\caption{Ablation Analysis of Architectural Components and Orthogonal Transformation Bases (Mean $\\pm$ SD)}\n\\label{tab:comprehensive_rq2}\n\\scriptsize\n\\setlength{\\tabcolsep}{2pt}")
 
 # --- MODIFIED: Automatically generates vertical lines 'l| ccccc | ccccc | ccccc' ---
 column_spec = "l|" + " | ".join(["ccccc" for _ in datasets])
 latex_table.append(f"\\begin{{tabular}}{{{column_spec}}}\n\\toprule")
 
 dataset_headers = " & ".join([f"\\backslash multicolumn{{5}}{{c}}{{\\textbf{{{ds}}}}}" for ds in datasets]).replace('\\backslash ', '\\')
+# add * beside MSDS in the header to indicate that it is a low-data regime dataset
+dataset_headers = dataset_headers.replace('MSDS', 'MSDS*')
+
+
 latex_table.append(f"\\textbf{{Configuration Group}} & {dataset_headers} \\\\")
 
 cmidrules = [f"\\cmidrule(lr){{{i*5+2}-{i*5+6}}}" for i in range(len(datasets))]
@@ -211,14 +215,25 @@ latex_table.extend(generate_local_block_rows(ablation_order, sub_ablation))
 latex_table.append("\\midrule[2pt]")
 
 # Append Functional Basis Block with localized bounds
-latex_table.append("\\multicolumn{16}{l}{\\textbf{(b) Impact of Alternative Functional Projection Bases}} \\\\")
-latex_table.extend(generate_local_block_rows(basis_order, sub_basis))
-latex_table.append("\\midrule[2pt]")
+#latex_table.append("\\multicolumn{16}{l}{\\textbf{(b) Impact of Alternative Functional Projection Bases}} \\\\")
+#latex_table.extend(generate_local_block_rows(basis_order, sub_basis))
+#latex_table.append("\\midrule[2pt]")
 
 # Append Architecture Block with localized bounds
-latex_table.append("\\multicolumn{16}{l}{\\textbf{(c) Impact of Architectural Variants}} \\\\")
+latex_table.append("\\multicolumn{16}{l}{\\textbf{(b) Impact of Architectural Variants}} \\\\")
 latex_table.extend(generate_local_block_rows(architecture_order, sub_architecture))
 
 
-latex_table.append("\\bottomrule\n\\end{tabular}\n\\end{table*}")
-print("\n".join(latex_table))
+latex_table.append("\\bottomrule\n\\end{tabular}\n")
+# add flushleft at the end of the table
+flushleft_note = """
+	\\begin{flushleft}
+		*For MSDS, from RQ4, we find that orthogonal-domain supervision provides limited benefit, so we omit the FreDF loss in the ablation study, all experiments are conducted with $\lambda_{aux}=0$. 
+	\end{flushleft}
+"""
+latex_table.append(flushleft_note)
+latex_table.append("\\end{table*}")
+
+with open('sections/Results/RQ3_ablations.tex', 'w') as f:
+    f.write("\n".join(latex_table))
+print("LaTeX table saved to sections/Results/RQ3_ablations.tex !!")

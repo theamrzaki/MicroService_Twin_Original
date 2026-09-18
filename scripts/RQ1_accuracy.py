@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import re
+from scipy.stats import wilcoxon
+from statsmodels.stats.multitest import multipletests
 
 # 1. Load the benchmark dataset
 path = 'result_journal/result_RQ1_benchmark_MemOptimised_lowshow_simplegraph.csv'
@@ -33,7 +35,7 @@ df = pd.concat([df, metrics_df], axis=1)
 
 # 2. Define target parameters
 datasets = ['SN', 'TT', 'MSDS']
-variants = ['Eadro', 'AnoFusion', 'MSTGAD', 'Art', 'Medicine', 'OrEdge']
+variants = ['Eadro', 'AnoFusion', 'MSTGAD', 'Art', 'Medicine','DeepHunt', 'OrEdge']
 
 accuracy_metrics = [
     ("Precision", "pr", 3),
@@ -128,4 +130,247 @@ latex_table.append("\\bottomrule")
 latex_table.append("\\end{tabular}")
 latex_table.append("\\end{table}")
 
-print("\n".join(latex_table))
+#print("\n".join(latex_table))
+
+with open('sections/Results/RQ1_accuracy.tex', 'w') as f:
+    f.write("\n".join(latex_table))
+print("LaTeX table saved to sections/Results/RQ1_accuracy.tex !!")
+
+
+# ============================================================
+# Statistical Significance Analysis: OrEdge vs. Best Baseline
+# ============================================================
+
+# Comparisons selected based on the best F1-performing baseline
+# for each dataset in the main RQ1 results.
+comparisons = {
+    'SN': 'Art',
+    'TT': 'Art',
+    'MSDS': 'MSTGAD'
+}
+
+stat_results = []
+
+for dataset, baseline in comparisons.items():
+
+    # --------------------------------------------------------
+    # Select OrEdge and baseline runs
+    # --------------------------------------------------------
+    or_edge = df[
+        (df['datasource'] == dataset) &
+        (df['FREQ_DOMAIN'] == 'OrEdge')
+    ][['random_seed', 'f1']].copy()
+
+    baseline_df = df[
+        (df['datasource'] == dataset) &
+        (df['FREQ_DOMAIN'] == baseline)
+    ][['random_seed', 'f1']].copy()
+
+    or_edge = or_edge.rename(
+        columns={'f1': 'f1_or_edge'}
+    )
+
+    baseline_df = baseline_df.rename(
+        columns={'f1': 'f1_baseline'}
+    )
+
+    # --------------------------------------------------------
+    # Pair runs using the same random seed
+    # --------------------------------------------------------
+    paired = pd.merge(
+        or_edge,
+        baseline_df,
+        on='random_seed',
+        how='inner'
+    ).dropna()
+
+    print(f"\n===== {dataset}: OrEdge vs {baseline} =====")
+    print(paired)
+
+    if len(paired) < 2:
+        print("Not enough paired runs for statistical testing.")
+        continue
+
+    # --------------------------------------------------------
+    # Paired differences
+    # --------------------------------------------------------
+    differences = (
+        paired['f1_or_edge'] -
+        paired['f1_baseline']
+    )
+
+    # Remove exact zero differences for effect-size calculation
+    nonzero_diff = differences[differences != 0]
+
+    # --------------------------------------------------------
+    # Wilcoxon signed-rank test
+    # --------------------------------------------------------
+    try:
+        statistic, p_value = wilcoxon(
+            paired['f1_or_edge'],
+            paired['f1_baseline'],
+            alternative='two-sided'
+        )
+    except ValueError as e:
+        print(f"Wilcoxon test failed: {e}")
+        continue
+
+    # --------------------------------------------------------
+    # Rank-biserial correlation
+    #
+    # r_rb = (W+ - W-) / (W+ + W-)
+    #
+    # Positive values indicate larger OrEdge scores.
+    # Negative values indicate larger baseline scores.
+    # --------------------------------------------------------
+    if len(nonzero_diff) > 0:
+        ranks = nonzero_diff.abs().rank(method='average')
+
+        positive_rank_sum = ranks[nonzero_diff > 0].sum()
+        negative_rank_sum = ranks[nonzero_diff < 0].sum()
+
+        rank_biserial = (
+            positive_rank_sum - negative_rank_sum
+        ) / (
+            positive_rank_sum + negative_rank_sum
+        )
+    else:
+        rank_biserial = 0.0
+
+    # --------------------------------------------------------
+    # Descriptive statistics
+    # --------------------------------------------------------
+    mean_difference = differences.mean()
+    median_difference = differences.median()
+
+    stat_results.append({
+        'Dataset': dataset,
+        'Baseline': baseline,
+        'N': len(paired),
+
+        'OrEdge_F1': paired['f1_or_edge'].mean(),
+        'Baseline_F1': paired['f1_baseline'].mean(),
+
+        'Mean_Difference': mean_difference,
+        'Median_Difference': median_difference,
+
+        'Wilcoxon_statistic': statistic,
+        'p_value': p_value,
+
+        'Rank_Biserial': rank_biserial
+    })
+
+
+# ============================================================
+# Multiple-comparison correction
+# ============================================================
+
+results_df = pd.DataFrame(stat_results)
+
+if not results_df.empty:
+
+    # Holm correction across the three dataset comparisons
+    reject, p_corrected, _, _ = multipletests(
+        results_df['p_value'],
+        method='holm',
+        alpha=0.05
+    )
+
+    results_df['p_value_holm'] = p_corrected
+    results_df['significant'] = reject
+
+    # --------------------------------------------------------
+    # Print statistical results
+    # --------------------------------------------------------
+    print("\n\n===== Statistical Analysis Results =====")
+
+    print(
+        results_df[
+            [
+                'Dataset',
+                'Baseline',
+                'N',
+                'OrEdge_F1',
+                'Baseline_F1',
+                'Mean_Difference',
+                'Median_Difference',
+                'p_value',
+                'p_value_holm',
+                'Rank_Biserial',
+                'significant'
+            ]
+        ].to_string(index=False)
+    )
+
+    # --------------------------------------------------------
+    # Generate LaTeX statistical table
+    # --------------------------------------------------------
+    latex_stat_lines = []
+
+    for _, row in results_df.iterrows():
+
+        dataset = row['Dataset']
+        baseline = row['Baseline']
+        n = int(row['N'])
+
+        or_edge_mean = row['OrEdge_F1']
+        baseline_mean = row['Baseline_F1']
+        mean_diff = row['Mean_Difference']
+        p_holm = row['p_value_holm']
+        effect = row['Rank_Biserial']
+
+        # Significance marker
+        if p_holm < 0.001:
+            p_text = "$<0.001$"
+        else:
+            p_text = f"${p_holm:.3f}$"
+
+        latex_stat_lines.append(
+            f"{dataset} & {baseline} & {n} & "
+            f"{or_edge_mean:.3f} & "
+            f"{baseline_mean:.3f} & "
+            f"{mean_diff:+.3f} & "
+            f"{p_text} & "
+            f"{effect:+.3f} \\\\"
+        )
+
+    latex_stat_table = []
+
+    latex_stat_table.append("\\begin{table}[t]")
+    latex_stat_table.append(
+        "\\caption{Statistical comparison of OrEdge and the strongest "
+        "F1-performing baseline across datasets.}"
+    )
+    latex_stat_table.append("\\label{tab:rq1_significance}")
+    latex_stat_table.append("\\centering")
+    latex_stat_table.append("\\scriptsize")
+    latex_stat_table.append(
+        "\\begin{tabular}{lccccccc}"
+    )
+    latex_stat_table.append("\\toprule")
+    latex_stat_table.append(
+        "\\textbf{Dataset} & "
+        "\\textbf{Baseline} & "
+        "$n$ & "
+        "\\textbf{OrEdge} & "
+        "\\textbf{Baseline} & "
+        "$\\Delta$F1 & "
+        "$p_{\\mathrm{Holm}}$ & "
+        "$r_{\\mathrm{rb}}$ \\\\"
+    )
+    latex_stat_table.append("\\midrule")
+    latex_stat_table.extend(latex_stat_lines)
+    latex_stat_table.append("\\bottomrule")
+    latex_stat_table.append("\\end{tabular}")
+    latex_stat_table.append("\\end{table}")
+
+    with open(
+        'sections/Results/RQ1_significance.tex',
+        'w'
+    ) as f:
+        f.write("\n".join(latex_stat_table))
+
+    print(
+        "\nLaTeX statistical table saved to "
+        "sections/Results/RQ1_significance.tex !!"
+    )
