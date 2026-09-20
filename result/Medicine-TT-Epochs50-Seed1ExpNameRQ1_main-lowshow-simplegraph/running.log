@@ -1405,3 +1405,385 @@
 {'GPU': {'inference_time_per_sample_ms': 0.30429460457627727, 'throughput_samples_per_sec': 3286.288961292874, 'peak_memory_mb': 53.0732421875, 'energy_per_sample_joules': 0.0217561513433901}, 'CPU': {'inference_time_per_sample_ms': 0.6820078421679211, 'throughput_samples_per_sec': 1466.2587996367704, 'peak_memory_mb': 5766.0625, 'energy_per_sample_joules': 0.04433050974091487}}
 2026-07-26 16:09:59,098 P2607702 INFO Starting clean-room hardware benchmarking...
 2026-07-26 16:10:00,989 P2607702 INFO Performance with f1: pr:0.0315  rc:1.0000  auc:0.6263 ap:0.5177 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:37:48,114 P244919 INFO ---- Model: ----MSTGAD-03050e8e----random_seed : 1----req_loss_approach : Normal-Recreation----rec_lambda : 1.0----auxi_lambda : 0.2----Freq Domain : Medicine----Multi Fits : false----train : True----evaluate : False
+2026-09-20 15:37:48,122 P244919 INFO Load from /home/db2003/Desktop/Amr/Tests/Eadro/codes/chunks/TT
+2026-09-20 15:38:00,561 P244919 INFO Fewshot: training with 1.0 of the 70% of the data
+2026-09-20 15:38:00,664 P244919 INFO Trainable Parameters Breakdown:
+2026-09-20 15:38:00,665 P244919 INFO --------------------------------------------------------------------------------
+2026-09-20 15:38:00,665 P244919 INFO Reconstruction-Specific Parameters:
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_feature_encoder.weight | shape: (32, 60)                  | params: 1,920
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_feature_encoder.bias  | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.weight | shape: (64, 32)                  | params: 2,048
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.linear1.bias | shape: (64,)                     | params: 64
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.weight | shape: (32, 64)                  | params: 2,048
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.linear2.bias | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.weight | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.norm1.bias | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.weight | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,665 P244919 INFO Medicine_model.log_encoder.encoder.layers.0.norm2.bias | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (96, 32)                  | params: 3,072
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (96,)                     | params: 96
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (32, 32)                  | params: 1,024
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.weight | shape: (64, 32)                  | params: 2,048
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.linear1.bias | shape: (64,)                     | params: 64
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.weight | shape: (32, 64)                  | params: 2,048
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.linear2.bias | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.weight | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.norm1.bias | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.weight | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.encoder.layers.1.norm2.bias | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.layernorm.weight | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,666 P244919 INFO Medicine_model.log_encoder.layernorm.bias | shape: (32,)                     | params: 32
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.expand.0.weight | shape: (8, 27)                   | params: 216
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.expand.0.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.expand.2.weight | shape: (27, 8)                   | params: 216
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.expand.2.bias | shape: (27,)                     | params: 27
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.layernorm1.weight | shape: (7,)                      | params: 7
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.layernorm1.bias | shape: (7,)                      | params: 7
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.proj.0.weight | shape: (8, 7)                    | params: 56
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.proj.0.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.proj.2.weight | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.proj.2.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.weight | shape: (64, 8)                   | params: 512
+2026-09-20 15:38:00,667 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.linear1.bias | shape: (64,)                     | params: 64
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.weight | shape: (8, 64)                   | params: 512
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.linear2.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.weight | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.norm1.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.weight | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.0.norm2.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.weight | shape: (64, 8)                   | params: 512
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.linear1.bias | shape: (64,)                     | params: 64
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.weight | shape: (8, 64)                   | params: 512
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.linear2.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,668 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.weight | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.norm1.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.weight | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.metric_encoder.encoder.layers.1.norm2.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.metric_encoder.layernorm2.weight | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.metric_encoder.layernorm2.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.trace_encoder.project.weight | shape: (8, 2)                    | params: 16
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.trace_encoder.project.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.trace_encoder.layernorm.weight | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.trace_encoder.layernorm.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_weight | shape: (24, 8)                   | params: 192
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.trace_encoder.encoder.self_attn.in_proj_bias | shape: (24,)                     | params: 24
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.weight | shape: (8, 8)                    | params: 64
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.trace_encoder.encoder.self_attn.out_proj.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.trace_encoder.encoder.linear1.weight | shape: (64, 8)                   | params: 512
+2026-09-20 15:38:00,669 P244919 INFO Medicine_model.trace_encoder.encoder.linear1.bias | shape: (64,)                     | params: 64
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.trace_encoder.encoder.linear2.weight | shape: (8, 64)                   | params: 512
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.trace_encoder.encoder.linear2.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.trace_encoder.encoder.norm1.weight | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.trace_encoder.encoder.norm1.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.trace_encoder.encoder.norm2.weight | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.trace_encoder.encoder.norm2.bias | shape: (8,)                      | params: 8
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.concat_fusion.proj_x.weight | shape: (64, 8)                   | params: 512
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.concat_fusion.proj_x.bias | shape: (64,)                     | params: 64
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.concat_fusion.proj_y.weight | shape: (64, 32)                  | params: 2,048
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.concat_fusion.proj_y.bias | shape: (64,)                     | params: 64
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.concat_fusion.proj_z.weight | shape: (64, 8)                   | params: 512
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.concat_fusion.proj_z.bias | shape: (64,)                     | params: 64
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.concat_fusion.fc_fused.weight | shape: (64, 48)                  | params: 3,072
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.concat_fusion.fc_fused.bias | shape: (64,)                     | params: 64
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.concat_fusion.rec_metric.weight | shape: (7, 64)                   | params: 448
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.concat_fusion.rec_metric.bias | shape: (7,)                      | params: 7
+2026-09-20 15:38:00,670 P244919 INFO Medicine_model.concat_fusion.rec_log.weight | shape: (60, 64)                  | params: 3,840
+2026-09-20 15:38:00,671 P244919 INFO Medicine_model.concat_fusion.rec_log.bias | shape: (60,)                     | params: 60
+2026-09-20 15:38:00,671 P244919 INFO Medicine_model.concat_fusion.rec_trace.weight | shape: (2, 64)                   | params: 128
+2026-09-20 15:38:00,671 P244919 INFO Medicine_model.concat_fusion.rec_trace.bias | shape: (2,)                      | params: 2
+2026-09-20 15:38:00,671 P244919 INFO Subtotal: 34,854
+2026-09-20 15:38:00,671 P244919 INFO --------------------------------------------------------------------------------
+2026-09-20 15:38:00,671 P244919 INFO Common Parameters:
+2026-09-20 15:38:00,671 P244919 INFO show.0.weight                            | shape: (128, 69)                 | params: 8,832
+2026-09-20 15:38:00,671 P244919 INFO show.0.bias                              | shape: (128,)                    | params: 128
+2026-09-20 15:38:00,671 P244919 INFO show.2.weight                            | shape: (2, 128)                  | params: 256
+2026-09-20 15:38:00,671 P244919 INFO show.2.bias                              | shape: (2,)                      | params: 2
+2026-09-20 15:38:00,671 P244919 INFO Subtotal: 9,218
+2026-09-20 15:38:00,671 P244919 INFO --------------------------------------------------------------------------------
+2026-09-20 15:38:00,671 P244919 INFO Total Trainable Parameters: 44,072
+
+2026-09-20 15:38:00,671 P244919 INFO Trainable Parameters: 44072, reconstruction: 34854, common: 9218
+2026-09-20 15:38:00,672 P244919 INFO model : init weight
+2026-09-20 15:38:00,672 P244919 INFO Using GPU...
+2026-09-20 15:38:00,678 P244919 INFO optimizer : using AdaBelief
+2026-09-20 15:38:00,679 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:38:00,679 P244919 INFO 0/50 starting... lr: 0.001 para:1.0
+2026-09-20 15:38:46,279 P244919 INFO Epoch 0/50, all_loss:-419.48477 cls_loss:186.14397 rec_loss:-419.48477 [45.59s]; best loss:-419.48477, patience : 0
+2026-09-20 15:38:46,279 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:38:46,279 P244919 INFO 1/50 starting... lr: 0.001 para:0.5
+2026-09-20 15:39:42,646 P244919 INFO Epoch 1/50, all_loss:5369.68848 cls_loss:13608.59375 rec_loss:-2869.21680 [56.36s]; best loss:5369.68848, patience : 0
+2026-09-20 15:39:42,646 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:39:42,646 P244919 INFO 2/50 starting... lr: 0.001 para:0.3333333432674408
+2026-09-20 15:40:29,076 P244919 INFO Epoch 2/50, all_loss:2143.14014 cls_loss:4654.63379 rec_loss:-2879.84668 [46.42s]; best loss:2143.14014, patience : 0
+2026-09-20 15:40:56,830 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 15:41:03,530 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:41:03,545 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:41:03,545 P244919 INFO 3/50 starting... lr: 0.001 para:0.25
+2026-09-20 15:41:51,306 P244919 INFO Epoch 3/50, all_loss:2894.50244 cls_loss:4820.26270 rec_loss:-2882.77905 [47.76s]; best loss:2143.14014, patience : 1
+2026-09-20 15:42:09,691 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5537 ap:0.5059 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061714 actu_wrong: 34486
+2026-09-20 15:42:15,104 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5515 ap:0.5054 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:42:15,114 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:42:15,114 P244919 INFO 4/50 starting... lr: 0.001 para:0.20000000298023224
+2026-09-20 15:43:13,147 P244919 INFO Epoch 4/50, all_loss:4517.06055 cls_loss:6366.85889 rec_loss:-2882.13306 [58.03s]; best loss:2143.14014, patience : 2
+2026-09-20 15:43:29,492 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061713 actu_wrong: 34487
+2026-09-20 15:43:36,836 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:43:36,849 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:43:36,850 P244919 INFO 5/50 starting... lr: 0.001 para:0.1666666716337204
+2026-09-20 15:44:35,694 P244919 INFO Epoch 5/50, all_loss:3141.86060 cls_loss:4346.46045 rec_loss:-2881.13940 [58.84s]; best loss:2143.14014, patience : 2
+2026-09-20 15:44:52,590 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 15:44:59,422 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:44:59,433 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:44:59,434 P244919 INFO 6/50 starting... lr: 0.001 para:0.1428571492433548
+2026-09-20 15:45:51,465 P244919 INFO Epoch 6/50, all_loss:2746.84790 cls_loss:3684.76929 rec_loss:-2880.68115 [52.03s]; best loss:2143.14014, patience : 2
+2026-09-20 15:46:06,041 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 15:46:25,587 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:46:25,598 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:46:25,598 P244919 INFO 7/50 starting... lr: 0.001 para:0.125
+2026-09-20 15:47:15,753 P244919 INFO Epoch 7/50, all_loss:3086.74878 cls_loss:3939.04492 rec_loss:-2879.32446 [50.15s]; best loss:2143.14014, patience : 3
+2026-09-20 15:47:33,643 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-09-20 15:47:41,367 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:47:41,377 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:47:41,378 P244919 INFO 8/50 starting... lr: 0.001 para:0.1111111119389534
+2026-09-20 15:48:41,333 P244919 INFO Epoch 8/50, all_loss:3926.35693 cls_loss:4773.53760 rec_loss:-2851.08398 [59.95s]; best loss:2143.14014, patience : 4
+2026-09-20 15:48:58,143 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 15:49:05,448 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:49:05,459 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:49:05,459 P244919 INFO 9/50 starting... lr: 0.001 para:0.10000000149011612
+2026-09-20 15:50:06,563 P244919 INFO Epoch 9/50, all_loss:559.05377 cls_loss:688.29297 rec_loss:-604.09869 [61.09s]; best loss:559.05377, patience : 0
+2026-09-20 15:50:24,973 P244919 INFO pr:0.0315  rc:1.0000  auc:0.2236 ap:0.4751 f1: 0.0610 pred_right: 0 pred_wrong:1096200 actu_right: 1061714 actu_wrong: 34486
+2026-09-20 15:50:32,531 P244919 INFO pr:0.0315  rc:1.0000  auc:0.2247 ap:0.4751 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:50:32,542 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:50:32,542 P244919 INFO 10/50 starting... lr: 0.001 para:0.09090909361839294
+2026-09-20 15:51:24,254 P244919 INFO Epoch 10/50, all_loss:255.10822 cls_loss:313.67554 rec_loss:-330.56506 [51.70s]; best loss:255.10822, patience : 0
+2026-09-20 15:51:41,784 P244919 INFO pr:0.0000  rc:0.0000  auc:0.4816 ap:0.5014 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061709 actu_wrong: 34491
+2026-09-20 15:51:49,261 P244919 INFO pr:0.0000  rc:0.0000  auc:0.4804 ap:0.5015 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:51:49,263 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:51:49,264 P244919 INFO 11/50 starting... lr: 0.001 para:0.0833333358168602
+2026-09-20 15:52:50,158 P244919 INFO Epoch 11/50, all_loss:269.00143 cls_loss:331.61450 rec_loss:-419.74203 [60.89s]; best loss:255.10822, patience : 1
+2026-09-20 15:53:07,714 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5289 ap:0.5061 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061714 actu_wrong: 34486
+2026-09-20 15:53:15,040 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5272 ap:0.5062 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:53:15,041 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:53:15,047 P244919 INFO 12/50 starting... lr: 0.001 para:0.07692307978868484
+2026-09-20 15:54:17,547 P244919 INFO Epoch 12/50, all_loss:323.07773 cls_loss:388.97198 rec_loss:-467.65332 [62.50s]; best loss:255.10822, patience : 2
+2026-09-20 15:54:35,093 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5570 ap:0.5106 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-09-20 15:54:42,443 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5574 ap:0.5108 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:54:42,444 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:54:42,444 P244919 INFO 13/50 starting... lr: 0.001 para:0.0714285746216774
+2026-09-20 15:55:33,379 P244919 INFO Epoch 13/50, all_loss:175.42734 cls_loss:218.58803 rec_loss:-385.66171 [50.92s]; best loss:175.42734, patience : 0
+2026-09-20 15:56:03,232 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5710 ap:0.5115 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061708 actu_wrong: 34492
+2026-09-20 15:56:10,666 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5712 ap:0.5118 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:56:10,668 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:56:10,668 P244919 INFO 14/50 starting... lr: 0.001 para:0.06666667014360428
+2026-09-20 15:57:01,344 P244919 INFO Epoch 14/50, all_loss:221.10748 cls_loss:264.39236 rec_loss:-384.88132 [50.68s]; best loss:175.42734, patience : 1
+2026-09-20 15:57:20,946 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5002 ap:0.5040 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061707 actu_wrong: 34493
+2026-09-20 15:57:26,724 P244919 INFO pr:0.0000  rc:0.0000  auc:0.4990 ap:0.5042 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:57:26,725 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:57:26,725 P244919 INFO 15/50 starting... lr: 0.001 para:0.0625
+2026-09-20 15:58:26,988 P244919 INFO Epoch 15/50, all_loss:167.18335 cls_loss:207.36392 rec_loss:-435.52530 [60.25s]; best loss:167.18335, patience : 0
+2026-09-20 15:58:44,617 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5364 ap:0.5100 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-09-20 15:58:52,149 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5347 ap:0.5102 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 15:58:52,150 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 15:58:52,150 P244919 INFO 16/50 starting... lr: 0.001 para:0.05882352963089943
+2026-09-20 15:59:54,282 P244919 INFO Epoch 16/50, all_loss:405.88077 cls_loss:485.22357 rec_loss:-863.60400 [62.13s]; best loss:167.18335, patience : 1
+2026-09-20 16:00:11,300 P244919 INFO pr:0.0315  rc:1.0000  auc:0.5000 ap:0.5000 f1: 0.0610 pred_right: 0 pred_wrong:1096200 actu_right: 1061712 actu_wrong: 34488
+2026-09-20 16:00:18,439 P244919 INFO pr:0.0315  rc:1.0000  auc:0.5000 ap:0.5000 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:00:18,451 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:00:18,451 P244919 INFO 17/50 starting... lr: 0.001 para:0.0555555559694767
+2026-09-20 16:01:10,948 P244919 INFO Epoch 17/50, all_loss:1297.43030 cls_loss:1539.54077 rec_loss:-2818.44849 [52.50s]; best loss:167.18335, patience : 2
+2026-09-20 16:01:39,169 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 16:01:47,012 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:01:47,013 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:01:47,013 P244919 INFO 18/50 starting... lr: 0.001 para:0.05263157933950424
+2026-09-20 16:02:38,325 P244919 INFO Epoch 18/50, all_loss:862.74982 cls_loss:1069.66553 rec_loss:-2861.73389 [51.31s]; best loss:167.18335, patience : 2
+2026-09-20 16:02:56,056 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-09-20 16:03:04,086 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:03:04,088 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:03:04,088 P244919 INFO 19/50 starting... lr: 0.001 para:0.05000000074505806
+2026-09-20 16:04:02,975 P244919 INFO Epoch 19/50, all_loss:1089.37488 cls_loss:1297.58411 rec_loss:-2866.59888 [58.89s]; best loss:167.18335, patience : 3
+2026-09-20 16:04:20,286 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061711 actu_wrong: 34489
+2026-09-20 16:04:27,326 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:04:27,327 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:04:27,327 P244919 INFO 20/50 starting... lr: 0.001 para:0.0476190485060215
+2026-09-20 16:05:27,852 P244919 INFO Epoch 20/50, all_loss:694.24292 cls_loss:873.76147 rec_loss:-2896.12769 [60.52s]; best loss:167.18335, patience : 3
+2026-09-20 16:05:45,113 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5517 ap:0.5072 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061713 actu_wrong: 34487
+2026-09-20 16:05:52,555 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5513 ap:0.5074 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:05:52,556 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:05:52,556 P244919 INFO 21/50 starting... lr: 0.001 para:0.04545454680919647
+2026-09-20 16:06:46,387 P244919 INFO Epoch 21/50, all_loss:653.99438 cls_loss:824.42303 rec_loss:-2925.00830 [53.83s]; best loss:167.18335, patience : 3
+2026-09-20 16:07:03,419 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061711 actu_wrong: 34489
+2026-09-20 16:07:23,058 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:07:23,059 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:07:23,059 P244919 INFO 22/50 starting... lr: 0.001 para:0.043478261679410934
+2026-09-20 16:08:15,914 P244919 INFO Epoch 22/50, all_loss:283.44086 cls_loss:431.16953 rec_loss:-2966.58765 [52.85s]; best loss:167.18335, patience : 3
+2026-09-20 16:08:33,924 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5622 ap:0.5108 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061711 actu_wrong: 34489
+2026-09-20 16:08:41,850 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5610 ap:0.5110 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:08:41,854 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:08:41,854 P244919 INFO 23/50 starting... lr: 0.001 para:0.0416666679084301
+2026-09-20 16:09:43,239 P244919 INFO Epoch 23/50, all_loss:310.78946 cls_loss:457.84714 rec_loss:-3071.53760 [61.38s]; best loss:167.18335, patience : 4
+2026-09-20 16:10:01,459 P244919 INFO pr:0.0315  rc:1.0000  auc:0.6281 ap:0.5172 f1: 0.0610 pred_right: 0 pred_wrong:1096200 actu_right: 1061710 actu_wrong: 34490
+2026-09-20 16:10:09,328 P244919 INFO pr:0.0315  rc:1.0000  auc:0.6263 ap:0.5177 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:10:09,338 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:10:09,339 P244919 INFO 24/50 starting... lr: 0.001 para:0.03999999910593033
+2026-09-20 16:11:01,430 P244919 INFO Epoch 24/50, all_loss:258.98425 cls_loss:402.74042 rec_loss:-3191.16431 [52.09s]; best loss:167.18335, patience : 4
+2026-09-20 16:11:33,420 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061707 actu_wrong: 34493
+2026-09-20 16:11:40,838 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:11:40,839 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:11:40,839 P244919 INFO 25/50 starting... lr: 0.001 para:0.03846153989434242
+2026-09-20 16:12:33,877 P244919 INFO Epoch 25/50, all_loss:204.42683 cls_loss:345.43848 rec_loss:-3320.86328 [53.04s]; best loss:167.18335, patience : 4
+2026-09-20 16:12:51,319 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061711 actu_wrong: 34489
+2026-09-20 16:12:58,359 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:12:58,360 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:12:58,360 P244919 INFO 26/50 starting... lr: 0.001 para:0.03703703731298447
+2026-09-20 16:14:01,568 P244919 INFO Epoch 26/50, all_loss:399.16504 cls_loss:550.53784 rec_loss:-3536.52954 [63.21s]; best loss:167.18335, patience : 5
+2026-09-20 16:14:19,233 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061716 actu_wrong: 34484
+2026-09-20 16:14:26,723 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:14:26,724 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:14:26,724 P244919 INFO 27/50 starting... lr: 0.001 para:0.0357142873108387
+2026-09-20 16:15:28,316 P244919 INFO Epoch 27/50, all_loss:218.97145 cls_loss:366.27768 rec_loss:-3758.29639 [61.59s]; best loss:167.18335, patience : 5
+2026-09-20 16:15:46,084 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6228 ap:0.5304 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 16:15:53,645 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6217 ap:0.5308 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:15:53,646 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:15:53,653 P244919 INFO 28/50 starting... lr: 0.001 para:0.03448275849223137
+2026-09-20 16:16:44,825 P244919 INFO Epoch 28/50, all_loss:174.78699 cls_loss:325.08105 rec_loss:-4033.44653 [51.17s]; best loss:167.18335, patience : 5
+2026-09-20 16:17:15,885 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 16:17:23,515 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:17:23,516 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:17:23,516 P244919 INFO 29/50 starting... lr: 0.001 para:0.03333333507180214
+2026-09-20 16:18:16,977 P244919 INFO Epoch 29/50, all_loss:174.59650 cls_loss:328.74896 rec_loss:-4295.82422 [53.46s]; best loss:167.18335, patience : 5
+2026-09-20 16:18:36,016 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6567 ap:0.5487 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061707 actu_wrong: 34493
+2026-09-20 16:18:43,446 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6554 ap:0.5490 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:18:43,447 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:18:43,447 P244919 INFO 30/50 starting... lr: 0.001 para:0.032258063554763794
+2026-09-20 16:19:44,857 P244919 INFO Epoch 30/50, all_loss:137.02585 cls_loss:291.70200 rec_loss:-4503.25977 [61.40s]; best loss:137.02585, patience : 0
+2026-09-20 16:20:02,491 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-09-20 16:20:10,079 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:20:10,080 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:20:10,080 P244919 INFO 31/50 starting... lr: 0.001 para:0.03125
+2026-09-20 16:21:12,110 P244919 INFO Epoch 31/50, all_loss:341.57623 cls_loss:507.76370 rec_loss:-4810.23535 [62.03s]; best loss:137.02585, patience : 1
+2026-09-20 16:21:29,715 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6911 ap:0.5767 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-09-20 16:21:37,059 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6905 ap:0.5760 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:21:37,060 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:21:37,061 P244919 INFO 32/50 starting... lr: 0.001 para:0.03030303120613098
+2026-09-20 16:22:30,288 P244919 INFO Epoch 32/50, all_loss:276.79108 cls_loss:444.81393 rec_loss:-5099.94189 [53.23s]; best loss:137.02585, patience : 1
+2026-09-20 16:22:46,280 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-09-20 16:23:07,561 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:23:07,562 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:23:07,562 P244919 INFO 33/50 starting... lr: 0.001 para:0.029411764815449715
+2026-09-20 16:24:00,340 P244919 INFO Epoch 33/50, all_loss:192.38905 cls_loss:366.48157 rec_loss:-5552.66455 [52.78s]; best loss:137.02585, patience : 1
+2026-09-20 16:24:18,881 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6877 ap:0.5751 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-09-20 16:24:26,518 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6879 ap:0.5763 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:24:26,519 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:24:26,520 P244919 INFO 34/50 starting... lr: 0.001 para:0.02857142873108387
+2026-09-20 16:25:28,342 P244919 INFO Epoch 34/50, all_loss:170.46303 cls_loss:347.62955 rec_loss:-5853.19824 [61.82s]; best loss:137.02585, patience : 1
+2026-09-20 16:25:45,223 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-09-20 16:25:52,714 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:25:52,715 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:25:52,715 P244919 INFO 35/50 starting... lr: 0.001 para:0.02777777798473835
+2026-09-20 16:26:53,903 P244919 INFO Epoch 35/50, all_loss:59.63839 cls_loss:245.15536 rec_loss:-6433.45557 [61.17s]; best loss:59.63839, patience : 0
+2026-09-20 16:27:14,566 P244919 INFO pr:0.0315  rc:1.0000  auc:0.4074 ap:0.4838 f1: 0.0610 pred_right: 0 pred_wrong:1096200 actu_right: 1061711 actu_wrong: 34489
+2026-09-20 16:27:22,253 P244919 INFO pr:0.0315  rc:1.0000  auc:0.4067 ap:0.4836 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:27:22,254 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:27:22,255 P244919 INFO 36/50 starting... lr: 0.001 para:0.027027027681469917
+2026-09-20 16:28:15,537 P244919 INFO Epoch 36/50, all_loss:87.74885 cls_loss:280.77731 rec_loss:-6861.27686 [53.28s]; best loss:59.63839, patience : 1
+2026-09-20 16:28:32,794 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5803 ap:0.5853 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 16:28:46,014 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5800 ap:0.5842 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:28:46,016 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:28:46,016 P244919 INFO 37/50 starting... lr: 0.001 para:0.02631578966975212
+2026-09-20 16:29:44,273 P244919 INFO Epoch 37/50, all_loss:-61.52594 cls_loss:137.46179 rec_loss:-7424.07227 [58.24s]; best loss:-61.52594, patience : 0
+2026-09-20 16:30:02,759 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6075 ap:0.6015 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061707 actu_wrong: 34493
+2026-09-20 16:30:10,585 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6091 ap:0.6017 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:30:10,586 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:30:10,586 P244919 INFO 38/50 starting... lr: 0.001 para:0.025641025975346565
+2026-09-20 16:31:13,120 P244919 INFO Epoch 38/50, all_loss:46.96253 cls_loss:272.66483 rec_loss:-8529.72461 [62.53s]; best loss:-61.52594, patience : 1
+2026-09-20 16:31:30,706 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5862 ap:0.5650 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 16:31:38,397 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5866 ap:0.5660 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:31:38,398 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:31:38,398 P244919 INFO 39/50 starting... lr: 0.001 para:0.02500000037252903
+2026-09-20 16:32:33,752 P244919 INFO Epoch 39/50, all_loss:-206.96118 cls_loss:57.90780 rec_loss:-10536.85059 [55.32s]; best loss:-206.96118, patience : 0
+2026-09-20 16:33:01,149 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5927 ap:0.5908 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061706 actu_wrong: 34494
+2026-09-20 16:33:08,689 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5930 ap:0.5935 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:33:08,690 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:33:08,690 P244919 INFO 40/50 starting... lr: 0.001 para:0.024390242993831635
+2026-09-20 16:34:00,829 P244919 INFO Epoch 40/50, all_loss:-211.38054 cls_loss:97.70268 rec_loss:-12574.71094 [52.13s]; best loss:-211.38054, patience : 0
+2026-09-20 16:34:19,234 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061709 actu_wrong: 34491
+2026-09-20 16:34:26,238 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:34:26,238 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:34:26,239 P244919 INFO 41/50 starting... lr: 0.001 para:0.02380952425301075
+2026-09-20 16:35:28,896 P244919 INFO Epoch 41/50, all_loss:-284.21725 cls_loss:64.25955 rec_loss:-14571.76562 [62.64s]; best loss:-284.21725, patience : 0
+2026-09-20 16:35:47,242 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6850 ap:0.6189 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061710 actu_wrong: 34490
+2026-09-20 16:35:55,101 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6902 ap:0.6218 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:35:55,102 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:35:55,109 P244919 INFO 42/50 starting... lr: 0.001 para:0.023255813866853714
+2026-09-20 16:36:58,212 P244919 INFO Epoch 42/50, all_loss:-321.80441 cls_loss:53.06698 rec_loss:-16066.40137 [63.09s]; best loss:-321.80441, patience : 0
+2026-09-20 16:37:15,752 P244919 INFO pr:0.0000  rc:0.0000  auc:0.4710 ap:0.5780 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061709 actu_wrong: 34491
+2026-09-20 16:37:23,098 P244919 INFO pr:0.0000  rc:0.0000  auc:0.4735 ap:0.5792 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:37:23,099 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:37:23,099 P244919 INFO 43/50 starting... lr: 0.001 para:0.022727273404598236
+2026-09-20 16:38:15,957 P244919 INFO Epoch 43/50, all_loss:-310.52570 cls_loss:97.68031 rec_loss:-17863.38477 [52.86s]; best loss:-321.80441, patience : 1
+2026-09-20 16:38:47,325 P244919 INFO pr:0.0000  rc:0.0000  auc:0.4877 ap:0.6065 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 16:38:54,598 P244919 INFO pr:0.0000  rc:0.0000  auc:0.4911 ap:0.6092 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:38:54,600 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:38:54,600 P244919 INFO 44/50 starting... lr: 0.001 para:0.02222222276031971
+2026-09-20 16:39:47,009 P244919 INFO Epoch 44/50, all_loss:-306.65811 cls_loss:140.17218 rec_loss:-19967.18750 [52.41s]; best loss:-321.80441, patience : 2
+2026-09-20 16:40:06,895 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6060 ap:0.5828 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 16:40:13,074 P244919 INFO pr:0.0000  rc:0.0000  auc:0.6037 ap:0.5858 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:40:13,075 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:40:13,075 P244919 INFO 45/50 starting... lr: 0.001 para:0.021739130839705467
+2026-09-20 16:41:15,947 P244919 INFO Epoch 45/50, all_loss:-376.64886 cls_loss:107.08460 rec_loss:-22144.65430 [62.86s]; best loss:-376.64886, patience : 0
+2026-09-20 16:41:34,141 P244919 INFO pr:0.0000  rc:0.0000  auc:0.4841 ap:0.5671 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061711 actu_wrong: 34489
+2026-09-20 16:41:41,746 P244919 INFO pr:0.0000  rc:0.0000  auc:0.4865 ap:0.5698 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:41:41,747 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:41:41,747 P244919 INFO 46/50 starting... lr: 0.001 para:0.021276595070958138
+2026-09-20 16:42:44,358 P244919 INFO Epoch 46/50, all_loss:-347.74377 cls_loss:176.44420 rec_loss:-24460.38867 [62.61s]; best loss:-376.64886, patience : 1
+2026-09-20 16:43:01,703 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 16:43:09,106 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:43:09,107 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:43:09,107 P244919 INFO 47/50 starting... lr: 0.001 para:0.02083333395421505
+2026-09-20 16:44:02,489 P244919 INFO Epoch 47/50, all_loss:-431.24753 cls_loss:138.10390 rec_loss:-27190.76367 [53.37s]; best loss:-431.24753, patience : 0
+2026-09-20 16:44:31,370 P244919 INFO pr:0.0315  rc:1.0000  auc:0.4791 ap:0.4924 f1: 0.0610 pred_right: 0 pred_wrong:1096200 actu_right: 1061711 actu_wrong: 34489
+2026-09-20 16:44:39,691 P244919 INFO pr:0.0315  rc:1.0000  auc:0.4772 ap:0.4919 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:44:39,692 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:44:39,692 P244919 INFO 48/50 starting... lr: 0.001 para:0.020408162847161293
+2026-09-20 16:45:30,983 P244919 INFO Epoch 48/50, all_loss:-537.35297 cls_loss:87.70061 rec_loss:-30539.92578 [51.28s]; best loss:-537.35297, patience : 0
+2026-09-20 16:45:48,271 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061712 actu_wrong: 34488
+2026-09-20 16:45:56,898 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:45:56,899 P244919 INFO ----------------------------------------------------------------------------------------------------
+2026-09-20 16:45:56,899 P244919 INFO 49/50 starting... lr: 0.001 para:0.019999999552965164
+2026-09-20 16:46:57,673 P244919 INFO Epoch 49/50, all_loss:-475.70795 cls_loss:209.39259 rec_loss:-34045.63281 [60.77s]; best loss:-537.35297, patience : 1
+2026-09-20 16:47:14,878 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5375 ap:0.5660 f1: 0.0000 pred_right: 1096200 pred_wrong: 0  actu_right: 1061709 actu_wrong: 34491
+2026-09-20 16:47:22,397 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5386 ap:0.5680 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:47:22,398 P244919 INFO saving model...
+2026-09-20 16:47:22,398 P244919 INFO Medicine - loss  best score:-537.3529663085938 at epoch 48
+2026-09-20 16:47:22,412 P244919 INFO Medicine - f1  best score:0.06100699572827212 at epoch 23
+2026-09-20 16:47:22,428 P244919 INFO Average training time per epoch: 56.34 seconds
+2026-09-20 16:47:22,431 P244919 INFO calculate scores...
+2026-09-20 16:47:22,431 P244919 INFO calculate label with loss...
+2026-09-20 16:47:22,431 P244919 INFO Medicine on ./result/Medicine-TT-Epochs50-Seed1ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-09-20 16:47:29,759 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:47:44,377 P244919 INFO pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:47:44,377 P244919 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.3881424458237658, 'throughput_samples_per_sec': 2576.37372763412, 'peak_memory_mb': 53.4638671875, 'energy_per_sample_joules': 0.021994867977495336}, 'CPU': {'inference_time_per_sample_ms': 0.8074027251978282, 'throughput_samples_per_sec': 1238.539292463971, 'peak_memory_mb': 5592.890625, 'energy_per_sample_joules': 0.05248117713785883}}
+2026-09-20 16:47:44,378 P244919 INFO Starting clean-room hardware benchmarking...
+2026-09-20 16:47:46,468 P244919 INFO Performance with loss: pr:0.0000  rc:0.0000  auc:0.5000 ap:0.5000 f1: 0.0000 pred_right: 469800 pred_wrong: 0  actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:47:46,469 P244919 INFO calculate label with f1...
+2026-09-20 16:47:46,469 P244919 INFO Medicine on ./result/Medicine-TT-Epochs50-Seed1ExpNameRQ1_main-lowshow-simplegraph loading...
+2026-09-20 16:47:54,427 P244919 INFO pr:0.0315  rc:1.0000  auc:0.6263 ap:0.5177 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:48:08,390 P244919 INFO pr:0.0315  rc:1.0000  auc:0.5995 ap:0.5151 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
+2026-09-20 16:48:08,391 P244919 INFO Performance Summary:
+{'GPU': {'inference_time_per_sample_ms': 0.39916941733639494, 'throughput_samples_per_sec': 2505.201943257248, 'peak_memory_mb': 53.0732421875, 'energy_per_sample_joules': 0.025661204747596155}, 'CPU': {'inference_time_per_sample_ms': 0.7610616536145917, 'throughput_samples_per_sec': 1313.9539947264363, 'peak_memory_mb': 5418.58203125, 'energy_per_sample_joules': 0.04946900748494846}}
+2026-09-20 16:48:08,391 P244919 INFO Starting clean-room hardware benchmarking...
+2026-09-20 16:48:10,157 P244919 INFO Performance with f1: pr:0.0315  rc:1.0000  auc:0.6263 ap:0.5177 f1: 0.0611 pred_right: 0 pred_wrong:469800 actu_right: 454992 actu_wrong: 14808
