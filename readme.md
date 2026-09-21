@@ -118,8 +118,8 @@ The experiments reported in the paper can be reproduced using the following scri
 |-------------------|--------|
 | RQ1: Main comparison | `./run_RQ1_main.sh` |
 | RQ3: Ablation study | `./run_RQ3_ablations.sh` |
-| RQ4: Sensitivity analysis | `./run_RQ4_sensitivity.sh` |
-| RQ5: Basis degree comparison | `./run_RQ2z5_basis_degree.sh` |
+| RQ4: Basis degree comparison | `./run_RQ2z5_basis_degree.sh` |
+| RQ5: Sensitivity analysis | `./run_RQ4_sensitivity.sh` |
 
 ---
 
@@ -152,9 +152,9 @@ After training, the following scripts generate the figures and tables used in th
 scripts/RQ1_accuracy.py
 scripts/RQ2_efficiency.py
 scripts/RQ3_ablations.py
+scripts/RQ2z5_basis_degree.py
 scripts/RQ4_sensitivity.py
 scripts/RQ4_sensitivity_linear_attn.py
-scripts/RQ2z5_basis_degree.py
 ```
 
 ---
