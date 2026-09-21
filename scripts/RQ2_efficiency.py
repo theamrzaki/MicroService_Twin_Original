@@ -35,7 +35,7 @@ df['FREQ_DOMAIN'] = df['FREQ_DOMAIN'].replace({'encoder_decoder': 'MSTGAD', 'FIT
 df = df[~((df['FREQ_DOMAIN'] == 'Medicine') & (df['datasource'] == 'SN') & (df['total_params'] == 148308))]
 
 # 2. Define our target datasets (columns) and model variants (rows)
-datasets = ['SN', 'TT', 'MSDS']
+datasets = ['MSDS','SN', 'TT']
 variants = ['Eadro', 'AnoFusion', 'MSTGAD', 'Art', 'Medicine','DeepHunt', 'OrEdge']
 
 # 3. Define mapping for Server (GPU/CPU) and Raspberry Pi metrics
@@ -147,7 +147,7 @@ latex_table.append("\\centering")
 latex_table.append("\\scriptsize")
 latex_table.append("\\begin{tabular}{llcccc}")
 latex_table.append("\\toprule")
-latex_table.append("\\textbf{Device} & \\textbf{Metric} & \\textbf{Model Variant} & \\textbf{SN} & \\textbf{TT} & \\textbf{MSDS} \\\\")
+latex_table.append("\\textbf{Device} & \\textbf{Metric} & \\textbf{Model Variant} & \\textbf{MSDS} & \\textbf{SN} & \\textbf{TT} \\\\")
 latex_table.append("\\midrule")
 
 latex_table.extend(generate_device_rows("Server", "\\footnotesize (GPU: RTX 3070 CPU:i9)", server_metrics, "server"))
@@ -164,3 +164,19 @@ latex_table.append("\\end{table*}")
 with open('sections/Results/RQ2_efficiency.tex', 'w') as f:
     f.write("\n".join(latex_table))
 print("LaTeX table saved to sections/Results/RQ2_efficiency.tex !!")
+
+#across datasources, FREQ_DOMAIN (check if it has 3 seeds using "random_seed" column)
+# print missing combinations with the found seeds 
+missing_combinations = []
+for ds in df["datasource"].unique():
+    for arch in df["FREQ_DOMAIN"].unique():
+            seeds = df[
+                (df["datasource"] == ds) &
+                (df["FREQ_DOMAIN"] == arch)
+            ]["random_seed"].unique()
+            if len(seeds) < 3:
+                missing_combinations.append((ds, arch, seeds))
+for ds, arch, seeds in missing_combinations:
+    print(f"Missing combination: datasource={ds}, arch={arch}, found seeds={seeds}")
+if len(missing_combinations) == 0:
+    print("All combinations have at least 3 seeds.")

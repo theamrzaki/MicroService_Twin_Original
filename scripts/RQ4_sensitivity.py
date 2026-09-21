@@ -150,3 +150,20 @@ for ds in target_datasets:
 txt_filename = "figs/results/sensitivity_auxi_lambda_PRF.txt"
 with open(txt_filename, "w") as f:
     f.write(data)
+
+
+#across datasources, FREQ_DOMAIN (check if it has 3 seeds using "random_seed" column)
+# print missing combinations with the found seeds 
+missing_combinations = []
+for ds in df["datasource"].unique():
+    for aux in df["auxi_lambda"].unique():
+            seeds = df[
+                (df["datasource"] == ds) &
+                (df["auxi_lambda"] == aux)
+            ]["random_seed"].unique()
+            if len(seeds) < 3:
+                missing_combinations.append((ds, aux, seeds))
+for ds, aux, seeds in missing_combinations:
+    print(f"Missing combination: datasource={ds}, aux={aux}, found seeds={seeds}")
+if len(missing_combinations) == 0:
+    print("All combinations have at least 3 seeds.")

@@ -25,17 +25,23 @@ df_architecture = df_architecture[df_architecture['FREQ_DOMAIN'] != 'FITS_Legend
 #-----------------------------------------------------#
 
 #--------df OrEdge --------#
-#select Fits_Legendre rows from df_OrEdge and append to all three dataframes
+#--------df OrEdge --------#
+# Select and filter the standard OrEdge baseline rows from df_OrEdge
 df_OrEdge = pd.read_csv(OrEdge_path)
-df_OrEdge_Fits_Legendre = df_OrEdge[df_OrEdge['FREQ_DOMAIN'] == 'FITS_Legendre']
+df_OrEdge_Fits_Legendre = df_OrEdge[
+    (df_OrEdge['FREQ_DOMAIN'] == 'FITS_Legendre') & 
+    (df_OrEdge['rec_lambda'] == 1.0) & 
+    (df_OrEdge['filter_used'] == "LPF") & 
+    (df_OrEdge['modules_attn'] == "linear_attn") & 
+    (df_OrEdge['use_normlin'] == True)
+].copy()
 #-----------------------------------------------------#
 
 #------------------------------------------------------#
-# Append the OrEdge FITS_Legendre rows to the respective DataFrames
-df_ablation = pd.concat([df_ablation, df_OrEdge_Fits_Legendre], ignore_index=True)
-df_basis = pd.concat([df_basis, df_OrEdge_Fits_Legendre], ignore_index=True)
-df_architecture = pd.concat([df_architecture, df_OrEdge_Fits_Legendre], ignore_index=True)
-#------------------------------------------------------#
+# Append the exact filtered OrEdge rows to ensure identical seed matching
+df_ablation = pd.concat([df_ablation, df_OrEdge_Fits_Legendre], ignore_index=True).reset_index(drop=True)
+df_basis = pd.concat([df_basis, df_OrEdge_Fits_Legendre], ignore_index=True).reset_index(drop=True)
+df_architecture = pd.concat([df_architecture, df_OrEdge_Fits_Legendre], ignore_index=True).reset_index(drop=True)
 
 
 df_architecture['FREQ_DOMAIN'] = df_architecture['FREQ_DOMAIN'].replace({'FITS_Legendre': 'OrEdge'})
@@ -49,11 +55,13 @@ def parse_metrics(metrics_string):
 
 # 2. Process Ablation DataFrame
 #df_ablation['device'] = np.where(df_ablation['training_time_per_epoch'] == 0, 'raspberry_pi', 'server')
-sub_ablation = df_ablation   #[(df_ablation['device'] == 'server') & (df_ablation['FREQ_DOMAIN'] == 'FITS_Legendre') & (df_ablation['MULTI_FITS'] == False)].copy()
+# 2. Process Ablation DataFrame
+sub_ablation = df_ablation.copy()
+# Adjust MSDS auxi_lambda parameter BEFORE dictionary normalization & key mapping
+sub_ablation.loc[sub_ablation['datasource'] == 'MSDS', 'auxi_lambda'] = 0.1111
+
 metrics_ablation = pd.json_normalize(sub_ablation['info_dict'].apply(parse_metrics))
-#change the auxi_lambda to 0.1111 for MSDS, just to ease the visualization, as the actual value is 0.0
-df_ablation.loc[df_ablation['datasource'] == 'MSDS', 'auxi_lambda'] = 0.1111
-sub_ablation = sub_ablation.reset_index(drop=True).join(metrics_ablation.reset_index(drop=True))
+sub_ablation = pd.concat([sub_ablation.reset_index(drop=True), metrics_ablation.reset_index(drop=True)], axis=1)
 # Dataset-specific FreDF weight
 dataset_auxi_lambda = {
     'SN': 0.5,
@@ -98,7 +106,7 @@ sub_ablation = sub_ablation.dropna(subset=['Row_Label'])
 #df_basis['device'] = np.where(df_basis['training_time_per_epoch'] == 0, 'raspberry_pi', 'server')
 sub_basis = df_basis   #[(df_basis['device'] == 'server') & (df_basis['FREQ_DOMAIN'] == 'FITS_Legendre')].copy()
 metrics_basis = pd.json_normalize(sub_basis['info_dict'].apply(parse_metrics))
-sub_basis = sub_basis.reset_index(drop=True).join(metrics_basis.reset_index(drop=True))
+sub_basis = pd.concat([sub_basis.reset_index(drop=True), metrics_basis.reset_index(drop=True)], axis=1)
 
 rename_basis = {
     "hermite": "Hermite Basis",
@@ -113,17 +121,20 @@ sub_basis = sub_basis.dropna(subset=['Row_Label'])
 
 # 3.5 Process Architecture DataFrame
 metrics_architecture = pd.json_normalize(df_architecture['info_dict'].apply(parse_metrics))
-sub_architecture = df_architecture.reset_index(drop=True).join(metrics_architecture.reset_index(drop=True))
-# rename arch is the FREQ_DOMAIN column
+sub_architecture = pd.concat([df_architecture.reset_index(drop=True), metrics_architecture.reset_index(drop=True)], axis=1)
 sub_architecture['Row_Label'] = sub_architecture['FREQ_DOMAIN']
 
-
-
-
+oredge_msds_exact = sub_architecture[
+    (sub_architecture['Row_Label'] == 'OrEdge') & 
+    (sub_architecture['datasource'] == 'MSDS')
+].copy()
+oredge_msds_exact['Row_Label'] = 'OrEdge (linear attn, FreDF)'
+sub_ablation = sub_ablation[~((sub_ablation['Row_Label'] == 'OrEdge (linear attn, FreDF)') & (sub_ablation['datasource'] == 'MSDS'))]
+sub_ablation = pd.concat([sub_ablation, oredge_msds_exact], ignore_index=True).reset_index(drop=True)
 
 
 # 4. Matrix & Shading Parameters
-datasets = ['TT', 'SN', 'MSDS']
+datasets = ['MSDS','SN','TT']
 metrics = [("PR", "pr"), ("RC", "rc"), ("F1", "f1"), ("AUC", "auc"), ("AP", "ap")]
 
 ablation_order = [
@@ -228,7 +239,7 @@ latex_table.append("\\bottomrule\n\\end{tabular}\n")
 # add flushleft at the end of the table
 flushleft_note = """
 	\\begin{flushleft}
-		*For MSDS, from RQ4, we find that orthogonal-domain supervision provides limited benefit, so we omit the FreDF loss in the ablation study, all experiments are conducted with $\lambda_{aux}=0$. 
+		*For MSDS, from RQ5, we find that orthogonal-domain supervision provides limited benefit, so we omit the FreDF loss in the ablation study, all experiments are conducted with $\lambda_{aux}=0$. 
 	\end{flushleft}
 """
 latex_table.append(flushleft_note)
@@ -237,3 +248,35 @@ latex_table.append("\\end{table*}")
 with open('sections/Results/RQ3_ablations.tex', 'w') as f:
     f.write("\n".join(latex_table))
 print("LaTeX table saved to sections/Results/RQ3_ablations.tex !!")
+
+
+
+# Function to check seeds for a specific DataFrame, group column, and required order
+def check_seeds(df, name_col, order_list, group_title):
+    print(f"\n================ Verification for {group_title} ================")
+    missing_found = False
+    
+    for ds in datasets:
+        for item in order_list:
+            subset = df[(df['datasource'] == ds) & (df[name_col] == item)]
+            
+            # Check if seeds column exists
+            if 'random_seed' in subset.columns:
+                seeds = subset['random_seed'].dropna().unique()
+            elif 'seed' in subset.columns:
+                seeds = subset['seed'].dropna().unique()
+            else:
+                seeds = []
+
+            seed_count = len(seeds)
+            if seed_count < 3:
+                missing_found = True
+                print(f"[MISSING] Datasource: {ds:<5} | Item: {item:<30} | Found Seeds ({seed_count}/3): {list(seeds)}")
+                
+    if not missing_found:
+        print(f"All items in {group_title} have at least 3 seeds across all datasets!")
+
+# Run checks for all three groups
+check_seeds(sub_ablation, 'Row_Label', ablation_order, "Ablation Group")
+check_seeds(sub_basis, 'Row_Label', basis_order, "Basis Group")
+check_seeds(sub_architecture, 'Row_Label', architecture_order, "Architecture Group")

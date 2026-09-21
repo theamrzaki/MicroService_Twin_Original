@@ -1,8 +1,8 @@
-# OrEdge: Efficient Multi-Modal Anomaly Detection in Distributed Software Systems via Orthogonal-Domain Learning
+# Efficient Multi-Modal Anomaly Detection for Real-Time Monitoring of Distributed Software Systems
 
 Official PyTorch implementation of **OrEdge**.
 
-OrEdge is a lightweight multi-modal anomaly detection framework for distributed software systems that jointly models **metrics**, **logs**, and **traces** using orthogonal-domain temporal representations. Compared with graph- and Transformer-based approaches, OrEdge significantly reduces computational complexity while maintaining competitive detection performance, making it suitable for deployment on resource-constrained edge devices.
+OrEdge is a lightweight framework for continuous multi-modal anomaly detection. OrEdge jointly models metrics, logs, and traces using modality-specific representations, shared lightweight temporal reconstruction, cross-modal interaction, and orthogonal-domain reconstruction supervision to reduce redundant computation while preserving complementary temporal information.
 
 This implementation builds upon the excellent open-source implementations of **Eadro** and **Twin Graph-based Anomaly Detection via Attentive Multi-Modal Learning for Microservice Systems**.
 
@@ -11,11 +11,11 @@ This implementation builds upon the excellent open-source implementations of **E
 # Overview
 
 <p align="center">
-<img src="OrEdge-01.jpg" width="95%">
+<img src="OrEdge-01-01.jpg" width="95%">
 </p>
 
 <p align="center">
-<img src="OrthoCore-01.jpg" width="95%">
+<img src="OrthoCore-01-01.jpg" width="95%">
 </p>
 
 ---
@@ -35,8 +35,8 @@ This implementation builds upon the excellent open-source implementations of **E
 ├── requirements.txt
 ├── run_RQ1_main.sh
 ├── run_RQ3_ablations.sh
+├── run_RQ2z5_basis_degree.sh 
 ├── run_RQ4_sensitivity.sh
-├── run_RQ5_case_study.sh
 └── copy.sh                # To copy the weights from the server to the Raspberry Pi devices
 ```
 
@@ -119,7 +119,7 @@ The experiments reported in the paper can be reproduced using the following scri
 | RQ1: Main comparison | `./run_RQ1_main.sh` |
 | RQ3: Ablation study | `./run_RQ3_ablations.sh` |
 | RQ4: Sensitivity analysis | `./run_RQ4_sensitivity.sh` |
-| RQ5: Qualitative case study | `./run_RQ5_case_study.sh` |
+| RQ5: Basis degree comparison | `./run_RQ2z5_basis_degree.sh` |
 
 ---
 
@@ -130,7 +130,7 @@ The Raspberry Pi experiments were conducted using dedicated branches.
 | Device | Branch |
 |---------|--------|
 | Raspberry Pi 5 | `(from-rasperipi-larger)` |
-| Raspberry Pi 3 | `(from-rasperipi-smaller)` |
+| Raspberry Pi 3 | `(from-rasperipi-smaller-deephunt)` |
 
 These branches contain the deployment-specific inference code used to generate the efficiency results reported in the paper.
 
@@ -154,7 +154,7 @@ scripts/RQ2_efficiency.py
 scripts/RQ3_ablations.py
 scripts/RQ4_sensitivity.py
 scripts/RQ4_sensitivity_linear_attn.py
-scripts/RQ5_case_study.py
+scripts/RQ2z5_basis_degree.py
 ```
 
 ---

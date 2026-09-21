@@ -11,7 +11,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 path = "result_journal/result_RQ2z5_ablations_basis_degrees.csv" # for different degrees (3,7), except for MSDS dataset, and except degree 5 (as it comes from basis ablations)
 path_RQ1 = "result_journal/result_RQ2_basis_withNorm_accMem_updatedFreDF_lowshow_simplegraph.csv" # for different basis degree5 (except for legendre as it comes from RQ1)
-OrEdge_path = 'result_journal/result_RQ1_benchmark_MemOptimised_lowshow_simplegraph.csv' # for degree 5 legendre (as it comes from RQ1)
+OrEdge_path = 'data\\result_RQ1_benchmark_MemOptimised_lowshow_simplegraph.csv' # for degree 5 legendre (as it comes from RQ1)
 
 df = pd.read_csv(path)
 df = df[~df["datasource"].isin(["MSDS"])]
@@ -98,7 +98,7 @@ metrics = [
     #("ap", "Average Precision", "v")
 ]
 
-target_datasets = ["SN", "MSDS", "TT"]
+target_datasets = ["MSDS","SN",  "TT"]
 
 basis_types = [
     "fourier",
@@ -113,7 +113,7 @@ basis_types = [
 # =============================================================================
 
 pdf_filename = (
-    "figs/results/"
+    "figs/results/sensitivity_individual/"
     "sensitivity_degree_by_basis.pdf"
 )
 
@@ -321,7 +321,7 @@ with PdfPages(pdf_filename) as pdf:
 # =============================================================================
 
 txt_filename = (
-    "figs/results/"
+    "figs/results/sensitivity_individual/"
     "sensitivity_degree_by_basis.txt"
 )
 

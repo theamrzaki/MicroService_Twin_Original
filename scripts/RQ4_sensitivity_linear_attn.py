@@ -131,3 +131,20 @@ for ds in target_datasets:
 txt_filename = "figs/results/sensitivity_linear_attn_dim_PRF.txt"
 with open(txt_filename, "w") as f:
     f.write(data)
+
+
+#across datasources, FREQ_DOMAIN (check if it has 3 seeds using "random_seed" column)
+# print missing combinations with the found seeds 
+missing_combinations = []
+for ds in df["datasource"].unique():
+    for dim in df["linear_attn_dim"].unique():
+            seeds = df[
+                (df["datasource"] == ds) &
+                (df["linear_attn_dim"] == dim)
+            ]["random_seed"].unique()
+            if len(seeds) < 3:
+                missing_combinations.append((ds, dim, seeds))
+for ds, dim, seeds in missing_combinations:
+    print(f"Missing combination: datasource={ds}, dim={dim}, found seeds={seeds}")
+if len(missing_combinations) == 0:
+    print("All combinations have at least 3 seeds.")

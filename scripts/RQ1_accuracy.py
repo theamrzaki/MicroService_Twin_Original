@@ -15,8 +15,10 @@ df2 = pd.read_csv(path2)
 # Concatenate the two dataframes
 df = pd.concat([df, df2], ignore_index=True)
 # remove Medicine with SN with params 148308 #as it worked with the huge feature space, that didnt work with TT, so the exps were repeated with the smaller feature space
-df = df[~((df['FREQ_DOMAIN'] == 'Medicine') & (df['datasource'] == 'SN') & (df['total_params'] == 148308))]
-
+#i have removed these lines 
+#print(f"number of rows before filtering: {len(df)}")
+#df = df[~((df['FREQ_DOMAIN'] == 'Medicine') & (df['datasource'] == 'SN') & (df['total_params'] == 148308))]
+#print(f"number of rows after filtering: {len(df)}")
 #rename encoder_decoder to MSTGAD
 #rename FITS_Legendre to OrEdge
 df['FREQ_DOMAIN'] = df['FREQ_DOMAIN'].replace({'encoder_decoder': 'MSTGAD', 'FITS_Legendre': 'OrEdge'})
@@ -34,7 +36,7 @@ metrics_df = pd.json_normalize(parsed_metrics)
 df = pd.concat([df, metrics_df], axis=1)
 
 # 2. Define target parameters
-datasets = ['SN', 'TT', 'MSDS']
+datasets = ['MSDS','SN', 'TT']
 variants = ['Eadro', 'AnoFusion', 'MSTGAD', 'Art', 'Medicine','DeepHunt', 'OrEdge']
 
 accuracy_metrics = [
@@ -123,7 +125,7 @@ latex_table.append("\\centering")
 latex_table.append("\\scriptsize")
 latex_table.append("\\begin{tabular}{p{1.5cm}p{1.3cm}p{1.4cm}p{1.4cm}p{1.4cm}}")
 latex_table.append("\\toprule")
-latex_table.append("\\textbf{Metric} & \\textbf{Model Variant} & \\textbf{SN} & \\textbf{TT} & \\textbf{MSDS} \\\\")
+latex_table.append("\\textbf{Metric} & \\textbf{Model Variant} & \\textbf{MSDS} & \\textbf{SN} & \\textbf{TT} \\\\")
 latex_table.append("\\midrule")
 latex_table.extend(latex_lines)
 latex_table.append("\\bottomrule")
@@ -143,11 +145,23 @@ print("LaTeX table saved to sections/Results/RQ1_accuracy.tex !!")
 
 # Comparisons selected based on the best F1-performing baseline
 # for each dataset in the main RQ1 results.
-comparisons = {
-    'SN': 'Art',
-    'TT': 'Art',
-    'MSDS': 'MSTGAD'
-}
+#comparisons = {
+#    'SN': 'Art',
+#    'TT': 'Art',
+#    'MSDS': 'MSTGAD'
+#}
+# get max F1 baseline for each dataset
+comparisons = {}
+for dataset in datasets:
+    baseline_df = df[
+        (df['datasource'] == dataset) &
+        (df['FREQ_DOMAIN'] != 'OrEdge')
+    ]
+    if not baseline_df.empty:
+        best_baseline_row = baseline_df.loc[baseline_df['f1'].idxmax()]
+        comparisons[dataset] = best_baseline_row['FREQ_DOMAIN']
+    else:
+        comparisons[dataset] = None
 
 stat_results = []
 
@@ -374,3 +388,20 @@ if not results_df.empty:
         "\nLaTeX statistical table saved to "
         "sections/Results/RQ1_significance.tex !!"
     )
+
+
+#across datasources, FREQ_DOMAIN (check if it has 3 seeds using "random_seed" column)
+# print missing combinations with the found seeds 
+missing_combinations = []
+for ds in df["datasource"].unique():
+    for arch in df["FREQ_DOMAIN"].unique():
+            seeds = df[
+                (df["datasource"] == ds) &
+                (df["FREQ_DOMAIN"] == arch)
+            ]["random_seed"].unique()
+            if len(seeds) < 3:
+                missing_combinations.append((ds, arch, seeds))
+for ds, arch, seeds in missing_combinations:
+    print(f"Missing combination: datasource={ds}, arch={arch}, found seeds={seeds}")
+if len(missing_combinations) == 0:
+    print("All combinations have at least 3 seeds.")
